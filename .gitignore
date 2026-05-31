@@ -26,3 +26,9 @@ tina/__generated__/
 
 # jetbrains setting folder
 .idea/
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
