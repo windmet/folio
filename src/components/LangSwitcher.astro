@@ -1,0 +1,30 @@
+---
+const { cnSlug, jpSlug } = Astro.props;
+---
+
+<div class="lang-switcher fixed bottom-6 right-6 z-50 flex gap-2">
+  <a
+    href={cnSlug}
+    class="px-3 py-1.5 text-xs text-stone-500 border border-stone-200 rounded-sm bg-white/80 backdrop-blur hover:border-stone-400 hover:text-stone-700 transition-all"
+  >
+    中文
+  </a>
+  <a
+    href={jpSlug}
+    class="px-3 py-1.5 text-xs text-stone-500 border border-stone-200 rounded-sm bg-white/80 backdrop-blur hover:border-stone-400 hover:text-stone-700 transition-all"
+  >
+    原文
+  </a>
+</div>
+
+<style>
+  .lang-switcher a {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    backdrop-filter: blur(4px);
+  }
+  .lang-switcher a:hover {
+    text-decoration: none;
+  }
+</style>

@@ -13,6 +13,10 @@ yarn-error.log*
 pnpm-debug.log*
 
 
+# TinaCMS generated output
+public/admin/
+tina/__generated__/
+
 # environment variables
 .env
 .env.production

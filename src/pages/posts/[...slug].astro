@@ -2,6 +2,10 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import HeroImage from '../../components/HeroImage.astro';
 import Giscus from '../../components/Giscus.astro';
+import LangSwitcher from '../../components/LangSwitcher.astro';
+import QuoteLine from '../../components/QuoteLine.astro';
+import Question from '../../components/Question.astro';
+import Annotation from '../../components/Annotation.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -14,6 +18,11 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await render(post);
+
+const slug = post.id;
+const isJP = !slug.endsWith('-cn');
+const cnSlug = isJP ? `/posts/${slug}-cn/` : `/posts/${slug}/`;
+const jpSlug = isJP ? `/posts/${slug}/` : `/posts/${slug.slice(0, -3)}/`;
 ---
 
 <BaseLayout title={post.data.title} description={post.data.description}>
@@ -32,7 +41,9 @@ const { Content } = await render(post);
 
   {post.data.heroImage && <HeroImage src={post.data.heroImage} alt={post.data.title} />}
 
-  <Content />
+  <Content components={{ QuoteLine, Question, Annotation }} />
 
   <Giscus />
+
+  <LangSwitcher cnSlug={cnSlug} jpSlug={jpSlug} />
 </BaseLayout>

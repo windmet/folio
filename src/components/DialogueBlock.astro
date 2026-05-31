@@ -1,0 +1,59 @@
+---
+export interface Props {
+  speaker: string;
+  cn: string;
+  jp: string;
+}
+
+const { speaker, cn, jp } = Astro.props;
+const id = `dlg-${Math.random().toString(36).slice(2)}`;
+---
+
+<div class="dialogue-block group my-4 pl-4 border-l-2 border-stone-100 relative pr-8">
+  <div class="text-base leading-loose text-stone-700 m-0 relative">
+    <span class="text-xs text-stone-400 mr-2 font-sans not-italic">{speaker}</span>{cn}
+    <button
+      class="absolute top-1 right-0 px-1.5 py-0.5
+        text-[10px] text-stone-300 border border-stone-200 rounded-sm
+        opacity-0 group-hover:opacity-100
+        transition-opacity duration-200 cursor-pointer select-none
+        hover:text-stone-500 hover:border-stone-400
+        focus-visible:outline-none"
+      aria-expanded="false"
+      aria-controls={id}
+      data-toggle-jp
+    >
+      原文
+    </button>
+  </div>
+  <div
+    id={id}
+    class="overflow-hidden transition-all duration-300"
+    style="max-height: 0; opacity: 0;"
+    data-jp-panel
+  >
+    <p class="m-0 pt-2 pl-6 text-sm text-stone-400 leading-loose font-mincho">
+      {jp}
+    </p>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('[data-toggle-jp]').forEach((btn) => {
+    const panel = document.getElementById(btn.getAttribute('aria-controls') ?? '');
+    if (!panel) return;
+    btn.addEventListener('click', () => {
+      const open = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!open));
+      if (open) {
+        panel.style.maxHeight = '0';
+        panel.style.opacity = '0';
+        btn.textContent = '原文';
+      } else {
+        panel.style.maxHeight = panel.scrollHeight + 'px';
+        panel.style.opacity = '1';
+        btn.textContent = '收起';
+      }
+    });
+  });
+</script>

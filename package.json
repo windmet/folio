@@ -8,16 +8,21 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "tinacms build --local --skip-cloud-checks && astro build",
     "preview": "astro preview",
+    "tina:dev": "tinacms dev -c \"npx astro dev --host 0.0.0.0\" --noTelemetry",
+    "tina:host": "tinacms build --local --skip-cloud-checks && npx astro dev --host 0.0.0.0",
+    "tina:build": "tinacms build --local --skip-cloud-checks",
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^6.4.2",
     "@astrojs/mdx": "^6.0.0",
-    "tailwindcss": "^3.4.0",
     "@tailwindcss/typography": "^0.5.0",
+    "@tinacms/cli": "^2.4.1",
+    "astro": "^6.4.2",
+    "autoprefixer": "^10.4.0",
     "postcss": "^8.4.0",
-    "autoprefixer": "^10.4.0"
+    "tailwindcss": "^3.4.0",
+    "tinacms": "^3.8.3"
   }
 }

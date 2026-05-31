@@ -28,3 +28,89 @@
     page-break-after: always;
   }
 }
+
+/* 正文内强调 — 方式1: 加粗+左侧竖线 */
+.text-emphasis-a {
+  font-weight: 600;
+  padding-left: 6px;
+  border-left: 2px solid #d6d3d1;
+  margin-left: 1px;
+}
+
+/* 正文内强调 — 方式2: 荧光笔背景 */
+.text-emphasis-b {
+  background: #faf8f5;
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+/* 正文内强调 — 方式3: 斜体+下划线 */
+.text-emphasis-c {
+  font-style: italic;
+  text-decoration: underline;
+  text-decoration-color: #d4cfc8;
+  text-underline-offset: 3px;
+}
+
+/* 正文内强调 — 引言卡片 */
+.text-emphasis-paragraph {
+  background: #f9f8f6;
+  border-left: 3px solid #c7c2bc;
+  padding: 10px 16px 10px 20px;
+  margin: 4px 0;
+  border-radius: 0 2px 2px 0;
+  font-style: normal;
+}
+
+/* 提问句高亮 */
+.question {
+  display: block;
+  background: rgba(168, 162, 158, 0.08);
+  padding: 3px 12px 3px 14px;
+  margin: 4px 0;
+  border-radius: 2px;
+  color: #57534e;
+}
+
+/* 荧光高亮 */
+mark {
+  background-color: #EBE3D5;
+  padding: 0 2px;
+  border-radius: 1px;
+}
+
+/* 作者注 — 桌面端侧边小框，移动端行内卡片 */
+.author-note {
+  margin: 1.25rem 0;
+  padding: 0.75rem 1rem;
+  background: #fafaf9;
+  border: 1px solid #e7e5e4;
+  border-radius: 4px;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: #78716c;
+}
+
+.author-note .author-note-text {
+  margin: 0;
+}
+
+.author-note .author-note-pin {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .author-note {
+    float: right;
+    clear: right;
+    width: 200px;
+    margin: -6em 1rem 0.75rem 1rem;
+    margin-right: -240px;
+  }
+
+  .author-note .author-note-pin {
+    display: block;
+    margin-bottom: 0.375rem;
+    color: #a8a29e;
+  }
+}
