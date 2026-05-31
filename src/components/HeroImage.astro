@@ -1,0 +1,18 @@
+---
+export interface Props {
+  src: string;
+  alt: string;
+}
+
+const { src, alt } = Astro.props;
+---
+
+<figure class="not-prose -mx-4 sm:-mx-8 md:-mx-16 my-8">
+  <img
+    src={src}
+    alt={alt}
+    class="w-full h-auto max-h-[80vh] object-contain mx-auto rounded-md"
+    loading="eager"
+    decoding="async"
+  />
+</figure>

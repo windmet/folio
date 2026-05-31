@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HeroImage from '../../components/HeroImage.astro';
+import Giscus from '../../components/Giscus.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BaseLayout title={post.data.title} description={post.data.description}>
+  <header class="not-prose mb-10 text-center">
+    <time class="text-xs text-stone-300 tracking-widest">
+      {post.data.date.toLocaleDateString('zh-CN', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      })}
+    </time>
+    <h1 class="text-xl font-serif font-normal text-stone-800 mt-3 mb-0 leading-relaxed tracking-wide">
+      {post.data.title}
+    </h1>
+  </header>
+
+  {post.data.heroImage && <HeroImage src={post.data.heroImage} alt={post.data.title} />}
+
+  <Content />
+
+  <Giscus />
+</BaseLayout>

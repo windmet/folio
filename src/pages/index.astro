@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = await getCollection('posts');
+posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<BaseLayout title="首页">
+  <div class="not-prose">
+    {posts.length === 0 ? (
+      <p class="text-center text-stone-400 text-sm mt-16">暂无文章</p>
+    ) : (
+      <ul class="list-none p-0 m-0">
+        {posts.map((post) => (
+          <li class="border-b border-stone-100 last:border-b-0">
+            <a
+              href={`/posts/${post.id}/`}
+              class="block py-6 no-underline group"
+            >
+              <h2 class="text-base font-serif font-normal text-stone-700 group-hover:text-stone-900 transition-colors m-0">
+                {post.data.title}
+              </h2>
+              {post.data.description && (
+                <p class="text-sm text-stone-400 mt-2 m-0 leading-relaxed">
+                  {post.data.description}
+                </p>
+              )}
+              <time class="text-xs text-stone-300 mt-2 block">
+                {post.data.date.toLocaleDateString('zh-CN', {
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit',
+                })}
+              </time>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+</BaseLayout>

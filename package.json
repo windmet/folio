@@ -1,0 +1,23 @@
+{
+  "name": "megazine-blog",
+  "type": "module",
+  "version": "0.0.1",
+  "description": "冷门同好熟肉存档站 — 日式文库本极简美学",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "astro": "^6.4.2",
+    "@astrojs/mdx": "^6.0.0",
+    "tailwindcss": "^3.4.0",
+    "@tailwindcss/typography": "^0.5.0",
+    "postcss": "^8.4.0",
+    "autoprefixer": "^10.4.0"
+  }
+}
