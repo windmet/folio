@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "tinacms build --local --skip-cloud-checks && astro build",
+    "build": "astro build",
     "preview": "astro preview",
     "tina:dev": "tinacms dev -c \"npx astro dev --host 0.0.0.0\" --noTelemetry",
     "tina:host": "tinacms build --local --skip-cloud-checks && npx astro dev --host 0.0.0.0",
