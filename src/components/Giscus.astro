@@ -1,36 +1,21 @@
----
-// Giscus 评论组件
-// 使用前请设置以下环境变量或直接替换下方配置：
-//   PUBLIC_GISCUS_REPO — GitHub Repository (格式: owner/repo)
-//   PUBLIC_GISCUS_CATEGORY — Discussion Category
-//   PUBLIC_GISCUS_CATEGORY_ID — Discussion Category ID
-
-const repo = import.meta.env.PUBLIC_GISCUS_REPO ?? 'your-username/your-repo';
-const category = import.meta.env.PUBLIC_GISCUS_CATEGORY ?? 'Announcements';
-const categoryId = import.meta.env.PUBLIC_GISCUS_CATEGORY_ID ?? '';
----
-
 <section class="not-prose mt-16 pt-8 border-t border-stone-100">
-  <script
-    src="https://giscus.app/client.js"
-    data-repo={repo}
-    data-repo-id=""
-    data-category={category}
-    data-category-id={categoryId}
+  <script is:inline src="https://giscus.app/client.js"
+    data-repo="windmet/folio"
+    data-repo-id="R_kgDOSsuszA"
+    data-category="General"
+    data-category-id="DIC_kwDOSsuszM4C-Mex"
     data-mapping="pathname"
     data-strict="0"
     data-reactions-enabled="1"
     data-emit-metadata="0"
-    data-input-position="top"
-    data-theme="light"
+    data-input-position="bottom"
+    data-theme="preferred_color_scheme"
     data-lang="zh-CN"
     data-loading="lazy"
     crossorigin="anonymous"
-    async>
+    defer>
   </script>
   <noscript>
-    <p class="text-center text-xs text-stone-400">
-      请启用 JavaScript 以查看评论。
-    </p>
+    <p class="text-center text-xs text-stone-400">请启用 JavaScript 以查看评论。</p>
   </noscript>
 </section>
