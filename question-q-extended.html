@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Q标签样式扩展</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600&family=Noto+Sans+SC:wght@300;400;600&display=swap');
+
+  body {
+    font-family: 'Noto Serif SC', serif;
+    background: #fafaf9;
+    color: #44403c;
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 0 24px;
+    line-height: 1.9;
+    font-size: 15.5px;
+  }
+
+  h1 {
+    font-size: 13px;
+    font-weight: 400;
+    color: #a8a29e;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 36px;
+    text-align: center;
+  }
+
+  .label {
+    font-size: 11px;
+    font-family: sans-serif;
+    color: #a8a29e;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin: 36px 0 12px;
+    border-top: 1px solid #e7e5e4;
+    padding-top: 20px;
+  }
+
+  p { margin: 0 0 16px; }
+
+  .sample-dialogue {
+    color: #57534e;
+    margin: 8px 0 24px;
+  }
+  .speaker { color: #78716c; }
+
+  /* ========== Q标签变体 ========== */
+
+  /* Q-A: 大号「Q」标签 + 圆角背景 */
+  .q-a {
+    font-size: 14.5px;
+    color: #57534e;
+    margin: 24px 0 16px;
+  }
+  .q-a::before {
+    content: 'Q';
+    display: inline-block;
+    font-family: sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #78716c;
+    background: #f0ede8;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-right: 10px;
+    vertical-align: middle;
+    letter-spacing: 0.5px;
+    line-height: 1.4;
+  }
+
+  /* Q-B: 「Q」标签靠左浮动，文字缩进 */
+  .q-b {
+    font-size: 14.5px;
+    color: #57534e;
+    margin: 24px 0 16px;
+    padding-left: 36px;
+    text-indent: -10px;
+  }
+  .q-b::before {
+    content: 'Q';
+    display: inline-block;
+    font-family: sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: #78716c;
+    background: #f0ede8;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-right: 6px;
+    vertical-align: middle;
+    letter-spacing: 0.5px;
+  }
+
+  /* Q-C: 无边框纯文字强调 — 问答自然衔接 */
+  .q-c {
+    font-size: 14.5px;
+    color: #78716c;
+    margin: 24px 0 16px;
+    font-weight: 400;
+    letter-spacing: 0.3px;
+  }
+  .q-c::before {
+    content: 'Q';
+    display: inline-block;
+    font-family: sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: #a8a29e;
+    margin-right: 8px;
+    vertical-align: middle;
+    letter-spacing: 1px;
+  }
+
+  /* Q-D: 「Q」标签小圆点替代，文字偏灰 */
+  .q-d {
+    font-size: 14.5px;
+    color: #78716c;
+    margin: 24px 0 16px;
+  }
+  .q-d::before {
+    content: '';
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background: #d6d3d1;
+    border-radius: 50%;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+
+  /* Q-E: 「Q」标签放大 + 加粗问句整体上移视觉重心 */
+  .q-e {
+    font-size: 15px;
+    color: #57534e;
+    margin: 24px 0 16px;
+    font-weight: 500;
+    padding-left: 8px;
+    border-left: 2px solid #e7e5e4;
+  }
+  .q-e::before {
+    content: 'Q';
+    display: inline-block;
+    font-family: sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: #c7c2bc;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+
+  /* Q-F: 「Q」标签在行内，字号和正文相同，强调问答节奏感 */
+  .q-f {
+    font-size: 15px;
+    color: #57534e;
+    margin: 24px 0 16px;
+    font-weight: 300;
+  }
+  .q-f::before {
+    content: 'Q.';
+    display: inline;
+    font-family: sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: #a8a29e;
+    margin-right: 4px;
+  }
+
+  /* Q-G: 标签右对齐，字号偏小，靠在问句末尾 */
+  .q-g {
+    font-size: 14.5px;
+    color: #57534e;
+    margin: 24px 0 16px;
+  }
+  .q-g::after {
+    content: 'Q';
+    display: inline-block;
+    font-family: sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: #c7c2bc;
+    background: #f0ede8;
+    padding: 2px 7px;
+    border-radius: 3px;
+    margin-left: 12px;
+    vertical-align: middle;
+    letter-spacing: 0.5px;
+  }
+
+  .note {
+    font-size: 11px;
+    color: #a8a29e;
+    margin-top: 40px;
+    font-family: sans-serif;
+  }
+</style>
+</head>
+<body>
+
+<h1>Q标签扩展样式</h1>
+
+<p style="color:#a8a29e;font-size:13px;margin-bottom:32px">前一个方案 Q6 的「Q」标签太小，这里围绕「Q」元素做扩展设计。</p>
+
+<p class="label">Q-A — 大号「Q」标签 + 圆角背景</p>
+<p class="q-a">寺岛先生对春日有什么印象？</p>
+<p class="sample-dialogue"><span class="speaker">寺岛</span>：我觉得春日简直和小松先生一模一样……</p>
+
+<p class="label">Q-B — 「Q」标签靠左，文字整体缩进</p>
+<p class="q-b">寺岛先生对春日有什么印象？</p>
+<p class="sample-dialogue"><span class="speaker">寺岛</span>：我觉得春日简直和小松先生一模一样……</p>
+
+<p class="label">Q-C — 无边框纯文字「Q」前缀</p>
+<p class="q-c">寺岛先生对春日有什么印象？</p>
+<p class="sample-dialogue"><span class="speaker">寺岛</span>：我觉得春日简直和小松先生一模一样……</p>
+
+<p class="label">Q-D — 小圆点替代「Q」</p>
+<p class="q-d">寺岛先生对春日有什么印象？</p>
+<p class="sample-dialogue"><span class="speaker">寺岛</span>：我觉得春日简直和小松先生一模一样……</p>
+
+<p class="label">Q-E — 加大「Q」字号 + 左侧竖线（与正文拉开层次）</p>
+<p class="q-e">寺岛先生对春日有什么印象？</p>
+<p class="sample-dialogue"><span class="speaker">寺岛</span>：我觉得春日简直和小松先生一模一样……</p>
+
+<p class="label">Q-F — 「Q.」嵌入行内，问答节奏感强</p>
+<p class="q-f">寺岛先生对春日有什么印象？</p>
+<p class="sample-dialogue"><span class="speaker">寺岛</span>：我觉得春日简直和小松先生一模一样……</p>
+
+<p class="label">Q-G — 「Q」标签移到行末右侧</p>
+<p class="q-g">寺岛先生对春日有什么印象？</p>
+<p class="sample-dialogue"><span class="speaker">寺岛</span>：我觉得春日简直和小松先生一模一样……</p>
+
+<p class="note">Q-A 最为醒目；Q-F 融入正文行距最自然；Q-E 用竖线拉开层次感。</p>
+
+</body>
+</html>

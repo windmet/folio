@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QuoteBlock 样式预览</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600&display=swap');
+
+  body {
+    font-family: 'Noto Serif SC', serif;
+    background: #fafaf9;
+    color: #44403c;
+    max-width: 640px;
+    margin: 40px auto;
+    padding: 0 24px;
+    line-height: 1.8;
+  }
+
+  h1 {
+    font-size: 14px;
+    font-weight: 400;
+    color: #a8a29e;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    text-align: center;
+  }
+
+  .label {
+    font-size: 11px;
+    font-family: sans-serif;
+    color: #a8a29e;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    margin-top: 40px;
+  }
+
+  /* ========== 变体 A: 左侧竖线 ========== */
+  .quote-a {
+    border-left: 2px solid #d6d3d1;
+    padding: 2px 0 2px 20px;
+    margin: 20px 0;
+    color: #57534e;
+  }
+  .quote-a .speaker-tag {
+    display: block;
+    font-size: 12px;
+    color: #a8a29e;
+    margin-bottom: 6px;
+    font-family: sans-serif;
+    letter-spacing: 0.5px;
+  }
+
+  /* ========== 变体 B: 浅灰背景卡片 ========== */
+  .quote-b {
+    background: #f5f4f0;
+    border: 1px solid #e7e5e4;
+    border-radius: 2px;
+    padding: 16px 20px 16px 20px;
+    margin: 20px 0;
+  }
+  .quote-b .speaker-tag {
+    display: block;
+    font-size: 11px;
+    color: #a8a29e;
+    margin-bottom: 8px;
+    font-family: sans-serif;
+    letter-spacing: 0.5px;
+  }
+
+  /* ========== 变体 C: 侧边圆点 + 小标签 ========== */
+  .quote-c {
+    margin: 20px 0;
+    padding-left: 16px;
+    position: relative;
+  }
+  .quote-c::before {
+    content: '';
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    background: #a8a29e;
+    border-radius: 50%;
+    position: absolute;
+    left: 0;
+    top: 9px;
+  }
+  .quote-c .speaker-tag {
+    display: block;
+    font-size: 11px;
+    color: #a8a29e;
+    font-family: sans-serif;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  /* ========== 变体 D: 大引号装饰 ========== */
+  .quote-d {
+    margin: 24px 0;
+    position: relative;
+    padding: 0 24px;
+    text-align: center;
+    color: #78716c;
+  }
+  .quote-d::before {
+    content: '"';
+    font-size: 80px;
+    line-height: 0.6;
+    color: #e7e5e4;
+    position: absolute;
+    left: -8px;
+    top: 12px;
+    font-family: Georgia, serif;
+  }
+  .quote-d .inner {
+    font-size: 15px;
+    line-height: 2;
+  }
+
+  /* 正文段落 */
+  p { margin: 0 0 16px 0; }
+</style>
+</head>
+<body>
+
+<h1>杂志引言样式预览</h1>
+
+<p>正文段落示例。这是普通的访谈正文，可以看到排版的感觉。</p>
+
+<!-- 变体 A -->
+<p class="label">变体 A — 左侧细竖线</p>
+<blockquote class="quote-a">
+  <span class="speaker-tag">寺岛惇太</span>
+  我觉得摇很棒的一点是，即使自己心情变差了，他也能体谅到对方的感受。他是在用自己的方式来调节、消解情绪。
+</blockquote>
+<p>正文继续。两人的对话在上一页继续，摇和春日的关系在 Aporia 中显得十分独特。</p>
+
+<!-- 变体 B -->
+<p class="label">变体 B — 浅灰背景卡片</p>
+<blockquote class="quote-b">
+  <span class="speaker-tag">小松昌平</span>
+  春日是不擅长那些无谓的客套和伪装的类型，而摇几乎不会说虚伪客套的话，所以他们在一起时大概会觉得很轻松吧。
+</blockquote>
+<p>正文继续。管理部的摇和管理部的春日，两人之间的关系不仅仅是同事那么简单。</p>
+
+<!-- 变体 C -->
+<p class="label">变体 C — 侧边圆点</p>
+<blockquote class="quote-c">
+  <span class="speaker-tag">寺岛惇太</span>
+  反过来说，他们两个人呆在一起的时候，对话几乎没什么进展。因为两个人都不是那种会主动张罗事情的性格。
+</blockquote>
+<p>正文继续。</p>
+
+<!-- 变体 D -->
+<p class="label">变体 D — 大引号装饰（无角色标签，适合金句）</p>
+<div class="quote-d">
+  <div class="inner">因为春日变成了春日，所以我也要变成摇。</div>
+</div>
+
+</body>
+</html>

@@ -1,7 +1,20 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm --version)"
+      "Bash(npm --version)",
+      "Bash(curl -s http://localhost:4001/graphql -H \"Content-Type: application/json\" -d '{\"query\":\"{ postsConnection { edges { node { title body { type children { type children { type text value } } } } } } }\"}')",
+      "Bash(python3 -m json.tool)",
+      "Bash(taskkill //F //IM node.exe)",
+      "Bash(rm -rf tina/__generated__/.cache)",
+      "Bash(TINA_PUBLIC_IS_LOCAL=true npx tinacms dev -c \"astro dev\" --noTelemetry)",
+      "Bash(curl -s -o /dev/null -w \"Admin: HTTP %{http_code}\\\\n\" http://localhost:4321/admin/index.html)",
+      "Bash(curl -s http://localhost:4001/graphql -H \"Content-Type: application/json\" -d '{\"query\":\"{ __schema { types { name fields { name } } } }\"}')",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" http://localhost:4321/admin/index.html)",
+      "Bash(curl -s http://localhost:4001/graphql -H \"Content-Type: application/json\" -d '{\"query\":\"{ posts\\(relativePath: \\\\\"bmc-interview-cn.mdx\\\\\"\\) { body } }\"}')",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" http://localhost:4321/posts/bmc-interview-cn/)",
+      "Bash(curl -s -X POST http://localhost:4321/api/reactions -H \"Content-Type: application/json\" -d '{\"term\":\"/posts/bmc-interview-cn/\",\"content\":\"heart\"}')",
+      "Bash(curl -s http://localhost:4321/api/reactions?term=/posts/bmc-interview-cn/)",
+      "Bash(curl -s -X DELETE http://localhost:4321/api/reactions -H \"Content-Type: application/json\" -d '{\"term\":\"/posts/bmc-interview-cn/\",\"content\":\"heart\"}')"
     ]
   }
 }

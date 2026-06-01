@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>问答样式预览</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600&display=swap');
+
+  body {
+    font-family: 'Noto Serif SC', serif;
+    background: #fafaf9;
+    color: #44403c;
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 0 24px;
+    line-height: 1.9;
+    font-size: 15.5px;
+  }
+
+  h1 {
+    font-size: 13px;
+    font-weight: 400;
+    color: #a8a29e;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 36px;
+    text-align: center;
+  }
+
+  .label {
+    font-size: 11px;
+    font-family: sans-serif;
+    color: #a8a29e;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin: 36px 0 12px;
+    border-top: 1px solid #e7e5e4;
+    padding-top: 20px;
+  }
+
+  p { margin: 0 0 16px; }
+
+  /* 对话正文（参考） */
+  .dialogue {
+    color: #57534e;
+  }
+  .speaker-tera { color: #78716c; }
+  .speaker-kom { color: #78716c; }
+
+  /* ========== 问答样式 ========== */
+
+  /* Q1: 左竖线 + 浅色文字 — 最低调 */
+  .q-style-a {
+    color: #a8a29e;
+    padding-left: 12px;
+    border-left: 2px solid #d6d3d1;
+    margin: 24px 0 16px;
+    font-size: 14.5px;
+    line-height: 1.8;
+  }
+
+  /* Q2: 左侧点 + 无衬线字体 — 杂志感 */
+  .q-style-b {
+    color: #78716c;
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: 13.5px;
+    font-weight: 400;
+    margin: 24px 0 16px;
+    padding-left: 14px;
+    position: relative;
+    letter-spacing: 0.3px;
+  }
+  .q-style-b::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: #c7c2bc;
+  }
+
+  /* Q3: 小号全大写标签 + 正文灰色 */
+  .q-style-c {
+    font-size: 12px;
+    color: #a8a29e;
+    font-family: sans-serif;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin: 28px 0 10px;
+  }
+  .q-style-c + p {
+    color: #78716c;
+    font-size: 15px;
+    margin-top: 0;
+  }
+
+  /* Q4: 居中分隔线 + 问句居中 */
+  .q-style-d {
+    text-align: center;
+    color: #a8a29e;
+    font-size: 14px;
+    margin: 28px 0;
+    position: relative;
+    padding: 0 20px;
+  }
+  .q-style-d::before, .q-style-d::after {
+    content: '';
+    display: inline-block;
+    width: 40px;
+    height: 1px;
+    background: #d6d3d1;
+    vertical-align: middle;
+    margin: 0 12px;
+  }
+
+  /* Q5: 左侧粗竖线（比正文更醒目） */
+  .q-style-e {
+    color: #57534e;
+    padding-left: 16px;
+    border-left: 3px solid #a8a29e;
+    margin: 24px 0 16px;
+    font-size: 14.5px;
+    line-height: 1.8;
+    font-weight: 300;
+  }
+
+  /* Q6: 问句前加「Q」标签 */
+  .q-style-f {
+    color: #78716c;
+    font-size: 14.5px;
+    margin: 24px 0 16px;
+  }
+  .q-style-f::before {
+    content: 'Q';
+    display: inline-block;
+    font-family: sans-serif;
+    font-size: 11px;
+    color: #c7c2bc;
+    background: #f0ede8;
+    padding: 1px 6px;
+    border-radius: 2px;
+    margin-right: 8px;
+    vertical-align: middle;
+    letter-spacing: 0.5px;
+  }
+
+  /* 正文示例 */
+  .sample-dialogue {
+    color: #57534e;
+    margin: 8px 0 24px;
+  }
+
+  .note {
+    font-size: 11px;
+    color: #a8a29e;
+    margin-top: 40px;
+    font-family: sans-serif;
+  }
+</style>
+</head>
+<body>
+
+<h1>访谈提问样式</h1>
+
+<p>以下是对话正文示例，用于对比效果：</p>
+
+<p class="sample-dialogue"><span class="speaker-tera">寺岛</span>：我觉得他们是因为共同喜欢猫而产生交集的。</p>
+<p class="sample-dialogue"><span class="speaker-kom">小松</span>：春日是不太擅长那些无谓的客套和伪装的类型，而摇几乎不会说那些虚伪的客套话，所以他们两个在一起时大概会觉得很轻松吧。</p>
+
+<p class="label">Q1 — 左竖线 + 浅色文字（最克制）</p>
+<p class="q-style-a">寺岛先生对春日有什么印象？</p>
+<p class="sample-dialogue"><span class="speaker-tera">寺岛</span>：我觉得春日简直和小松先生一模一样……</p>
+
+<p class="label">Q2 — 左侧「—」短横 + 无衬线（杂志感）</p>
+<p class="q-style-b">寺岛先生对春日有什么印象？</p>
+<p class="sample-dialogue"><span class="speaker-tera">寺岛</span>：我觉得春日简直和小松先生一模一样……</p>
+
+<p class="label">Q3 — 小标签 + 灰调正文（分层清晰）</p>
+<p class="q-style-c">寺岛先生对春日有什么印象？</p>
+<p class="sample-dialogue"><span class="speaker-tera">寺岛</span>：我觉得春日简直和小松先生一模一样……</p>
+
+<p class="label">Q4 — 居中分隔线（过渡感强）</p>
+<p class="q-style-d">寺岛先生对春日有什么印象？</p>
+<p class="sample-dialogue"><span class="speaker-tera">寺岛</span>：我觉得春日简直和小松先生一模一样……</p>
+
+<p class="label">Q5 — 左侧粗竖线（比正文醒目）</p>
+<p class="q-style-e">寺岛先生对春日有什么印象？</p>
+<p class="sample-dialogue"><span class="speaker-tera">寺岛</span>：我觉得春日简直和小松先生一模一样……</p>
+
+<p class="label">Q6 — 「Q」标签（前缀提示）</p>
+<p class="q-style-f">寺岛先生对春日有什么印象？</p>
+<p class="sample-dialogue"><span class="speaker-tera">寺岛</span>：我觉得春日简直和小松先生一模一样……</p>
+
+<p class="note">Q1/Q5 适合不希望打断阅读节奏的排版；Q2/Q3 适合强调问答结构；Q4 适合大段落切换时使用。</p>
+
+</body>
+</html>

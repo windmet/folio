@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>荧光笔样式</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600&display=swap');
+
+  body {
+    font-family: 'Noto Serif SC', serif;
+    background: #fafaf9;
+    color: #44403c;
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 0 24px;
+    line-height: 1.9;
+    font-size: 15.5px;
+  }
+
+  h1 {
+    font-size: 13px;
+    font-weight: 400;
+    color: #a8a29e;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 36px;
+    text-align: center;
+  }
+
+  .label {
+    font-size: 11px;
+    font-family: sans-serif;
+    color: #a8a29e;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin: 36px 0 12px;
+    border-top: 1px solid #e7e5e4;
+    padding-top: 20px;
+  }
+
+  p { margin: 0 0 16px; }
+
+  .sample-dialogue {
+    color: #57534e;
+    margin: 8px 0 20px;
+  }
+  .speaker { color: #78716c; }
+
+  /* ========== 荧光笔变体 ========== */
+
+  /* H-A: 淡黄背景（最接近荧光笔） */
+  .h-a {
+    background: rgba(249, 233, 130, 0.25);
+    padding: 1px 4px;
+    border-radius: 2px;
+    color: #57534e;
+    font-size: 14.5px;
+    margin: 20px 0 14px;
+  }
+
+  /* H-B: 更淡的黄（不干扰阅读） */
+  .h-b {
+    background: rgba(249, 233, 130, 0.12);
+    padding: 1px 4px;
+    border-radius: 2px;
+    color: #78716c;
+    font-size: 14.5px;
+    margin: 20px 0 14px;
+  }
+
+  /* H-C: 灰蓝底（冷静感） */
+  .h-c {
+    background: rgba(168, 162, 158, 0.08);
+    padding: 1px 4px;
+    border-radius: 2px;
+    color: #57534e;
+    font-size: 14.5px;
+    margin: 20px 0 14px;
+  }
+
+  /* H-D: 粉色底（杂志感） */
+  .h-d {
+    background: rgba(252, 225, 225, 0.5);
+    padding: 1px 4px;
+    border-radius: 2px;
+    color: #78716c;
+    font-size: 14.5px;
+    margin: 20px 0 14px;
+  }
+
+  /* H-E: 仅问句整行浅底（不用padding，用display:inline-block） */
+  .h-e {
+    display: inline;
+    background: rgba(249, 233, 130, 0.2);
+    padding: 2px 0;
+    border-radius: 1px;
+    color: #57534e;
+    font-size: 14.5px;
+  }
+  .h-e-wrap {
+    margin: 20px 0 14px;
+  }
+
+  /* H-F: 左侧竖线 + 荧光笔底（双层） */
+  .h-f {
+    border-left: 3px solid #d6d3d1;
+    padding-left: 12px;
+    background: rgba(249, 233, 130, 0.1);
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-right: 4px;
+    border-radius: 0 2px 2px 0;
+    color: #57534e;
+    font-size: 14.5px;
+    margin: 20px 0 14px;
+  }
+
+  /* H-G: 虚线下划线（无背景，纯线条感） */
+  .h-g {
+    border-bottom: 2px dashed #d6d3d1;
+    padding-bottom: 2px;
+    color: #78716c;
+    font-size: 14.5px;
+    margin: 20px 0 14px;
+  }
+
+  /* H-H: 去掉「——」后用荧光笔替代 */
+  .h-h {
+    background: rgba(249, 233, 130, 0.18);
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: #57534e;
+    font-size: 14.5px;
+    margin: 20px 0 14px;
+    font-weight: 400;
+  }
+
+  /* 去掉「——」后的段落示例（配合H-H） */
+  .no-dash {
+    color: #78716c;
+    font-size: 14.5px;
+    margin: 8px 0 20px;
+  }
+
+  .note {
+    font-size: 11px;
+    color: #a8a29e;
+    margin-top: 40px;
+    font-family: sans-serif;
+  }
+</style>
+</head>
+<body>
+
+<h1>荧光笔样式</h1>
+
+<p style="color:#a8a29e;font-size:13px;margin-bottom:32px">围绕荧光笔/高亮效果设计，替代原来的「——」前导。</p>
+
+<p class="label">H-A — 淡黄背景（接近荧光笔）</p>
+<p class="h-a">寺岛先生对春日有什么印象？</p>
+<p class="sample-dialogue"><span class="speaker">寺岛</span>：我觉得春日简直和小松先生一模一样……</p>
+
+<p class="label">H-B — 更淡的黄（轻量）</p>
+<p class="h-b">寺岛先生对春日有什么印象？</p>
+<p class="sample-dialogue"><span class="speaker">寺岛</span>：我觉得春日简直和小松先生一模一样……</p>
+
+<p class="label">H-C — 灰蓝底（冷静）</p>
+<p class="h-c">寺岛先生对春日有什么印象？</p>
+<p class="sample-dialogue"><span class="speaker">寺岛</span>：我觉得春日简直和小松先生一模一样……</p>
+
+<p class="label">H-D — 粉色底（杂志感）</p>
+<p class="h-d">寺岛先生对春日有什么印象？</p>
+<p class="sample-dialogue"><span class="speaker">寺岛</span>：我觉得春日简直和小松先生一模一样……</p>
+
+<p class="label">H-E — 整行浅底（不限定宽度）</p>
+<div class="h-e-wrap"><span class="h-e">寺岛先生对春日有什么印象？</span></div>
+<p class="sample-dialogue"><span class="speaker">寺岛</span>：我觉得春日简直和小松先生一模一样……</p>
+
+<p class="label">H-F — 左侧竖线 + 荧光笔底（双层）</p>
+<p class="h-f">寺岛先生对春日有什么印象？</p>
+<p class="sample-dialogue"><span class="speaker">寺岛</span>：我觉得春日简直和小松先生一模一样……</p>
+
+<p class="label">H-G — 虚线下划线（纯线条感）</p>
+<p class="h-g">寺岛先生对春日有什么印象？</p>
+<p class="sample-dialogue"><span class="speaker">寺岛</span>：我觉得春日简直和小松先生一模一样……</p>
+
+<p class="label">H-H — 去掉「——」，用荧光笔替代前导符号</p>
+<p class="h-h">寺岛先生对春日有什么印象？</p>
+<p class="sample-dialogue"><span class="speaker">寺岛</span>：我觉得春日简直和小松先生一模一样……</p>
+
+<p class="note">H-B/H-C 最轻，不干扰阅读；H-A/H-D 强调感强；H-F 结合竖线效果层次丰富；H-G 线条感最小清新。</p>
+
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>正文内强调样式预览</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600&display=swap');
+
+  body {
+    font-family: 'Noto Serif SC', serif;
+    background: #fafaf9;
+    color: #44403c;
+    max-width: 580px;
+    margin: 40px auto;
+    padding: 0 24px;
+    line-height: 1.9;
+    font-size: 15.5px;
+  }
+
+  h1 {
+    font-size: 13px;
+    font-weight: 400;
+    color: #a8a29e;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 36px;
+    text-align: center;
+  }
+
+  .label {
+    font-size: 11px;
+    font-family: sans-serif;
+    color: #a8a29e;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin: 36px 0 12px;
+    border-top: 1px solid #e7e5e4;
+    padding-top: 20px;
+  }
+
+  p { margin: 0 0 18px; }
+
+  /* ========== 正文流内强调 ========== */
+
+  /* 方式1: 加粗 + 左侧竖线（最接近加粗，但有视觉锚点） */
+  .em-a {
+    font-weight: 600;
+    padding-left: 6px;
+    border-left: 2px solid #d6d3d1;
+    margin-left: 1px;
+  }
+
+  /* 方式2: 浅色背景高亮（像荧光笔） */
+  .em-b {
+    background: #faf8f5;
+    padding: 0 2px;
+    border-radius: 2px;
+  }
+
+  /* 方式3: 斜体 + 细下划线（双层信号：语气 + 标记） */
+  .em-c {
+    font-style: italic;
+    text-decoration: underline;
+    text-decoration-color: #d6d3d1;
+    text-underline-offset: 3px;
+  }
+
+  /* 方式4: 段落左边竖线（整段突出，不打乱阅读节奏） */
+  .para-a {
+    border-left: 2px solid #d6d3d1;
+    padding-left: 18px;
+    margin-left: -18px;
+  }
+
+  /* 方式5: 段落左边竖线 + 背景（最强强调） */
+  .para-b {
+    background: #f9f8f6;
+    border-left: 3px solid #c7c2bc;
+    padding: 10px 16px 10px 20px;
+    margin: 4px 0;
+    border-radius: 0 2px 2px 0;
+  }
+
+  /* 方式6: 行内小标签 + 文字 */
+  .em-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-family: sans-serif;
+    color: #a8a29e;
+    background: #f0ede8;
+    padding: 0 5px;
+    border-radius: 2px;
+    vertical-align: middle;
+    margin-right: 4px;
+    letter-spacing: 0.5px;
+  }
+
+  .note {
+    font-size: 11px;
+    color: #a8a29e;
+    margin-top: 20px;
+    font-family: sans-serif;
+  }
+</style>
+</head>
+<body>
+
+<h1>正文内强调样式</h1>
+
+<p>正文示例。寺岛惇太在谈到角色时，说出了这样一段话，正文在这里自然流动着，没有任何断裂。</p>
+
+<p class="label">方式 1 — 加粗 + 左侧竖线</p>
+<p>寺岛先生对您所饰演的环野摇有着怎样的印象呢？寺岛认为他<span class="em-a">情绪很容易变化，有时会心情差到咂嘴</span>，但一看到甜食或者猫咪，又会立刻变得开心起来。</p>
+
+<p class="label">方式 2 — 荧光笔背景</p>
+<p>关于摇和春日两人的关系，寺岛觉得他们是因为共同喜欢猫而产生交集的，小松则认为<span class="em-b">春日是不擅长那些无谓的客套和伪装的类型</span>，两人在一起时会觉得很轻松。</p>
+
+<p class="label">方式 3 — 斜体 + 下划线</p>
+<p>小松在聊到角色的塑造时，提到了自己对春日这一角色的理解，他<span class="em-c">将春日设定为平时很邋遢，但在直播时会切换状态</span>的形象。</p>
+
+<p class="label">方式 4 — 段落左侧竖线</p>
+<p>寺岛在回答问题时，给出了一段非常具体的描述：</p>
+<p class="para-a">我觉得摇很棒的一点是，即使自己心情变差了，他也能体谅到对方的感受。虽然由于自己情绪不好导致现场气氛变得很尴尬，但他会好好地向对方解释"这不是你的错"。我觉得能做到这一点非常成熟。他是在用自己的方式来调节、消解情绪。</p>
+<p>这段话被自然地框了出来，但不影响上下文的阅读。</p>
+
+<p class="label">方式 5 — 段落左侧竖线 + 浅背景</p>
+<p>在另一个问题中，寺岛也谈到了自己的理解：</p>
+<p class="para-b">我之前也以为摇是个很难搞的家伙，但通过各种活动剧情，每次看到他不同的一面，就觉得他其实是个很可爱的孩子。</p>
+<p>这里的强调感更强，适合需要读者特别留意的核心观点。</p>
+
+<p class="label">方式 6 — 行内小标签（可标注角色/语气）</p>
+<p><span class="em-tag">寺岛</span>反过来说，他们两个人呆在一起的时候，对话几乎没什么进展。因为两个人都不是那种会主动张罗事情的性格。</p>
+<p><span class="em-tag">小松</span>我觉得春日只是对自己认为"无所谓"的事情表现得有些敷衍罢了。</p>
+
+<p class="note">方式 4 和 5 也可以和方式 6 结合，在段落左侧竖线旁加上角色标签，兼具块级强调和角色指认。</p>
+
+</body>
+</html>
