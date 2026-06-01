@@ -2,55 +2,24 @@
 const { cnSlug, jpSlug } = Astro.props;
 ---
 
-<div class="lang-switcher fixed bottom-6 right-6 z-50 flex gap-2" id="lang-switcher">
-  <a
-    href={cnSlug}
-    class="px-3 py-1.5 text-xs text-stone-500 border border-stone-200 rounded-sm bg-white/80 backdrop-blur hover:border-stone-400 hover:text-stone-700 transition-all"
-  >
-    中文
-  </a>
-  <a
-    href={jpSlug}
-    class="px-3 py-1.5 text-xs text-stone-500 border border-stone-200 rounded-sm bg-white/80 backdrop-blur hover:border-stone-400 hover:text-stone-700 transition-all"
-  >
-    原文
-  </a>
+<div class="lang-switcher" id="lang-switcher">
+  <a href={cnSlug}>中文</a>
+  <a href={jpSlug}>原文</a>
 </div>
 
-<script>
-  let ticking = false;
-  let lastScroll = 0;
-  const el = document.getElementById('lang-switcher');
-  if (el) {
-    document.addEventListener('scroll', () => {
-      lastScroll = window.scrollY;
+<script is:inline>
+  (function() {
+    var el = document.getElementById('lang-switcher');
+    if (!el) return;
+    var ticking = false;
+    document.addEventListener('scroll', function() {
       if (!ticking) {
-        requestAnimationFrame(() => {
-          el.classList.toggle('is-scrolled', lastScroll > 80);
+        requestAnimationFrame(function() {
+          el.classList.toggle('is-scrolled', window.scrollY > 80);
           ticking = false;
         });
         ticking = true;
       }
     }, { passive: true });
-  }
+  })();
 </script>
-
-<style>
-  .lang-switcher {
-    transition: opacity 0.3s, transform 0.3s;
-  }
-  .lang-switcher:not(.is-scrolled) {
-    opacity: 0;
-    transform: translateY(12px);
-    pointer-events: none;
-  }
-  .lang-switcher a {
-    display: inline-flex;
-    align-items: center;
-    text-decoration: none;
-    backdrop-filter: blur(4px);
-  }
-  .lang-switcher a:hover {
-    text-decoration: none;
-  }
-</style>
