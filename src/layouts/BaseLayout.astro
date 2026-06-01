@@ -23,10 +23,15 @@ const siteTitle = 'Magazine';
     <title>{title} — {siteTitle}</title>
   </head>
   <body class="min-h-screen flex flex-col">
-    <header class="py-8 px-4 text-center">
+    <header class="py-8 px-4 text-center relative">
       <a href="/" class="text-xs tracking-[0.3em] text-stone-400 no-underline hover:text-stone-600 transition-colors uppercase">
         {siteTitle}
       </a>
+      <nav class="absolute right-4 top-1/2 -translate-y-1/2 hidden sm:block">
+        <a href="/timeline/" class="text-xs tracking-wider text-stone-300 no-underline hover:text-stone-500 transition-colors">
+          Timeline
+        </a>
+      </nav>
     </header>
 
     <main class="flex-1 w-full max-w-prose mx-auto px-4">

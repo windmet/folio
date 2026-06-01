@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  background-color: #fafafa;
+  overflow: hidden;
+  font-family: 'Noto Serif SC', 'Songti SC', 'SimSun', Georgia, 'Times New Roman', serif;
+  color: #333;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 视口：死死锁住 1080x1440 的相框 */
+#viewport {
+  width: 1080px;
+  height: 1440px;
+  overflow: hidden;
+  position: relative;
+  background-color: #fafafa;
+}
+
+/* 内容长卷：绝对定位，通过修改 left 来翻页 */
+#content-flow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 1280px;
+  margin-top: 0;
+  padding-top: 80px;
+  padding-left: 80px;
+  padding-right: 80px;
+  box-sizing: content-box;
+
+  column-width: 920px;
+  column-gap: 160px;
+  column-fill: auto;
+  orphans: 2;
+  widows: 2;
+
+  /* 拒绝 shrink-to-fit，强制按分栏展开 */
+  width: max-content;
+}
+
+/* 极限锁宽：任何子元素不得撑破 920px */
+#content-flow > * {
+  max-width: 920px !important;
+  overflow-wrap: break-word !important;
+  word-break: break-word !important;
+}
+
+/* ===== Typography ===== */
+h1 {
+  font-size: 46px;
+  font-weight: 700;
+  line-height: 1.5;
+  margin-bottom: 48px;
+  letter-spacing: 0.06em;
+  color: #1c1917;
+  break-inside: avoid;
+}
+
+h2 {
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1.5;
+  margin-bottom: 32px;
+  margin-top: 48px;
+  letter-spacing: 0.04em;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #ece9e6;
+  break-inside: avoid;
+}
+
+h3 {
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 1.6;
+  margin-bottom: 24px;
+  margin-top: 40px;
+  break-inside: avoid;
+}
+
+p {
+  font-size: 38px;
+  line-height: 1.9;
+  margin-bottom: 52px;
+  margin-top: 0;
+  word-break: break-word;
+  break-inside: auto;
+  orphans: 2;
+  widows: 2;
+}
+
+a {
+  color: #78716c;
+  text-decoration: none;
+  border-bottom: 1px solid #d6d3d1;
+}
+
+img {
+  max-width: 100%;
+  max-height: 780px;
+  object-fit: contain;
+  border-radius: 12px;
+  display: block;
+  margin: 24px auto;
+  break-inside: avoid;
+}
+
+blockquote {
+  border-left: 6px solid #d6d3d1;
+  background: #f9fafb;
+  padding: 28px 32px;
+  margin: 20px 0 52px 0;
+  border-radius: 0 6px 6px 0;
+  break-inside: avoid;
+}
+
+blockquote p {
+  margin-bottom: 0;
+  color: #666;
+  font-size: 34px;
+  line-height: 1.8;
+}
+
+/* ===== Tweet / Reply Thread ===== */
+.tweet-item {
+  box-sizing: border-box;
+  max-width: 920px !important;
+  margin-bottom: 0;
+  break-inside: avoid;
+}
+
+.tweet-item.main-tweet {
+  margin-top: 20px;
+  padding: 20px 0;
+}
+
+.tweet-item.reply-tweet {
+  padding: 16px 0 16px 32px;
+  margin-left: 16px;
+  border-left: 4px solid #e7e5e4;
+}
+
+.tweet-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.t-author {
+  font-weight: 700;
+  font-size: 32px;
+  color: #444;
+}
+
+.t-handle {
+  font-size: 28px;
+  color: #a8a29e;
+}
+
+.t-time {
+  font-size: 28px;
+  color: #bcb7b0;
+}
+
+.tweet-content {
+  font-size: 38px;
+  line-height: 1.9;
+  color: #333;
+}
+
+.tweet-content p {
+  margin: 0 0 8px 0;
+  font-size: inherit;
+}
+
+/* ===== QuoteTweet ===== */
+.quote-tweet {
+  border: 2px solid #e7e5e4;
+  border-radius: 16px;
+  padding: 24px;
+  margin: 16px 0;
+  background-color: #ffffff;
+  max-width: 100%;
+}
+
+.qt-header {
+  margin-bottom: 12px;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.qt-header .t-author { font-size: 28px; }
+.qt-header .t-handle { font-size: 24px; }
+.qt-header .t-time { font-size: 24px; }
+
+.qt-content {
+  font-size: 32px;
+  line-height: 1.8;
+  color: #444;
+}
+
+.qt-content p {
+  margin: 0 0 6px 0;
+  font-size: inherit;
+}
+
+.qt-content img,
+.tweet-content img {
+  max-width: 100%;
+  max-height: 500px;
+  width: auto;
+  height: auto;
+  border-radius: 16px;
+  margin-top: 14px;
+  display: block;
+  border: 1px solid #f0edeb;
+}
+
+/* ===== Annotation Block (MDX <Annotation>) ===== */
+.annotation-block {
+  margin: 1.25rem 0 52px 0;
+  padding: 0.75rem 1rem;
+  background: #fafaf9;
+  border: 1px solid #e7e5e4;
+  border-radius: 4px;
+  font-size: 30px;
+  line-height: 1.6;
+  color: #78716c;
+  break-inside: avoid;
+}
+
+/* ===== QuoteLine Block (MDX <QuoteLine>) ===== */
+.quoteline-block {
+  background: #f9f8f6;
+  border-left: 3px solid #c7c2bc;
+  padding: 20px 28px;
+  margin: 20px 0 52px 0;
+  border-radius: 0 4px 4px 0;
+  font-size: 38px;
+  line-height: 1.9;
+  color: #333;
+  break-inside: avoid;
+}
+
+/* ===== Question Block (MDX <Question>) ===== */
+.question-block {
+  background: rgba(168, 162, 158, 0.08);
+  padding: 20px 28px;
+  margin: 20px 0 52px 0;
+  border-radius: 4px;
+  color: #57534e;
+  font-size: 38px;
+  line-height: 1.9;
+  break-inside: avoid;
+}
+
+ul, ol {
+  padding-left: 48px;
+  margin-bottom: 52px;
+}
+
+li {
+  font-size: 38px;
+  line-height: 1.9;
+  margin-bottom: 8px;
+}
+
+code {
+  font-family: 'SF Mono', 'Cascadia Code', 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  font-size: 30px;
+  background: #f5f4f2;
+  padding: 2px 10px;
+  border-radius: 4px;
+  color: #444;
+}
+
+pre {
+  background: #f5f4f2;
+  border: 1px solid #e7e5e4;
+  border-radius: 8px;
+  padding: 24px 28px;
+  margin: 20px 0 52px 0;
+  overflow-x: auto;
+  break-inside: avoid;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  font-size: 28px;
+  line-height: 1.7;
+  display: block;
+}
+
+hr {
+  border: none;
+  border-top: 2px solid #e7e5e4;
+  margin: 40px 0;
+}
+
+strong {
+  font-weight: 600;
+  color: #292524;
+  break-inside: avoid;
+}
+
+em {
+  font-style: italic;
+  color: #57534e;
+}
+
+strong.speaker {
+  font-weight: 700;
+  color: #1c1917;
+  letter-spacing: 0.05em;
+  background: linear-gradient(180deg, transparent 55%, rgba(168, 162, 158, 0.25) 55%);
+  padding: 0 4px;
+  margin-right: 2px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0 52px 0;
+  font-size: 30px;
+  break-inside: avoid;
+}
+
+th, td {
+  border: 1px solid #e7e5e4;
+  padding: 14px 18px;
+  text-align: left;
+  line-height: 1.7;
+}
+
+th {
+  background: #f5f4f2;
+  font-weight: 600;
+  color: #444;
+}
+</style>
+</head>
+<body>
+  <div id="viewport">
+    <div id="content-flow">{{CONTENT}}</div>
+  </div>
+</body>
+</html>

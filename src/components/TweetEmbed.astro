@@ -1,0 +1,65 @@
+---
+export interface Props {
+  url: string;
+  title?: string;
+}
+
+const { url, title } = Astro.props;
+const handle = url.match(/x\.com\/(\w+)/)?.[1] || '';
+---
+
+<div class="tweet-embed">
+  <div class="tweet-header">
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+    </svg>
+    <span class="tweet-handle">@{handle}</span>
+  </div>
+  {title && <p class="tweet-text">{title}</p>}
+  <a href={url} class="tweet-link" target="_blank" rel="noopener noreferrer">
+    X で開く →
+  </a>
+</div>
+
+<style>
+  .tweet-embed {
+    background: #fafaf9;
+    border: 1px solid #e7e5e4;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 20px 0;
+    max-width: 100%;
+  }
+
+  .tweet-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+    color: #57534e;
+  }
+
+  .tweet-handle {
+    font-size: 13px;
+    color: #a8a29e;
+  }
+
+  .tweet-text {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #444;
+    margin: 0 0 10px 0;
+  }
+
+  .tweet-link {
+    font-size: 12px;
+    color: #a8a29e;
+    text-decoration: none;
+    border-bottom: 1px solid #e7e5e4;
+  }
+
+  .tweet-link:hover {
+    color: #57534e;
+    border-color: #a8a29e;
+  }
+</style>

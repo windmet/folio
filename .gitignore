@@ -24,5 +24,8 @@ tina/__generated__/
 # macOS-specific files
 .DS_Store
 
+# private design docs
+docs/requirements/
+
 # jetbrains setting folder
 .idea/

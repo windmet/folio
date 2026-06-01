@@ -1,0 +1,45 @@
+---
+import TimelineItem from './TimelineItem.astro';
+import type { CollectionEntry } from 'astro:content';
+
+export interface Props {
+  items: CollectionEntry<'timeline'>[];
+}
+
+const { items } = Astro.props;
+---
+
+{
+  items.length > 0 ? (
+    <div class="timeline">
+      {items.map((item) => (
+        <TimelineItem
+          date={item.data.date}
+          type={item.data.type}
+          title={item.data.title}
+          jp={item.data.jp}
+          url={item.data.url}
+        >
+          <p>{item.data.content}</p>
+        </TimelineItem>
+      ))}
+    </div>
+  ) : (
+    <p class="timeline-empty">暂无时间线条目。</p>
+  )
+}
+
+<style>
+  .timeline {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px 0;
+  }
+
+  .timeline-empty {
+    text-align: center;
+    color: #a8a29e;
+    font-size: 14px;
+    padding: 60px 0;
+  }
+</style>

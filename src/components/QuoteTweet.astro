@@ -1,0 +1,60 @@
+---
+export interface Props {
+  author: string;
+  handle: string;
+  time?: string;
+}
+
+const { author, handle, time } = Astro.props;
+---
+
+<div class="quote-tweet">
+  <div class="qt-header">
+    <span class="t-author">{author}</span>
+    <span class="t-handle">@{handle}</span>
+    {time && <span class="t-time">· {time}</span>}
+  </div>
+  <div class="qt-content">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .quote-tweet {
+    border: 2px solid #e7e5e4;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 16px 0;
+    background-color: #ffffff;
+  }
+
+  .qt-header {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .qt-content {
+    font-size: 13px;
+    line-height: 1.8;
+    color: #444;
+  }
+
+  .qt-content :global(p) {
+    margin: 0 0 6px 0;
+    font-size: inherit;
+  }
+
+  .qt-content :global(img) {
+    max-width: 100%;
+    max-height: 400px;
+    width: auto;
+    height: auto;
+    border-radius: 12px;
+    margin-top: 12px;
+    display: block;
+    border: 1px solid #f0edeb;
+  }
+</style>

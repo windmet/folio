@@ -1,0 +1,63 @@
+---
+export interface Props {
+  author: string;
+  handle: string;
+  time?: string;
+}
+
+const { author, handle, time } = Astro.props;
+---
+
+<div class="tweet-item main-tweet">
+  <div class="tweet-header">
+    <span class="t-author">{author}</span>
+    <span class="t-handle">@{handle}</span>
+    {time && <span class="t-time">· {time}</span>}
+  </div>
+  <div class="tweet-content">
+    <slot />
+  </div>
+</div>
+
+<style>
+  .tweet-item {
+    margin: 28px 0 0 0;
+    padding: 16px 0;
+    break-inside: avoid;
+  }
+
+  .tweet-header {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .t-author {
+    font-weight: 700;
+    font-size: 14px;
+    color: #444;
+  }
+
+  .t-handle {
+    font-size: 12px;
+    color: #a8a29e;
+  }
+
+  .t-time {
+    font-size: 12px;
+    color: #c7c2bc;
+  }
+
+  .tweet-content {
+    font-size: 14px;
+    line-height: 1.9;
+    color: #333;
+  }
+
+  .tweet-content :global(p) {
+    margin: 0 0 6px 0;
+    font-size: inherit;
+  }
+</style>

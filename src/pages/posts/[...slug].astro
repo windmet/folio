@@ -6,6 +6,11 @@ import LangSwitcher from '../../components/LangSwitcher.astro';
 import QuoteLine from '../../components/QuoteLine.astro';
 import Question from '../../components/Question.astro';
 import Annotation from '../../components/Annotation.astro';
+import TweetEmbed from '../../components/TweetEmbed.astro';
+import YouTubeEmbed from '../../components/YouTubeEmbed.astro';
+import Tweet from '../../components/Tweet.astro';
+import Reply from '../../components/Reply.astro';
+import QuoteTweet from '../../components/QuoteTweet.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -41,7 +46,7 @@ const jpSlug = isJP ? `/posts/${slug}/` : `/posts/${slug.slice(0, -3)}/`;
 
   {post.data.heroImage && <HeroImage src={post.data.heroImage} alt={post.data.title} />}
 
-  <Content components={{ QuoteLine, Question, Annotation }} />
+  <Content components={{ QuoteLine, Question, Annotation, TweetEmbed, YouTubeEmbed, Tweet, Reply, QuoteTweet }} />
 
   <Giscus />
 
