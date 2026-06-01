@@ -52,3 +52,11 @@ const jpSlug = isJP ? `/posts/${slug}/` : `/posts/${slug.slice(0, -3)}/`;
 
   <LangSwitcher cnSlug={cnSlug} jpSlug={jpSlug} />
 </BaseLayout>
+
+<script>
+  document.addEventListener('click', (e) => {
+    const img = e.target.closest('.tweet-content img, .qt-content img');
+    if (img) img.classList.toggle('is-expanded');
+  });
+</script>
+

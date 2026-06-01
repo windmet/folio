@@ -74,7 +74,8 @@ mdBody = mdBody
     /<QuoteTweet\s+author="([^"]+)"\s+handle="([^"]+)"(?:\s+time="([^"]*)")?>([\s\S]*?)<\/QuoteTweet>/g,
     (_, author, handle, time, content) => {
       const timeHtml = time ? `<span class="t-time">· ${time}</span>` : '';
-      return `<div class="quote-tweet"><div class="qt-header"><span class="t-author">${author}</span><span class="t-handle">@${handle}</span>${timeHtml}</div><div class="qt-content">${content.trim()}</div></div>`;
+      const icon = '<svg class="qt-icon" viewBox="0 0 24 24" width="28" height="28" fill="#536471"><g><path d="M4.5 3.88l4.432 4.43-1.414 1.414L4.5 6.71v10.5c0 1.24 1.01 2.25 2.25 2.25h10.5v2H6.75C4.13 21.46 2 19.33 2 16.71V6.71L.982 7.724.432 6.31 4.5 3.88zM17.25 2.54c2.62 0 4.75 2.13 4.75 4.75v10l1.018-1.014 1.414 1.414-4.068 4.43-4.432-4.43 1.414-1.414 3.018 3.01V7.29c0-1.24-1.01-2.25-2.25-2.25H6.75v-2h10.5z"></path></g></svg>';
+      return `<div class="quote-tweet"><div class="qt-header">${icon}<span class="t-author">${author}</span><span class="t-handle">@${handle}</span>${timeHtml}</div><div class="qt-content">${content.trim()}</div></div>`;
     }
   )
   // 1. Block-level: Tweet/Reply (NOT self-closing — content inside)

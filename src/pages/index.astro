@@ -9,7 +9,9 @@ const folders = [
   {
     id: 'interview',
     color: '#f0fdf4',
+    tabColor: '#d9f5e0',
     borderColor: '#d9f5e0',
+    activeColor: '#6b9b7a',
     tab: 'Interview',
     title: '杂志采访烤肉',
     desc: '长篇对谈与杂志翻译存档',
@@ -20,7 +22,9 @@ const folders = [
   {
     id: 'archive',
     color: '#fdf8f0',
+    tabColor: '#f0e8d9',
     borderColor: '#f0e8d9',
+    activeColor: '#b8956a',
     tab: 'Archive',
     title: '博文考古整理',
     desc: '早年推文考据与历史记录',
@@ -31,7 +35,9 @@ const folders = [
   {
     id: 'radio',
     color: '#f0f7fd',
+    tabColor: '#d9e8f5',
     borderColor: '#d9e8f5',
+    activeColor: '#6a8fad',
     tab: 'Radio',
     title: '电台内容存档',
     desc: '广播节目音声与放送回忆',
@@ -42,7 +48,9 @@ const folders = [
   {
     id: 'note',
     color: '#f8f0fd',
+    tabColor: '#e8d9f5',
     borderColor: '#e8d9f5',
+    activeColor: '#9a7aaf',
     tab: 'Note',
     title: '博主的碎碎念',
     desc: '个人杂谈与随性记录',
@@ -72,8 +80,8 @@ const icons: Record<string, string> = {
     {folders.map((f) => {
       const count = posts.filter(p => f.match(p.id)).length;
       return (
-        <a href={`#${f.id}`} class="folder-card" data-category={f.id} style={`--card-bg: ${f.color}; --card-border: ${f.borderColor};`}>
-          <div class="folder-tab" style={`background: ${f.color}; border-color: ${f.borderColor};`}>
+        <a href={`#${f.id}`} class="folder-card" data-category={f.id} style={`--card-bg: ${f.color}; --card-border: ${f.borderColor}; --tab-bg: ${f.tabColor}; --active-border: ${f.activeColor};`}>
+          <div class="folder-tab" style={`background: var(--tab-bg); border-color: ${f.borderColor};`}>
             <span class="folder-tab-text">{f.tab}</span>
           </div>
           <div class="folder-body" style={`background: ${f.color}; border-color: ${f.borderColor};`}>
@@ -210,7 +218,7 @@ const icons: Record<string, string> = {
   }
 
   .folder-card.active .folder-body {
-    box-shadow: 0 0 0 1.5px currentColor;
+    box-shadow: 0 0 0 1.5px color-mix(in srgb, var(--active-border, #c7c2bc) 75%, transparent);
   }
 
   .folder-tab {
@@ -230,7 +238,7 @@ const icons: Record<string, string> = {
   .folder-tab-text {
     font-size: 11px;
     font-weight: 600;
-    color: #888;
+    color: #5c5c5c;
     letter-spacing: 0.1em;
   }
 
