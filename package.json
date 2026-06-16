@@ -9,13 +9,16 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
+    "preview": "npm run build && wrangler dev",
     "tina:dev": "tinacms dev -c \"npx astro dev --host 0.0.0.0\" --noTelemetry",
     "tina:host": "tinacms build --local --skip-cloud-checks && npx astro dev --host 0.0.0.0",
     "tina:build": "tinacms build --local --skip-cloud-checks",
-    "astro": "astro"
+    "astro": "astro",
+    "generate-types": "wrangler types",
+    "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^13.6.0",
     "@astrojs/mdx": "^6.0.0",
     "@tailwindcss/typography": "^0.5.0",
     "@tinacms/cli": "^2.4.1",
@@ -24,5 +27,11 @@
     "postcss": "^8.4.0",
     "tailwindcss": "^3.4.0",
     "tinacms": "^3.8.3"
+  },
+  "devDependencies": {
+    "wrangler": "^4.95.0"
+  },
+  "overrides": {
+    "vite": "^7"
   }
 }
