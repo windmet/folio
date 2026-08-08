@@ -2,9 +2,13 @@
 export interface Props {
   people: any[];
   eventsByPerson: Map<string, any[]>;
+  tracksById: Map<string, any>;
+  threadsByEvent: Map<string, string[]>;
+  defaultTrackId: string;
 }
 
-const { people, eventsByPerson } = Astro.props;
+const { people, eventsByPerson, tracksById, threadsByEvent, defaultTrackId } = Astro.props;
+const referenceId = (reference: any) => reference.id;
 const formatTime = (milliseconds: number) => {
   const total = Math.floor(milliseconds / 1000);
   const hours = Math.floor(total / 3600);
@@ -31,8 +35,17 @@ const formatTime = (milliseconds: number) => {
         <h3>本切片相关节点</h3>
         <div class="person-events">
           {(eventsByPerson.get(person.id) || []).map((event) => (
-            <button type="button" data-person-event-id={event.id.split('/').at(-1)}>
-              <time>{formatTime(event.data.startMs)}</time>
+            <button
+              type="button"
+              data-person-event-id={event.id.split('/').at(-1)}
+              data-person-thread={referenceId(event.data.track) === defaultTrackId
+                ? undefined
+                : (threadsByEvent.get(event.id) || [])[0]}
+            >
+              <span class="person-event-clock">
+                <b>{tracksById.get(referenceId(event.data.track))?.data.shortLabel || '—'}</b>
+                <time>{formatTime(event.data.startMs)}</time>
+              </span>
               <span>{event.data.title}</span>
             </button>
           ))}

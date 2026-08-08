@@ -1009,7 +1009,7 @@ project-archive-shell {
   width: 100%;
   padding: 13px 4px;
   display: grid;
-  grid-template-columns: 72px 1fr;
+  grid-template-columns: 88px 1fr;
   gap: 10px;
   border: 0;
   border-bottom: 1px solid var(--archive-line);
@@ -1017,6 +1017,19 @@ project-archive-shell {
   background: transparent;
   text-align: left;
   cursor: pointer;
+}
+
+.person-event-clock {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.person-event-clock b {
+  color: var(--archive-muted);
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 8px;
+  letter-spacing: 0.08em;
 }
 
 .person-events time {

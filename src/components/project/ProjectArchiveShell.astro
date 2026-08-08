@@ -166,7 +166,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         <div class="view-heading">
           <span class="archive-kicker">CHRONOLOGICAL CANON · YT NATIVE CLOCK</span>
           <h2>Timeline</h2>
-          <p>八个 Act 是编辑导航草案；时间点属于 YouTube 本地时钟，不与 Space 伪同步。跨平台节点请从 Storylines 进入。</p>
+          <p>八个 Act 已完成编辑边界复核；时间点属于 YouTube 本地时钟，不与 Space 伪同步。跨平台节点请从 Storylines 进入。</p>
         </div>
         {orderedActs.map((act) => (
           <ActSection act={act} events={eventsForAct(act.id)} peopleById={peopleById} threadsByEvent={threadsByEvent} />
@@ -229,7 +229,13 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
   </div>
 
   <ThreadPanel threads={threadViews} />
-  <PersonPopover people={orderedPeople} eventsByPerson={eventsByPerson} />
+  <PersonPopover
+    people={orderedPeople}
+    eventsByPerson={eventsByPerson}
+    tracksById={tracksById}
+    threadsByEvent={threadsByEvent}
+    defaultTrackId={defaultTrack.id}
+  />
   <script type="application/json" data-archive-controller-data set:html={serializedControllerData}></script>
 </project-archive-shell>
 
@@ -319,9 +325,19 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       });
       this.querySelectorAll<HTMLElement>('[data-person-event-id]').forEach((button) => {
         button.addEventListener('click', () => {
+          const eventId = button.dataset.personEventId || '';
+          const event = this.data.events[eventId];
+          if (!event) return;
           this.closePerson(false);
-          this.showView('timeline', false);
-          this.selectEvent(button.dataset.personEventId || '', true, true);
+          if (event.trackId === this.data.defaultTrackId) {
+            this.showView('timeline', false);
+          } else {
+            this.showView('storylines', false);
+            const threadId = button.dataset.personThread;
+            if (threadId) this.openThread(threadId, null, false);
+          }
+          this.selectEvent(eventId, false, true);
+          this.updateUrl();
         });
       });
       this.querySelectorAll<HTMLElement>('[data-open-thread]').forEach((button) => {

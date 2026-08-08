@@ -98,7 +98,7 @@ Event 另有 `narrativeMode: threaded | timeline-only`。默认 `threaded` 表�
 
 其余产品判断仍需保留以下限定：
 
-- “8 个 Act”是合理的首版编辑草案，不是资料中已经封板的数据；其中 03:45–03:54 的 Space 往返还需决定归入 Act 6、Act 7，或作为 interlude；
+- “8 个 Act”最初只是建议稿；现已按 canonical 换场点完成编辑复核并标记为 `confirmed`。03:45–03:54 的 Space 往返归入 Act 6，03:53:50 的 Bingo 返礼入口开始 Act 7；
 - 文本先称“三个阅读 Mode”，随后列出五个标签。本文统一称为“五个视图”，其中 Timeline 是默认主视图；
 - 04:14 后的“歌唱轨 / Super Chat / 桌边插话轨”是同一主视频中重叠发生的叙事声部，并非三个可独立播放或静音的音频轨；UI 必须叫 `lane` 或“声部”，不能伪装成真正多轨混音器；
 - TimelineJS 的设计经验可以参考，但本项目不需要引入 TimelineJS。现有复古文库视觉、回链需求和播放器联动更适合自有 Astro 组件；
@@ -736,14 +736,14 @@ Tina 集成作为后续独立任务，只管理 Project 摘要、精选顺序等
 
 | 风险 / 决策 | 当前判断 | 处理方式 |
 |---|---|---|
-| 主 YouTube 可嵌入性 | 当前未在本轮获得成功的页面级确认 | Phase 0B 实测；始终保留外链 fallback |
+| 主 YouTube 可嵌入性 | 已通过真实路由载入、seek、连续播放与跨 Event 说明联动 | 始终保留带当前 Event 时间参数的外链 fallback |
 | Space 媒体公开托管 | v1 决定不重托管 | 使用两条 X status 原来源外链；不把本地 MP4 发进站点，不伪装 seek 能力 |
 | 360°播放 | 普通 `<video>` 不足；YouTube 移动端支持也有限 | 使用 YouTube 原生能力，Folio v1 不承诺自行控制视角 |
 | karaoke 版权 | 公开切片/自托管风险高于文字索引 | 首版只链接原来源时间，不另行分发歌曲媒体 |
 | Chat 隐私 | 含 author ID、昵称、付费信息 | 默认不公开原始记录 |
 | 完整 Transcript 公开权与质量 | 五小时逐字再发布不同于摘要/短引文；ASR 也不是真值 | 每 Track 明确 `transcriptPolicy`，不自动公开或合并 |
 | Tina 大规模编辑 | 技术可接，但体验和引用完整性未证实 | 不作为 Phase 1 前置条件 |
-| 8 Act 边界 | 当前是编辑草案 | 迁移前人工复核 |
+| 8 Act 边界 | 已完成编辑复核并标记 `confirmed` | validator 保证无缝覆盖；迁移台账记录 03:12:58 边界修正 |
 | ARC 数量变化 | canonical r1 当前 16，未来可能增删 | source manifest 记录语义计数；用户侧不把编号当阅读顺序 |
 | SEO | 全站当前 `noindex` | 与内容公开性、版权决策一起单独处理 |
 
