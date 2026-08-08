@@ -1,0 +1,14 @@
+{
+  "project": "komatsu36",
+  "track": "komatsu36/yt-main",
+  "act": "komatsu36/act-03",
+  "startMs": 6134000,
+  "endMs": 6175000,
+  "timingStatus": "exact",
+  "title": "实物到场：只有一颗加入 wasabi",
+  "summary": "现场确认所有章鱼烧中只有一颗加入芥末；如果最后剩下的恰好是它，发起人狩野负责吃。",
+  "people": ["komatsu36/kano-sho", "komatsu36/hama-kento"],
+  "tags": ["俄罗斯章鱼烧", "规则"],
+  "publicationStatus": "verified",
+  "laneAnnotations": []
+}

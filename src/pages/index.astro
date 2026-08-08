@@ -4,6 +4,13 @@ import { getCollection } from 'astro:content';
 
 const posts = await getCollection('posts');
 const sortedPosts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const projects = (await getCollection('projects'))
+  .filter((project) => project.data.status === 'published')
+  .sort((a, b) => a.data.title.localeCompare(b.data.title, 'zh-CN'));
+const projectTracks = await getCollection('projectTracks');
+const projectEvents = await getCollection('projectEvents');
+const projectThreads = await getCollection('projectThreads');
+const referenceId = (reference: any) => reference.id;
 
 const folders = [
   {
@@ -75,6 +82,40 @@ const icons: Record<string, string> = {
     <h1 class="index-title">资料室</h1>
     <p class="index-subtitle">冷门同好熟肉存档站 · 翻阅馆藏</p>
   </div>
+
+  {projects.length > 0 && (
+    <section class="project-shelf" aria-labelledby="project-shelf-title">
+      <div class="project-shelf-heading">
+        <h2 id="project-shelf-title">专题档案</h2>
+        <span>PROJECT ARCHIVE</span>
+      </div>
+      {projects.map((project) => {
+        const tracks = projectTracks.filter((track) => referenceId(track.data.project) === project.id).length;
+        const events = projectEvents.filter((event) =>
+          referenceId(event.data.project) === project.id && event.data.publicationStatus !== 'withheld').length;
+        const threads = projectThreads.filter((thread) => referenceId(thread.data.project) === project.id).length;
+        return (
+          <a href={`/projects/${project.data.slug}/`} class="project-folder">
+            <span class="project-folder-tab">Project</span>
+            <div class="project-folder-body">
+              <div class="project-folder-main">
+                <span class="project-folder-kicker">持续整理中 · MULTI-TRACK EVENT</span>
+                <h3>{project.data.title}</h3>
+                <p>{project.data.summary}</p>
+              </div>
+              <div class="project-folder-meta" aria-label="专题内容统计">
+                <strong>{events}</strong><span>EVENTS</span>
+                <strong>{threads}</strong><span>THREADS</span>
+                <strong>{tracks}</strong><span>TRACKS</span>
+              </div>
+              <span class="project-folder-enter">进入专题档案 →</span>
+              {project.data.mark && <span class="project-folder-mark" aria-hidden="true">{project.data.mark}</span>}
+            </div>
+          </a>
+        );
+      })}
+    </section>
+  )}
 
   <div class="folder-grid">
     {folders.map((f) => {
@@ -198,6 +239,161 @@ const icons: Record<string, string> = {
     max-width: 900px;
     margin: 0 auto;
     padding: 0 20px 60px;
+  }
+
+  .project-shelf {
+    max-width: 900px;
+    margin: 0 auto 50px;
+    padding: 0 20px;
+  }
+
+  .project-shelf-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee8e2;
+  }
+
+  .project-shelf-heading h2 {
+    margin: 0;
+    color: #77716b;
+    font-family: 'Noto Serif SC', 'Noto Serif JP', Georgia, serif;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+  }
+
+  .project-shelf-heading span {
+    color: #c2b8ae;
+    font-family: 'SF Mono', Consolas, monospace;
+    font-size: 9px;
+    letter-spacing: 0.16em;
+  }
+
+  .project-folder {
+    position: relative;
+    display: block;
+    color: #393631;
+    text-decoration: none;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+
+  .project-folder:hover {
+    transform: translateY(-5px);
+  }
+
+  .project-folder:focus-visible {
+    outline: 2px solid #9c615b;
+    outline-offset: 5px;
+  }
+
+  .project-folder-tab {
+    position: absolute;
+    top: -24px;
+    left: 0;
+    z-index: 1;
+    height: 24px;
+    padding: 0 18px;
+    border: 1px solid #ead8d2;
+    border-bottom: 0;
+    border-radius: 10px 10px 0 0;
+    background: #ead8d2;
+    color: #76504c;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    line-height: 24px;
+  }
+
+  .project-folder-body {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 22px 40px;
+    min-height: 170px;
+    padding: 30px;
+    overflow: hidden;
+    border: 1px solid #ead8d2;
+    border-radius: 0 16px 16px 16px;
+    background:
+      linear-gradient(90deg, transparent 0 74%, rgba(156, 67, 60, 0.04) 74%),
+      #fdf7f4;
+  }
+
+  .project-folder-mark {
+    position: absolute;
+    right: -18px;
+    bottom: -42px;
+    width: 140px;
+    height: 140px;
+    border: 1px solid rgba(156, 67, 60, 0.15);
+    border-radius: 50%;
+    color: rgba(156, 67, 60, 0.08);
+    font-family: Georgia, serif;
+    font-size: 64px;
+    line-height: 128px;
+    text-align: center;
+  }
+
+  .project-folder-main {
+    min-width: 0;
+  }
+
+  .project-folder-kicker {
+    color: #9c615b;
+    font-family: 'SF Mono', Consolas, monospace;
+    font-size: 9px;
+    letter-spacing: 0.13em;
+  }
+
+  .project-folder h3 {
+    margin: 9px 0 9px;
+    color: #4c4540;
+    font-family: 'Noto Serif SC', 'Noto Serif JP', Georgia, serif;
+    font-size: 21px;
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  .project-folder p {
+    max-width: 610px;
+    margin: 0;
+    color: #918780;
+    font-size: 12px;
+    line-height: 1.8;
+  }
+
+  .project-folder-meta {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: auto auto;
+    align-content: start;
+    gap: 2px 8px;
+    padding-right: 26px;
+    font-family: 'SF Mono', Consolas, monospace;
+  }
+
+  .project-folder-meta strong {
+    color: #9c615b;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: right;
+  }
+
+  .project-folder-meta span {
+    color: #b6aaa1;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+  }
+
+  .project-folder-enter {
+    grid-column: 1 / -1;
+    color: #9c615b;
+    font-size: 11px;
+    letter-spacing: 0.08em;
   }
 
   .folder-card {
@@ -347,6 +543,33 @@ const icons: Record<string, string> = {
   }
 
   @media (max-width: 640px) {
+    .project-shelf {
+      margin-bottom: 46px;
+    }
+    .project-folder-body {
+      display: block;
+      min-height: 0;
+      padding: 24px 22px;
+      background: #fdf7f4;
+    }
+    .project-folder h3 {
+      font-size: 18px;
+    }
+    .project-folder-meta {
+      grid-template-columns: repeat(3, auto 1fr);
+      gap: 2px 6px;
+      margin-top: 18px;
+      padding: 12px 0;
+      border-top: 1px solid #eee1dc;
+      border-bottom: 1px solid #eee1dc;
+    }
+    .project-folder-meta strong {
+      text-align: left;
+    }
+    .project-folder-enter {
+      display: block;
+      margin-top: 14px;
+    }
     .folder-grid {
       gap: 28px;
     }

@@ -1,0 +1,15 @@
+{
+  "project": "komatsu36",
+  "track": "komatsu36/yt-main",
+  "act": "komatsu36/act-04",
+  "startMs": 8620000,
+  "endMs": 8682000,
+  "timingStatus": "approximate",
+  "title": "熊谷说明自己看过《俺知》夜场",
+  "summary": "熊谷再次谈到刚高中毕业，并明确自己看过《俺知》夜场，为 Space 中以“トシピ”出现的观剧朋友关系提供主直播侧支持。",
+  "people": ["komatsu36/kumagai-toshiki"],
+  "tags": ["人物关系", "俺知", "跨轨互证"],
+  "publicationStatus": "verified",
+  "narrativeMode": "timeline-only",
+  "laneAnnotations": []
+}

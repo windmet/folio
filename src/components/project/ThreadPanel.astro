@@ -1,0 +1,50 @@
+---
+export interface Props {
+  threads: Array<{
+    entry: any;
+    Content: any;
+    nodes: Array<{ event: any; role: string; transition?: string; trackLabel: string }>;
+  }>;
+}
+
+const { threads } = Astro.props;
+const roleLabel: Record<string, string> = {
+  setup: 'SETUP',
+  development: 'DEVELOPMENT',
+  payoff: 'PAYOFF',
+};
+const formatTime = (milliseconds: number) => {
+  const total = Math.floor(milliseconds / 1000);
+  const hours = Math.floor(total / 3600);
+  const minutes = Math.floor((total % 3600) / 60);
+  const seconds = total % 60;
+  return [hours, minutes, seconds].map((part) => String(part).padStart(2, '0')).join(':');
+};
+---
+
+<div class="archive-overlay" data-thread-overlay hidden>
+  <button type="button" class="archive-overlay__backdrop" data-close-thread aria-label="关闭事件线"></button>
+  <aside class="thread-panel" data-thread-panel role="dialog" aria-modal="true" aria-label="完整事件线" tabindex="-1">
+    <button type="button" class="panel-close" data-close-thread aria-label="关闭事件线">×</button>
+    {threads.map(({ entry, Content, nodes }) => (
+      <article class="thread-detail" data-thread-detail={entry.id.split('/').at(-1)} hidden>
+        <span class="archive-kicker">STORY THREAD · {entry.data.category.replaceAll('-', ' ').toUpperCase()}</span>
+        <h2>{entry.data.title}</h2>
+        <p class="thread-deck">{entry.data.deck}</p>
+        <ol class="thread-nodes">
+          {nodes.map(({ event, role, transition, trackLabel }) => (
+            <li>
+              {transition && <p class="thread-transition">{transition}</p>}
+              <button type="button" data-thread-event-id={event.id.split('/').at(-1)}>
+                <span class:list={['thread-role', `thread-role--${role}`]}>{roleLabel[role]}</span>
+                <span class="thread-clock"><b>{trackLabel}</b><time>{formatTime(event.data.startMs)}</time></span>
+                <strong>{event.data.title}</strong>
+              </button>
+            </li>
+          ))}
+        </ol>
+        <div class="thread-prose"><Content /></div>
+      </article>
+    ))}
+  </aside>
+</div>

@@ -1,0 +1,15 @@
+{
+  "project": "komatsu36",
+  "track": "komatsu36/yt-main",
+  "act": "komatsu36/act-02",
+  "startMs": 5114000,
+  "endMs": 5160000,
+  "timingStatus": "approximate",
+  "title": "井上连续两年送出 THREE 系礼物",
+  "summary": "井上雄貴今年送来 THREE 的洗发水与护理用品，并提到去年送过同品牌唇部用品，把礼物变成连续年份的小线索。",
+  "people": ["komatsu36/inoue-yuki", "komatsu36/komatsu-shohei"],
+  "tags": ["生日礼物", "连续年份"],
+  "publicationStatus": "verified",
+  "narrativeMode": "timeline-only",
+  "laneAnnotations": []
+}

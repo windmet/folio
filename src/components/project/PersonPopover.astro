@@ -1,0 +1,43 @@
+---
+export interface Props {
+  people: any[];
+  eventsByPerson: Map<string, any[]>;
+}
+
+const { people, eventsByPerson } = Astro.props;
+const formatTime = (milliseconds: number) => {
+  const total = Math.floor(milliseconds / 1000);
+  const hours = Math.floor(total / 3600);
+  const minutes = Math.floor((total % 3600) / 60);
+  const seconds = total % 60;
+  return [hours, minutes, seconds].map((part) => String(part).padStart(2, '0')).join(':');
+};
+---
+
+<div class="archive-overlay" data-person-overlay hidden>
+  <button type="button" class="archive-overlay__backdrop" data-close-person aria-label="关闭人物资料"></button>
+  <aside class="person-panel" data-person-panel role="dialog" aria-modal="true" aria-label="人物资料" tabindex="-1">
+    <button type="button" class="panel-close" data-close-person aria-label="关闭人物资料">×</button>
+    {people.map((person) => (
+      <article class="person-detail" data-person-detail={person.id.split('/').at(-1)} hidden>
+        <span class="archive-kicker">PEOPLE INDEX</span>
+        <h2>{person.data.displayName}</h2>
+        {person.data.reading && <p class="person-reading">{person.data.reading}</p>}
+        <p class="person-role">{person.data.role}</p>
+        <p>{person.data.note}</p>
+        {person.data.aliases.length > 0 && (
+          <p class="person-aliases"><span>本场别名</span>{person.data.aliases.join(' · ')}</p>
+        )}
+        <h3>本切片相关节点</h3>
+        <div class="person-events">
+          {(eventsByPerson.get(person.id) || []).map((event) => (
+            <button type="button" data-person-event-id={event.id.split('/').at(-1)}>
+              <time>{formatTime(event.data.startMs)}</time>
+              <span>{event.data.title}</span>
+            </button>
+          ))}
+        </div>
+      </article>
+    ))}
+  </aside>
+</div>

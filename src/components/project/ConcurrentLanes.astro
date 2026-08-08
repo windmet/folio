@@ -1,0 +1,22 @@
+---
+export interface Props {
+  lanes: Array<{ lane: string; label: string }>;
+}
+
+const { lanes } = Astro.props;
+---
+
+{lanes.length > 0 && (
+  <aside class="concurrent-lanes" aria-label="同期轨道提示">
+    <span>CONCURRENT LANES</span>
+    <ul>
+      {lanes.map((lane) => (
+        <li>
+          <strong>{lane.lane}</strong>
+          <p>{lane.label}</p>
+        </li>
+      ))}
+    </ul>
+    <small>仅表示已确认的并发关系，不用于换算跨平台时间。</small>
+  </aside>
+)}

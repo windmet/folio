@@ -1,0 +1,42 @@
+---
+export interface Props {
+  trackId: string;
+  label: string;
+  videoId?: string;
+  fallbackUrl?: string;
+}
+
+const { trackId, label, videoId, fallbackUrl } = Astro.props;
+---
+
+<section class="archive-player" data-player data-track-id={trackId} data-video-id={videoId || ''}>
+  <div class="archive-player__head">
+    <div>
+      <span class="archive-kicker">CURRENT SOURCE</span>
+      <strong data-player-track-label>{label}</strong>
+    </div>
+    <span class="archive-clock" data-player-time>00:00:00</span>
+  </div>
+  <div class="archive-player__viewport" data-player-viewport>
+    {videoId ? (
+      <>
+        <img src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`} alt="" loading="eager" data-player-poster />
+        <button type="button" class="archive-player__load" data-load-player aria-label="载入 YouTube 播放器">
+          <span aria-hidden="true">▶</span>
+          <small>载入播放器</small>
+        </button>
+        <div class="archive-player__mount" data-player-mount></div>
+      </>
+    ) : (
+      <div class="archive-player__unavailable">此轨道目前没有公开播放源</div>
+    )}
+  </div>
+  <div class="archive-player__unavailable" data-player-unavailable hidden>此轨道目前没有公开播放源</div>
+  <p class="archive-player__current" data-player-current>选择时间节点开始定位</p>
+  {fallbackUrl && (
+    <a class="archive-player__fallback" href={fallbackUrl} target="_blank" rel="noopener noreferrer" data-player-fallback>
+      在 YouTube 打开当前时间 ↗
+    </a>
+  )}
+  <p class="archive-player__note">使用 YouTube 原生 360°能力；移动设备的视角支持取决于 YouTube 与设备。</p>
+</section>

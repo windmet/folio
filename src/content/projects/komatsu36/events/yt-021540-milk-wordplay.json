@@ -1,0 +1,16 @@
+{
+  "project": "komatsu36",
+  "track": "komatsu36/yt-main",
+  "act": "komatsu36/act-04",
+  "startMs": 8140000,
+  "endMs": 8310000,
+  "timingStatus": "approximate",
+  "title": "M!LK 点歌被继续改成饮酒口令",
+  "summary": "留守组把 M!LK 的歌继续改造成喝酒口令；汐谷唱歌时狩野又在旁边吃 pizza，让副节目进一步失控。",
+  "people": ["komatsu36/shioya-fumiyasu", "komatsu36/kano-sho"],
+  "tags": ["卡拉OK", "留守组", "饮酒梗"],
+  "publicationStatus": "qualified",
+  "qualification": "歌曲与改词事件可成立；“滅／メッツ”等短词音形仍低置信度，因此页面不发布逐字口令。",
+  "narrativeMode": "timeline-only",
+  "laneAnnotations": []
+}

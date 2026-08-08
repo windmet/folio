@@ -1,0 +1,15 @@
+{
+  "project": "komatsu36",
+  "track": "komatsu36/yt-main",
+  "act": "komatsu36/act-06",
+  "startMs": 12291000,
+  "endMs": 12427000,
+  "timingStatus": "exact",
+  "title": "伊藤投稿把沖田与以蔵叠到自己和小松",
+  "summary": "不在场的伊藤友紘通过投稿选择以蔵因沖田而改变的场面，并把角色关系与现实中的自己和小松重叠，说明稽古时看到会接近落泪。",
+  "people": ["komatsu36/ito-tomohiro", "komatsu36/komatsu-shohei"],
+  "tags": ["俺知名场面", "伊藤友紘", "投稿", "人物关系"],
+  "publicationStatus": "verified",
+  "narrativeMode": "timeline-only",
+  "laneAnnotations": []
+}

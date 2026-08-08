@@ -1,0 +1,36 @@
+{
+  "sourceSetId": "komatsu36-20260808-r1",
+  "files": {
+    "main": {
+      "path": "复核md/komatsu36_main(20260808-084256).md",
+      "sha256": "2289f8f608411469fff12ac11a710c898d56300cc2b412ccfce5b2c27ebdc0a8",
+      "lineCount": 2103
+    },
+    "arcs": {
+      "path": "复核md/komatsu36_arcs(10).md",
+      "sha256": "3cb19186b79a12bcbb2bda184afe009a8dc9e4a6757fbceed72eef9dc9e45df7",
+      "lineCount": 603,
+      "arcCount": 16
+    },
+    "space": {
+      "path": "复核md/komatsu36_space(20260808-085743).md",
+      "sha256": "486a070b370f97805d0bfe7c17324fe375515508ce5413f263815c131111b717",
+      "lineCount": 1741
+    },
+    "review": {
+      "path": "复核md/komatsu36_review_todo(10).md",
+      "sha256": "6f9cc8138b22ce08d5409e6dcd379f2a26a1986f9099343122cfaf8690bebd48",
+      "lineCount": 197
+    },
+    "externalAsrRaw": {
+      "path": "复核md/komatsu36_external_asr_raw(7).md",
+      "sha256": "58281b7c0af8064bf79cf047652edd326fecdb1636b98f5e588f2ce2645dbc65",
+      "lineCount": 6717
+    },
+    "processArchive": {
+      "path": "复核md/小松昌平生日会流程-所有对话存档.md",
+      "sha256": "0605df8ab3f7778da8a4f3d71ebdb6c0082c38582cd39c762fac6383cbbb703b",
+      "lineCount": 33368
+    }
+  }
+}

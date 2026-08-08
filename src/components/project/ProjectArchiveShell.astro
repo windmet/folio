@@ -1,0 +1,684 @@
+---
+import { render } from 'astro:content';
+import ArchivePlayer from './ArchivePlayer.astro';
+import ActSection from './ActSection.astro';
+import ThreadPanel from './ThreadPanel.astro';
+import PersonPopover from './PersonPopover.astro';
+import ProjectSearch from './ProjectSearch.astro';
+
+export interface Props {
+  project: any;
+  tracks: any[];
+  acts: any[];
+  events: any[];
+  threads: any[];
+  people: any[];
+}
+
+const { project, tracks, acts, events, threads, people } = Astro.props;
+const localId = (id: string) => id.split('/').at(-1) || id;
+const referenceId = (reference: any) => reference.id;
+const peopleById = new Map(people.map((person) => [person.id, person]));
+const eventsById = new Map(events.map((event) => [event.id, event]));
+const tracksById = new Map(tracks.map((track) => [track.id, track]));
+const threadsByEvent = new Map<string, string[]>();
+const eventsByPerson = new Map<string, any[]>();
+
+for (const thread of threads) {
+  for (const node of thread.data.nodes) {
+    const list = threadsByEvent.get(referenceId(node.event)) || [];
+    list.push(localId(thread.id));
+    threadsByEvent.set(referenceId(node.event), list);
+  }
+}
+
+for (const threadIds of threadsByEvent.values()) {
+  threadIds.sort((a, b) => a.localeCompare(b, 'en'));
+}
+
+for (const event of events) {
+  for (const personReference of event.data.people) {
+    const list = eventsByPerson.get(referenceId(personReference)) || [];
+    list.push(event);
+    eventsByPerson.set(referenceId(personReference), list);
+  }
+}
+
+const threadViews = await Promise.all(threads.map(async (entry) => {
+  const { Content } = await render(entry);
+  return {
+    entry,
+    Content,
+    nodes: entry.data.nodes.map((node: any) => ({
+      event: eventsById.get(referenceId(node.event)),
+      role: node.role,
+      transition: node.transition,
+      trackLabel: tracksById.get(referenceId(eventsById.get(referenceId(node.event))?.data.track))?.data.shortLabel || '—',
+    })).filter((node: any) => node.event),
+  };
+}));
+
+const defaultTrack = tracks.find((track) => track.id === referenceId(project.data.defaultTrack)) || tracks[0];
+const orderedActs = [...acts].sort((a, b) => a.data.order - b.data.order);
+const orderedThreads = [...threads].sort((a, b) => Number(b.data.featured) - Number(a.data.featured) || a.data.title.localeCompare(b.data.title, 'zh-CN'));
+const orderedPeople = [...people].sort((a, b) => a.data.displayName.localeCompare(b.data.displayName, 'zh-CN'));
+const publishedEvents = events.filter((event) => event.data.publicationStatus !== 'withheld');
+const orderedSearchEvents = [...publishedEvents].sort((a, b) =>
+  referenceId(a.data.track).localeCompare(referenceId(b.data.track), 'en')
+  || a.data.startMs - b.data.startMs
+  || localId(a.id).localeCompare(localId(b.id), 'en'));
+const eventsForAct = (actId: string) => publishedEvents
+  .filter((event) => event.data.act?.id === actId)
+  .sort((a, b) => a.data.startMs - b.data.startMs);
+const payoffEvent = publishedEvents.find((event) => localId(event.id) === 'yt-030923-takoyaki-payoff');
+
+const controllerData = {
+  projectId: project.id,
+  defaultView: project.data.defaultView,
+  defaultTrackId: localId(defaultTrack.id),
+  tracks: Object.fromEntries(tracks.map((track) => [localId(track.id), {
+    id: localId(track.id),
+    label: track.data.label,
+    durationMs: track.data.durationMs,
+    playback: track.data.playback,
+    fallbackUrl: track.data.fallbackUrl,
+  }])),
+  events: Object.fromEntries(publishedEvents.map((event) => [localId(event.id), {
+    id: localId(event.id),
+    trackId: localId(referenceId(event.data.track)),
+    startMs: event.data.startMs,
+    title: event.data.title,
+  }])),
+};
+const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', '\\u003c');
+---
+
+<project-archive-shell data-project-archive>
+  <header class="project-hero">
+    <div class="project-hero__copy">
+      <span class="archive-kicker">{project.data.eyebrow}</span>
+      <h1>{project.data.title}</h1>
+      <p>{project.data.summary}</p>
+      <div class="project-facts" aria-label="项目摘要">
+        <span>04:57:26</span>
+        <span>360° YouTube</span>
+        <span>YT + 2 Spaces</span>
+        <span>16 Story Threads</span>
+      </div>
+    </div>
+    <div class="project-hero__stamp" aria-hidden="true">
+      <strong>{project.data.mark || 'A'}</strong>
+      <span>BIRTHDAY<br />SPECIAL</span>
+    </div>
+  </header>
+
+  <nav class="project-nav" aria-label="专题视图">
+    {[
+      ['overview', 'Overview', '快速了解'],
+      ['timeline', 'Timeline', '按时间浏览'],
+      ['storylines', 'Storylines', '精彩事件'],
+      ['people', 'People', '人物'],
+      ['transcript', 'Transcript', '完整资料'],
+    ].map(([id, en, zh]) => (
+      <button type="button" data-view-button={id} aria-pressed="false">
+        <strong>{en}</strong><span>{zh}</span>
+      </button>
+    ))}
+  </nav>
+
+  <ProjectSearch
+    events={orderedSearchEvents}
+    threads={orderedThreads}
+    people={orderedPeople}
+    tracks={tracks}
+    threadsByEvent={threadsByEvent}
+  />
+
+  <div class="project-workspace">
+    <div class="project-content">
+      <section class="project-view overview-view" data-view-panel="overview" hidden>
+        <div class="view-heading">
+          <span class="archive-kicker">FIVE-MINUTE ORIENTATION</span>
+          <h2>一条线看懂这场活动</h2>
+          <p>这不是五小时流水账。当前垂直切片先展示“提议 → 识破 → 干扰 → 遗忘 → 80 分钟后回收”怎样被转换成可进入、可跳转的档案。</p>
+        </div>
+        <div class="overview-grid">
+          <article>
+            <span>01</span><h3>生日会</h3><p>礼物、赛马、俳句、Bingo 与最后的 36 岁抱负。</p>
+          </article>
+          <article>
+            <span>02</span><h3>《俺知》打ち上げ</h3><p>名场面、动作、方言与朗读形式的现场复盘。</p>
+          </article>
+          <article>
+            <span>03</span><h3>Space 技术线</h3><p>主播反复离席，另一平台的事件又回流到主桌。</p>
+          </article>
+        </div>
+        {payoffEvent && (
+          <button type="button" class="featured-jump" data-event-seek={localId(payoffEvent.id)}>
+            <span class="archive-kicker">FEATURED PAYOFF · 03:09:23</span>
+            <strong>{payoffEvent.data.title}</strong>
+            <span>定位并进入时间线 →</span>
+          </button>
+        )}
+      </section>
+
+      <section class="project-view timeline-view" data-view-panel="timeline" hidden>
+        <div class="view-heading">
+          <span class="archive-kicker">CHRONOLOGICAL CANON · YT NATIVE CLOCK</span>
+          <h2>Timeline</h2>
+          <p>八个 Act 是编辑导航草案；时间点属于 YouTube 本地时钟，不与 Space 伪同步。跨平台节点请从 Storylines 进入。</p>
+        </div>
+        {orderedActs.map((act) => (
+          <ActSection act={act} events={eventsForAct(act.id)} peopleById={peopleById} threadsByEvent={threadsByEvent} />
+        ))}
+      </section>
+
+      <section class="project-view storylines-view" data-view-panel="storylines" hidden>
+        <div class="view-heading">
+          <span class="archive-kicker">CONTEXT RECONSTRUCTION</span>
+          <h2>Storylines</h2>
+          <p>Thread 的节点按编辑顺序排列，不要求跨平台共享时钟。</p>
+        </div>
+        <div class="storyline-list">
+          {orderedThreads.map((thread) => (
+            <button type="button" class="storyline-card" data-open-thread={localId(thread.id)}>
+              <span>{thread.data.category.replaceAll('-', ' ').toUpperCase()}</span>
+              <h3>{thread.data.title}</h3>
+              <p>{thread.data.deck}</p>
+              <strong>{thread.data.nodes.length} 个节点 · 查看完整事件线 →</strong>
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <section class="project-view people-view" data-view-panel="people" hidden>
+        <div class="view-heading">
+          <span class="archive-kicker">ENTITY INDEX</span>
+          <h2>People</h2>
+          <p>人物页由 Event → Person 引用反向生成，不维护第二份事件清单。</p>
+        </div>
+        <div class="people-grid">
+          {orderedPeople.map((person) => (
+            <button type="button" class="person-card" data-open-person={localId(person.id)}>
+              <span>{person.data.reading}</span>
+              <h3>{person.data.displayName}</h3>
+              <p>{person.data.role}</p>
+              <strong>{(eventsByPerson.get(person.id) || []).length} 个相关节点 →</strong>
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <section class="project-view transcript-view" data-view-panel="transcript" hidden>
+        <div class="view-heading">
+          <span class="archive-kicker">RIGHTS GATE</span>
+          <h2>Transcript 暂不公开</h2>
+          <p>三个 Track 当前均为 <code>transcriptPolicy: private</code>。Phase 1 不因为存在 SRT 就默认发布五小时逐字稿。</p>
+        </div>
+      </section>
+    </div>
+
+    <aside class="project-player-column">
+      <ArchivePlayer
+        trackId={localId(defaultTrack.id)}
+        label={defaultTrack.data.label}
+        videoId={defaultTrack.data.playback.provider === 'youtube' ? defaultTrack.data.playback.videoId : undefined}
+        fallbackUrl={defaultTrack.data.fallbackUrl}
+      />
+    </aside>
+  </div>
+
+  <ThreadPanel threads={threadViews} />
+  <PersonPopover people={orderedPeople} eventsByPerson={eventsByPerson} />
+  <script type="application/json" data-archive-controller-data set:html={serializedControllerData}></script>
+</project-archive-shell>
+
+<script>
+  type ArchiveEvent = { id: string; trackId: string; startMs: number; title: string };
+  type ArchiveTrack = {
+    id: string;
+    label: string;
+    durationMs: number;
+    playback: { provider: 'youtube'; videoId: string } | { provider: 'external'; url: string } | { provider: 'unavailable' };
+    fallbackUrl?: string;
+  };
+  type ControllerData = {
+    projectId: string;
+    defaultView: string;
+    defaultTrackId: string;
+    tracks: Record<string, ArchiveTrack>;
+    events: Record<string, ArchiveEvent>;
+  };
+
+  declare global {
+    interface Window {
+      YT?: any;
+      onYouTubeIframeAPIReady?: () => void;
+      __folioYouTubeApi?: Promise<any>;
+    }
+  }
+
+  const loadYouTubeApi = () => {
+    if (window.YT?.Player) return Promise.resolve(window.YT);
+    if (window.__folioYouTubeApi) return window.__folioYouTubeApi;
+    window.__folioYouTubeApi = new Promise((resolve, reject) => {
+      const previous = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = () => {
+        previous?.();
+        resolve(window.YT);
+      };
+      const script = document.createElement('script');
+      script.src = 'https://www.youtube.com/iframe_api';
+      script.async = true;
+      script.addEventListener('error', () => reject(new Error('YouTube API failed to load')), { once: true });
+      document.head.append(script);
+    });
+    return window.__folioYouTubeApi;
+  };
+
+  class ProjectArchiveShellElement extends HTMLElement {
+    data!: ControllerData;
+    activeView = 'timeline';
+    activeTrackId = '';
+    selectedEventId: string | null = null;
+    selectedThreadId: string | null = null;
+    selectedPersonId: string | null = null;
+    player: any = null;
+    playerReady = false;
+    pendingSeekMs: number | null = null;
+    playbackSyncTimer: number | null = null;
+    returnFocus: HTMLElement | null = null;
+    lockedScrollY = 0;
+    lockedBodyPaddingRight = '';
+    searchOpen = false;
+
+    connectedCallback() {
+      if (this.dataset.ready === 'true') return;
+      this.dataset.ready = 'true';
+      const dataNode = this.querySelector('[data-archive-controller-data]');
+      if (!(dataNode instanceof HTMLScriptElement)) return;
+      this.data = JSON.parse(dataNode.textContent || '{}');
+      this.activeTrackId = this.data.defaultTrackId;
+      this.bindEvents();
+      this.restoreFromUrl();
+    }
+
+    disconnectedCallback() {
+      this.stopPlaybackSync();
+    }
+
+    bindEvents() {
+      this.querySelectorAll<HTMLElement>('[data-view-button]').forEach((button) => {
+        button.addEventListener('click', () => this.showView(button.dataset.viewButton || 'timeline', true));
+      });
+      this.querySelectorAll<HTMLElement>('[data-event-seek]').forEach((button) => {
+        button.addEventListener('click', () => this.selectEvent(button.dataset.eventSeek || '', true, true));
+      });
+      this.querySelectorAll<HTMLElement>('[data-thread-event-id]').forEach((button) => {
+        button.addEventListener('click', () => this.selectEvent(button.dataset.threadEventId || '', true, true));
+      });
+      this.querySelectorAll<HTMLElement>('[data-person-event-id]').forEach((button) => {
+        button.addEventListener('click', () => {
+          this.closePerson(false);
+          this.showView('timeline', false);
+          this.selectEvent(button.dataset.personEventId || '', true, true);
+        });
+      });
+      this.querySelectorAll<HTMLElement>('[data-open-thread]').forEach((button) => {
+        button.addEventListener('click', () => this.openThread(button.dataset.openThread || '', button, true));
+      });
+      this.querySelectorAll<HTMLElement>('[data-open-person]').forEach((button) => {
+        button.addEventListener('click', () => this.openPerson(button.dataset.openPerson || '', button, true));
+      });
+      this.querySelectorAll<HTMLElement>('[data-close-thread]').forEach((button) => button.addEventListener('click', () => this.closeThread(true)));
+      this.querySelectorAll<HTMLElement>('[data-close-person]').forEach((button) => button.addEventListener('click', () => this.closePerson(true)));
+      this.querySelector<HTMLElement>('[data-load-player]')?.addEventListener('click', () => this.ensurePlayer());
+      const searchInput = this.querySelector<HTMLInputElement>('[data-archive-search]');
+      searchInput?.addEventListener('input', () => this.filterSearch(searchInput.value));
+      this.querySelector<HTMLElement>('[data-search-clear]')?.addEventListener('click', () => {
+        if (searchInput) searchInput.value = '';
+        this.closeSearch(true);
+      });
+      this.querySelectorAll<HTMLElement>('[data-search-event]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const eventId = button.dataset.searchEvent || '';
+          const event = this.data.events[eventId];
+          if (!event) return;
+          this.closeSearch(false);
+          if (event.trackId === this.data.defaultTrackId) {
+            this.showView('timeline', false);
+          } else {
+            this.showView('storylines', false);
+            const threadId = button.dataset.searchThread;
+            if (threadId) this.openThread(threadId, searchInput || null, false);
+          }
+          this.selectEvent(eventId, false, true);
+          this.updateUrl();
+        });
+      });
+      this.querySelectorAll<HTMLElement>('[data-search-kind="thread"]').forEach((button) => {
+        button.addEventListener('click', () => {
+          this.closeSearch(false);
+          this.showView('storylines', false);
+          this.openThread(button.dataset.searchThread || '', searchInput || null, true);
+        });
+      });
+      this.querySelectorAll<HTMLElement>('[data-search-person]').forEach((button) => {
+        button.addEventListener('click', () => {
+          this.closeSearch(false);
+          this.showView('people', false);
+          this.openPerson(button.dataset.searchPerson || '', searchInput || null, true);
+        });
+      });
+      window.addEventListener('popstate', () => this.restoreFromUrl());
+      document.addEventListener('keydown', (event) => {
+        if (event.key !== 'Escape') return;
+        if (this.selectedPersonId) this.closePerson(true);
+        else if (this.selectedThreadId) this.closeThread(true);
+        else if (this.searchOpen) this.closeSearch(true);
+      });
+    }
+
+    filterSearch(query: string) {
+      const normalized = query.trim().toLocaleLowerCase('ja-JP');
+      const panel = this.querySelector<HTMLElement>('[data-search-results]');
+      const input = this.querySelector<HTMLInputElement>('[data-archive-search]');
+      const clear = this.querySelector<HTMLElement>('[data-search-clear]');
+      const empty = this.querySelector<HTMLElement>('[data-search-empty]');
+      const count = this.querySelector<HTMLElement>('[data-search-count]');
+      if (!panel || !input) return;
+      if (!normalized) {
+        this.closeSearch(false);
+        return;
+      }
+      let matches = 0;
+      this.querySelectorAll<HTMLElement>('[data-search-item]').forEach((item) => {
+        const matched = (item.dataset.searchText || '').includes(normalized);
+        item.hidden = !matched;
+        if (matched) matches += 1;
+      });
+      this.searchOpen = true;
+      panel.hidden = false;
+      input.setAttribute('aria-expanded', 'true');
+      if (clear) clear.hidden = false;
+      if (empty) empty.hidden = matches !== 0;
+      if (count) count.textContent = `${matches} 条结果`;
+    }
+
+    closeSearch(focus: boolean) {
+      this.searchOpen = false;
+      const panel = this.querySelector<HTMLElement>('[data-search-results]');
+      const input = this.querySelector<HTMLInputElement>('[data-archive-search]');
+      const clear = this.querySelector<HTMLElement>('[data-search-clear]');
+      if (panel) panel.hidden = true;
+      if (input) input.setAttribute('aria-expanded', 'false');
+      if (clear) clear.hidden = !(input?.value);
+      if (focus) input?.focus({ preventScroll: true });
+    }
+
+    showView(view: string, push: boolean) {
+      const panel = this.querySelector(`[data-view-panel="${CSS.escape(view)}"]`);
+      if (!panel) view = this.data.defaultView;
+      this.activeView = view;
+      this.querySelectorAll<HTMLElement>('[data-view-panel]').forEach((item) => { item.hidden = item.dataset.viewPanel !== view; });
+      this.querySelectorAll<HTMLElement>('[data-view-button]').forEach((button) => {
+        button.setAttribute('aria-pressed', String(button.dataset.viewButton === view));
+      });
+      if (push) this.updateUrl();
+    }
+
+    selectEvent(eventId: string, push: boolean, seek: boolean) {
+      const event = this.data.events[eventId];
+      if (!event) return;
+      this.selectedEventId = eventId;
+      this.activeTrackId = event.trackId;
+      this.classList.add('has-active-event');
+      this.updateTrack(event.trackId);
+      this.querySelectorAll<HTMLElement>('[data-event-card]').forEach((card) => card.classList.toggle('is-active', card.dataset.eventCard === eventId));
+      const current = this.querySelector<HTMLElement>('[data-player-current]');
+      if (current) current.textContent = event.title;
+      this.updatePlayerTime(event.startMs);
+      this.updateFallback(event);
+      if (push) this.updateUrl();
+      if (seek) this.seekTo(event.startMs);
+    }
+
+    openThread(threadId: string, trigger: HTMLElement | null, push: boolean) {
+      const detail = this.querySelector(`[data-thread-detail="${CSS.escape(threadId)}"]`);
+      if (!detail) return;
+      this.returnFocus = trigger;
+      this.selectedThreadId = threadId;
+      this.querySelectorAll<HTMLElement>('[data-thread-detail]').forEach((item) => { item.hidden = item.dataset.threadDetail !== threadId; });
+      const overlay = this.querySelector<HTMLElement>('[data-thread-overlay]');
+      if (overlay) overlay.hidden = false;
+      this.lockPage();
+      this.querySelector<HTMLElement>('[data-thread-panel]')?.focus();
+      if (push) this.updateUrl();
+    }
+
+    closeThread(update: boolean) {
+      if (!this.selectedThreadId) return;
+      this.selectedThreadId = null;
+      const overlay = this.querySelector<HTMLElement>('[data-thread-overlay]');
+      if (overlay) overlay.hidden = true;
+      this.unlockPage();
+      this.returnFocus?.focus({ preventScroll: true });
+      if (update) this.replaceUrl();
+    }
+
+    openPerson(personId: string, trigger: HTMLElement | null, push: boolean) {
+      const detail = this.querySelector(`[data-person-detail="${CSS.escape(personId)}"]`);
+      if (!detail) return;
+      this.returnFocus = trigger;
+      this.selectedPersonId = personId;
+      this.querySelectorAll<HTMLElement>('[data-person-detail]').forEach((item) => { item.hidden = item.dataset.personDetail !== personId; });
+      const overlay = this.querySelector<HTMLElement>('[data-person-overlay]');
+      if (overlay) overlay.hidden = false;
+      this.lockPage();
+      this.querySelector<HTMLElement>('[data-person-panel]')?.focus();
+      if (push) this.updateUrl();
+    }
+
+    closePerson(update: boolean) {
+      if (!this.selectedPersonId) return;
+      this.selectedPersonId = null;
+      const overlay = this.querySelector<HTMLElement>('[data-person-overlay]');
+      if (overlay) overlay.hidden = true;
+      this.unlockPage();
+      this.returnFocus?.focus({ preventScroll: true });
+      if (update) this.replaceUrl();
+    }
+
+    lockPage() {
+      if (document.body.classList.contains('archive-panel-open')) return;
+      this.lockedScrollY = window.scrollY;
+      this.lockedBodyPaddingRight = document.body.style.paddingRight;
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+      document.body.classList.add('archive-panel-open');
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${this.lockedScrollY}px`;
+      document.body.style.width = '100%';
+      if (scrollbarWidth > 0) document.body.style.paddingRight = `${scrollbarWidth}px`;
+    }
+
+    unlockPage() {
+      document.body.classList.remove('archive-panel-open');
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.paddingRight = this.lockedBodyPaddingRight;
+      // The site enables smooth scrolling globally. Panel restoration must be
+      // imperceptible, otherwise closing a detail visibly travels from page
+      // top back to the trigger position.
+      const previousScrollBehavior = document.documentElement.style.scrollBehavior;
+      document.documentElement.style.scrollBehavior = 'auto';
+      window.scrollTo(0, this.lockedScrollY);
+      requestAnimationFrame(() => {
+        document.documentElement.style.scrollBehavior = previousScrollBehavior;
+      });
+    }
+
+    updateUrl() {
+      this.writeUrl('push');
+    }
+
+    replaceUrl() {
+      this.writeUrl('replace');
+    }
+
+    writeUrl(mode: 'push' | 'replace') {
+      const url = new URL(window.location.href);
+      url.searchParams.set('view', this.activeView);
+      if (this.selectedEventId) url.searchParams.set('event', this.selectedEventId);
+      else url.searchParams.delete('event');
+      if (this.selectedThreadId) url.searchParams.set('thread', this.selectedThreadId);
+      else url.searchParams.delete('thread');
+      if (this.selectedPersonId) url.searchParams.set('person', this.selectedPersonId);
+      else url.searchParams.delete('person');
+      if (mode === 'replace') history.replaceState({}, '', url);
+      else history.pushState({}, '', url);
+    }
+
+    restoreFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      const view = params.get('view') || this.data.defaultView;
+      this.showView(view, false);
+      const eventId = params.get('event');
+      if (eventId) this.selectEvent(eventId, false, false);
+      if (this.selectedThreadId) this.closeThread(false);
+      if (this.selectedPersonId) this.closePerson(false);
+      const threadId = params.get('thread');
+      const personId = params.get('person');
+      if (threadId) this.openThread(threadId, null, false);
+      if (personId) this.openPerson(personId, null, false);
+    }
+
+    async ensurePlayer() {
+      if (this.player) return this.player;
+      const track = this.data.tracks[this.activeTrackId];
+      if (!track || track.playback.provider !== 'youtube') return null;
+      const mount = this.querySelector<HTMLElement>('[data-player-mount]');
+      if (!mount) return null;
+      try {
+        const YT = await loadYouTubeApi();
+        this.querySelector<HTMLElement>('[data-player-poster]')?.setAttribute('hidden', '');
+        this.querySelector<HTMLElement>('[data-load-player]')?.setAttribute('hidden', '');
+        this.player = new YT.Player(mount, {
+          width: '100%',
+          height: '100%',
+          videoId: track.playback.videoId,
+          playerVars: { playsinline: 1, rel: 0 },
+          events: {
+            onReady: () => {
+              this.playerReady = true;
+              if (this.pendingSeekMs !== null) {
+                const seekMs = this.pendingSeekMs;
+                this.pendingSeekMs = null;
+                this.player.seekTo(seekMs / 1000, true);
+                this.player.playVideo();
+              }
+            },
+            onStateChange: (playerEvent: any) => {
+              if (playerEvent.data === YT.PlayerState.PLAYING) this.startPlaybackSync();
+              else {
+                this.syncFromPlayer();
+                this.stopPlaybackSync();
+              }
+            },
+          },
+        });
+        return this.player;
+      } catch {
+        const current = this.querySelector<HTMLElement>('[data-player-current]');
+        if (current) current.textContent = '播放器载入失败，请使用下方带时间外链';
+        return null;
+      }
+    }
+
+    async seekTo(milliseconds: number) {
+      this.pendingSeekMs = milliseconds;
+      if (this.playerReady && this.player) {
+        this.pendingSeekMs = null;
+        this.player.seekTo(milliseconds / 1000, true);
+        this.player.playVideo();
+        return;
+      }
+      await this.ensurePlayer();
+    }
+
+    startPlaybackSync() {
+      this.stopPlaybackSync();
+      this.syncFromPlayer();
+      this.playbackSyncTimer = window.setInterval(() => this.syncFromPlayer(), 750);
+    }
+
+    stopPlaybackSync() {
+      if (this.playbackSyncTimer === null) return;
+      window.clearInterval(this.playbackSyncTimer);
+      this.playbackSyncTimer = null;
+    }
+
+    syncFromPlayer() {
+      if (!this.playerReady || !this.player?.getCurrentTime) return;
+      if (this.data.tracks[this.activeTrackId]?.playback.provider !== 'youtube') return;
+      const currentMs = Math.max(0, Math.floor(this.player.getCurrentTime() * 1000));
+      this.updatePlayerTime(currentMs);
+
+      const eventAtTime = Object.entries(this.data.events)
+        .filter(([, event]) => event.trackId === this.activeTrackId && event.startMs <= currentMs)
+        .sort(([leftId, left], [rightId, right]) => right.startMs - left.startMs || leftId.localeCompare(rightId))[0];
+      if (!eventAtTime || eventAtTime[0] === this.selectedEventId) return;
+
+      this.selectEvent(eventAtTime[0], false, false);
+      // selectEvent shows the anchor time. While playback is active the clock
+      // should continue to reflect the player's actual position.
+      this.updatePlayerTime(currentMs);
+      this.replaceUrl();
+    }
+
+    updateTrack(trackId: string) {
+      const track = this.data.tracks[trackId];
+      if (!track) return;
+      const label = this.querySelector<HTMLElement>('[data-player-track-label]');
+      if (label) label.textContent = track.label;
+      const viewport = this.querySelector<HTMLElement>('[data-player-viewport]');
+      const unavailable = this.querySelector<HTMLElement>('[data-player-unavailable]');
+      const isPlayable = track.playback.provider === 'youtube';
+      if (viewport) viewport.hidden = !isPlayable;
+      if (unavailable) unavailable.hidden = isPlayable;
+      if (unavailable && !isPlayable) {
+        unavailable.textContent = track.playback.provider === 'external'
+          ? '此轨道通过 X Space 状态页提供；本站不重托管音频，也不伪造时间定位。'
+          : '此轨道目前没有公开播放源';
+      }
+      if (!isPlayable && this.playerReady && this.player?.pauseVideo) this.player.pauseVideo();
+    }
+
+    updatePlayerTime(milliseconds: number) {
+      const total = Math.floor(milliseconds / 1000);
+      const parts = [Math.floor(total / 3600), Math.floor((total % 3600) / 60), total % 60];
+      const target = this.querySelector<HTMLElement>('[data-player-time]');
+      if (target) target.textContent = parts.map((part) => String(part).padStart(2, '0')).join(':');
+    }
+
+    updateFallback(event: ArchiveEvent) {
+      const track = this.data.tracks[event.trackId];
+      const link = this.querySelector<HTMLAnchorElement>('[data-player-fallback]');
+      if (!link) return;
+      link.hidden = !track?.fallbackUrl;
+      if (!track?.fallbackUrl) return;
+      const url = new URL(track.fallbackUrl);
+      if (track.playback.provider === 'youtube') {
+        url.searchParams.set('t', `${Math.floor(event.startMs / 1000)}s`);
+        link.textContent = '在 YouTube 打开当前时间 ↗';
+      } else {
+        link.textContent = '在 X 打开此 Space ↗';
+      }
+      link.href = url.toString();
+    }
+  }
+
+  if (!customElements.get('project-archive-shell')) {
+    customElements.define('project-archive-shell', ProjectArchiveShellElement);
+  }
+</script>

@@ -1,0 +1,15 @@
+{
+  "project": "komatsu36",
+  "track": "komatsu36/yt-main",
+  "act": "komatsu36/act-04",
+  "startMs": 8360000,
+  "endMs": 8410000,
+  "timingStatus": "approximate",
+  "title": "Space 一侧回流后才得知主桌唱了什么",
+  "summary": "小松所在的 Space 一侧暂告一段落，回流成员这才听说留守组已经唱过モナキ与 M!LK，双轨重新汇合。",
+  "people": ["komatsu36/komatsu-shohei"],
+  "tags": ["跨平台", "回流", "节目结构"],
+  "publicationStatus": "verified",
+  "narrativeMode": "timeline-only",
+  "laneAnnotations": []
+}

@@ -1,0 +1,17 @@
+{
+  "project": "komatsu36",
+  "track": "komatsu36/yt-main",
+  "act": "komatsu36/act-04",
+  "startMs": 7790000,
+  "endMs": 7810000,
+  "timingStatus": "approximate",
+  "title": "主桌决定在 Space 热闹时另做“看点”",
+  "summary": "听见另一边 Space 很热闹，留守组决定在主直播制造自己的看点并开始寻找点歌机，副节目由此启动。",
+  "people": [],
+  "tags": ["节目结构", "留守组", "卡拉OK"],
+  "publicationStatus": "verified",
+  "narrativeMode": "timeline-only",
+  "laneAnnotations": [
+    {"lane": "SP2", "label": "小松在另一轨处理内田 LINE 电话；主桌另开副节目"}
+  ]
+}

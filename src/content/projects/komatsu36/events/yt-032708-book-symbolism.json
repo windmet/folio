@@ -1,0 +1,15 @@
+{
+  "project": "komatsu36",
+  "track": "komatsu36/yt-main",
+  "act": "komatsu36/act-06",
+  "startMs": 12428000,
+  "endMs": 12507000,
+  "timingStatus": "exact",
+  "title": "投稿结束后，现场才追加“丢本＝丢信念”",
+  "summary": "伊藤投稿结束后，现场把丢掉“本”解释为抛开信念与武市之道；小松进一步强调台本应成为声优朗读的舞台语言，而不是防忘词工具。",
+  "people": ["komatsu36/komatsu-shohei"],
+  "tags": ["俺知制作", "朗读形式", "投稿边界", "development"],
+  "publicationStatus": "verified",
+  "narrativeMode": "threaded",
+  "laneAnnotations": []
+}

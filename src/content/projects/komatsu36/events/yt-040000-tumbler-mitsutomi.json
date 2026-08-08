@@ -1,0 +1,15 @@
+{
+  "project": "komatsu36",
+  "track": "komatsu36/yt-main",
+  "act": "komatsu36/act-07",
+  "startMs": 14400000,
+  "endMs": 14615000,
+  "timingStatus": "approximate",
+  "title": "新選組“誠”杯落到光富手中",
+  "summary": "第二轮 64 号由光富崇雄中奖；公开资料足以锁定为新選組／瀬戸焼き“誠”杯类奖品，并撤回早期 ASR 的“挂毯”误识别。",
+  "people": ["komatsu36/mitsutomi-takao"],
+  "tags": ["Bingo", "奖品", "qualified"],
+  "publicationStatus": "qualified",
+  "qualification": "中奖者与杯类物件已由多源锁定；品牌、材质和正式 SKU 仍需画面复核，因此不在页面扩写。",
+  "laneAnnotations": []
+}

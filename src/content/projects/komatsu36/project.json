@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "sourceSetId": "komatsu36-20260808-r1",
+  "editorialRevision": "2026-08-08-r1",
+  "slug": "komatsu36",
+  "title": "小松昌平 36歳 Birthday Special",
+  "eyebrow": "PROJECT ARCHIVE · EDITORIAL BUILD",
+  "mark": "36",
+  "status": "published",
+  "defaultTrack": "komatsu36/yt-main",
+  "defaultView": "timeline",
+  "summary": "一场把生日会、《俺を知ってくれ！》打ち上げ与 X Space 凸待ち叠在一起的近五小时直播。档案按主时间线、跨平台事件线与人物关系共同组织。",
+  "featuredThreads": [
+    "komatsu36/russian-takoyaki",
+    "komatsu36/uchida-line-call",
+    "komatsu36/space-technical-hell",
+    "komatsu36/ore-shiri-making-of",
+    "komatsu36/terashima-big-dream",
+    "komatsu36/ending-wont-end"
+  ]
+}

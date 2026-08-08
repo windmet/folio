@@ -1,0 +1,41 @@
+---
+import TimelineEvent from './TimelineEvent.astro';
+
+export interface Props {
+  act: any;
+  events: any[];
+  peopleById: Map<string, any>;
+  threadsByEvent: Map<string, string[]>;
+}
+
+const { act, events, peopleById, threadsByEvent } = Astro.props;
+const formatTime = (milliseconds: number) => {
+  const total = Math.floor(milliseconds / 1000);
+  const hours = Math.floor(total / 3600);
+  const minutes = Math.floor((total % 3600) / 60);
+  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+};
+---
+
+<section class="act-section" data-act={act.id.split('/').at(-1)}>
+  <header class="act-header">
+    <div class="act-number">
+      <strong>ACT {String(act.data.order).padStart(2, '0')}</strong>
+      {act.data.editorialStatus === 'draft' && <span>编辑草案</span>}
+    </div>
+    <div>
+      <p>{formatTime(act.data.startMs)}–{formatTime(act.data.endMs)}</p>
+      <h2>{act.data.title}</h2>
+      <span>{act.data.summary}</span>
+    </div>
+  </header>
+  <div class="act-events">
+    {events.map((event) => (
+      <TimelineEvent
+        event={event}
+        people={event.data.people.map((reference: any) => peopleById.get(reference.id)).filter(Boolean)}
+        threadIds={threadsByEvent.get(event.id) || []}
+      />
+    ))}
+  </div>
+</section>

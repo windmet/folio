@@ -1,0 +1,15 @@
+{
+  "project": "komatsu36",
+  "track": "komatsu36/yt-main",
+  "act": "komatsu36/act-05",
+  "startMs": 9480000,
+  "endMs": 9628000,
+  "timingStatus": "approximate",
+  "title": "佐藤从白背景轮廓拆解大型乱杀阵",
+  "summary": "佐藤以舞台演员视角指出，白色背景会直接暴露动作是否伸展完整；主体演员承担大量连续手数，配合者则必须精确处理受け与 timing。",
+  "people": ["komatsu36/sato-yugo", "komatsu36/komatsu-shohei"],
+  "tags": ["俺知制作", "乱杀阵", "舞台构图", "development"],
+  "publicationStatus": "verified",
+  "narrativeMode": "threaded",
+  "laneAnnotations": []
+}

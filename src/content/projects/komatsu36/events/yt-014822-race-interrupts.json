@@ -1,0 +1,15 @@
+{
+  "project": "komatsu36",
+  "track": "komatsu36/yt-main",
+  "act": "komatsu36/act-03",
+  "startMs": 6502000,
+  "endMs": 6510000,
+  "timingStatus": "approximate",
+  "title": "大井赛马开跑，全场注意力转移",
+  "summary": "赛马开跑与章鱼烧被识破的录音直接相邻，制造了它被遗忘的条件；但当事人没有逐字确认“因为赛马才忘掉”。",
+  "people": ["komatsu36/hama-kento", "komatsu36/kano-sho"],
+  "tags": ["俄罗斯章鱼烧", "赛马", "development"],
+  "publicationStatus": "qualified",
+  "qualification": "赛马与遗忘具有强时序关联，但因果措辞保持限定。",
+  "laneAnnotations": []
+}

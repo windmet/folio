@@ -1,0 +1,15 @@
+{
+  "project": "komatsu36",
+  "kind": "audio",
+  "label": "X Space ①",
+  "shortLabel": "SP1",
+  "durationMs": 2618000,
+  "clock": "native",
+  "transcriptPolicy": "private",
+  "playback": {
+    "provider": "external",
+    "url": "https://x.com/i/status/2043996150802592097"
+  },
+  "fallbackUrl": "https://x.com/i/status/2043996150802592097",
+  "sourcePublishedAt": "2026-04-14T10:13:52.620Z"
+}

@@ -1,0 +1,34 @@
+---
+import { getCollection } from 'astro:content';
+import ProjectLayout from '../../layouts/ProjectLayout.astro';
+import ProjectArchiveShell from '../../components/project/ProjectArchiveShell.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { slug: project.data.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const projectReference = (entry: any) => entry.data.project?.id === project.id;
+const [tracks, acts, events, threads, people] = await Promise.all([
+  getCollection('projectTracks', projectReference),
+  getCollection('projectActs', projectReference),
+  getCollection('projectEvents', projectReference),
+  getCollection('projectThreads', projectReference),
+  getCollection('projectPeople', projectReference),
+]);
+---
+
+<ProjectLayout title={project.data.title} description={project.data.summary}>
+  <ProjectArchiveShell
+    project={project}
+    tracks={tracks}
+    acts={acts}
+    events={events}
+    threads={threads}
+    people={people}
+  />
+</ProjectLayout>
