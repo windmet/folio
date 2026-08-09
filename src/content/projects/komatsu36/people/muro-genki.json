@@ -3,8 +3,6 @@
   "displayName": "室元気",
   "reading": "むろ げんき",
   "aliases": ["むろさん"],
-  "role": "Space 账号关联来宾",
-  "note": "页面严格区分室账号与自称“乗っ取り”的发言者，不把怪话直接归给室本人。",
   "projectContext": "本档案只记录 Space 中与室账号相关的出现，不把自称使用账号的未知发言者归给室元気本人。",
   "participation": [{ "kind": "space-account" }],
   "links": []

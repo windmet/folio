@@ -3,8 +3,6 @@
   "displayName": "矢野奨吾",
   "reading": "やの しょうご",
   "aliases": ["矢野さん"],
-  "role": "现场来宾",
-  "note": "送出特意挑选的太阳镜，又用俳句和 Bingo 结尾两次回收这件礼物。",
   "projectContext": "《俺知》昼夜两场饰演土方歳三；他在朗读剧结束后赶到生日会，太阳镜礼物又在俳句与 Bingo 结尾两次回收。",
   "participation": [
     { "kind": "ore-shiri-cast", "character": "土方歳三", "sessions": ["day", "night"] },

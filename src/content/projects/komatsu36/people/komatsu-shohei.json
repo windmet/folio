@@ -3,8 +3,6 @@
   "displayName": "小松昌平",
   "reading": "こまつ しょうへい",
   "aliases": ["コマッチ"],
-  "role": "主办／36 岁寿星／动作设计",
-  "note": "在生日会、打ち上げ和两段 Space 之间往返的档案中心人物。",
   "projectContext": "《俺知》昼夜两场饰演岡田以蔵，也是企划与生日会主持；他在主直播、两段 Space 和打ち上げ之间往返，串起整份档案。",
   "participation": [
     { "kind": "ore-shiri-cast", "character": "岡田以蔵", "sessions": ["day", "night"] },

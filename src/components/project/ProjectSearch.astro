@@ -69,8 +69,6 @@ const participationText = (person: any) => (person.data.participation || []).map
             data-search-text={searchText(
               event.data.title,
               event.data.summary,
-              event.data.tags,
-              event.data.readerNote,
               relatedPeople.map((person: any) => [person.data.displayName, person.data.aliases]),
             )}
             hidden

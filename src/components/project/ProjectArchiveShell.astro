@@ -197,7 +197,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         <div class="view-heading">
           <span class="archive-kicker">CHRONOLOGICAL CANON · YT NATIVE CLOCK</span>
           <h2>Timeline</h2>
-          <p>八个 Act 已完成编辑边界复核；时间点属于 YouTube 本地时钟，不与 Space 伪同步。跨平台节点请从 Storylines 进入。</p>
+          <p>八个 Act 按 YouTube 主直播时间排列；Space 的相关段落请从 Storylines 查看，不把两个现场的时钟硬拼在一起。</p>
         </div>
         {orderedActs.map((act) => (
           <ActSection act={act} events={eventsForAct(act.id)} peopleById={peopleById} threadsByEvent={threadsByEvent} />
@@ -208,7 +208,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         <div class="view-heading">
           <span class="archive-kicker">CONTEXT RECONSTRUCTION</span>
           <h2>Storylines</h2>
-          <p>Thread 的节点按编辑顺序排列，不要求跨平台共享时钟。</p>
+          <p>事件线按故事发展顺序排列；跨平台段落保留各自时间，不强行合并成一个时钟。</p>
         </div>
         <div class="storyline-list">
           {orderedThreads.map((thread) => (
@@ -262,7 +262,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         <div class="view-heading">
           <span class="archive-kicker">RIGHTS GATE</span>
           <h2>Transcript 暂不公开</h2>
-          <p>三个 Track 当前均为 <code>transcriptPolicy: private</code>。Phase 1 不因为存在 SRT 就默认发布五小时逐字稿。</p>
+          <p>逐字稿暂不公开；本档案先提供时间线、事件摘要和事件线，保留原始媒体入口。</p>
         </div>
       </section>
     </div>

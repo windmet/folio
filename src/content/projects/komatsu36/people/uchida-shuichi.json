@@ -3,8 +3,6 @@
   "displayName": "内田修一",
   "reading": "うちだ しゅういち",
   "aliases": ["修"],
-  "role": "LINE 电话来宾",
-  "note": "没有 X 账号，因此通过 LINE 电话加入 Space 侧对话。",
   "projectContext": "没有 X 账号，通过 LINE 电话接入 Space 侧对话；本档案将其标为 remote call，不称作普通 Space guest。",
   "participation": [{ "kind": "remote-call" }],
   "links": []

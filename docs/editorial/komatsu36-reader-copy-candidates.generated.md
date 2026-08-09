@@ -17,7 +17,7 @@
 
 - Event candidates: 43
 - Thread candidates: 9
-- Recorded decisions: 28
+- Recorded decisions: 52
 - 扫描词组：`evidence-language`、`editorial-meta-language`、`technical-language`；完整词表以生成脚本为准。
 
 ## Event candidates
@@ -903,7 +903,7 @@ Opening 结构和选择理由已锁定；投稿第一句中一个名词仍不稳
 
 **CURRENT SUMMARY**
 
-《俺知》名场面环节收束后，小松说明要去结束 X 一侧的 Space，主直播再次进入短暂分流。
+《俺知》名场面环节结束后，小松离开主直播去收尾 X Space；主区暂时继续进行。
 
 **CURRENT QUALIFICATION**
 
@@ -911,14 +911,14 @@ Opening 结构和选择理由已锁定；投稿第一句中一个名词仍不稳
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `rewrite`
+- Reader note action: `none`
+- Editorial note: 把短暂分流换成主区继续进行的自然描述，时间锚点仍留在内部资格说明。
 
 **APPROVED REPLACEMENT**
 
 - New title: —
-- New summary: —
+- New summary: 《俺知》名场面环节结束后，小松离开主直播去收尾 X Space；主区暂时继续进行。
 - Reader note: —
 
 ### RCOPY-030 · yt-035300-space-close-return
@@ -942,9 +942,9 @@ Space 收束后，小松回到 Bingo 前的主直播
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: 现有文案清楚说明第二段 Space 收束、回到主区及 Bingo 的承接。
 
 **APPROVED REPLACEMENT**
 
@@ -965,7 +965,7 @@ Space 收束后，小松回到 Bingo 前的主直播
 
 **CURRENT SUMMARY**
 
-第二轮 64 号由光富崇雄中奖；公开资料足以锁定为新選組／瀬戸焼き“誠”杯类奖品，并撤回早期 ASR 的“挂毯”误识别。
+第二轮 64 号由光富崇雄中奖；奖品是新選組／瀬戸焼き“誠”杯类物件，并不是早先误听成的“挂毯”。
 
 **CURRENT QUALIFICATION**
 
@@ -973,14 +973,14 @@ Space 收束后，小松回到 Bingo 前的主直播
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `rewrite`
+- Reader note action: `none`
+- Editorial note: 移除 ASR 与公开资料等内部流程词，只保留奖品识别及纠正结果。
 
 **APPROVED REPLACEMENT**
 
 - New title: —
-- New summary: —
+- New summary: 第二轮 64 号由光富崇雄中奖；奖品是新選組／瀬戸焼き“誠”杯类物件，并不是早先误听成的“挂毯”。
 - Reader note: —
 
 ### RCOPY-032 · yt-040539-fan-inoue
@@ -1004,9 +1004,9 @@ Amazon 礼券后，“誠”扇子由井上中奖
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: 扇子、号码和中奖者已构成完整事件，商品细节限制留在内部资格说明。
 
 **APPROVED REPLACEMENT**
 
@@ -1035,9 +1035,9 @@ Amazon 礼券后，“誠”扇子由井上中奖
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: 现有摘要能同时交代 T-BOLAN 与 Super Chat 的现场并行，不需要逐句对齐。
 
 **APPROVED REPLACEMENT**
 
@@ -1066,9 +1066,9 @@ Amazon 礼券后，“誠”扇子由井上中奖
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: Snack Akemi 轶事作为卡拉 OK 旁支已经清楚，事件级时间限制不需读者说明。
 
 **APPROVED REPLACEMENT**
 
@@ -1097,9 +1097,9 @@ Amazon 礼券后，“誠”扇子由井上中奖
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: 现有摘要自然说明滨接棒和现场并行话题，不发布歌词。
 
 **APPROVED REPLACEMENT**
 
@@ -1128,9 +1128,9 @@ Amazon 礼券后，“誠”扇子由井上中奖
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: 发送方称呼与现场反应足以支撑事件，账号细节和金额不影响理解。
 
 **APPROVED REPLACEMENT**
 
@@ -1159,9 +1159,9 @@ Amazon 礼券后，“誠”扇子由井上中奖
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: 等级式自评的喜剧结构已清楚，未把不稳定细节写成成绩表。
 
 **APPROVED REPLACEMENT**
 
@@ -1190,9 +1190,9 @@ Amazon 礼券后，“誠”扇子由井上中奖
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: 多人合流和二次会扩张已完整，重叠发言与歌词限制不必展示。
 
 **APPROVED REPLACEMENT**
 
@@ -1221,9 +1221,9 @@ Amazon 礼券后，“誠”扇子由井上中奖
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: Heisuke 组合、曲目和加演段落已经可读。
 
 **APPROVED REPLACEMENT**
 
@@ -1252,9 +1252,9 @@ Amazon 礼券后，“誠”扇子由井上中奖
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: 合唱与 Super Chat 并行是事件重点，内部并发标注不向读者暴露。
 
 **APPROVED REPLACEMENT**
 
@@ -1283,9 +1283,9 @@ Amazon 礼券后，“誠”扇子由井上中奖
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: 现有摘要保留余兴延长这一作用，不对未确认的说话人和现实指代做归属。
 
 **APPROVED REPLACEMENT**
 
@@ -1297,7 +1297,7 @@ Amazon 礼券后，“誠”扇子由井上中奖
 
 - Track / Time: SP2 00:03:11
 - Status: `qualified`
-- Flags: `has-internal-qualification`, `editorial-meta-language`
+- Flags: `has-internal-qualification`
 - Source pointer: `src/content/projects/komatsu36/events/sp2-000311-account-hijack.json`
 
 **CURRENT TITLE**
@@ -1306,7 +1306,7 @@ Amazon 礼券后，“誠”扇子由井上中奖
 
 **CURRENT SUMMARY**
 
-页面只确认发言来自室账号，并保留对方自称“乗っ取り”的原始区分，不把怪话归给室本人。
+这段发言只与室账号有关；对方自称“乗っ取り”，不能据此认作室元気本人。
 
 **CURRENT QUALIFICATION**
 
@@ -1314,14 +1314,14 @@ Amazon 礼券后，“誠”扇子由井上中奖
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `rewrite`
+- Reader note action: `none`
+- Editorial note: 把页面、原始区分等编辑语句改成直接的身份边界说明。
 
 **APPROVED REPLACEMENT**
 
 - New title: —
-- New summary: —
+- New summary: 这段发言只与室账号有关；对方自称“乗っ取り”，不能据此认作室元気本人。
 - Reader note: —
 
 ### RCOPY-043 · sp2-025344-uchida-forgotten
@@ -1345,9 +1345,9 @@ Amazon 礼券后，“誠”扇子由井上中奖
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: 事件摘要已清楚表达漏问生日的笑点，逐字听辨限制留在内部资格说明。
 
 **APPROVED REPLACEMENT**
 
@@ -1359,7 +1359,7 @@ Amazon 礼券后，“誠”扇子由井上中奖
 
 ### RCOPY-044 · bingo-payback
 
-- Flags: `editorial-meta-language`
+- Flags: `resolved-decision`
 - Source pointer: `src/content/projects/komatsu36/threads/bingo-payback.md`
 
 **CURRENT DECK**
@@ -1368,7 +1368,7 @@ Amazon 礼券后，“誠”扇子由井上中奖
 
 **CURRENT BODY**
 
-这条线同时回收生日返礼、太阳镜和濱的“ギャラ飲み”。完整号码与奖品表仍以权威修正版为准，页面首版只保留最能解释因果的节点。
+这条线同时回收生日返礼、太阳镜和濱的“ギャラ飲み”。这里以最能解释因果的节点为主，不展开完整号码与奖品表。
 
 **CURRENT TRANSITIONS**
 
@@ -1376,17 +1376,17 @@ Amazon 礼券后，“誠”扇子由井上中奖
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Editorial note: —
+- Copy action: `rewrite`
+- Editorial note: 移除权威修正版、首版等流程词，保留这条线的阅读范围。
 
 **APPROVED REPLACEMENT**
 
 - New deck: —
-- New body: —
+- New body: 这条线同时回收生日返礼、太阳镜和濱的“ギャラ飲み”。这里以最能解释因果的节点为主，不展开完整号码与奖品表。
 
 ### RCOPY-045 · birthday-payback
 
-- Flags: `evidence-language`
+- Flags: `resolved-decision`
 - Source pointer: `src/content/projects/komatsu36/threads/birthday-payback.md`
 
 **CURRENT DECK**
@@ -1395,7 +1395,7 @@ Amazon 礼券后，“誠”扇子由井上中奖
 
 **CURRENT BODY**
 
-笑点不在于小松真的叫错観世生日，而在于他建立一条自己最不擅长执行的规则。内田人名句保留限定，不把当前首选冒充成封板逐字稿。
+笑点不在于小松真的叫错観世生日，而在于他建立一条自己最不擅长执行的规则。内田的人名说法仍保留谨慎表述，不把它当作逐字记录。
 
 **CURRENT TRANSITIONS**
 
@@ -1403,17 +1403,17 @@ Amazon 礼券后，“誠”扇子由井上中奖
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Editorial note: —
+- Copy action: `rewrite`
+- Editorial note: 把封板逐字稿等内部判断换成读者能理解的谨慎表述。
 
 **APPROVED REPLACEMENT**
 
 - New deck: —
-- New body: —
+- New body: 笑点不在于小松真的叫错観世生日，而在于他建立一条自己最不擅长执行的规则。内田的人名说法仍保留谨慎表述，不把它当作逐字记录。
 
 ### RCOPY-046 · broken-sword
 
-- Flags: `evidence-language`
+- Flags: `resolved-decision`
 - Source pointer: `src/content/projects/komatsu36/threads/broken-sword.md`
 
 **CURRENT DECK**
@@ -1422,7 +1422,7 @@ Amazon 礼券后，“誠”扇子由井上中奖
 
 **CURRENT BODY**
 
-这里的时间是直播复盘坐标，不是舞台事故的原始时间。碎片方向、矢野侧只削损和无人受伤均按裁决稿写明。
+这里记录的是直播回顾的位置，不是舞台事故发生的当下；碎片方向、矢野侧只削损和无人受伤均按现场回顾保留。
 
 **CURRENT TRANSITIONS**
 
@@ -1430,17 +1430,17 @@ Amazon 礼券后，“誠”扇子由井上中奖
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Editorial note: —
+- Copy action: `rewrite`
+- Editorial note: 将复盘坐标和裁决稿改为直播回顾与现场回顾。
 
 **APPROVED REPLACEMENT**
 
 - New deck: —
-- New body: —
+- New body: 这里记录的是直播回顾的位置，不是舞台事故发生的当下；碎片方向、矢野侧只削损和无人受伤均按现场回顾保留。
 
 ### RCOPY-047 · kano-ojisan
 
-- Flags: `editorial-meta-language`
+- Flags: `resolved-decision`
 - Source pointer: `src/content/projects/komatsu36/threads/kano-ojisan.md`
 
 **CURRENT DECK**
@@ -1449,7 +1449,7 @@ dad joke、厕所离席和持续的おじさん吐槽，最终在卡拉 OK 的�
 
 **CURRENT BODY**
 
-当前资料对这条线的中间节点仍较疏，因此只公开事件级摘要与限定时间，不补造逐字桥段。
+中间过程没有足够连续记录，所以这里只串起已确认的两个事件，不补写中间对话。
 
 **CURRENT TRANSITIONS**
 
@@ -1457,17 +1457,17 @@ dad joke、厕所离席和持续的おじさん吐槽，最终在卡拉 OK 的�
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Editorial note: —
+- Copy action: `rewrite`
+- Editorial note: 避免资料、事件级和限定时间等编辑术语。
 
 **APPROVED REPLACEMENT**
 
 - New deck: —
-- New body: —
+- New body: 中间过程没有足够连续记录，所以这里只串起已确认的两个事件，不补写中间对话。
 
 ### RCOPY-048 · muro-account
 
-- Flags: `editorial-meta-language`
+- Flags: `resolved-decision`
 - Source pointer: `src/content/projects/komatsu36/threads/muro-account.md`
 
 **CURRENT DECK**
@@ -1476,7 +1476,7 @@ dad joke、厕所离席和持续的おじさん吐槽，最终在卡拉 OK 的�
 
 **CURRENT BODY**
 
-“乗っ取り”发言者只按账号上下文记录；未确认实际身份前，页面不会把这些话写成室元気本人发言。
+“乗っ取り”发言者只按账号上下文记录；身份尚未确认，因此本线不把这些话归给室元気本人。
 
 **CURRENT TRANSITIONS**
 
@@ -1484,26 +1484,26 @@ dad joke、厕所离席和持续的おじさん吐槽，最终在卡拉 OK 的�
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Editorial note: —
+- Copy action: `rewrite`
+- Editorial note: 把页面不会等编辑口吻改成直接身份边界。
 
 **APPROVED REPLACEMENT**
 
 - New deck: —
-- New body: —
+- New body: “乗っ取り”发言者只按账号上下文记录；身份尚未确认，因此本线不把这些话归给室元気本人。
 
 ### RCOPY-049 · ore-shiri-making-of
 
-- Flags: `editorial-meta-language`
+- Flags: `resolved-decision`
 - Source pointer: `src/content/projects/komatsu36/threads/ore-shiri-making-of.md`
 
 **CURRENT DECK**
 
-由演员名场面选择拼出武器、流派研究、制作锁定和动作监督总结的完整制作图景。
+由演员名场面选择拼出武器、流派研究、制作选择和动作监督总结的完整制作图景。
 
 **CURRENT BODY**
 
-页面把演员研究、动作监督和制作锁定分层书写；“最终只采用血振り”不是否定研究，而是记录制作阶段对可实施范围的约束。
+这条线把演员研究、动作监督和制作选择分开写；最终采用血振り，表示的是可实施范围，不是否定前面的研究。
 
 **CURRENT TRANSITIONS**
 
@@ -1511,17 +1511,17 @@ dad joke、厕所离席和持续的おじさん吐槽，最终在卡拉 OK 的�
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Editorial note: —
+- Copy action: `rewrite`
+- Editorial note: 把制作锁定和约束改为读者可理解的制作选择。
 
 **APPROVED REPLACEMENT**
 
 - New deck: —
-- New body: —
+- New body: 这条线把演员研究、动作监督和制作选择分开写；最终采用血振り，表示的是可实施范围，不是否定前面的研究。
 
 ### RCOPY-050 · russian-takoyaki
 
-- Flags: `evidence-language`, `editorial-meta-language`
+- Flags: `resolved-decision`
 - Source pointer: `src/content/projects/komatsu36/threads/russian-takoyaki.md`
 
 **CURRENT DECK**
@@ -1530,11 +1530,11 @@ dad joke、厕所离席和持续的おじさん吐槽，最终在卡拉 OK 的�
 
 **CURRENT BODY**
 
-前半高精度稿证明，濱拿到的那颗已经绿到几乎可以确认是 wasabi；后半现场复盘又补全了动作：他最早抽中，压开看到绿色，却因为「ひよって」直接放回。
+濱拿到的那颗已经绿到几乎可以确认是 wasabi；后来回顾才补上，他最早抽中、看见绿色后因为「ひよって」直接放回。
 
-赛马与“识破后放回”在录音中直接相邻，因此可以说赛马制造了遗忘条件；但没有当事人逐字说“因为赛马才忘掉”，页面仍需保留这层限定。
+赛马与“识破后放回”在现场紧挨着出现，可以说赛马让这颗章鱼烧被忘在一边；但没有人明确说“因为赛马才忘掉”，所以这里不把它写成确定因果。
 
-最后由毫不知前情的堀金蒼平踩雷，现场原声也真的出现了「時限爆弾すぎるだろ！」。这条线因此同时具备 setup、干扰、长时延迟与 payoff。
+最后由毫不知前情的堀金蒼平踩雷，现场原声也真的出现了「時限爆弾すぎるだろ！」。这条线因此同时有提议、被遗忘、延迟和最后踩雷的完整回收。
 
 **CURRENT TRANSITIONS**
 
@@ -1542,44 +1542,48 @@ dad joke、厕所离席和持续的おじさん吐槽，最终在卡拉 OK 的�
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Editorial note: —
+- Copy action: `rewrite`
+- Editorial note: 保留因果谨慎，但移除高精度稿、录音和页面需等流程词。
 
 **APPROVED REPLACEMENT**
 
 - New deck: —
-- New body: —
+- New body: 濱拿到的那颗已经绿到几乎可以确认是 wasabi；后来回顾才补上，他最早抽中、看见绿色后因为「ひよって」直接放回。
+
+赛马与“识破后放回”在现场紧挨着出现，可以说赛马让这颗章鱼烧被忘在一边；但没有人明确说“因为赛马才忘掉”，所以这里不把它写成确定因果。
+
+最后由毫不知前情的堀金蒼平踩雷，现场原声也真的出现了「時限爆弾すぎるだろ！」。这条线因此同时有提议、被遗忘、延迟和最后踩雷的完整回收。
 
 ### RCOPY-051 · shugo-yakiniku
 
-- Flags: `editorial-meta-language`
+- Flags: `resolved-decision`
 - Source pointer: `src/content/projects/komatsu36/threads/shugo-yakiniku.md`
 
 **CURRENT DECK**
 
-连接不稳、说完烤肉就消失，重开后小松只好替这条低信息留言强行补成庆生。
+连接不稳、说完烤肉就消失，重开后小松只好替这句简短留言补成庆生。
 
 **CURRENT BODY**
 
-这条线的价值恰恰来自信息量极低，却非常有仲村个人存在感；页面不需要替它追加复杂背景。
+它几乎没有留下具体内容，却很有仲村的存在感；不必再替这句话添加复杂背景。
 
 **CURRENT TRANSITIONS**
 
-- 主直播随后把这段低信息留言复述给新到场的朋友——
+- 主直播随后把这段简短留言复述给新到场的朋友——
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Editorial note: —
+- Copy action: `rewrite`
+- Editorial note: 低信息是编辑判断，不作为读者标签；改为简短留言。
 
 **APPROVED REPLACEMENT**
 
-- New deck: —
-- New body: —
+- New deck: 连接不稳、说完烤肉就消失，重开后小松只好替这句简短留言补成庆生。
+- New body: 它几乎没有留下具体内容，却很有仲村的存在感；不必再替这句话添加复杂背景。
 
 ### RCOPY-052 · terashima-big-dream
 
-- Flags: `evidence-language`
+- Flags: `resolved-decision`
 - Source pointer: `src/content/projects/komatsu36/threads/terashima-big-dream.md`
 
 **CURRENT DECK**
@@ -1588,7 +1592,7 @@ dad joke、厕所离席和持续的おじさん吐槽，最终在卡拉 OK 的�
 
 **CURRENT BODY**
 
-生日礼物票 5-8 与寺島个人票 5-6 是两张不同的票。事件线保留这一裁决，避免为“惜しい”制造并不存在的中奖结果。
+生日礼物票 5-8 与寺島个人票 5-6 是两张不同的票。事件线保留这个区别，不把“惜しい”写成已经中奖。
 
 **CURRENT TRANSITIONS**
 
@@ -1596,10 +1600,10 @@ dad joke、厕所离席和持续的おじさん吐槽，最终在卡拉 OK 的�
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Editorial note: —
+- Copy action: `rewrite`
+- Editorial note: 把裁决改为直接说明两张票和未中奖边界。
 
 **APPROVED REPLACEMENT**
 
 - New deck: —
-- New body: —
+- New body: 生日礼物票 5-8 与寺島个人票 5-6 是两张不同的票。事件线保留这个区别，不把“惜しい”写成已经中奖。

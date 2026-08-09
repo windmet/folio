@@ -681,13 +681,13 @@ Tina 集成作为后续独立任务，只管理 Project 摘要、精选顺序等
 
 退出条件已在本地通过：读者进入页面十秒内可理解档案由三份独立媒体组成，并可主动选择任一来源；任何按钮文案都不夸大当前 embed、播放与 seek 能力；external 呈现为正常能力而非错误；手动 source、Event 深链、刷新恢复和 back/forward 均满足上述状态合同；SP2 事件索引节点可定位；既有 Event / Thread 跨 Track 定位无回归。退出后立即冻结功能，不继续做 X 技术探测或新媒体 provider。
 
-### Phase 2.6：RC 0.10 Reader & Entity Editorial Pass（待实施）
+### Phase 2.6：RC 0.10 Reader & Entity Editorial Pass（A–C 已完成，D–E 进行中）
 
 - A0 Editorial Infrastructure（已完成）：自动生成的 candidates 与人工 decisions 分离；计数从目录派生，正文动作与 reader-note 动作分开，非法或 stale decision 失败；
-- Cast / People：以 canonical `main` 的 cast / staff 表为依据呈现角色 × 昼夜矩阵、production/action、主直播参与者和 `X SPACE / REMOTE`；participation 区分 `space-guest`、`remote-call` 与 `space-account`，避免把室账号或内田电话错误描述为普通 Space guest；Person 只增加项目语境、参与结构与官方链接，不扩成百科，不引入头像；
-- Reader Copy：保留 `publicationStatus` 与 `qualification` 供 editor / validator 使用，增加可选 `readerNote`；普通读者不再看到“已复核／有限定”或内部 qualification 的机械输出；
-- ProjectSearch 同步停止把 qualification 写入 `data-search-text`，`validate:publication` 增加内部限定泄漏 fixture；People Search 在迁移后只使用新字段；
-- 运行 `npm run editorial:reader-copy` 扫描实际目录中的全部 Event 与 Thread，只重建 generated candidates，不自动改写，也不写 decisions。最终目标是 0 个不必要的工程说明，而不是 0 个 `qualified` Event；
+- Cast / People（已完成）：以 canonical `main` 的 cast / staff 表为依据呈现角色 × 昼夜矩阵、production/action、主直播参与者和 `X SPACE / REMOTE`；participation 区分 `space-guest`、`remote-call` 与 `space-account`，避免把室账号或内田电话错误描述为普通 Space guest；Person 只增加项目语境、参与结构与官方链接，不扩成百科，不引入头像；
+- Reader Copy（已完成）：保留 `publicationStatus` 与 `qualification` 供 editor / validator 使用，增加可选 `readerNote`；普通读者不再看到“已复核／有限定”或内部 qualification 的机械输出；52 个候选已完成 decisions 与全量 reader pass；
+- ProjectSearch（已完成）：停止把 qualification、Event tags 与 readerNote 写入 `data-search-text`，`validate:publication` 增加内部限定泄漏 fixture；People Search 只使用新字段；
+- `npm run editorial:reader-copy` 扫描实际目录中的全部 Event 与 Thread，只重建 generated candidates，不自动改写，也不写 decisions；`npm run validate:reader-copy` 现在强制每个候选都有完整 action。最终目标是 0 个不必要的工程说明，而不是 0 个 `qualified` Event；
 - External Context：首版只接仲村宗悟 2026-04-14 烧肉 X Post，以 `social` Source + Thread `relatedSources` + Folio `SourcePost` 呈现编辑摘要与原帖直链；它不是 Event，不加载官方 widget，不复制完整 Post。绝对时序未核实前只使用“同日”，不写“离开后／几分钟后”；
 - 具体 schema、validator、UI、分批编辑和验收合同以 `docs/editorial/komatsu36-editorial-experience-pass.md` 为准。
 
@@ -864,9 +864,9 @@ package.json
 7. **已完成**：执行桌面与 390px 的八张固定截图、console、overflow、键盘、深链及 back/forward 复测；截图保存于 `docs/qa/komatsu36-rc08/`，并以 1440×900 本地 preview 复测构建产物；
 8. **已完成**：刷新 Astro / MDX、PostCSS、Tina 编辑器依赖并将 Tina CLI / runtime 留在 `devDependencies`；`npm run validate`、`npx tsc --noEmit` 与 `npm audit --omit=dev` 均通过。完整 `npm audit` 的 22 条告警仍属于编辑器开发链，未执行无审查的 `audit fix --force`；
 9. **RC 0.10-A0（已完成）**：Reader Copy 基础设施已改为 generated candidates 与人工 decisions 分离，目录计数派生，action 双维度化；
-10. **RC 0.10-A**：落实 schema 与 leakage gate；补 `remote-call` / `space-account`，ProjectSearch 停止索引 qualification；
-11. **RC 0.10-B**：迁移 18 人、昼夜矩阵、四类分组、Person projectContext / links 与派生 Storylines；Search 切换后删除旧 role / note；
-12. **RC 0.10-C**：按“全量裁决 → 五批修改 → 网站连续通读”处理 Reader Copy；先停止渲染内部 qualification，再只为真正影响理解的项目撰写 `readerNote`；
+10. **RC 0.10-A（已完成）**：落实 schema 与 leakage gate；补 `remote-call` / `space-account`，ProjectSearch 停止索引 qualification；
+11. **RC 0.10-B（已完成）**：迁移 18 人、昼夜矩阵、四类分组、Person projectContext / links 与派生 Storylines；Search 已切换到新字段；
+12. **RC 0.10-C（已完成）**：按“全量裁决 → 五批修改 → 网站连续通读”处理 Reader Copy；停止渲染内部 qualification，完成 52/52 decisions 与 full reader pass；
 13. **RC 0.10-D**：以仲村烧肉 X Post 完成首个 `social` related source 与 Folio SourcePost，插入指定 Event 后；不扩 Event、不加载 widget；
 14. **RC 0.10-E**：重跑完整验证和桌面／390px 编辑体验 QA；完成后再明确检查 `project.status`。当前为 `published`，首页又只筛选 `published` Project，因此合并到部署分支等价于正式发布，不得把 merge 当作无外部影响的代码整理。
 
@@ -912,7 +912,7 @@ Media Pass、交互小修、Visual QA 与 Structural Editorial Audit 已通过�
 | 手动 Source 状态冲突 | controller 已实现 `?track=`；手动选源清除 Event / target，Event selection 删除冗余 track，刷新时 Event 优先 | **Commit B 已完成并复测** |
 | Source Event 浏览范围 | 主 Timeline 是 YT canonical clock，不能承载 SP1 / SP2 的本地时钟 | **Commit D 合同**：使用轻量 per-track Source Event Index；不新增第六 View、route 或多轨 Timeline |
 | Structural Editorial 全量结构审计 | 124 个公开 Event 按 YT 104 / SP1 8 / SP2 12 分布；82 个 `verified`、42 个 `qualified`、16 条 Thread、18 个 Person；逐 Act / 逐 Thread 核对 setup / development / payoff、跨 Track 顺序、限定完整性与 Person 回链 | **RC 0.9 通过**：它不代表 reader-facing copy 终审；记录见 `docs/qa/komatsu36-rc08/EDITORIAL-AUDIT.md` |
-| People 仍是扁平实体索引 | 当前 Person schema 只有 displayName / reading / aliases / role / note；权威 main 已有完整昼夜 cast 与 production credit | **RC 0.10 采纳**：按独立编辑体验规格实现 Cast matrix、participation、projectContext、links 与派生 Storylines；不加头像 |
+| People 仍是扁平实体索引 | 旧 Person schema 只有 displayName / reading / aliases / role / note；权威 main 已有完整昼夜 cast 与 production credit | **RC 0.10 已落实**：按独立编辑体验规格实现 Cast matrix、participation、projectContext、links 与派生 Storylines，并删除旧 role / note；不加头像 |
 | qualification 暴露工程语言 | `TimelineEvent.astro` 自动显示“已复核／有限定”及每条 qualification；`ProjectSearch.astro` 还把 qualification 写入隐藏 `data-search-text`；初次扫描得到 43 个 Event、9 个 Thread 嫌疑项 | **RC 0.10 采纳**：内部 qualification 与 readerNote 分层，Search 与 HTML gate 同步切断；generated candidates 只 flag，人工 decisions 独立保存 |
 | Reader Copy 生成器覆盖风险 | 原生成器直接重写带人工 checkbox / new copy 区的 Markdown；开始裁决后再次运行会丢失劳动 | **RC10-A0 已修正合同与工具**：generated candidates 可重建，decisions YAML 永不由生成器写入；两者连续运行 hash 已验证稳定 |
 | Space 参与身份不能压平 | 室元気只与账号出现有关，内田修一通过 LINE 电话加入；两者都写成 `space-guest` 会制造本人上麦的事实错误 | **RC10-A/B 强约束**：增加 `space-account` / `remote-call`；People 分组改为 `X SPACE / REMOTE` |

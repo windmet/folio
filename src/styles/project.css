@@ -1391,14 +1391,6 @@ project-archive-shell {
   font-size: 10px !important;
 }
 
-.person-role {
-  margin-top: 25px;
-  padding: 12px;
-  border-left: 2px solid var(--archive-red);
-  background: var(--archive-red-soft);
-  color: #674a45 !important;
-}
-
 .person-aliases span {
   display: block;
   color: #9a9184;

@@ -29,6 +29,6 @@ const participationLabels = participation.map((item: any) => {
   <span class="person-card__chips" aria-label="本项目参与方式">
     {participationLabels.map((label: string) => <span>{label}</span>)}
   </span>
-  <p>{person.data.projectContext || person.data.note || person.data.role || '本项目相关人物'}</p>
+  <p>{person.data.projectContext || '本项目相关人物'}</p>
   <strong>{eventCount} 个相关节点 →</strong>
 </button>

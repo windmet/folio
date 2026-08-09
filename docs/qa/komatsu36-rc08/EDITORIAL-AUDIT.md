@@ -20,7 +20,7 @@ Structural Editorial Audit 已完成。当前没有发现 Event、Thread、Perso
 | publication status | 82 `verified` / 42 `qualified` | 42 个 `qualified` Event 均有 qualification；无公开 `withheld` Event 被 Thread 引用 |
 | Thread | 16 | 每条 Thread 都有 `setup` 与 `payoff`；节点引用完整 |
 | 跨 Track Thread | 7 | `birthday-payback`、`muro-account`、`ore-shiri-making-of`、`rom-rule`、`shugo-yakiniku`、`space-technical-hell`、`uchida-line-call` |
-| Person | 18 | 每个 Person 都被至少一个 Event 引用，具备 display name、reading、alias、role 与 note |
+| Person | 18 | 每个 Person 都被至少一个 Event 引用，具备 display name、reading、alias、projectContext 与 participation |
 
 ## 编辑审计要点
 
@@ -48,6 +48,14 @@ Structural Editorial Audit 已完成。当前没有发现 Event、Thread、Perso
 - 在 Storylines 视图点击底部 Thread 触发器，触发器自动定位到页面下方（关闭前记录 `scrollY=3608.2756`）；打开详情时 body 进入锁定态，关闭后恢复到 `scrollY=3608.2756`，没有从页面顶部重新滚动回当前位置；
 - 从 `event=sp2-011242-uchida-connected` 手动切换 YT 后，URL 清除旧 Event，回到 `?view=timeline`，播放器显示“选择时间节点开始定位”；在 SP2 上展开“浏览事件”时，12 个 SP2 节点可见，YT 的 104 个与 SP1 的 8 个列表保持隐藏。点击 SP2 节点后恢复 `event=sp2-000003-finally-vertical` 深链与 `TARGET · 00:00:03`；随后手动切 SP1，URL 变为 `?view=timeline&track=space-1`，并显示 `NO TARGET SELECTED`，没有残留旧 Event；
 - YouTube iframe 本轮可载入（页面出现 1 个 iframe），但这只证明播放器壳/iframe 载入，不提升为真实音频连续播放、长时稳定性或 Release Gate 的 production media 证据。
+
+## RC 0.10 Reader Copy / People 复测（2026-08-09）
+
+- Reader Copy 三遍法的候选裁决已完成：43 个 Event、9 条 Thread，共 52/52 decisions；`npm run validate:reader-copy` 通过，rewrite 条目均有替换文案，当前没有 readerNote，因此没有把内部限定机械复制到读者侧；`full reader pass: complete`。
+- 对 124 个 Event、16 条 Thread、18 个 Person 的读者字段（title / summary / deck / body / projectContext 等）进行全量工程词扫描，命中 0；构建 HTML 不含 Event qualification、`transcriptPolicy`、SRT 或内部状态文案。搜索索引只使用标题、摘要和人物，不再写入 Event tags / qualification / readerNote。
+- 保持 `127.0.0.1:4321` 不重启进行真实路由核验：桌面 Timeline 无页面横向溢出，`setup` 搜索返回 0 条、`章鱼烧` 返回 8 条；390px People 视图显示 6 行 Cast、Cast 表格在自身容器内滚动且页面无横向溢出；室元気 Person panel 可见 2 条 Related Storylines，面板自身无横向溢出。
+- 18 个 Person 的旧 `role` / `note` 字段已删除；最终 People 页面回归确认没有旧 `.person-role` 节点，People / Cast 仍可在桌面与 390px 正常渲染。
+- 浏览器应用层 error/warning 为 0；本地 Vite 注入的 `__SERVER_FORWARD_CONSOLE__` ReferenceError 仅属于开发服务器 instrumentation，不计为专题运行时错误。上述检查不提升为真实音频连续播放或 X Space 可用性证据。
 
 ## Release Gate
 

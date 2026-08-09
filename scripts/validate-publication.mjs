@@ -59,6 +59,7 @@ const forbiddenPublicationMarkers = [
   ['process archive filename', /小松昌平生日会流程-所有对话存档/i],
   ['subtitle filename', /(?:^|[\s"'=\/\\])[^\s"'=<>]*\.(?:srt|vtt)(?:[\s"'<>]|$)/i],
   ['internal publication status label', /(?:已复核|有限定)/],
+  ['internal transcript policy', /transcriptPolicy\s*:/i],
 ];
 
 for (const [label, pattern] of forbiddenPublicationMarkers) {
@@ -85,7 +86,7 @@ for (const required of [
   'data-source-browse="space-2"',
   'data-source-event-index',
   'data-player-current',
-  'transcriptPolicy: private',
+  '逐字稿暂不公开',
 ]) {
   if (!html.includes(required)) errors.push(`published HTML is missing required public marker: ${required}`);
 }

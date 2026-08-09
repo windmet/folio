@@ -29,9 +29,7 @@ const formatTime = (milliseconds: number) => {
         <span class="archive-kicker">PEOPLE INDEX</span>
         <h2>{person.data.displayName}</h2>
         {person.data.reading && <p class="person-reading">{person.data.reading}</p>}
-        {person.data.role && <p class="person-role">{person.data.role}</p>}
         {person.data.projectContext && <p class="person-context">{person.data.projectContext}</p>}
-        {!person.data.projectContext && person.data.note && <p>{person.data.note}</p>}
         {(person.data.participation || []).length > 0 && (
           <div class="person-participation" aria-label="本项目参与方式">
             {person.data.participation.map((item: any) => (

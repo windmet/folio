@@ -3,8 +3,6 @@
   "displayName": "寺島惇太",
   "reading": "てらしま じゅんた",
   "aliases": ["惇太"],
-  "role": "昼场武市半平太／现场来宾",
-  "note": "带来三选二生日券和 Big Dream，也参与《俺知》动作复盘与 Bingo。",
   "projectContext": "《俺知》昼场饰演武市半平太；他带来三选二生日券和 Big Dream，并参与动作复盘与 Bingo。",
   "participation": [
     { "kind": "ore-shiri-cast", "character": "武市半平太", "sessions": ["day"] },

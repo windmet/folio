@@ -1,6 +1,6 @@
 # Komatsu36 RC 0.10 编辑体验实施规格
 
-> 状态：RC10-A0 COMPLETE；READY FOR RC10-A SCHEMA + LEAKAGE GATE
+> 状态：RC10-A / B / C COMPLETE；READY FOR RC10-D EXTERNAL CONTEXT + RC10-E ACCEPTANCE
 > 阶段：RC 0.10 — Reader & Entity Editorial Pass
 > 前置结论：RC 0.9 完成的是 Structural Editorial Audit，不是读者文案终审。
 > 范围冻结：不新增 Event，不开放 Transcript / Evidence / Chat，不增加播放器能力，不重开 X Space 私有链路调查。
@@ -92,7 +92,7 @@ links: Array<{
 - `space-guest` 只表示本人实际上麦；内田修一使用 `remote-call`，室元気只使用 `space-account`，不得把账号出现升级为本人参加；
 - `projectContext` 只讲此人在本场中的作用，不写通用履历；
 - `links` 只收本人、事务所或项目官方入口，链接真实性需逐条核对；缺链接允许为空；
-- `role` / `note` 只在 RC10-A schema 兼容期保持 optional；18 人、UI 与 Search 全部迁移完成后，在 RC10-B 同一阶段删除，不能长期形成第二份人物真值；
+- 旧 `role` / `note` 已在 RC10-B 完成迁移后删除；项目语境只保留 `projectContext`，参与关系只保留 `participation`，不能形成第二份人物真值；
 - 链接核验记录写入 `docs/editorial/komatsu36-people-link-audit.md`，不把 `verifiedAt` 等审计字段塞进 Person JSON；
 - 不增加头像、生日、事务所历史、代表作等百科字段。
 
@@ -225,6 +225,7 @@ RC 0.10 完成前新增只读检查：
 - 读者可见 Event/Thread 文案不得出现已列出的工程标记，允许项必须在小型 allowlist 中写明理由；
 - `readerNote` 仅出现在 `qualified` Event；若未来需要 verified Event 注记，应先修改合同；
 - decisions 覆盖全部当前候选且无 stale ID，不能用生成器运行成功代替编辑完成；
+- `npm run validate:reader-copy` 检查每个生成候选都有完整 action；rewrite 必须提供替换文案，readerNote 只能由 qualified Event 使用；
 - `full reader pass: complete` 被追加到 RC 0.10 QA 记录。
 
 ## 5. External Context Pass
@@ -305,9 +306,9 @@ RC 0.10 不加载 `widgets.js`。X 官方文档确认 Embedded Posts 可通过 m
 ## 6. 实施顺序与提交边界
 
 1. `RC10-A0 editorial infrastructure`（已完成）：generated candidates 与 decisions 分离、目录计数派生、双维度 action、stale/非法 decision 检查；未改页面；
-2. `RC10-A schema + leakage gate`：Person participation（含 remote-call / space-account）、`readerNote`、social Source 与 Thread relation；ProjectSearch 停止索引 qualification；补 validator / publication fixture；
-3. `RC10-B people`：迁移 18 人、Cast matrix、分组、Person panel Storylines 与 link audit；Search 切到新字段；完成后删除旧 role / note；
-4. `RC10-C copy batches`：按三遍法处理 decisions；先停止渲染内部 qualification，再只为真正影响理解的项目撰写 readerNote；
+2. `RC10-A schema + leakage gate`（已完成）：Person participation（含 remote-call / space-account）、`readerNote`、social Source 与 Thread relation；ProjectSearch 停止索引 qualification；补 validator / publication fixture；
+3. `RC10-B people`（已完成）：迁移 18 人、Cast matrix、分组、Person panel Storylines 与 link audit；Search 切到新字段；旧 role / note 已删除；
+4. `RC10-C copy batches`（已完成）：按三遍法处理 52 个 decisions；停止渲染内部 qualification，完成脱离关键词的全量 reader pass；
 5. `RC10-D external context`：只迁移仲村 X source 和插入正确节点间的 SourcePost；时序未核实时使用“同日”；
 6. `RC10-E acceptance`：build、validator、桌面/390px、console、overflow、键盘、深链、full reader pass 和发布 HTML 泄漏检查；
 7. 完成后再恢复 Release Gate，确认 `status: published`、production URL 与 merge/deploy 意图。

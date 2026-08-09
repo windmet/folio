@@ -7,8 +7,8 @@ const { lanes } = Astro.props;
 ---
 
 {lanes.length > 0 && (
-  <aside class="concurrent-lanes" aria-label="同期轨道提示">
-    <span>CONCURRENT LANES</span>
+  <aside class="concurrent-lanes" aria-label="同时发生提示">
+    <span>HAPPENING IN PARALLEL</span>
     <ul>
       {lanes.map((lane) => (
         <li>
@@ -17,6 +17,6 @@ const { lanes } = Astro.props;
         </li>
       ))}
     </ul>
-    <small>仅表示已确认的并发关系，不用于换算跨平台时间。</small>
+    <small>这里表示两个现场在同一段时间发生，不把它们的时钟强行对齐。</small>
   </aside>
 )}
