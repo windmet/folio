@@ -15,8 +15,8 @@
 ```text
 RC 0.11                         REVIEW BRANCH ACCEPTANCE COMPLETE
 RC12-A/B/C/D/F2                 SOURCE-VERIFIED + BROWSER-VERIFIED
-RC12-E E1–E3                    SOURCE-VERIFIED + BROWSER-VERIFIED
-RC12 product acceptance          REJECTED / CORRECTION REQUIRED
+RC12-E E1–E5                    SOURCE-VERIFIED + BROWSER-VERIFIED
+RC12 product acceptance          PRODUCT REVIEW PENDING
 RC12 release readiness           NOT REACHED
 Release Gate                     CLOSED
 ```
@@ -33,7 +33,7 @@ Release Gate                     CLOSED
 | People 单列卡 | 无 overflow，但桌面空间利用率与扫读效率下降 | `REJECTED ON DESKTOP` | RC12-C2：桌面横向高密度；移动投影保留 |
 | Cast projection | 已有 table 与窄投影，工程压力测试无 overflow | `REVISE` | RC12-C2：明确 wide / medium / mobile 三档，不以横滚完成 |
 | Source pictograms | RC12-D2 已重做 X Space 声场图标与 Source card 三层信息层级，并完成桌面／移动 Browser QA | `F2 VERIFIED, USER REVIEW ACKNOWLEDGED` | 保留文字、外链、`?track=` 与 Source Event Index 合同 |
-| Source-scoped Timeline | E1–E3 已实现：三 scope、source-local Event projection、native clock、URL/history、external no-iframe | `SOURCE-VERIFIED + BROWSER-VERIFIED` | E4/E5 视觉收尾与产品停点仍待完成，不得提前标记整体接受 |
+| Source-scoped Timeline | E1–E5 已实现并完成工程／本地真实 Browser 回归：三 scope、source-local Event projection、native clock、URL/history、键盘、focus restore、390px、external no-iframe | `SOURCE-VERIFIED + BROWSER-VERIFIED` | 产品人工停点仍待完成，不得提前标记整体接受 |
 
 `SOURCE-VERIFIED`、`BROWSER-VERIFIED` 与 `PRODUCT-ACCEPTED` 必须继续分开。此前压力矩阵证明“没有溢出和交互回归”，不能推导“桌面形态好用”。
 
@@ -48,7 +48,7 @@ RC12-B2  Remaining expandable text coverage
   ↓ 人工停点 C2/D2/B2
 RC12-F2  Full regression and corrected handoff
 
-RC12-E E1–E3 目前已启动并完成第一版；E4/E5 只能按独立小批次继续，不能回头混改 A2/C2/D2/B2。
+RC12-E E1–E5 已完成工程与本地真实 Browser 批次；产品人工停点仍独立保留，不能回头混改 A2/C2/D2/B2。
 ```
 
 不得把四批合成一次“大改一切”。每批独立：读取本节合同 → 改最小文件面 → 自动门禁 → 真实路由 Browser QA → 截止点记录 → scoped commit。上一批存在产品方向疑问时停止，不用下一批的 CSS 顺手掩盖。
@@ -166,7 +166,7 @@ People 数据、分组、Lead Person、Person panel 与四类 participation 不�
 
 默认 clamp；只有实际 overflow 才显示“展开”；展开后显示全文并可“收起”。桌面 `title`／tooltip 只能作为增强，touch、keyboard 和移动端必须有可点击全文入口。Timeline Navigator 小 segment 可以继续截断，但其当前章节 header 必须提供完整标题。
 
-## 7. RC12-E — Source-scoped Timeline（E1–E3 已落地，E4/E5 待收尾）
+## 7. RC12-E — Source-scoped Timeline（E1–E5 工程／Browser 已落地，产品停点待确认）
 
 本次审阅确认它值得正式保留，但不强行并入视觉返工。其合同仍是 Timeline scope switch：YouTube 主线／X Space ①／X Space ②，各自使用 source-local clock 和 Event list；不得把三条来源混成伪统一时间轴。
 
@@ -218,7 +218,7 @@ Browser 必须检查真实 `/projects/komatsu36/` 构建预览，而不是只看
 
 1. 读取本文全文，再读目标批次对应的旧实现与 QA；
 2. 核对 `git branch --show-current`、`git rev-parse HEAD`、`git status --short`；
-3. 当前 F2 已完成，RC12-E E1–E3 已落地；后续只能按 E4/E5 小批次继续，不得回头混改 A2/C2/D2/B2；
+3. 当前 F2 已完成，RC12-E E1–E5 工程／Browser 批次已落地；后续只处理产品停点明确的修正，不得回头混改 A2/C2/D2/B2；
 4. 在动代码前写下本批“不改变”的状态／数据／URL 合同；
 5. 完成后同时给出 source、browser、product 三种状态，不能用一个 `PASS` 混写；
 6. F2 之后不得自行宣布生产接受或打开 Release Gate；真实媒体、长时 soak 与生产授权仍需独立证据和用户授权。
@@ -231,11 +231,11 @@ F2 交接与精确证据见 `docs/editorial/komatsu36-rc12-f2-final-regression-h
 
 为避免上述 TODO 被后续构建改动静默破坏，`scripts/validate-publication.mjs` 已加入 B2 静态契约：dist 必须输出 12 个唯一 expandable title target（3 Source、1 Timeline current、8 Act），并为每个 target 输出唯一、初始隐藏、`aria-expanded="false"` 且 `aria-controls` 指向真实 DOM id 的 inline toggle。该检查属于 `SOURCE-VERIFIED` 门禁，不会把没有真实长标题点击样本的 Act／Timeline 分支升级为 `BROWSER-VERIFIED`。
 
-## 13. RC12-E E1–E3 第一版实现
+## 13. RC12-E E1–E3 第一版实现（历史记录）
 
 用户此前的“继续吧”作为下一批范围确认后，RC12-E 已启动 E1–E3：Timeline scope switch 输出 YT／SP1／SP2 三个来源；YT 继续使用 8 Act／104 Event 主线；SP1／SP2 各自使用 native-clock Event projection（8／12 Event）；scope、Event、URL/history、external no-iframe 与 390px overflow 已通过源码与 Browser 验证。
 
-精确矩阵见 `docs/qa/komatsu36-rc12/e/README.md`。E4 最终视觉收尾和 E5 完整 handoff 尚未完成；本批不把 E1–E3 证据升级为 `PRODUCT-ACCEPTED`，也不改变 Release Gate CLOSED、真实媒体和生产未执行边界。
+本节只保留 E1–E3 的第一版实现历史；当前 E1–E5 完整矩阵与 E4/E5 回归证据见 `docs/qa/komatsu36-rc12/e/E5-HANDOFF.md`。工程／Browser 证据不升级为 `PRODUCT-ACCEPTED`，Release Gate、真实媒体和生产边界仍按第 14 节执行。
 
 ## 14. RC12-E E4/E5 工程回归交接
 

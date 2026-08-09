@@ -47,7 +47,7 @@ node scripts/verify-rc12-e-browser.mjs   PASS
 ## 未执行与产品停点
 
 - `NOT EXECUTED`：真实 YouTube／X Space 播放、真实音频、长时 soak、生产 origin、生产部署和 Release Gate。
-- `NOT EXECUTED`：E4 最终视觉收尾与 E5 完整 handoff；本 README 只覆盖 E1–E3 第一版。
+- 本 README 只覆盖 E1–E3 第一版；E4/E5 完整工程／Browser handoff 见同目录 `E5-HANDOFF.md`。
 - 本地 Browser surface 的 `press`／CUA keypress 仍只完成聚焦；但真实 Playwright Chromium 已完成 Enter／Space 消费回归，故不再把键盘行为标为未验证。两者差异仅作为工具边界记录，不作为产品错误证据。
 - 工程与 Browser 证据不自动升级为 `PRODUCT-ACCEPTED`；需要用户在桌面与 390px 人工复核 scope 的信息层级、时间语义和事件密度。
 - 不把 Source Event Index 或 Source card 能力替代为 RC12-E；三条来源仍必须保持各自 native local clock。
