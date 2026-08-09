@@ -22,7 +22,7 @@
 - 依赖安全边界已收口：Astro `7.2.0`、MDX `7.0.5`、PostCSS `8.5.26` 等保留在构建依赖面；Tina CLI / runtime 只用于编辑器命令，已移入 `devDependencies`，`public/admin/` 继续忽略。2026-08-09 `npm audit --omit=dev` 为 0 vulnerabilities；完整 audit 的剩余项属于 Tina/GraphQL 等 dev-only 工具链，不执行无审查的 `audit fix --force`；
 - 首页已增加独立“专题档案”书架，只消费 `status: published` 的 Project，并显示由 collection 实时派生的 Event／Thread／Track 数量；专题不混入四类普通文章筛选；
 - 当前实现已完成 RC Media Pass：Hero 下方有常驻三来源栏，播放器有 Source Switcher，SP1/SP2 是 `video + external`，支持 `?track=`、Event 优先、Source Event Index、canonical Space CTA 与 provenance 链接；固定截图、本地 preview QA 与 RC 0.9 Structural Editorial Audit 已完成。该审计证明结构、关系、顺序与限定没有漏项，不等于读者文案已经终审；
-- 当前仍未完成：RC 0.10 Reader & Entity Editorial Pass，以及其后的 Release Gate。详细合同见 `docs/editorial/komatsu36-editorial-experience-pass.md`，自动筛查／人工决策队列见 `docs/editorial/komatsu36-reader-copy-queue.md`。八张既有截图保存于 `docs/qa/komatsu36-rc08/`，结构性审计见 `docs/qa/komatsu36-rc08/EDITORIAL-AUDIT.md`；源档中的词级、商品、speaker、画面和账号身份 TODO 仍保持原边界，不得在后续编辑中猜测补齐。项目特例 validator 拆分延后到第二个 Project 接入前；Transcript 与 Evidence 是明确延后项，不阻塞 v1。不得因 16 条 Thread 已出现而误报为完整 Folio 愿景已经完成；
+- 当前仍未完成：RC 0.10 Reader & Entity Editorial Pass，以及其后的 Release Gate。详细合同见 `docs/editorial/komatsu36-editorial-experience-pass.md`；自动候选写入 `docs/editorial/komatsu36-reader-copy-candidates.generated.md`，人工真值只写入 `docs/editorial/komatsu36-reader-copy-decisions.yml`，生成器不得覆盖后者。八张既有截图保存于 `docs/qa/komatsu36-rc08/`，结构性审计见 `docs/qa/komatsu36-rc08/EDITORIAL-AUDIT.md`；源档中的词级、商品、speaker、画面和账号身份 TODO 仍保持原边界，不得在后续编辑中猜测补齐。项目特例 validator 拆分延后到第二个 Project 接入前；Transcript 与 Evidence 是明确延后项，不阻塞 v1。不得因 16 条 Thread 已出现而误报为完整 Folio 愿景已经完成；
 - X Space inline replay 调查对本 RC 正式关闭：`STATUS: CLOSED FOR RC`，`RESULT: unavailable through verified public integration`，`FALLBACK: first-class external source`。除非 X 的公开产品能力发生变化并可对具体 URL 复测，否则不再调查 GraphQL 私有字段、内部 HLS、临时 token、Periscope 私有 endpoint 或 `media_key` 变换。
 
 上述数字是当前仓库快照，新增内容后必须以验证器和实际文件计数更新，不作为永久常量。
@@ -683,13 +683,15 @@ Tina 集成作为后续独立任务，只管理 Project 摘要、精选顺序等
 
 ### Phase 2.6：RC 0.10 Reader & Entity Editorial Pass（待实施）
 
-- Cast / People：以 canonical `main` 的 cast / staff 表为依据呈现角色 × 昼夜矩阵、production/action、主直播参与者和 Space guest；Person 只增加项目语境、参与结构与官方链接，不扩成百科，不引入头像；
+- A0 Editorial Infrastructure（已完成）：自动生成的 candidates 与人工 decisions 分离；计数从目录派生，正文动作与 reader-note 动作分开，非法或 stale decision 失败；
+- Cast / People：以 canonical `main` 的 cast / staff 表为依据呈现角色 × 昼夜矩阵、production/action、主直播参与者和 `X SPACE / REMOTE`；participation 区分 `space-guest`、`remote-call` 与 `space-account`，避免把室账号或内田电话错误描述为普通 Space guest；Person 只增加项目语境、参与结构与官方链接，不扩成百科，不引入头像；
 - Reader Copy：保留 `publicationStatus` 与 `qualification` 供 editor / validator 使用，增加可选 `readerNote`；普通读者不再看到“已复核／有限定”或内部 qualification 的机械输出；
-- 运行 `npm run editorial:reader-copy` 扫描 124 Event 与 16 Thread，只生成嫌疑项队列，不自动改写。最终目标是 0 个不必要的工程说明，而不是 0 个 `qualified` Event；
-- External Context：首版只接仲村宗悟 2026-04-14 烧肉 X Post，以 `social` Source + Thread `relatedSources` + Folio `SourcePost` 呈现编辑摘要与原帖直链；它不是 Event，不加载官方 widget，不复制完整 Post；
+- ProjectSearch 同步停止把 qualification 写入 `data-search-text`，`validate:publication` 增加内部限定泄漏 fixture；People Search 在迁移后只使用新字段；
+- 运行 `npm run editorial:reader-copy` 扫描实际目录中的全部 Event 与 Thread，只重建 generated candidates，不自动改写，也不写 decisions。最终目标是 0 个不必要的工程说明，而不是 0 个 `qualified` Event；
+- External Context：首版只接仲村宗悟 2026-04-14 烧肉 X Post，以 `social` Source + Thread `relatedSources` + Folio `SourcePost` 呈现编辑摘要与原帖直链；它不是 Event，不加载官方 widget，不复制完整 Post。绝对时序未核实前只使用“同日”，不写“离开后／几分钟后”；
 - 具体 schema、validator、UI、分批编辑和验收合同以 `docs/editorial/komatsu36-editorial-experience-pass.md` 为准。
 
-退出条件：People 首屏能解释昼夜 cast 与四类参与关系；Person panel 可看到相关 Storylines；读者 HTML 不含内部 qualification；Reader Copy Queue 全部有人工作出的裁决；首个外部来源卡位置和降级行为通过桌面／390px QA。完成前不进入 Release Gate。
+退出条件：People 首屏能解释昼夜 cast 与四类参与关系；Person panel 可看到按主 Storylines 同一规则排序的相关 Storylines；读者 HTML 不含内部 qualification；Reader Copy decisions 覆盖全部候选且完成脱离关键词的 full reader pass；首个外部来源卡插入正确 Event 节点之间并通过桌面／390px QA。完成前不进入 Release Gate。
 
 ### Phase 3：跨平台与 Transcript
 
@@ -861,10 +863,12 @@ package.json
 6. **RC 0.9 已完成**：执行 Structural Editorial Audit；逐 Act 检查标题、summary、密度、入点和 qualification 是否完整，逐 Thread 检查 setup / development / payoff、transition、跨平台顺序及推断边界，抽查 People 别名、reading、role 与回链。它证明结构正确，不证明 reader-facing copy 已终审；记录见 `docs/qa/komatsu36-rc08/EDITORIAL-AUDIT.md`；
 7. **已完成**：执行桌面与 390px 的八张固定截图、console、overflow、键盘、深链及 back/forward 复测；截图保存于 `docs/qa/komatsu36-rc08/`，并以 1440×900 本地 preview 复测构建产物；
 8. **已完成**：刷新 Astro / MDX、PostCSS、Tina 编辑器依赖并将 Tina CLI / runtime 留在 `devDependencies`；`npm run validate`、`npx tsc --noEmit` 与 `npm audit --omit=dev` 均通过。完整 `npm audit` 的 22 条告警仍属于编辑器开发链，未执行无审查的 `audit fix --force`；
-9. **RC 0.10-A～B**：落实 Cast / People schema、昼夜矩阵、四类分组、Person projectContext / links 与派生 Storylines；
-10. **RC 0.10-C**：运行并逐批处理 Reader Copy Queue；先停止渲染内部 qualification，再只为真正影响理解的项目撰写 `readerNote`；
-11. **RC 0.10-D**：以仲村烧肉 X Post 完成首个 `social` related source 与 Folio SourcePost，不扩 Event、不加载 widget；
-12. **RC 0.10-E**：重跑完整验证和桌面／390px 编辑体验 QA；完成后再明确检查 `project.status`。当前为 `published`，首页又只筛选 `published` Project，因此合并到部署分支等价于正式发布，不得把 merge 当作无外部影响的代码整理。
+9. **RC 0.10-A0（已完成）**：Reader Copy 基础设施已改为 generated candidates 与人工 decisions 分离，目录计数派生，action 双维度化；
+10. **RC 0.10-A**：落实 schema 与 leakage gate；补 `remote-call` / `space-account`，ProjectSearch 停止索引 qualification；
+11. **RC 0.10-B**：迁移 18 人、昼夜矩阵、四类分组、Person projectContext / links 与派生 Storylines；Search 切换后删除旧 role / note；
+12. **RC 0.10-C**：按“全量裁决 → 五批修改 → 网站连续通读”处理 Reader Copy；先停止渲染内部 qualification，再只为真正影响理解的项目撰写 `readerNote`；
+13. **RC 0.10-D**：以仲村烧肉 X Post 完成首个 `social` related source 与 Folio SourcePost，插入指定 Event 后；不扩 Event、不加载 widget；
+14. **RC 0.10-E**：重跑完整验证和桌面／390px 编辑体验 QA；完成后再明确检查 `project.status`。当前为 `published`，首页又只筛选 `published` Project，因此合并到部署分支等价于正式发布，不得把 merge 当作无外部影响的代码整理。
 
 通用 validator 与 komatsu36 fixture 的分层不再列入本次 Release Blocker：通用层最终只校验 schema、关系、时间、隐私和确定性排序；`8 Acts`、manifest ARC 数与小松专属 publication assertions 留在项目 fixture，但该工作延后到第二个 Project 接入前完成。
 
@@ -878,7 +882,7 @@ Media Pass、交互小修、Visual QA 与 Structural Editorial Audit 已通过�
 | dialog focus containment | **已完成并复测**；背景不可 Tab、焦点循环、Esc 与 restore 均通过 |
 | 构建与生产依赖安全 | **本地与 CI 均有门禁**；`npm ci` 后执行 `npm audit --omit=dev`（当前为 0 vulnerabilities）与 `npm exec -- tsc --noEmit`；`npm run validate` 通过，完整 audit 的 dev-only 告警不作为生产站点漏洞接受 |
 | Cast / People 信息架构 | **RC 0.10 待实施**；角色 × 昼夜矩阵、参与分组、Person 项目语境和 Related Storylines 通过桌面／390px 验收 |
-| Reader-facing copy | **RC 0.10 待实施**；内部 qualification 不进入读者 HTML，人工队列全部裁决，必要的不确定性改写为自然语言 readerNote |
+| Reader-facing copy | **RC 0.10 待实施**；内部 qualification 不进入读者 HTML，generated candidates 对应的人工 decisions 全部裁决，必要的不确定性改写为自然语言 readerNote |
 | External context 首样本 | **RC 0.10 待实施**；仲村烧肉 Post 作为 related source 插入 Thread，使用编辑摘要＋原帖直链，不成为 Event 或静态 Post 镜像 |
 
 上述工程与媒体 Blocker 已完成；RC 0.10 是发布前最后一个有界编辑阶段。完成后才只剩明确的 Release Gate，不再增加产品能力。
@@ -909,8 +913,12 @@ Media Pass、交互小修、Visual QA 与 Structural Editorial Audit 已通过�
 | Source Event 浏览范围 | 主 Timeline 是 YT canonical clock，不能承载 SP1 / SP2 的本地时钟 | **Commit D 合同**：使用轻量 per-track Source Event Index；不新增第六 View、route 或多轨 Timeline |
 | Structural Editorial 全量结构审计 | 124 个公开 Event 按 YT 104 / SP1 8 / SP2 12 分布；82 个 `verified`、42 个 `qualified`、16 条 Thread、18 个 Person；逐 Act / 逐 Thread 核对 setup / development / payoff、跨 Track 顺序、限定完整性与 Person 回链 | **RC 0.9 通过**：它不代表 reader-facing copy 终审；记录见 `docs/qa/komatsu36-rc08/EDITORIAL-AUDIT.md` |
 | People 仍是扁平实体索引 | 当前 Person schema 只有 displayName / reading / aliases / role / note；权威 main 已有完整昼夜 cast 与 production credit | **RC 0.10 采纳**：按独立编辑体验规格实现 Cast matrix、participation、projectContext、links 与派生 Storylines；不加头像 |
-| qualification 暴露工程语言 | `TimelineEvent.astro` 自动显示“已复核／有限定”及每条 qualification；初次扫描得到 43 个 Event、9 个 Thread 嫌疑项 | **RC 0.10 采纳**：内部 qualification 与 readerNote 分层；队列只 flag，不自动改写 |
+| qualification 暴露工程语言 | `TimelineEvent.astro` 自动显示“已复核／有限定”及每条 qualification；`ProjectSearch.astro` 还把 qualification 写入隐藏 `data-search-text`；初次扫描得到 43 个 Event、9 个 Thread 嫌疑项 | **RC 0.10 采纳**：内部 qualification 与 readerNote 分层，Search 与 HTML gate 同步切断；generated candidates 只 flag，人工 decisions 独立保存 |
+| Reader Copy 生成器覆盖风险 | 原生成器直接重写带人工 checkbox / new copy 区的 Markdown；开始裁决后再次运行会丢失劳动 | **RC10-A0 已修正合同与工具**：generated candidates 可重建，decisions YAML 永不由生成器写入；两者连续运行 hash 已验证稳定 |
+| Space 参与身份不能压平 | 室元気只与账号出现有关，内田修一通过 LINE 电话加入；两者都写成 `space-guest` 会制造本人上麦的事实错误 | **RC10-A/B 强约束**：增加 `space-account` / `remote-call`；People 分组改为 `X SPACE / REMOTE` |
+| Related Storylines 排序真值 | 当前没有 Thread `order`；主视图实际使用 `featured desc → title zh-CN` | **不新增 order**：Person panel 复用主视图唯一排序，不制造第二套顺序 |
 | 仲村烧肉场外余波 | X 官方 oEmbed 于 2026-08-09 确认 `ShugoAbc/status/2044004452907266061` 的作者、日期及烧肉语境；该材料没有 Track 原生时钟 | **作为 related source 采纳**：不是 Event；默认编辑摘要＋直链，不复制完整 Post、不加载 widget |
+| 仲村 Post 的“之后”措辞 | oEmbed 只证明同日；status Post 创建时间不是 Space `started_at`。yt-dlp 当前将 `started_at` 映射为 `release_timestamp`，X Snowflake 可解码 Post 创建时刻 | **RC10-D 增强核验，不阻塞 schema**：核验前只写“同日”；按 started_at + local clock 与 Snowflake 时间计算 delta 后再批准“几分钟后／同晚稍后” |
 | 浏览器 Release QA | 1440×900 与 390×844 的八张真实路由截图已保存于 `docs/qa/komatsu36-rc08/`；三 Source 可见、无横向 overflow；console 0 error；Event / `?track=` / back-forward、Source Event Index、Thread / Person inert 与 focus trap 已实测；4322 preview 构建复测通过；候选 `megazine-blog.pages.dev` 的本轮 production 探测返回 `net::ERR_CONNECTION_CLOSED`，未取得 production 证据 | **本轮通过**：本地 QA 已完成；production 仍需在可达环境复测并确认发布意图 |
 
 本表中的“已采纳”表示指导与仓库/媒体证据一致；“有条件采纳”表示方向可行但尚未满足发布前提。它不把本地持有媒体、文件后缀或可播放样本等同于公开托管授权与生产可用性。

@@ -7,7 +7,7 @@
 
 Structural Editorial Audit 已完成。当前没有发现 Event、Thread、Person 关系错误、跨 Track 顺序错误或内部限定缺失；这证明发布数据结构可进入下一阶段，不等于 reader-facing copy 已经终审，也不再直接进入 Release Gate。
 
-2026-08-09 的后续网页审阅确认：当前 People 更接近实体索引，`TimelineEvent` 又会把 `publicationStatus` 与 `qualification` 自动暴露给读者。因此新增 RC 0.10 Reader & Entity Editorial Pass，合同见 `docs/editorial/komatsu36-editorial-experience-pass.md`，嫌疑项队列见 `docs/editorial/komatsu36-reader-copy-queue.md`。
+2026-08-09 的后续网页审阅确认：当前 People 更接近实体索引，`TimelineEvent` 会把 `publicationStatus` 与 `qualification` 自动暴露给读者，`ProjectSearch` 还会把 qualification 写入隐藏搜索 HTML。因此新增 RC 0.10 Reader & Entity Editorial Pass，合同见 `docs/editorial/komatsu36-editorial-experience-pass.md`；自动候选与人工裁决分别见 `docs/editorial/komatsu36-reader-copy-candidates.generated.md`、`docs/editorial/komatsu36-reader-copy-decisions.yml`。
 
 这不是“逐字稿全部封板”的声明。源档仍保留词级、人名 speaker、商品 SKU、画面确认和账号真实身份等 TODO；这些问题在页面中被限定、降级为事件级摘要，或明确不归因，不得在后续编辑中被补写成确定事实。
 

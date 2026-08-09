@@ -10,7 +10,8 @@
 - Visual QA 与编辑审计：`docs/qa/komatsu36-rc08/`
 - 详细合同与剩余 Release Gate：`docs/komatsu36-archive-development.md`
 - RC 0.10 编辑体验规格：`docs/editorial/komatsu36-editorial-experience-pass.md`
-- Reader Copy 人工队列：`docs/editorial/komatsu36-reader-copy-queue.md`
+- Reader Copy 自动候选：`docs/editorial/komatsu36-reader-copy-candidates.generated.md`
+- Reader Copy 人工裁决：`docs/editorial/komatsu36-reader-copy-decisions.yml`
 - Cloudflare Pages provision / 首次部署清单：`docs/cloudflare-pages-release-checklist.md`
 
 ## 本地开发

@@ -1,0 +1,20 @@
+version: 1
+
+# This is the only hand-edited Reader Copy decision ledger.
+# The generated candidates Markdown is disposable and may be rebuilt at any time.
+#
+# Event example:
+# decisions:
+#   yt-000100-stream-start:
+#     copyAction: rewrite # keep | rewrite | listen
+#     readerNoteAction: none # none | add
+#     newSummary: "Approved reader-facing summary"
+#     note: "Why this decision was made"
+#
+# Thread example:
+#   shugo-yakiniku:
+#     copyAction: rewrite
+#     newBody: "Approved reader-facing body"
+#     note: "Remove editorial meta-language"
+
+decisions: {}

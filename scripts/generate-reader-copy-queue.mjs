@@ -4,7 +4,8 @@ import process from 'node:process';
 import YAML from 'yaml';
 
 const projectRoot = path.resolve('src/content/projects/komatsu36');
-const outputPath = path.resolve('docs/editorial/komatsu36-reader-copy-queue.md');
+const outputPath = path.resolve('docs/editorial/komatsu36-reader-copy-candidates.generated.md');
+const decisionsPath = path.resolve('docs/editorial/komatsu36-reader-copy-decisions.yml');
 
 const termGroups = {
   'evidence-language': [
@@ -58,24 +59,24 @@ function block(value) {
 }
 
 const eventDir = path.join(projectRoot, 'events');
-const eventCandidates = fs.readdirSync(eventDir)
+const eventItems = fs.readdirSync(eventDir)
   .filter((name) => name.endsWith('.json'))
   .map((name) => {
     const data = readJson(path.join(eventDir, name));
     const searchable = [data.title, data.summary, data.qualification].filter(Boolean).join('\n');
     const flags = matchesByGroup(searchable);
-    if (data.qualification) flags.unshift('qualification-visible');
+    if (data.qualification) flags.unshift('has-internal-qualification');
     return { id: path.basename(name, '.json'), name, data, flags: [...new Set(flags)] };
   })
-  .filter((item) => item.flags.length > 0)
   .sort((a, b) => (
     (trackOrder.get(a.data.track) ?? 99) - (trackOrder.get(b.data.track) ?? 99)
     || a.data.startMs - b.data.startMs
     || a.id.localeCompare(b.id)
   ));
+const eventCandidates = eventItems.filter((item) => item.flags.length > 0);
 
 const threadDir = path.join(projectRoot, 'threads');
-const threadCandidates = fs.readdirSync(threadDir)
+const threadItems = fs.readdirSync(threadDir)
   .filter((name) => name.endsWith('.md'))
   .sort()
   .map((name) => {
@@ -89,29 +90,54 @@ const threadCandidates = fs.readdirSync(threadDir)
       transitions,
       flags: matchesByGroup(searchable),
     };
-  })
-  .filter((item) => item.flags.length > 0);
+  });
+const threadCandidates = threadItems.filter((item) => item.flags.length > 0);
+
+const decisionDocument = fs.existsSync(decisionsPath)
+  ? YAML.parse(fs.readFileSync(decisionsPath, 'utf8'))
+  : { version: 1, decisions: {} };
+if (decisionDocument?.version !== 1 || !decisionDocument?.decisions || typeof decisionDocument.decisions !== 'object') {
+  throw new Error(`Invalid decisions document: ${decisionsPath}`);
+}
+const decisions = decisionDocument.decisions || {};
+const candidateIds = new Set([...eventCandidates, ...threadCandidates].map((item) => item.id));
+const unknownDecisionIds = Object.keys(decisions).filter((id) => !candidateIds.has(id));
+if (unknownDecisionIds.length > 0) {
+  throw new Error(`Decisions reference non-candidates: ${unknownDecisionIds.join(', ')}`);
+}
+const copyActions = new Set(['keep', 'rewrite', 'listen']);
+const readerNoteActions = new Set(['none', 'add']);
+for (const [id, decision] of Object.entries(decisions)) {
+  if (decision.copyAction && !copyActions.has(decision.copyAction)) {
+    throw new Error(`${id}: invalid copyAction ${decision.copyAction}`);
+  }
+  if (decision.readerNoteAction && !readerNoteActions.has(decision.readerNoteAction)) {
+    throw new Error(`${id}: invalid readerNoteAction ${decision.readerNoteAction}`);
+  }
+}
 
 const project = readJson(path.join(projectRoot, 'project.json'));
 const lines = [
-  '# Komatsu36 Reader Copy Queue',
+  '# Komatsu36 Reader Copy Candidates (Generated)',
   '',
   `内容快照：${project.editorialRevision}`,
   '',
-  '> 本文件是嫌疑项队列，不是事实错误清单，也不授权自动覆盖正文。命中词只表示需要人工判断；编辑者必须选择 keep / rewrite / listen / remove reader note 之一。',
+  '> 本文件完全由脚本生成，禁止在这里填写人工决定。命中词只表示需要人工判断，不代表事实错误。所有决定只写入 `komatsu36-reader-copy-decisions.yml`。',
   '',
   '## 使用合同',
   '',
-  '- 范围：124 个 Event 与 16 条 Thread 的当前发布文案。',
-  '- Event 只要存在 `qualification` 就进入队列，因为当前组件会把它直接显示给读者；其余项目按工程词、证据词和编辑元语言命中。',
+  `- 范围：${eventItems.length} 个 Event 与 ${threadItems.length} 条 Thread 的当前发布文案。`,
+  '- Event 只要存在 `qualification` 就进入候选，因为当前组件会把它直接显示给读者；其余项目按工程词、证据词和编辑元语言命中。',
   '- 不确定性不改变读者理解时，保留内部 `qualification`，读者侧不显示。',
-  '- 不确定性改变人物归属、事件结果或叙事因果时，改写为自然语言 `readerNote`。',
-  '- 本队列不处理 Transcript、Evidence、Chat 原文，也不增加 Event。',
+  '- 不确定性改变人物归属、事件结果或叙事因果时，才新增自然语言 `readerNote`。',
+  '- 本候选集不处理 Transcript、Evidence、Chat 原文，也不增加 Event。',
+  '- `copyAction` 与 `readerNoteAction` 是两个独立维度；正文需要改写不代表必须增加 reader note。',
   '',
   '## 快照',
   '',
   `- Event candidates: ${eventCandidates.length}`,
   `- Thread candidates: ${threadCandidates.length}`,
+  `- Recorded decisions: ${Object.keys(decisions).length}`,
   '- 扫描词组：`evidence-language`、`editorial-meta-language`、`technical-language`；完整词表以生成脚本为准。',
   '',
   '## Event candidates',
@@ -120,8 +146,9 @@ const lines = [
 
 eventCandidates.forEach((item, index) => {
   const number = String(index + 1).padStart(3, '0');
+  const decision = decisions[item.id] || {};
   lines.push(
-    `### [ ] RCOPY-${number} · ${item.id}`,
+    `### RCOPY-${number} · ${item.id}`,
     '',
     `- Track / Time: ${trackLabels.get(item.data.track) || item.data.track} ${item.data.timingStatus === 'approximate' ? '≈' : ''}${formatTime(item.data.startMs)}`,
     `- Status: \`${item.data.publicationStatus}\``,
@@ -140,16 +167,17 @@ eventCandidates.forEach((item, index) => {
     '',
     block(item.data.qualification),
     '',
-    '**EDITOR DECISION**',
+    '**RECORDED DECISION**',
     '',
-    '- [ ] keep internal qualification; show no reader note',
-    '- [ ] rewrite as reader note',
-    '- [ ] listen / inspect source again',
-    '- [ ] remove reader note',
+    `- Copy action: \`${decision.copyAction || 'pending'}\``,
+    `- Reader note action: \`${decision.readerNoteAction || 'pending'}\``,
+    `- Editorial note: ${block(decision.note)}`,
     '',
-    '**NEW COPY / READER NOTE**',
+    '**APPROVED REPLACEMENT**',
     '',
-    '_Pending editorial decision._',
+    `- New title: ${block(decision.newTitle)}`,
+    `- New summary: ${block(decision.newSummary)}`,
+    `- Reader note: ${block(decision.readerNote)}`,
     '',
   );
 });
@@ -158,8 +186,9 @@ lines.push('## Thread candidates', '');
 
 threadCandidates.forEach((item, index) => {
   const number = String(eventCandidates.length + index + 1).padStart(3, '0');
+  const decision = decisions[item.id] || {};
   lines.push(
-    `### [ ] RCOPY-${number} · ${item.id}`,
+    `### RCOPY-${number} · ${item.id}`,
     '',
     `- Flags: ${item.flags.map((flag) => `\`${flag}\``).join(', ')}`,
     `- Source pointer: \`src/content/projects/komatsu36/threads/${item.name}\``,
@@ -176,15 +205,15 @@ threadCandidates.forEach((item, index) => {
     '',
     item.transitions.length > 0 ? item.transitions.map((value) => `- ${value}`).join('\n') : '—',
     '',
-    '**EDITOR DECISION**',
+    '**RECORDED DECISION**',
     '',
-    '- [ ] keep',
-    '- [ ] rewrite for readers',
-    '- [ ] listen / inspect source again',
+    `- Copy action: \`${decision.copyAction || 'pending'}\``,
+    `- Editorial note: ${block(decision.note)}`,
     '',
-    '**NEW COPY**',
+    '**APPROVED REPLACEMENT**',
     '',
-    '_Pending editorial decision._',
+    `- New deck: ${block(decision.newDeck)}`,
+    `- New body: ${block(decision.newBody)}`,
     '',
   );
 });

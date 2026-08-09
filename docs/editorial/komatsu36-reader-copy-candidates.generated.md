@@ -1,30 +1,32 @@
-# Komatsu36 Reader Copy Queue
+# Komatsu36 Reader Copy Candidates (Generated)
 
 内容快照：2026-08-08-r1
 
-> 本文件是嫌疑项队列，不是事实错误清单，也不授权自动覆盖正文。命中词只表示需要人工判断；编辑者必须选择 keep / rewrite / listen / remove reader note 之一。
+> 本文件完全由脚本生成，禁止在这里填写人工决定。命中词只表示需要人工判断，不代表事实错误。所有决定只写入 `komatsu36-reader-copy-decisions.yml`。
 
 ## 使用合同
 
 - 范围：124 个 Event 与 16 条 Thread 的当前发布文案。
-- Event 只要存在 `qualification` 就进入队列，因为当前组件会把它直接显示给读者；其余项目按工程词、证据词和编辑元语言命中。
+- Event 只要存在 `qualification` 就进入候选，因为当前组件会把它直接显示给读者；其余项目按工程词、证据词和编辑元语言命中。
 - 不确定性不改变读者理解时，保留内部 `qualification`，读者侧不显示。
-- 不确定性改变人物归属、事件结果或叙事因果时，改写为自然语言 `readerNote`。
-- 本队列不处理 Transcript、Evidence、Chat 原文，也不增加 Event。
+- 不确定性改变人物归属、事件结果或叙事因果时，才新增自然语言 `readerNote`。
+- 本候选集不处理 Transcript、Evidence、Chat 原文，也不增加 Event。
+- `copyAction` 与 `readerNoteAction` 是两个独立维度；正文需要改写不代表必须增加 reader note。
 
 ## 快照
 
 - Event candidates: 43
 - Thread candidates: 9
+- Recorded decisions: 0
 - 扫描词组：`evidence-language`、`editorial-meta-language`、`technical-language`；完整词表以生成脚本为准。
 
 ## Event candidates
 
-### [ ] RCOPY-001 · yt-000100-stream-start
+### RCOPY-001 · yt-000100-stream-start
 
 - Track / Time: YT ≈00:01:00
 - Status: `qualified`
-- Flags: `qualification-visible`, `editorial-meta-language`, `technical-language`
+- Flags: `has-internal-qualification`, `editorial-meta-language`, `technical-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-000100-stream-start.json`
 
 **CURRENT TITLE**
@@ -39,22 +41,23 @@
 
 canonical 只锁定为 00:01 左右，页面将其作为导航锚点，不主张逐秒入点。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-002 · yt-002044-first-space-return
+### RCOPY-002 · yt-002044-first-space-return
 
 - Track / Time: YT ≈00:20:44
 - Status: `qualified`
-- Flags: `qualification-visible`, `technical-language`
+- Flags: `has-internal-qualification`, `technical-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-002044-first-space-return.json`
 
 **CURRENT TITLE**
@@ -69,22 +72,23 @@ _Pending editorial decision._
 
 返回点按 canonical 约 00:20:44 定位。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-003 · yt-002541-second-space-departure
+### RCOPY-003 · yt-002541-second-space-departure
 
 - Track / Time: YT ≈00:25:41
 - Status: `qualified`
-- Flags: `qualification-visible`
+- Flags: `has-internal-qualification`
 - Source pointer: `src/content/projects/komatsu36/events/yt-002541-second-space-departure.json`
 
 **CURRENT TITLE**
@@ -99,22 +103,23 @@ _Pending editorial decision._
 
 主直播离席点约为 00:25:41；这里只标记并发关系，不换算 Space 本地时钟。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-004 · yt-010711-first-guests-arrive
+### RCOPY-004 · yt-010711-first-guests-arrive
 
 - Track / Time: YT ≈01:07:11
 - Status: `qualified`
-- Flags: `qualification-visible`, `editorial-meta-language`
+- Flags: `has-internal-qualification`, `editorial-meta-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-010711-first-guests-arrive.json`
 
 **CURRENT TITLE**
@@ -129,22 +134,23 @@ _Pending editorial decision._
 
 多人进入与自我介绍存在重叠，页面只发布批次级到场锚点。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-005 · yt-011036-terashima-arrives
+### RCOPY-005 · yt-011036-terashima-arrives
 
 - Track / Time: YT ≈01:10:36
 - Status: `qualified`
-- Flags: `qualification-visible`, `technical-language`
+- Flags: `has-internal-qualification`, `technical-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-011036-terashima-arrives.json`
 
 **CURRENT TITLE**
@@ -159,22 +165,23 @@ _Pending editorial decision._
 
 到场点按 canonical 约 01:10:36 定位。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-006 · yt-011311-host-returns
+### RCOPY-006 · yt-011311-host-returns
 
 - Track / Time: YT ≈01:13:11
 - Status: `qualified`
-- Flags: `qualification-visible`, `technical-language`
+- Flags: `has-internal-qualification`, `technical-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-011311-host-returns.json`
 
 **CURRENT TITLE**
@@ -189,22 +196,23 @@ _Pending editorial decision._
 
 返回点按 canonical 约 01:13:11 定位。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-007 · yt-012117-cigar-chocolate
+### RCOPY-007 · yt-012117-cigar-chocolate
 
 - Track / Time: YT ≈01:21:17
 - Status: `qualified`
-- Flags: `qualification-visible`, `evidence-language`, `editorial-meta-language`
+- Flags: `has-internal-qualification`, `evidence-language`, `editorial-meta-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-012117-cigar-chocolate.json`
 
 **CURRENT TITLE**
@@ -219,22 +227,23 @@ _Pending editorial decision._
 
 礼物品类与现场玩笑已锁定；品牌和具体商品仍需包装画面复核，页面不作商品级断言。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-008 · yt-013800-thirty-four-yen
+### RCOPY-008 · yt-013800-thirty-four-yen
 
 - Track / Time: YT ≈01:38:00
 - Status: `qualified`
-- Flags: `qualification-visible`, `editorial-meta-language`
+- Flags: `has-internal-qualification`, `editorial-meta-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-013800-thirty-four-yen.json`
 
 **CURRENT TITLE**
@@ -249,22 +258,23 @@ _Pending editorial decision._
 
 34 円是当场揭晓的笑点；页面不把 J 当作需要建立固定汇率的正式单位。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-009 · yt-013840-great-payback
+### RCOPY-009 · yt-013840-great-payback
 
 - Track / Time: YT ≈01:38:40
 - Status: `qualified`
-- Flags: `qualification-visible`, `editorial-meta-language`
+- Flags: `has-internal-qualification`, `editorial-meta-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-013840-great-payback.json`
 
 **CURRENT TITLE**
@@ -279,22 +289,23 @@ Big Dream 的夸张奖金想象一路滑向点高价酒；小松随后解释频�
 
 页面保留节目内的夸张玩笑与回馈理念，不把假设金额或消费对话当作实际交易记录。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-010 · yt-014822-race-interrupts
+### RCOPY-010 · yt-014822-race-interrupts
 
 - Track / Time: YT ≈01:48:22
 - Status: `qualified`
-- Flags: `qualification-visible`
+- Flags: `has-internal-qualification`
 - Source pointer: `src/content/projects/komatsu36/events/yt-014822-race-interrupts.json`
 
 **CURRENT TITLE**
@@ -309,22 +320,23 @@ _Pending editorial decision._
 
 赛马与遗忘具有强时序关联，但因果措辞保持限定。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-011 · yt-015525-second-guests-arrive
+### RCOPY-011 · yt-015525-second-guests-arrive
 
 - Track / Time: YT ≈01:55:25
 - Status: `qualified`
-- Flags: `qualification-visible`, `technical-language`
+- Flags: `has-internal-qualification`, `technical-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-015525-second-guests-arrive.json`
 
 **CURRENT TITLE**
@@ -339,22 +351,23 @@ _Pending editorial decision._
 
 canonical 将约 01:55:25 起锁为批次到场；多人自我介绍重叠，不做逐句 speaker 切分。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-012 · yt-015910-tea-chatgpt
+### RCOPY-012 · yt-015910-tea-chatgpt
 
 - Track / Time: YT 01:59:10
 - Status: `qualified`
-- Flags: `qualification-visible`, `evidence-language`, `editorial-meta-language`
+- Flags: `has-internal-qualification`, `evidence-language`, `editorial-meta-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-015910-tea-chatgpt.json`
 
 **CURRENT TITLE**
@@ -369,22 +382,23 @@ _Pending editorial decision._
 
 红茶品牌与事件已锁定；具体茶款、GODIVA 袋内物品及后续“撞礼物”细节仍需画面或短窗复核。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-013 · yt-020048-baystars-towel
+### RCOPY-013 · yt-020048-baystars-towel
 
 - Track / Time: YT ≈02:00:48
 - Status: `qualified`
-- Flags: `qualification-visible`, `evidence-language`
+- Flags: `has-internal-qualification`, `evidence-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-020048-baystars-towel.json`
 
 **CURRENT TITLE**
@@ -399,22 +413,23 @@ _Pending editorial decision._
 
 BayStars 毛巾的品类与礼物动机已解决；具体商品、球员和款式仍属于画面复核项。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-014 · yt-020445-candle-fire
+### RCOPY-014 · yt-020445-candle-fire
 
 - Track / Time: YT ≈02:04:45
 - Status: `qualified`
-- Flags: `qualification-visible`, `editorial-meta-language`
+- Flags: `has-internal-qualification`, `editorial-meta-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-020445-candle-fire.json`
 
 **CURRENT TITLE**
@@ -429,18 +444,19 @@ _Pending editorial decision._
 
 蜡烛品类与现场玩笑已锁定；品牌音形不稳定，页面不根据近音商品名猜补。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-015 · yt-020555-uchida-call-announced
+### RCOPY-015 · yt-020555-uchida-call-announced
 
 - Track / Time: YT ≈02:05:55
 - Status: `verified`
@@ -459,22 +475,23 @@ _Pending editorial decision._
 
 —
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-016 · yt-021540-milk-wordplay
+### RCOPY-016 · yt-021540-milk-wordplay
 
 - Track / Time: YT ≈02:15:40
 - Status: `qualified`
-- Flags: `qualification-visible`, `evidence-language`, `editorial-meta-language`
+- Flags: `has-internal-qualification`, `evidence-language`, `editorial-meta-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-021540-milk-wordplay.json`
 
 **CURRENT TITLE**
@@ -489,22 +506,23 @@ M!LK 点歌被继续改成饮酒口令
 
 歌曲与改词事件可成立；“滅／メッツ”等短词音形仍低置信度，因此页面不发布逐字口令。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-017 · yt-022240-public-drinking-pace
+### RCOPY-017 · yt-022240-public-drinking-pace
 
 - Track / Time: YT ≈02:22:40
 - Status: `qualified`
-- Flags: `qualification-visible`, `editorial-meta-language`
+- Flags: `has-internal-qualification`, `editorial-meta-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-022240-public-drinking-pace.json`
 
 **CURRENT TITLE**
@@ -519,22 +537,23 @@ _Pending editorial decision._
 
 约 2900 是节目当时口头提到的即时规模，不作为最终播放量或精确统计发布。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-018 · yt-022700-makoto-theme
+### RCOPY-018 · yt-022700-makoto-theme
 
 - Track / Time: YT ≈02:27:00
 - Status: `qualified`
-- Flags: `qualification-visible`, `editorial-meta-language`
+- Flags: `has-internal-qualification`, `editorial-meta-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-022700-makoto-theme.json`
 
 **CURRENT TITLE**
@@ -549,22 +568,23 @@ _Pending editorial decision._
 
 主题前后呼应已达到事件级；播放中的舞台台词与现场评论重叠，页面不冻结录像逐字原文。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-019 · yt-025037-kano-toilet
+### RCOPY-019 · yt-025037-kano-toilet
 
 - Track / Time: YT ≈02:50:37
 - Status: `qualified`
-- Flags: `qualification-visible`, `editorial-meta-language`
+- Flags: `has-internal-qualification`, `editorial-meta-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-025037-kano-toilet.json`
 
 **CURRENT TITLE**
@@ -579,22 +599,23 @@ _Pending editorial decision._
 
 当前只锁定约 02:50:37 的事件级位置，不发布逐字引用。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-020 · yt-025449-kano-haiku
+### RCOPY-020 · yt-025449-kano-haiku
 
 - Track / Time: YT 02:54:49
 - Status: `qualified`
-- Flags: `qualification-visible`, `editorial-meta-language`
+- Flags: `has-internal-qualification`, `editorial-meta-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-025449-kano-haiku.json`
 
 **CURRENT TITLE**
@@ -609,22 +630,23 @@ _Pending editorial decision._
 
 事件和核心构造已锁定；页面只作摘要，不发布完整逐字俳句。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-021 · yt-025829-hair-grab
+### RCOPY-021 · yt-025829-hair-grab
 
 - Track / Time: YT ≈02:58:29
 - Status: `qualified`
-- Flags: `qualification-visible`, `editorial-meta-language`
+- Flags: `has-internal-qualification`, `editorial-meta-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-025829-hair-grab.json`
 
 **CURRENT TITLE**
@@ -639,22 +661,23 @@ _Pending editorial decision._
 
 髪、受け身机制、正式投诉与“歯白っ”闭环已锁定；本番替代动作的单一动词仍不作法证级逐字发布。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-022 · yt-030202-yano-arrives
+### RCOPY-022 · yt-030202-yano-arrives
 
 - Track / Time: YT ≈03:02:02
 - Status: `qualified`
-- Flags: `qualification-visible`, `technical-language`
+- Flags: `has-internal-qualification`, `technical-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-030202-yano-arrives.json`
 
 **CURRENT TITLE**
@@ -669,22 +692,23 @@ _Pending editorial decision._
 
 到场点按 canonical 约 03:02:02 定位。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-023 · yt-031258-blade-accident-recount
+### RCOPY-023 · yt-031258-blade-accident-recount
 
 - Track / Time: YT ≈03:12:58
 - Status: `qualified`
-- Flags: `qualification-visible`, `evidence-language`
+- Flags: `has-internal-qualification`, `evidence-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-031258-blade-accident-recount.json`
 
 **CURRENT TITLE**
@@ -699,22 +723,23 @@ _Pending editorial decision._
 
 当前锚点是事故复盘入口；细节来自人工裁决稿，不把舞台发生时刻伪装成视频时刻。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-024 · yt-031300-ryoma-line-callback
+### RCOPY-024 · yt-031300-ryoma-line-callback
 
 - Track / Time: YT ≈03:13:00
 - Status: `qualified`
-- Flags: `qualification-visible`
+- Flags: `has-internal-qualification`
 - Source pointer: `src/content/projects/komatsu36/events/yt-031300-ryoma-line-callback.json`
 
 **CURRENT TITLE**
@@ -729,22 +754,23 @@ _Pending editorial decision._
 
 视频坐标表示复盘段而非舞台事故的原始发生时间。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-025 · yt-031615-book-improv
+### RCOPY-025 · yt-031615-book-improv
 
 - Track / Time: YT ≈03:16:15
 - Status: `qualified`
-- Flags: `qualification-visible`
+- Flags: `has-internal-qualification`
 - Source pointer: `src/content/projects/komatsu36/events/yt-031615-book-improv.json`
 
 **CURRENT TITLE**
@@ -759,22 +785,23 @@ _Pending editorial decision._
 
 “本／台本”重叠与角色即兴已锁定；具体抓取动作和多个回忆版本不合并成单一逐字原句。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-026 · yt-032139-kano-back-pain
+### RCOPY-026 · yt-032139-kano-back-pain
 
 - Track / Time: YT ≈03:21:39
 - Status: `qualified`
-- Flags: `qualification-visible`
+- Flags: `has-internal-qualification`
 - Source pointer: `src/content/projects/komatsu36/events/yt-032139-kano-back-pain.json`
 
 **CURRENT TITLE**
@@ -789,22 +816,23 @@ _Pending editorial decision._
 
 腰伤时序、非台词声音与观众未察觉均已锁定；不倒因为果写成“腰痛让芝居更真实”。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-027 · yt-032828-seiten-opening
+### RCOPY-027 · yt-032828-seiten-opening
 
 - Track / Time: YT 03:28:28
 - Status: `qualified`
-- Flags: `qualification-visible`, `editorial-meta-language`
+- Flags: `has-internal-qualification`, `editorial-meta-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-032828-seiten-opening.json`
 
 **CURRENT TITLE**
@@ -819,22 +847,23 @@ _Pending editorial decision._
 
 Opening 结构和选择理由已锁定；投稿第一句中一个名词仍不稳定，页面不发布该句逐字。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-028 · yt-034011-blood-flick-research
+### RCOPY-028 · yt-034011-blood-flick-research
 
 - Track / Time: YT ≈03:40:11
 - Status: `qualified`
-- Flags: `qualification-visible`, `editorial-meta-language`
+- Flags: `has-internal-qualification`, `editorial-meta-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-034011-blood-flick-research.json`
 
 **CURRENT TITLE**
@@ -849,22 +878,23 @@ _Pending editorial decision._
 
 研究发案与最终采用已锁；共享接收者不在页面强锁为单一人名。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-029 · yt-034507-space-close-departure
+### RCOPY-029 · yt-034507-space-close-departure
 
 - Track / Time: YT ≈03:45:07
 - Status: `qualified`
-- Flags: `qualification-visible`, `technical-language`
+- Flags: `has-internal-qualification`, `technical-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-034507-space-close-departure.json`
 
 **CURRENT TITLE**
@@ -879,22 +909,23 @@ _Pending editorial decision._
 
 离席点按 canonical 约 03:45:07 定位；不为 YT 与 Space 建立固定 offset。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-030 · yt-035300-space-close-return
+### RCOPY-030 · yt-035300-space-close-return
 
 - Track / Time: YT ≈03:53:00
 - Status: `qualified`
-- Flags: `qualification-visible`, `technical-language`
+- Flags: `has-internal-qualification`, `technical-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-035300-space-close-return.json`
 
 **CURRENT TITLE**
@@ -909,22 +940,23 @@ Space 收束后，小松回到 Bingo 前的主直播
 
 返回点按 canonical 约 03:53:00 定位。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-031 · yt-040000-tumbler-mitsutomi
+### RCOPY-031 · yt-040000-tumbler-mitsutomi
 
 - Track / Time: YT ≈04:00:00
 - Status: `qualified`
-- Flags: `qualification-visible`, `evidence-language`, `editorial-meta-language`
+- Flags: `has-internal-qualification`, `evidence-language`, `editorial-meta-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-040000-tumbler-mitsutomi.json`
 
 **CURRENT TITLE**
@@ -939,22 +971,23 @@ _Pending editorial decision._
 
 中奖者与杯类物件已由多源锁定；品牌、材质和正式 SKU 仍需画面复核，因此不在页面扩写。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-032 · yt-040539-fan-inoue
+### RCOPY-032 · yt-040539-fan-inoue
 
 - Track / Time: YT 04:05:39
 - Status: `qualified`
-- Flags: `qualification-visible`, `evidence-language`
+- Flags: `has-internal-qualification`, `evidence-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-040539-fan-inoue.json`
 
 **CURRENT TITLE**
@@ -969,22 +1002,23 @@ Amazon 礼券后，“誠”扇子由井上中奖
 
 扇子品类、39 号与中奖者已锁定；品牌、材质和正式商品名仍属于画面复核项。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-033 · yt-041453-kano-tbolan
+### RCOPY-033 · yt-041453-kano-tbolan
 
 - Track / Time: YT ≈04:14:53
 - Status: `qualified`
-- Flags: `qualification-visible`, `evidence-language`, `technical-language`
+- Flags: `has-internal-qualification`, `evidence-language`, `technical-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-041453-kano-tbolan.json`
 
 **CURRENT TITLE**
@@ -999,22 +1033,23 @@ _Pending editorial decision._
 
 歌曲时间为当前粉丝时间轴与复核稿共同定位；并发标注只表达同段重叠，不主张逐句对齐。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-034 · yt-041810-snack-akemi
+### RCOPY-034 · yt-041810-snack-akemi
 
 - Track / Time: YT ≈04:18:10
 - Status: `qualified`
-- Flags: `qualification-visible`, `evidence-language`, `technical-language`
+- Flags: `has-internal-qualification`, `evidence-language`, `technical-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-041810-snack-akemi.json`
 
 **CURRENT TITLE**
@@ -1029,22 +1064,23 @@ _Pending editorial decision._
 
 复核稿确认轶事本身；起止点为事件级定位，不细分重叠发言者。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-035 · yt-042117-keserasera
+### RCOPY-035 · yt-042117-keserasera
 
 - Track / Time: YT ≈04:21:17
 - Status: `qualified`
-- Flags: `qualification-visible`, `evidence-language`, `technical-language`
+- Flags: `has-internal-qualification`, `evidence-language`, `technical-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-042117-keserasera.json`
 
 **CURRENT TITLE**
@@ -1059,22 +1095,23 @@ _Pending editorial decision._
 
 曲目与事件区间由时间轴、复核稿共同确认；不刊载歌词，也不把并发标注解释为逐句同步。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-036 · yt-042252-seigura-superchat
+### RCOPY-036 · yt-042252-seigura-superchat
 
 - Track / Time: YT ≈04:22:52
 - Status: `qualified`
-- Flags: `qualification-visible`, `evidence-language`
+- Flags: `has-internal-qualification`, `evidence-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-042252-seigura-superchat.json`
 
 **CURRENT TITLE**
@@ -1089,22 +1126,23 @@ _Pending editorial decision._
 
 只保留可复核的发送方称呼与现场反应；账号显示名细节、金额均不作断言。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-037 · yt-042314-hama-self-intro
+### RCOPY-037 · yt-042314-hama-self-intro
 
 - Track / Time: YT ≈04:23:14
 - Status: `qualified`
-- Flags: `qualification-visible`
+- Flags: `has-internal-qualification`
 - Source pointer: `src/content/projects/komatsu36/events/yt-042314-hama-self-intro.json`
 
 **CURRENT TITLE**
@@ -1119,22 +1157,23 @@ _Pending editorial decision._
 
 话题次序可确认；音乐与职业年限等个别等级听辨保留不确定性，不作为精确逐项成绩表刊载。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-038 · yt-043520-ojamajo
+### RCOPY-038 · yt-043520-ojamajo
 
 - Track / Time: YT ≈04:35:20
 - Status: `qualified`
-- Flags: `qualification-visible`, `evidence-language`
+- Flags: `has-internal-qualification`, `evidence-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-043520-ojamajo.json`
 
 **CURRENT TITLE**
@@ -1149,22 +1188,23 @@ _Pending editorial decision._
 
 参与者与曲目按复核稿确认；不拆分重叠说话人，也不刊载歌词。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-039 · yt-044023-wheel-song
+### RCOPY-039 · yt-044023-wheel-song
 
 - Track / Time: YT ≈04:40:23
 - Status: `qualified`
-- Flags: `qualification-visible`, `evidence-language`
+- Flags: `has-internal-qualification`, `evidence-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-044023-wheel-song.json`
 
 **CURRENT TITLE**
@@ -1179,22 +1219,23 @@ _Pending editorial decision._
 
 组合、曲目与事件位置由复核稿确认；不刊载歌词。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-040 · yt-044513-fantastipo
+### RCOPY-040 · yt-044513-fantastipo
 
 - Track / Time: YT ≈04:45:13
 - Status: `qualified`
-- Flags: `qualification-visible`, `technical-language`
+- Flags: `has-internal-qualification`, `technical-language`
 - Source pointer: `src/content/projects/komatsu36/events/yt-044513-fantastipo.json`
 
 **CURRENT TITLE**
@@ -1209,22 +1250,23 @@ _Pending editorial decision._
 
 曲目、演唱者与并发关系可确认；并发标注不代表逐句同步，歌词不刊载。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-041 · yt-045435-shuji-akira
+### RCOPY-041 · yt-045435-shuji-akira
 
 - Track / Time: YT ≈04:54:35
 - Status: `qualified`
-- Flags: `qualification-visible`
+- Flags: `has-internal-qualification`
 - Source pointer: `src/content/projects/komatsu36/events/yt-045435-shuji-akira.json`
 
 **CURRENT TITLE**
@@ -1239,22 +1281,23 @@ _Pending editorial decision._
 
 台词主题与出现位置可确认；具体说话人分配及现实指代对象未确认，因此不作进一步归属。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-042 · sp2-000311-account-hijack
+### RCOPY-042 · sp2-000311-account-hijack
 
 - Track / Time: SP2 00:03:11
 - Status: `qualified`
-- Flags: `qualification-visible`, `editorial-meta-language`
+- Flags: `has-internal-qualification`, `editorial-meta-language`
 - Source pointer: `src/content/projects/komatsu36/events/sp2-000311-account-hijack.json`
 
 **CURRENT TITLE**
@@ -1269,22 +1312,23 @@ _Pending editorial decision._
 
 账号归属与实际发言者不得合并。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
-### [ ] RCOPY-043 · sp2-025344-uchida-forgotten
+### RCOPY-043 · sp2-025344-uchida-forgotten
 
 - Track / Time: SP2 ≈02:53:44
 - Status: `qualified`
-- Flags: `qualification-visible`, `evidence-language`, `editorial-meta-language`
+- Flags: `has-internal-qualification`, `evidence-language`, `editorial-meta-language`
 - Source pointer: `src/content/projects/komatsu36/events/sp2-025344-uchida-forgotten.json`
 
 **CURRENT TITLE**
@@ -1299,20 +1343,21 @@ _Pending editorial decision._
 
 人名采用双高质量 ASR 与人工回听当前首选；逐字 A 级仍可复核短窗。
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep internal qualification; show no reader note
-- [ ] rewrite as reader note
-- [ ] listen / inspect source again
-- [ ] remove reader note
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
 
-**NEW COPY / READER NOTE**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New title: —
+- New summary: —
+- Reader note: —
 
 ## Thread candidates
 
-### [ ] RCOPY-044 · bingo-payback
+### RCOPY-044 · bingo-payback
 
 - Flags: `editorial-meta-language`
 - Source pointer: `src/content/projects/komatsu36/threads/bingo-payback.md`
@@ -1329,17 +1374,17 @@ _Pending editorial decision._
 
 —
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep
-- [ ] rewrite for readers
-- [ ] listen / inspect source again
+- Copy action: `pending`
+- Editorial note: —
 
-**NEW COPY**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New deck: —
+- New body: —
 
-### [ ] RCOPY-045 · birthday-payback
+### RCOPY-045 · birthday-payback
 
 - Flags: `evidence-language`
 - Source pointer: `src/content/projects/komatsu36/threads/birthday-payback.md`
@@ -1356,17 +1401,17 @@ _Pending editorial decision._
 
 —
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep
-- [ ] rewrite for readers
-- [ ] listen / inspect source again
+- Copy action: `pending`
+- Editorial note: —
 
-**NEW COPY**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New deck: —
+- New body: —
 
-### [ ] RCOPY-046 · broken-sword
+### RCOPY-046 · broken-sword
 
 - Flags: `evidence-language`
 - Source pointer: `src/content/projects/komatsu36/threads/broken-sword.md`
@@ -1383,17 +1428,17 @@ _Pending editorial decision._
 
 —
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep
-- [ ] rewrite for readers
-- [ ] listen / inspect source again
+- Copy action: `pending`
+- Editorial note: —
 
-**NEW COPY**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New deck: —
+- New body: —
 
-### [ ] RCOPY-047 · kano-ojisan
+### RCOPY-047 · kano-ojisan
 
 - Flags: `editorial-meta-language`
 - Source pointer: `src/content/projects/komatsu36/threads/kano-ojisan.md`
@@ -1410,17 +1455,17 @@ dad joke、厕所离席和持续的おじさん吐槽，最终在卡拉 OK 的�
 
 —
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep
-- [ ] rewrite for readers
-- [ ] listen / inspect source again
+- Copy action: `pending`
+- Editorial note: —
 
-**NEW COPY**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New deck: —
+- New body: —
 
-### [ ] RCOPY-048 · muro-account
+### RCOPY-048 · muro-account
 
 - Flags: `editorial-meta-language`
 - Source pointer: `src/content/projects/komatsu36/threads/muro-account.md`
@@ -1437,17 +1482,17 @@ _Pending editorial decision._
 
 —
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep
-- [ ] rewrite for readers
-- [ ] listen / inspect source again
+- Copy action: `pending`
+- Editorial note: —
 
-**NEW COPY**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New deck: —
+- New body: —
 
-### [ ] RCOPY-049 · ore-shiri-making-of
+### RCOPY-049 · ore-shiri-making-of
 
 - Flags: `editorial-meta-language`
 - Source pointer: `src/content/projects/komatsu36/threads/ore-shiri-making-of.md`
@@ -1464,17 +1509,17 @@ _Pending editorial decision._
 
 - 主直播的制作复盘在 SP2 得到动作监督的专业总结——
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep
-- [ ] rewrite for readers
-- [ ] listen / inspect source again
+- Copy action: `pending`
+- Editorial note: —
 
-**NEW COPY**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New deck: —
+- New body: —
 
-### [ ] RCOPY-050 · russian-takoyaki
+### RCOPY-050 · russian-takoyaki
 
 - Flags: `evidence-language`, `editorial-meta-language`
 - Source pointer: `src/content/projects/komatsu36/threads/russian-takoyaki.md`
@@ -1495,17 +1540,17 @@ _Pending editorial decision._
 
 - 赛马开跑，现场注意力被直接切走。约 80 分钟后——
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep
-- [ ] rewrite for readers
-- [ ] listen / inspect source again
+- Copy action: `pending`
+- Editorial note: —
 
-**NEW COPY**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New deck: —
+- New body: —
 
-### [ ] RCOPY-051 · shugo-yakiniku
+### RCOPY-051 · shugo-yakiniku
 
 - Flags: `editorial-meta-language`
 - Source pointer: `src/content/projects/komatsu36/threads/shugo-yakiniku.md`
@@ -1522,17 +1567,17 @@ _Pending editorial decision._
 
 - 主直播随后把这段低信息留言复述给新到场的朋友——
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep
-- [ ] rewrite for readers
-- [ ] listen / inspect source again
+- Copy action: `pending`
+- Editorial note: —
 
-**NEW COPY**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New deck: —
+- New body: —
 
-### [ ] RCOPY-052 · terashima-big-dream
+### RCOPY-052 · terashima-big-dream
 
 - Flags: `evidence-language`
 - Source pointer: `src/content/projects/komatsu36/threads/terashima-big-dream.md`
@@ -1549,12 +1594,12 @@ _Pending editorial decision._
 
 —
 
-**EDITOR DECISION**
+**RECORDED DECISION**
 
-- [ ] keep
-- [ ] rewrite for readers
-- [ ] listen / inspect source again
+- Copy action: `pending`
+- Editorial note: —
 
-**NEW COPY**
+**APPROVED REPLACEMENT**
 
-_Pending editorial decision._
+- New deck: —
+- New body: —
