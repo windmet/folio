@@ -33,10 +33,15 @@ try {
     scope: document.querySelector('[data-timeline-scope-button][aria-pressed="true"]')?.dataset.timelineScopeButton,
     buttons: document.querySelectorAll('[data-timeline-scope-button]').length,
     overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    duplicateIds: [...document.querySelectorAll('[id]')]
+      .map((element) => element.id)
+      .filter((id, index, ids) => ids.indexOf(id) !== index),
   }));
   assert(initial.scope === 'yt-main', `expected initial yt-main scope, got ${initial.scope}`);
   assert(initial.buttons === 3, `expected 3 scope buttons, got ${initial.buttons}`);
   assert(initial.overflow === 0, `expected desktop overflow 0, got ${initial.overflow}`);
+  assert(initial.duplicateIds.length === 0, `duplicate DOM ids: ${initial.duplicateIds.join(', ')}`);
+  assert(await page.getByRole('button', { name: /Timeline scope/ }).count() === 3, 'expected 3 named Timeline scope buttons');
 
   const sp1 = page.locator('[data-timeline-scope-button="space-1"]');
   await sp1.focus();
