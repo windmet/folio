@@ -25,6 +25,8 @@
 | Existing player paths | Target／Reading Context 继续由原 `[data-player-text-toggle]` 处理；新增 `[data-inline-text-toggle]` 不改变 player target、context、source 或 URL 行为 |
 | Console | 页面与 route 交互抽样 `error/warn = []` |
 
+当前 fixture 的实际 Act／Source 标题均未触发真实超长分支，因此 Browser 证据只确认短标题保持 `hidden`、测量逻辑已挂载且无横向溢出；「展开 → 收起」的 consumer interaction 仍标记为 `TODO consumer-check`，不在本批次伪报为已通过。
+
 ## 自动门禁
 
 ```text
