@@ -15,7 +15,7 @@
 - `ConcurrentLanes` 已以局部注记形式落地，只显示经确认的并发关系，并明确禁止将其消费为跨平台 offset；
 - Space 播放源决策已收口：用户提供的两条 X status 按创建时间与重开顺序映射为 SP1/SP2；页面只提供 canonical Space 外链，不重托管本地媒体，也不把 X 外链伪装成支持 timestamp seek；
 - 公开 Event / Thread / Person 的轻量站内检索已落地：索引只来自发布内容，结果顺序固定，Event 结果可恢复稳定深链并切换到正确 Track；不索引 Transcript 与 Chat；
-- `validate:publication` 已接入统一 `npm run validate`：当前构建核对 158 条公开检索项、350 KiB 单页预算，并阻止原始 ASR 文件标记、本机源档路径、`author_id`、SRT/VTT 文件名进入发布 HTML，同时要求 `published` Project 在首页拥有真实入口；
+- `validate:publication` 已接入统一 `npm run validate`：当前构建核对 158 条公开检索项、350 KiB 单页预算，并阻止原始 ASR 文件标记、本机源档路径、`author_id`、SRT/VTT 文件名进入发布 HTML；同时要求 `published` Project 在首页拥有真实入口，并检查两条 canonical Space URL、三 Source 导航与 Source Event Index 的发布层结构仍存在；
 - `.github/workflows/validate.yml` 已接入 push / pull request 验证：固定 Node.js 22.12.0，执行 `npm ci` 与完整 `npm run validate`；它只提供可审阅的 CI 证据，不触发部署；
 - Cloudflare Pages 的首次 provision、构建设置、production 复测和证据追加步骤见 `docs/cloudflare-pages-release-checklist.md`；当前仓库没有部署 token 或 Wrangler 配置，不由本地自动执行；
 - 额外静态检查边界已实测：仓库自带 `tsc --noEmit` 通过；临时安装 `@astrojs/check` 后，`astro check` 会扫描生成的 `public/admin` bundle 并在约 4 GiB 堆上 OOM，因此未纳入 Release Gate，也不保留该临时依赖；

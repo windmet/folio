@@ -67,6 +67,17 @@ for (const [label, pattern] of forbiddenPublicationMarkers) {
 for (const required of [
   'https://x.com/i/status/2043996150802592097',
   'https://x.com/i/status/2044007616284897782',
+  'https://x.com/i/spaces/1dKrPEwrAoQJX',
+  'https://x.com/i/spaces/1OxwblPnkDDJB',
+  'MEDIA SOURCES',
+  'data-source-track="yt-main"',
+  'data-source-track="space-1"',
+  'data-source-track="space-2"',
+  'data-source-browse="yt-main"',
+  'data-source-browse="space-1"',
+  'data-source-browse="space-2"',
+  'data-source-event-index',
+  'data-player-current',
   'transcriptPolicy: private',
 ]) {
   if (!html.includes(required)) errors.push(`published HTML is missing required public marker: ${required}`);
