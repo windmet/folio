@@ -29,6 +29,7 @@
 | 901×780 中等宽度 | scope button 约 `122px`、SP1 Event card 约 `382px`、Player 约 `372px`；document overflow `0` |
 | 390×844 | 3 个 scope tabs 各约 `109×74px`，scope block 约 `159px`；无横向 overflow；SP1 仍可触控切换并显示 8 个 Event |
 | Console | 页面 `error/warn = []`；Browser 工具自身 Statsig dropped-events warning 不属于页面 console，不纳入产品错误证据 |
+| Scope focus indicator | 点击 scope 后焦点仍落在原生 button；计算样式含红色 `outline` 与 `outline-offset`；无横向 overflow |
 
 ## 自动门禁
 
