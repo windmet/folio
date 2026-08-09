@@ -1,8 +1,8 @@
 # Komatsu36 RC 0.11 档案导航与视觉层级实施规格
 
-> 状态：UX11-A / B LOCAL ACCEPTANCE COMPLETE / NEXT: UX11-C DESKTOP PLAYER CONTEXT RAIL
+> 状态：UX11-A / B COMMITTED / NEXT: UX11-P STATIC PAYLOAD PASS
 > 阶段：RC 0.11 — Archive Navigation & Visual Hierarchy Pass
-> 基线：`codex/komatsu36-project-archive` @ `1629b25` + 2026-08-09 working tree，RC 0.10 本地验收完成
+> 基线：`codex/komatsu36-project-archive` @ `effa314`，RC 0.10 本地验收完成
 > 范围冻结：不新增 Event、Person 字段、媒体 provider、Transcript、Evidence 或 X widget。
 
 ## 1. 阶段目标
@@ -36,14 +36,14 @@ RC 0.10 已经解决“档案里有没有足够且可信的信息”。RC 0.11 �
 
 ### 2.1 UX11-A / B 本地完成检查点
 
-2026-08-09 第一批已在当前 working tree 完成，尚未提交：
+2026-08-09 第一批已提交为 `effa314`：
 
 - UX11-A：People index 已改为按 `group` 投影的 compact row；Cast 在 `<=600px` 改为六个角色的昼夜行，不再依赖组件内部横滚；
 - UX11-B：Person / Search / Player 已共用 `navigateToEventContext()`；YT Event 可稳定定位并聚焦 Timeline card；Space 覆盖 0 / 1 / many Thread；`restoreFromUrl()` 先清空旧内存态再恢复，Back / Forward 可回到原 Person panel；
 - desktop 1440×900 与 mobile 390×844 已完成真实路由、overflow、focus、history 与 console 验收；
 - `npm run validate`、`npm exec -- tsc --noEmit` 与 `git diff --check` 已通过；publication 输出为 352,541 bytes，仍受 350 KiB（358,400 bytes）硬门禁约束。
 
-下一功能不是立即开始 Timeline Map，而是先把 UX11-B 新增的纵向 Reading Context 动作收敛为 desktop-only Player Context Rail。它只重排既有能力，不增加内容、媒体能力或页面级导航状态。
+下一功能不是 Player Context Rail，而是先完成 UX11-P Static Payload Pass。当前 initial HTML 只余 5,859 bytes 门禁空间；先移除工具型重复 DOM，再继续增加 UI。完整合同见 `docs/editorial/komatsu36-static-payload-pass.md`。
 
 ## 3. People 页：按分组投影，不复制详情
 
@@ -154,9 +154,33 @@ People → Person(hama-kento) → YT Event(02:42:07)
 
 还要覆盖 Search → Space Event → Thread → Back，以及播放器自动推进后 Back 栈长度不增长。
 
-## 5. ArchivePlayer Context Dock → Desktop Player Context Rail
+## 5. Static Payload / Initial HTML Budget
 
-### 5.1 已完成的 Context Dock 基线
+350 KiB 是 Folio 自己的 initial HTML 门禁，不是 Cloudflare Pages 的平台上限。`effa314` 构建基线为：
+
+| 指标 | 当前值 |
+|---|---:|
+| Raw HTML | 352,541 bytes / 344.28 KiB |
+| Gzip level 9 | 68,711 bytes / 67.10 KiB |
+| Brotli quality 11 | 35,342 bytes / 34.51 KiB |
+| Search section | 73,355 raw bytes / 158 hidden items |
+| Source Event Index | 24,973 raw bytes / 124 static buttons |
+| Controller JSON | 22,090 raw bytes |
+
+Search 与 Source Event Index 两个工具型 section 毛体积合计约占 raw HTML 的 27.9%。它们优先退出初始 DOM；Timeline、Thread detail 与 Person detail 继续静态渲染。当前 350 KiB hard gate 暂不放宽，compressed size 只作为传输指标，不能替代 raw / DOM 指标。
+
+实施顺序固定为：
+
+1. UX11-P0：加入可重复的 raw / gzip / brotli 与 projection audit；
+2. UX11-P1：Source Event Index 改为复用 controller events 首次展开时生成；
+3. UX11-P2：Search 改为 Astro build-time static JSON + first-use lazy fetch；
+4. 重测并写回新基线后，才恢复 UX11-C Player Context Rail。
+
+不得在本 Pass lazy-load Timeline、Thread 或 Person，也不得引入 React、SSR、数据库、Pagefind 或拆 View 路由。详细字段、fallback、validator、提交边界与浏览器验收见 `docs/editorial/komatsu36-static-payload-pass.md`。
+
+## 6. ArchivePlayer Context Dock → Desktop Player Context Rail
+
+### 6.1 已完成的 Context Dock 基线
 
 UX11-B 已在选中 Event 时新增轻量上下文区：
 
@@ -177,7 +201,7 @@ Space Event 不显示伪 Act；显示 Track label 与 Thread 选项。无选中 
 
 移动 mini-player 已保留短 CTA，没有把桌面整段文案塞入 132px 媒体网格。Desktop Rail 实施后，移动端继续保留当前卡片内 CTA 与原来源文字链接。
 
-### 5.2 下一批产品合同：Attached Context Rail
+### 6.2 Payload Pass 后的产品合同：Attached Context Rail
 
 Player Context Rail 是 `ArchivePlayer` 自身长出的四枚档案索引签，不是页面右缘的 Floating UI，也不是与 Player 分离的 sticky toolbar。它只回答“当前 Event 还能去哪里”，不承载长段说明文字。
 
@@ -197,7 +221,7 @@ Archive Player Frame（仍占现有 player column）
 
 Rail 与主卡共用视觉边界和 `.project-player-column` 的 sticky 生命周期。总列宽不允许从 `390px player + 48px rail` 膨胀为 438px；Rail 必须被吃进既有总宽度，例如 342px main card + 48px rail。四枚标签从 media viewport 附近开始，结束后保留空白，不做贯穿整张卡高度的 toolbar。
 
-### 5.3 组件与 DOM 所有权
+### 6.3 组件与 DOM 所有权
 
 新增 `PlayerContextRail.astro`，由 `ArchivePlayer.astro` 组合为 `.archive-player-frame`；`ProjectArchiveShell` 仍是唯一 Controller：
 
@@ -211,7 +235,7 @@ ProjectArchiveShell
 
 不得把四个按钮散写进 Shell，也不得让 Rail 自己 `position: fixed` / `sticky`。Rail 以稳定 `data-player-rail-*` hooks 暴露动作；Controller 负责 selected Event、URL、Thread menu 和焦点事务。
 
-### 5.4 四个固定槽位
+### 6.4 四个固定槽位
 
 | 可见标签 | 语义 | YT Event | Space Event |
 |---|---|---|---|
@@ -229,7 +253,7 @@ ProjectArchiveShell
 
 `节点`是微观定位，`Axx`是宏观定位，两者不得合并。Act jump 与 Node jump 都使用 sticky-aware offset；Act header 需要可编程聚焦，但不进入常规 Tab 顺序。
 
-### 5.5 Thread menu 与键盘合同
+### 6.5 Thread menu 与键盘合同
 
 多 Thread menu 属于 Rail 的轻量 popover，不是 `ThreadPanel`，不锁 body、不设置背景 `inert`：
 
@@ -239,7 +263,7 @@ ProjectArchiveShell
 - menu 内的 Thread 排序复用当前 `threadIds` 稳定顺序；
 - 选择后仍通过统一导航事务只写一次 history entry。
 
-### 5.6 Runtime 数据来源与 publication budget
+### 6.6 Runtime 数据来源与 publication budget
 
 不修改 Project / Event / Act schema，不把相同 Act 文案复制进 104 个 YT Event：
 
@@ -250,7 +274,7 @@ ProjectArchiveShell
 
 当前 publication 输出为 352,541 / 358,400 bytes，只剩 5,859 bytes。新增组件 markup、ARIA 与 menu 模板后必须重跑 budget；若超限，优先减少重复 DOM / 字符串，不得删除读者内容或放宽门禁。
 
-### 5.7 Desktop 空间治理
+### 6.7 Desktop 空间治理
 
 Rail 不是单独的横向增量，必须与 compact-desktop 布局同时实施：
 
@@ -262,7 +286,7 @@ Rail 不是单独的横向增量，必须与 compact-desktop 布局同时实施�
 
 Desktop + Rail 时，现有 Context Dock 只保留一行 `A04 · Act title`；隐藏重复的“在 Timeline / Storyline 查看”CTA和原来源文字链接。Mobile 因 Rail 隐藏，继续显示这些 fallback actions。普通桌面可隐藏长期重复的 360° note，超宽桌面允许保留低对比度版本。
 
-### 5.8 到达反馈、history 与 motion
+### 6.8 到达反馈、history 与 motion
 
 - Node / Act 由读者点击时可以产生至多一个 history entry；播放器每 750ms 自动同步继续只更新视觉状态或 `replaceState`，不得滚动；
 - Act jump 保持 canonical `?view=timeline&event=...`，不保存瞬时滚动位置；
@@ -270,9 +294,9 @@ Desktop + Rail 时，现有 Context Dock 只保留一行 `A04 · Act title`；�
 - `prefers-reduced-motion: reduce` 下取消位移与渐变演出，定位仍使用 instant / auto；
 - Rail 的出现最多使用 120–160ms opacity / 3px 内移，不模拟纸张弹出或旋转。
 
-## 6. Timeline Navigator
+## 7. Timeline Navigator
 
-### 6.1 Desktop Map（UX11-D）
+### 7.1 Desktop Map（UX11-D）
 
 - 8 个 segment 使用现有 Act `startMs` / `endMs` 计算宽度；当前时长为 67、35.2、12.8、30、48、40.9、33.1、30.5 分钟，等宽会隐藏真实结构；
 - 点击 segment 直接定位对应 `[data-act]`；
@@ -282,7 +306,7 @@ Desktop + Rail 时，现有 Context Dock 只保留一行 `A04 · Act title`；�
 
 Map 是章节索引，不是第二条事件时间线。它不显示 104 个 Event tick，也不混入 SP1 / SP2 本地时钟。
 
-### 6.2 Mobile（UX11-E，先验证组合）
+### 7.2 Mobile（UX11-E，先验证组合）
 
 移动端已有约 59px sticky Project Nav；选中 Event 后还有约 126px mini-player。再独立叠加 36–42px sticky Act bar 会长期占据约 220px 的纵向空间。
 
@@ -292,22 +316,25 @@ Map 是章节索引，不是第二条事件时间线。它不显示 104 个 Even
 2. UX11-D 的 Desktop Map 稳定后，比较“非 sticky 章节下拉”“合并进 mini-player”“Player 未激活时 sticky、激活后收起”三种方案；
 3. 选择后记录唯一合同，再实施。
 
-### 6.3 Playback playhead（UX11-F，P1）
+### 7.3 Playback playhead（UX11-F，P1）
 
 播放头需要 controller 向 Navigator 暴露 current time，并处理未载入、暂停、seek、自动 Event 更新和 external Track。它不是单纯 `currentMs / duration` 的 CSS 改动。
 
 只有 Act jump、current Act、history 与遮挡验收稳定后再做；自动更新只能修改视觉状态和 `replaceState`，不能触发滚动或新增 history。
 
-### 6.4 Quick / Detail（UX11-G，P1 条件项）
+### 7.4 Quick / Detail（UX11-G，P1 条件项）
 
 不在首批折叠或删减 Event。先观察 Navigator 是否已解决找回问题；若二次访问仍显著过密，再实现纯 UI density toggle。默认 Detail，Quick 只保留时间、标题、主要人物 / Thread 提示，不改 schema，并记住同一浏览会话内的选择即可。
 
-## 7. 实施批次与退出条件
+## 8. 实施批次与退出条件
 
 | 批次 | 范围 | 优先级 | 退出条件 |
 |---|---|---:|---|
 | UX11-A | Cast 390px 六行；People group-specific compact projection | P0 | **本地完成**：桌面关系清楚；390px 无页面/组件横滚；列表不显示完整 `projectContext` |
 | UX11-B | `navigateToEventContext()`；Player CTA；URL 状态重置；YT scroll/focus；Space 0/1/many | P0 | **本地完成**：Person/Search/Player 三入口共用；Back/Forward 原样恢复；无长距离滚动演出 |
+| UX11-P0 | Static payload audit：raw / gzip / brotli / projection breakdown | P0 | 可重复命令与固定指标；记录 `effa314` 基线；不改可见 UI |
+| UX11-P1 | Source Event Index 首次展开动态生成 | P0 | 初始 HTML 不含 124 个 buttons；三 Track 浏览、选择、focus 与 Space fallback 无回归 |
+| UX11-P2 | Search static JSON + first-use lazy fetch | P0 | 初始 HTML 不含 158 个隐藏结果；JSON count/leakage/sort 与 Event/Thread/Person 导航通过；raw 目标 `<=300 KiB` |
 | UX11-C | Desktop Player Context Rail；Act jump；compact desktop；Thread popover；Player 纵向减负 | P0 | 100% zoom 的 1366 / 1440 / 1920 桌面均无 overflow；四动作与键盘合同通过；390px fallback actions 无回归 |
 | UX11-D | Desktop proportional Timeline Map；current Act | P0 | 8 Act 可直接定位；滚动时 current Act 稳定；不遮挡标题；与 Rail 的局部导航职责不重复 |
 | UX11-E | 选定并实现 Mobile compact navigator 组合 | P0（设计待选） | 与 Project Nav / mini-player 同时出现时仍保留足够阅读区域 |
@@ -315,9 +342,9 @@ Map 是章节索引，不是第二条事件时间线。它不显示 104 个 Even
 | UX11-G | Quick / Detail density | P1（条件） | 只有 UX11-D/E 后复测仍过密才启动 |
 | UX11-H | 1366×768、1440×900、1920×1080、390×844、键盘、console、overflow、history QA | P0 | 固定序列全部通过并保存证据；80% zoom 不作为通过条件 |
 
-第一实施批 UX11-A + UX11-B 已完成本地验收。下一批只做 UX11-C；Timeline Map 顺延到 UX11-D，不能与 Rail 同批实施，以便单独判断桌面空间治理是否成立。
+UX11-A + UX11-B 已在 `effa314` 完成本地验收。下一阶段按 UX11-P0 → P1 → P2 分三个小提交；完成并重测 initial HTML 后才进入 UX11-C。Timeline Map 仍顺延到 UX11-D，不能与 Rail 同批实施。
 
-## 8. 约束与非目标
+## 9. 约束与非目标
 
 - 不改变 Hero、Media Sources 和现有 Folio 视觉语言；
 - 不把 Timeline 改成 YT / SP1 / SP2 混合时钟；
@@ -326,23 +353,29 @@ Map 是章节索引，不是第二条事件时间线。它不显示 104 个 Even
 - 不让 Thread 多关联事件默认选择“第一条”；
 - 不把 Rail 做成页面右缘 Floating UI、独立 sticky toolbar 或移动端第三条常驻导航；
 - 不新增 `?act=`、不扩大 controller JSON 来重复序列化 Act 文案；
+- 不为绕过 Payload Pass 把 350 KiB 直接改成 warning 或 450 KiB；迁移完成后再以实测决定双层门禁；
+- 不把 Search / Source Index 的工具型重复与 Timeline / Thread / Person 的 reader content 混为一类；
 - 不在 UX11-C 同批实现 Timeline Map、playhead 或 Quick / Detail；
 - 不把“页面无横向 overflow”误写成“所有内部组件都无需横滚”；
 - 不在 RC 0.11 顺手重开 Release Gate。完成后仍需独立确认 merge / deploy 意图。
 
-## 9. 验证矩阵
+## 10. 验证矩阵
 
 ### Source / build
 
 - `npm run validate`
 - `npm exec -- tsc --noEmit`
 - `git diff --check`
+- `npm run audit:payload -- komatsu36`（UX11-P0 加入后）
+- Search JSON 的 count / stable sort / leakage fixture；Source Index 的 124 Event controller coverage；
 - controller fixture 覆盖 Space Event 的 0 / 1 / many Thread 分支
 
 ### Browser 1366×768 / 1440×900 / 1920×1080 / 390×844
 
 - People 每组只显示当前组投影，Person panel 信息仍完整；
 - Cast 桌面表格、移动六行，人名均可打开详情；
+- Source Event Index 的 YT / SP1 / SP2 首次展开、缓存、Event 选择和键盘焦点正确；
+- Search 第一次 focus lazy-load；Event / Thread / Person 各抽一项；请求失败不阻塞核心档案；
 - Player CTA 的 YT / Space 文案与目标正确；
 - Desktop Rail 在无 Event 时隐藏；YT / Space Event 下 `节点 / Axx / 线索 / 原链` 状态正确；
 - Rail 与 Player 共边且吃进既有 column；100% zoom 下页面和 Player frame 均无横向 overflow，80% zoom 只作观察；
