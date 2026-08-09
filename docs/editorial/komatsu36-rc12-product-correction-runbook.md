@@ -1,11 +1,11 @@
 # Komatsu36 RC 0.12 Product Correction Runbook
 
-> 状态：`PRODUCT REVIEW ACKNOWLEDGED — F2 REGRESSION COMPLETE`
+> 状态：`RC12-E E1–E3 IMPLEMENTED — BROWSER VERIFIED`
 > 裁决日期：2026-08-09
 > 基线分支：`codex/komatsu36-project-archive`
 > 前置状态：RC 0.11 `REVIEW BRANCH ACCEPTANCE COMPLETE`
-> 当前入口：RC12-F2 final regression handoff
-> 当前进度：RC12-A2/C2/D2/B2 `SOURCE-VERIFIED` + `BROWSER-VERIFIED`；用户本地复核反馈“基本能接受”，F2 已完成；B2 Source title consumer-check 已通过 220px stress，Act／Timeline title 分支仍标记 `TODO consumer-check`
+> 当前入口：RC12-E E1–E3 QA；F2 handoff 保留为前一批回归证据
+> 当前进度：RC12-A2/C2/D2/B2/F2 已完成；RC12-E E1–E3 已完成 `SOURCE-VERIFIED` + `BROWSER-VERIFIED`（YT 8 Act／104 Event；SP1 8 Event；SP2 12 Event）；E4/E5 待继续；B2 Act／Timeline title 分支仍标记 `TODO consumer-check`
 > Release Gate：CLOSED；本文不授权 merge、deploy 或修改 `project.status`
 
 本文记录 RC12-A/B/C/D 第一版经过源码、构建和浏览器验证后，收到的产品层返工裁决。它是后续 agent 的**唯一实施入口**。原 `komatsu36-rc12-visual-polish-source-navigation-plan.md` 保存第一版规格与工程证据，不再代表下一批应直接收口；`komatsu36-rc12-release-readiness-handoff.md` 降级为被产品复核退回的本地 QA 快照。
@@ -14,7 +14,8 @@
 
 ```text
 RC 0.11                         REVIEW BRANCH ACCEPTANCE COMPLETE
-RC12-A/B/C/D first implementation SOURCE-VERIFIED + BROWSER-VERIFIED
+RC12-A/B/C/D/F2                 SOURCE-VERIFIED + BROWSER-VERIFIED
+RC12-E E1–E3                    SOURCE-VERIFIED + BROWSER-VERIFIED
 RC12 product acceptance          REJECTED / CORRECTION REQUIRED
 RC12 release readiness           NOT REACHED
 Release Gate                     CLOSED
@@ -169,9 +170,9 @@ People 数据、分组、Lead Person、Person panel 与四类 participation 不�
 
 本次审阅确认它值得正式保留，但不强行并入视觉返工。其合同仍是 Timeline scope switch：YouTube 主线／X Space ①／X Space ②，各自使用 source-local clock 和 Event list；不得把三条来源混成伪统一时间轴。
 
-只有用户明确说“纳入当前 v1／本轮”才启动。Media Source Navigator、Source Event Index 或来源图标都不等于 Source-scoped Timeline。任何 agent 不得因为“已有来源浏览能力”将 E 标记完成，也不得因为 E 后置而删掉现有 SP1／SP2 入口。
+RC12-E 已按当前继续开发指令启动 E1–E3；E4/E5 仍需独立小批次和证据。Media Source Navigator、Source Event Index 或来源图标都不等于 Source-scoped Timeline；任何 agent 不得把未完成的 E4/E5 或产品停点提前标记为整体完成，也不得因为 E 后置而删掉现有 SP1／SP2 入口。
 
-RC12-E 的只读范围、数据审计、URL／native-clock 合同和授权后实施批次见 `docs/editorial/komatsu36-rc12-e-source-scoped-timeline-proposal.md`。该提案状态仍为 `PROPOSAL — NOT IMPLEMENTED`，不会替代本节的启动条件。
+RC12-E 的数据审计、URL／native-clock 合同和批次边界见 `docs/editorial/komatsu36-rc12-e-source-scoped-timeline-proposal.md`；E1–E3 的精确实现与 Browser 证据见 `docs/qa/komatsu36-rc12/e/README.md`。E4/E5 尚未完成，Release Gate 仍 CLOSED。
 
 ## 8. 每批门禁与证据等级
 
@@ -217,7 +218,7 @@ Browser 必须检查真实 `/projects/komatsu36/` 构建预览，而不是只看
 
 1. 读取本文全文，再读目标批次对应的旧实现与 QA；
 2. 核对 `git branch --show-current`、`git rev-parse HEAD`、`git status --short`；
-3. 当前 F2 已完成；若继续开发，必须先获得新的明确范围，不得回头混改 A2/C2/D2/B2；
+3. 当前 F2 已完成，RC12-E E1–E3 已落地；后续只能按 E4/E5 小批次继续，不得回头混改 A2/C2/D2/B2；
 4. 在动代码前写下本批“不改变”的状态／数据／URL 合同；
 5. 完成后同时给出 source、browser、product 三种状态，不能用一个 `PASS` 混写；
 6. F2 之后不得自行宣布生产接受或打开 Release Gate；真实媒体、长时 soak 与生产授权仍需独立证据和用户授权。
@@ -229,3 +230,9 @@ Browser 必须检查真实 `/projects/komatsu36/` 构建预览，而不是只看
 F2 交接与精确证据见 `docs/editorial/komatsu36-rc12-f2-final-regression-handoff.md`。当前状态为 `F2 SOURCE-VERIFIED` + `BROWSER-VERIFIED`；用户反馈记录为允许继续收口，不把“基本能接受”扩大解释为 `PRODUCT-ACCEPTED`、真实媒体通过或 Release Gate 授权。B2 Source title 已在 220px stress 完成真实展开／收起；Act／Timeline title 当前 fixture 未触发点击分支，仍保留 `TODO consumer-check`。
 
 为避免上述 TODO 被后续构建改动静默破坏，`scripts/validate-publication.mjs` 已加入 B2 静态契约：dist 必须输出 12 个唯一 expandable title target（3 Source、1 Timeline current、8 Act），并为每个 target 输出唯一、初始隐藏、`aria-expanded="false"` 且 `aria-controls` 指向真实 DOM id 的 inline toggle。该检查属于 `SOURCE-VERIFIED` 门禁，不会把没有真实长标题点击样本的 Act／Timeline 分支升级为 `BROWSER-VERIFIED`。
+
+## 13. RC12-E E1–E3 第一版实现
+
+用户此前的“继续吧”作为下一批范围确认后，RC12-E 已启动 E1–E3：Timeline scope switch 输出 YT／SP1／SP2 三个来源；YT 继续使用 8 Act／104 Event 主线；SP1／SP2 各自使用 native-clock Event projection（8／12 Event）；scope、Event、URL/history、external no-iframe 与 390px overflow 已通过源码与 Browser 验证。
+
+精确矩阵见 `docs/qa/komatsu36-rc12/e/README.md`。E4 最终视觉收尾和 E5 完整 handoff 尚未完成；本批不把 E1–E3 证据升级为 `PRODUCT-ACCEPTED`，也不改变 Release Gate CLOSED、真实媒体和生产未执行边界。

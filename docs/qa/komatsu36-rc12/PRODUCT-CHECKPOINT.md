@@ -1,10 +1,10 @@
 # Komatsu36 RC 0.12 人工停点核对表
 
-> 当前状态：`PRODUCT REVIEW ACKNOWLEDGED — F2 REGRESSION COMPLETE`
+> 当前状态：`RC12-E E1–E3 BROWSER VERIFIED — PRODUCT REVIEW PENDING`
 > 预览地址：`http://127.0.0.1:4322/projects/komatsu36/`
 > 当前执行入口：`docs/editorial/komatsu36-rc12-product-correction-runbook.md`
 
-这份表保留 2026-08-09 第一版产品裁决，并追加当前状态；它不替代源码、构建或 Browser QA 证据。RC12-A2/C2/D2/B2 与 F2 已完成，用户在本地简要复核后反馈“基本能接受”并允许继续收口。该反馈不等同于真实媒体通过、生产验收或 Release Gate 授权。后续边界见 `docs/editorial/komatsu36-rc12-product-correction-runbook.md` 与 `docs/editorial/komatsu36-rc12-f2-final-regression-handoff.md`。
+这份表保留 2026-08-09 第一版产品裁决，并追加当前状态；它不替代源码、构建或 Browser QA 证据。RC12-A2/C2/D2/B2 与 F2 已完成，RC12-E E1–E3 已完成第一版工程与 Browser QA；用户在本地简要复核后反馈“基本能接受”并允许继续收口。该反馈不等同于真实媒体通过、生产验收或 Release Gate 授权。后续边界见 `docs/editorial/komatsu36-rc12-product-correction-runbook.md`、`docs/editorial/komatsu36-rc12-f2-final-regression-handoff.md` 与 `docs/qa/komatsu36-rc12/e/README.md`。
 
 ## 第一版停点 1 裁决：Player / People
 
@@ -15,12 +15,12 @@
 | 长文本操作 | 同上，390×844 | Target / Context 机制保留；Act 与 Source 长标题覆盖不足 | `REVISE — RC12-B2` |
 | Cast 投影 | People 页面，901px / 390px | 工程无横滚；产品要求明确 desktop medium role-row fallback | `REVISE — RC12-C2` |
 
-## 第一版停点 2 裁决：D / E
+## 第一版停点 2 裁决（历史）：D / E
 
 | 项目 | 当前建议 | 裁决 |
 |---|---|---|
 | RC12-D 来源图标 | 图标化方向保留；重做 X Space 图形与 Source card 三层信息层级 | `REVISE — RC12-D2` |
-| RC12-E Source-scoped Timeline | 正式保留为 P1 backlog；未明确纳入当前视觉返工 | `DEFERRED / NOT IMPLEMENTED` |
+| RC12-E Source-scoped Timeline | 正式保留为 P1 backlog；未明确纳入当时视觉返工 | `历史裁决：DEFERRED / NOT IMPLEMENTED` |
 
 ## 下一轮人工停点回复格式
 
@@ -49,3 +49,7 @@ E：DEFERRED
 ## 2026-08-10 复核跟进
 
 用户本地简要复核反馈：“基本能接受，请你继续”。据此允许执行 RC12-F2 完整回归并建立 corrected handoff；当前记录为 `PRODUCT REVIEW ACKNOWLEDGED — F2 REGRESSION COMPLETE`。除非用户另行明确授权，仍保持 `Release Gate: CLOSED`，不执行 merge、deploy、生产 preview 或 `project.status` 变更。
+
+## 2026-08-10 RC12-E 工程跟进
+
+“继续”被作为下一批范围确认后，E1–E3 已实现并完成本地 Browser 验证：YT 保留 8 Act／104 Event；SP1 为 8 Event；SP2 为 12 Event；三条均保持 native local clock；scope URL、Event 深链、Back／Forward、external no-iframe 与 390px overflow 已通过。E4/E5、人工产品接受、真实媒体与 Release Gate 仍未完成。

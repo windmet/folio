@@ -1,11 +1,11 @@
 # Komatsu36 RC12-E Source-scoped Timeline Proposal
 
-> 状态：`PROPOSAL — NOT IMPLEMENTED`
+> 状态：`ACTIVE IMPLEMENTATION — E1–E3 SOURCE/BROWSER VERIFIED`
 > 日期：2026-08-10
 > 适用项目：`komatsu36`
 > 权威入口：`docs/editorial/komatsu36-rc12-product-correction-runbook.md`
 
-本文把 RC12-E 需要实施的最小合同、数据边界和验证批次写清楚，但**不启动实现**。Runbook 已明确：只有用户明确说“纳入当前 v1／本轮”后，才能把 E 从 backlog 提升为 active batch。本提案不能替代该授权，也不能把现有 Source Event Index、来源图标或 Source card 误报成 Source-scoped Timeline。
+本文把 RC12-E 需要实施的最小合同、数据边界和验证批次写清楚。用户此前的“继续吧”被作为启动下一批的范围确认；E1–E3 已完成第一版实现与本地 Browser 验证，E4 最终视觉收尾和 E5 完整交接仍待继续。本提案不能把现有 Source Event Index、来源图标或 Source card 误报成 Source-scoped Timeline。
 
 ## 1. 当前代码与数据基线（只读审计）
 
@@ -65,7 +65,7 @@
 - Back／Forward、直接深链和刷新必须恢复 scope、选中 Event、Source selection、Player label 和外部／站内能力状态。
 - 不得写入跨平台 offset、播放器当前秒数或私有 transcript 信息。
 
-## 3. 实施批次（授权后才执行）
+## 3. 实施批次
 
 ### E1 — 数据投影与静态合同
 
@@ -121,6 +121,6 @@ Browser 至少覆盖：
 - 不修改 Event／Act／Track 的 reader-facing 真值来制造 demo 长度或排序；
 - 不在没有用户明确授权时修改实现、公开状态、merge、deploy 或 Release Gate。
 
-## 5. 启动条件
+## 5. 当前启动记录与剩余条件
 
-只有收到明确的“将 RC12-E 纳入当前 v1／本轮”指令，才将本文从 `PROPOSAL` 改为 active batch，并先在新的实现提交中记录 E1 的“不改变”合同。否则本文仅作为下一位 agent 的范围输入。
+E1–E3 已在当前 review branch 启动并完成第一版；精确实现与 Browser 证据见 `docs/qa/komatsu36-rc12/e/README.md`。E4／E5 仍必须作为独立小批次继续验证；真实媒体、生产部署和 Release Gate 不因 E1–E3 通过而开启。

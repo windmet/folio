@@ -7,6 +7,7 @@ import PersonPopover from './PersonPopover.astro';
 import ProjectSearch from './ProjectSearch.astro';
 import MediaSourceNavigator from './MediaSourceNavigator.astro';
 import TimelineNavigator from './TimelineNavigator.astro';
+import SourceTimeline from './SourceTimeline.astro';
 import CastMatrix from './CastMatrix.astro';
 import PersonCard from './PersonCard.astro';
 import LeadPersonCard from './LeadPersonCard.astro';
@@ -94,6 +95,7 @@ const threadViews = await Promise.all(threads.map(async (entry) => {
 }));
 
 const defaultTrack = tracks.find((track) => track.id === referenceId(project.data.defaultTrack)) || tracks[0];
+const defaultTimelineTrackId = localId(defaultTrack.id);
 const orderedActs = [...acts].sort((a, b) => a.data.order - b.data.order);
 const orderedThreads = [...threads].sort((a, b) => Number(b.data.featured) - Number(a.data.featured) || a.data.title.localeCompare(b.data.title, 'zh-CN'));
 const orderedPeople = [...people].sort((a, b) => a.data.displayName.localeCompare(b.data.displayName, 'zh-CN'));
@@ -104,6 +106,18 @@ const eventsForAct = (actId: string) => publishedEvents
   .filter((event) => event.data.act?.id === actId)
   .sort((a, b) => a.data.startMs - b.data.startMs);
 const payoffEvent = publishedEvents.find((event) => localId(event.id) === 'yt-030923-takoyaki-payoff');
+const trackOrder = new Map([['yt-main', 0], ['space-1', 1], ['space-2', 2]]);
+const orderedTimelineTracks = [...tracks].sort((left, right) =>
+  (trackOrder.get(localId(left.id)) ?? 99) - (trackOrder.get(localId(right.id)) ?? 99),
+);
+const eventsByTrack = new Map<string, any[]>(
+  orderedTimelineTracks.map((track) => [
+    localId(track.id),
+    publishedEvents
+      .filter((event) => localId(referenceId(event.data.track)) === localId(track.id))
+      .sort((left, right) => left.data.startMs - right.data.startMs || localId(left.id).localeCompare(localId(right.id), 'en')),
+  ]),
+);
 
 const controllerData = {
   projectId: project.id,
@@ -114,6 +128,7 @@ const controllerData = {
     label: track.data.label,
     shortLabel: track.data.shortLabel,
     kind: track.data.kind,
+    clock: track.data.clock,
     durationMs: track.data.durationMs,
     playback: track.data.playback,
     fallbackUrl: track.data.fallbackUrl,
@@ -196,13 +211,49 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
 
       <section class="project-view timeline-view" data-view-panel="timeline" hidden>
         <div class="view-heading">
-          <span class="archive-kicker">CHRONOLOGICAL CANON · YT NATIVE CLOCK</span>
+          <span class="archive-kicker">CHRONOLOGICAL CANON · SOURCE-LOCAL CLOCKS</span>
           <h2>Timeline</h2>
-          <p>八个 Act 按 YouTube 主直播时间排列；Space 的相关段落请从 Storylines 查看，不把两个现场的时钟硬拼在一起。</p>
+          <p>选择一个来源查看其独立本地时钟。YouTube 保留八个 Act 主线，X Space 使用各自的事件列表，不把现场时钟硬拼在一起。</p>
         </div>
-        <TimelineNavigator acts={orderedActs} />
-        {orderedActs.map((act) => (
-          <ActSection act={act} events={eventsForAct(act.id)} peopleById={peopleById} threadsByEvent={threadsByEvent} />
+        <div class="timeline-scope" data-timeline-scope>
+          <div class="timeline-scope__heading">
+            <span class="archive-kicker">TIMELINE SCOPE</span>
+            <p data-timeline-scope-description>按来源切换；所有时间均保持原始媒体的 native clock。</p>
+          </div>
+          <div class="timeline-scope__buttons" role="group" aria-label="Timeline 来源范围">
+            {orderedTimelineTracks.map((track) => {
+              const trackId = localId(track.id);
+              const trackEvents = eventsByTrack.get(trackId) || [];
+              return (
+                <button
+                  type="button"
+                  class="timeline-scope__button"
+                  data-timeline-scope-button={trackId}
+                  aria-pressed={trackId === defaultTimelineTrackId ? 'true' : 'false'}
+                  aria-controls={`timeline-scope-panel-${trackId}`}
+                  aria-label={`选择${track.data.label} Timeline scope · ${trackEvents.length} events · native clock`}
+                >
+                  <span>{track.data.shortLabel}</span>
+                  <strong>{track.data.label}</strong>
+                  <small>{trackEvents.length} EVENTS · NATIVE CLOCK</small>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+        <div id={`timeline-scope-panel-${defaultTimelineTrackId}`} data-timeline-scope-panel={defaultTimelineTrackId}>
+          <TimelineNavigator acts={orderedActs} />
+          {orderedActs.map((act) => (
+            <ActSection act={act} events={eventsForAct(act.id)} peopleById={peopleById} threadsByEvent={threadsByEvent} />
+          ))}
+        </div>
+        {orderedTimelineTracks.filter((track) => localId(track.id) !== defaultTimelineTrackId).map((track) => (
+          <SourceTimeline
+            track={track}
+            events={eventsByTrack.get(localId(track.id)) || []}
+            peopleById={peopleById}
+            threadsByEvent={threadsByEvent}
+          />
         ))}
       </section>
 
@@ -322,6 +373,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     label: string;
     shortLabel: string;
     kind: 'video' | 'audio';
+    clock: 'native' | 'offset';
     durationMs: number;
     playback: { provider: 'youtube'; videoId: string } | { provider: 'external'; url: string } | { provider: 'unavailable' };
     fallbackUrl?: string;
@@ -372,6 +424,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     playerPresentationMode: 'expanded' | 'docked' = 'expanded';
     playerModePreferences: Record<string, 'expanded' | 'docked'> = {};
     activeTrackId = '';
+    timelineScopeId = '';
     selectedEventId: string | null = null;
     selectedThreadId: string | null = null;
     selectedPersonId: string | null = null;
@@ -406,6 +459,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.data = JSON.parse(dataNode.textContent || '{}');
       this.loadPlayerModePreferences();
       this.activeTrackId = this.data.defaultTrackId;
+      this.timelineScopeId = this.data.defaultTrackId;
       this.bindEvents();
       const playerFrame = this.querySelector<HTMLElement>('[data-player-frame]');
       if (playerFrame && typeof ResizeObserver !== 'undefined') {
@@ -442,6 +496,9 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         const target = event.target instanceof Element ? event.target : null;
         const button = target?.closest<HTMLElement>('[data-timeline-navigator-segment]');
         if (button) this.navigateToAct(button.dataset.timelineNavigatorSegment || '');
+      });
+      this.querySelectorAll<HTMLElement>('[data-timeline-scope-button]').forEach((button) => {
+        button.addEventListener('click', () => this.switchTimelineScope(button.dataset.timelineScopeButton || '', true));
       });
       this.querySelectorAll<HTMLElement>('[data-event-seek]').forEach((button) => {
         button.addEventListener('click', () => this.selectEvent(button.dataset.eventSeek || '', true, true));
@@ -680,6 +737,32 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       if (focus) input?.focus({ preventScroll: true });
     }
 
+    applyTimelineScope(trackId: string) {
+      const scope = this.data.tracks[trackId] ? trackId : this.data.defaultTrackId;
+      this.timelineScopeId = scope;
+      this.querySelectorAll<HTMLElement>('[data-timeline-scope-panel]').forEach((panel) => {
+        panel.hidden = panel.dataset.timelineScopePanel !== scope;
+      });
+      this.querySelectorAll<HTMLElement>('[data-timeline-scope-button]').forEach((button) => {
+        button.setAttribute('aria-pressed', String(button.dataset.timelineScopeButton === scope));
+      });
+      const track = this.data.tracks[scope];
+      const description = this.querySelector<HTMLElement>('[data-timeline-scope-description]');
+      if (description && track) {
+        description.textContent = `${track.shortLabel} · ${track.label} · ${track.durationMs ? this.formatArchiveTime(track.durationMs) : '—'} NATIVE CLOCK`;
+      }
+      const navigator = this.querySelector<HTMLElement>('[data-timeline-navigator]');
+      if (navigator) navigator.hidden = scope !== this.data.defaultTrackId;
+      this.refreshInlineText();
+    }
+
+    switchTimelineScope(trackId: string, push: boolean) {
+      if (!this.data.tracks[trackId]) return;
+      this.switchTrack(trackId, false);
+      this.applyTimelineScope(trackId);
+      if (push) this.updateUrl();
+    }
+
     getTimelineScrollOffset() {
       const nav = this.querySelector<HTMLElement>('.project-nav');
       const navigator = this.querySelector<HTMLElement>('[data-timeline-navigator]');
@@ -701,7 +784,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
 
     updateTimelineNavigator() {
       const navigator = this.querySelector<HTMLElement>('[data-timeline-navigator]');
-      if (!navigator || this.activeView !== 'timeline') return;
+      if (!navigator || this.activeView !== 'timeline' || this.timelineScopeId !== this.data.defaultTrackId) return;
       const sections = [...this.querySelectorAll<HTMLElement>('[data-view-panel="timeline"] [data-act]')];
       if (sections.length === 0) return;
       const pivot = this.getTimelineScrollOffset() + 8;
@@ -751,6 +834,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.querySelectorAll<HTMLElement>('[data-view-button]').forEach((button) => {
         button.setAttribute('aria-pressed', String(button.dataset.viewButton === view));
       });
+      this.applyTimelineScope(this.timelineScopeId || this.data.defaultTrackId);
       this.applyPlayerPresentationMode(view);
       this.refreshPlayerText();
       this.refreshInlineText();
@@ -994,8 +1078,10 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       if (!event) return;
       this.selectedEventId = eventId;
       this.activeTrackId = event.trackId;
+      this.timelineScopeId = event.trackId;
       this.classList.add('has-active-event');
       this.updateTrack(event.trackId);
+      this.applyTimelineScope(event.trackId);
       this.querySelectorAll<HTMLElement>('[data-event-card]').forEach((card) => card.classList.toggle('is-active', card.dataset.eventCard === eventId));
       const current = this.querySelector<HTMLElement>('[data-player-current-text]');
       if (current) current.textContent = `TARGET · ${this.formatArchiveTime(event.startMs)}\n${event.title}`;
@@ -1014,7 +1100,9 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.pendingSeekMs = null;
       this.classList.remove('has-active-event');
       this.activeTrackId = trackId;
+      this.timelineScopeId = trackId;
       this.updateTrack(trackId);
+      this.applyTimelineScope(trackId);
       this.updateSourceEventIndex(trackId);
       this.querySelectorAll<HTMLElement>('[data-event-card]').forEach((card) => card.classList.remove('is-active'));
       const current = this.querySelector<HTMLElement>('[data-player-current-text]');
@@ -1339,6 +1427,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.selectedThreadId = null;
       this.selectedPersonId = null;
       this.activeTrackId = this.data.defaultTrackId;
+      this.timelineScopeId = this.data.defaultTrackId;
       this.pendingSeekMs = null;
       this.returnFocus = null;
       this.classList.remove('has-active-event');

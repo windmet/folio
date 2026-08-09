@@ -226,6 +226,55 @@ if (!controllerMatch) {
   }
 }
 
+const expectedEventsByTrack = new Map();
+for (const { id, data } of publicEventEntries) {
+  const trackId = String(data.track).split('/').at(-1) || String(data.track);
+  const list = expectedEventsByTrack.get(trackId) || [];
+  list.push({ id, startMs: data.startMs });
+  expectedEventsByTrack.set(trackId, list);
+}
+for (const [trackId, entries] of expectedEventsByTrack) {
+  entries.sort((left, right) => left.startMs - right.startMs || left.id.localeCompare(right.id, 'en'));
+}
+const expectedTimelineTrackIds = ['yt-main', 'space-1', 'space-2'];
+if (!controllerMatch) {
+  errors.push('RC12-E controller track projection cannot be checked without controller JSON');
+} else {
+  try {
+    const controller = JSON.parse(controllerMatch[1]);
+    const controllerTracks = controller.tracks || {};
+    for (const trackId of expectedTimelineTrackIds) {
+      const track = controllerTracks[trackId];
+      if (!track) {
+        errors.push(`RC12-E controller is missing track projection ${trackId}`);
+        continue;
+      }
+      if (track.clock !== 'native') errors.push(`RC12-E track ${trackId} must declare native clock`);
+      const expectedIds = (expectedEventsByTrack.get(trackId) || []).map(({ id }) => id);
+      const actualIds = Object.values(controller.events || {})
+        .filter((event) => event.trackId === trackId)
+        .sort((left, right) => left.startMs - right.startMs || left.id.localeCompare(right.id, 'en'))
+        .map((event) => event.id);
+      if (JSON.stringify(actualIds) !== JSON.stringify(expectedIds)) {
+        errors.push(`RC12-E event projection for ${trackId} is not complete or stably ordered`);
+      }
+    }
+    const unexpectedTrackIds = [...expectedEventsByTrack.keys()].filter((trackId) => !expectedTimelineTrackIds.includes(trackId));
+    if (unexpectedTrackIds.length) errors.push(`RC12-E found unexpected event track ids: ${unexpectedTrackIds.join(', ')}`);
+  } catch (error) {
+    errors.push(`RC12-E controller track projection is invalid: ${error.message}`);
+  }
+}
+
+const actualTimelineScopeButtons = (html.match(/data-timeline-scope-button="/g) || []).length;
+const actualTimelineScopePanels = (html.match(/data-timeline-scope-panel="/g) || []).length;
+if (actualTimelineScopeButtons !== expectedTimelineTrackIds.length) {
+  errors.push(`RC12-E timeline scope has ${actualTimelineScopeButtons} buttons; expected ${expectedTimelineTrackIds.length}`);
+}
+if (actualTimelineScopePanels !== expectedTimelineTrackIds.length) {
+  errors.push(`RC12-E timeline scope has ${actualTimelineScopePanels} panels; expected ${expectedTimelineTrackIds.length}`);
+}
+
 const forbiddenPublicationMarkers = [
   ['raw ASR file marker', /external_asr_raw/i],
   ['X author identifier', /author_id/i],
@@ -281,5 +330,5 @@ if (errors.length) {
 }
 
 console.log(
-  `Publication validation passed (${outputBytes} bytes, ${searchPayload?.items?.length || 0} search JSON items, ${actualSourceEventButtons} initial source event buttons, ${expandableEntries.length} RC12-B2 expandable title contracts, controller coverage verified, no private source markers).`,
+  `Publication validation passed (${outputBytes} bytes, ${searchPayload?.items?.length || 0} search JSON items, ${actualSourceEventButtons} initial source event buttons, ${expandableEntries.length} RC12-B2 expandable title contracts, ${actualTimelineScopeButtons} RC12-E timeline scopes, controller coverage verified, no private source markers).`,
 );
