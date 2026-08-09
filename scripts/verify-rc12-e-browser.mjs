@@ -86,8 +86,26 @@ try {
   assert(mobile.events === 8, `expected 8 SP1 events on mobile, got ${mobile.events}`);
   errors.push(...narrowLogs);
 
+  const medium = await browser.newPage({ viewport: { width: 901, height: 780 } });
+  const mediumLogs = [];
+  medium.on('console', (message) => {
+    if (message.type() === 'error' || message.type() === 'warning') mediumLogs.push(`${message.type()}: ${message.text()}`);
+  });
+  medium.on('pageerror', (error) => mediumLogs.push(`pageerror: ${error.message}`));
+  await medium.goto(`${projectUrl}?view=timeline&track=space-1`);
+  const mediumLayout = await medium.evaluate(() => ({
+    overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    scopeButtons: [...document.querySelectorAll('[data-timeline-scope-button]')].map((button) => Math.round(button.getBoundingClientRect().width)),
+    eventCard: Math.round(document.querySelector('[data-timeline-scope-panel="space-1"] [data-timeline-event]')?.getBoundingClientRect().width || 0),
+    player: Math.round(document.querySelector('.project-player-column')?.getBoundingClientRect().width || 0),
+  }));
+  assert(mediumLayout.overflow === 0, `expected medium overflow 0, got ${mediumLayout.overflow}`);
+  assert(mediumLayout.scopeButtons.every((width) => width >= 100), `medium scope buttons are too narrow: ${JSON.stringify(mediumLayout.scopeButtons)}`);
+  assert(mediumLayout.eventCard > 0 && mediumLayout.player > 0, `medium layout missing Event card or Player: ${JSON.stringify(mediumLayout)}`);
+  errors.push(...mediumLogs);
+
   assert(errors.length === 0, `browser console errors: ${errors.join(' | ')}`);
-  console.log(JSON.stringify({ initial, enter, space, back, mobile, console: errors }, null, 2));
+  console.log(JSON.stringify({ initial, enter, space, back, mobile, medium: mediumLayout, console: errors }, null, 2));
 } finally {
   await browser.close();
 }

@@ -26,7 +26,7 @@
 | SP1 Back／Forward | Back 恢复 `track=space-1` 且无 selected Event；Forward 恢复 SP1 Event 深链；scope 与 Player label 同步 |
 | SP2 直接 scope | `?view=timeline&track=space-2`；12 个 Event，首项 `sp2-000003-finally-vertical`／`00:00:03`；Player label `X Space ②`；无 iframe；overflow `0` |
 | 切回 YT | URL 回到无 `track` 的 Timeline；YT panel 可见，8 Act／104 Event；SP2 panel 隐藏；Player label `YouTube 主直播` |
-| 901×780 中等宽度 | scope button 约 `122px`、SP1 Event card 约 `382px`、Player 约 `372px`；document overflow `0` |
+| 901×780 中等宽度（Playwright Chromium） | scope button `127px`、SP1 Event card `397px`、Player `372px`；document overflow `0` |
 | 390×844（Playwright Chromium） | 3 个 scope tabs 各 `114×74px`，scope block `159px`；无横向 overflow；SP1 仍可触控切换并显示 8 个 Event |
 | Keyboard Enter／Space／focus restore（Playwright Chromium） | 1440×900：Enter 激活 SP1、Space 激活 SP2；URL、`aria-pressed`、当前 scope 和焦点同步；Back 恢复 SP1 且焦点回到 SP1 button；页面 console 为空 |
 | Console | 页面 `error/warn = []`；Browser 工具自身 Statsig dropped-events warning 不属于页面 console，不纳入产品错误证据 |

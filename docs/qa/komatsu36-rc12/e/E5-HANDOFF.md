@@ -36,6 +36,7 @@
 | Visual render spot check | Playwright 截图抽查 1440×900 与 390×844：scope row、source header、Event cards 和 Player 保持预期层级，无 app-level clipping／fixed overlay；Codex 工具注入的 `#codex-browser-sidebar-comments-root` 不纳入产品页面证据 |
 | Page console | 页面 `error/warn = []`；Browser 工具自身 Statsig 网络／dropped-events 日志不属于页面 console |
 | Narrow viewport | Playwright Chromium 390×844：scope block `159px`，三按钮各 `114×74px`，SP1 8 Event，overflow `0`；页面 console 为空 |
+| Medium viewport | Playwright Chromium 901×780：scope buttons `127px`，SP1 Event card `397px`，Player `372px`，overflow `0`；页面 console 为空 |
 
 ## 3. 自动门禁
 
