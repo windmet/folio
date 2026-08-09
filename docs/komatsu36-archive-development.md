@@ -1,6 +1,6 @@
 # 小松昌平 36 岁生日会 Project Archive 开发设计
 
-> 状态：RC 0.8（2026-08-09，Media Pass 实施完成与发布前 QA）
+> 状态：RC 0.9（2026-08-09，发布层 Final Editorial Pass 完成，Release Gate 待确认）
 > 目标：把一场多平台、多人物、长时、存在跨轨回收的活动做成可浏览、可追溯、可逐步发布的专题档案，而不是把工作稿直接塞进普通博客正文。
 > 当前源档根：`E:\AI_Subtitle_Studio\02_Projects\小松昌平生日会`（只通过 CLI 参数或 `KOMATSU36_SOURCE_ROOT` 提供）
 > 当前权威文档集：源档根下的 `复核md/` 带版本后缀文件；根目录同名无后缀文件是旧工作稿，不得自动选用。
@@ -17,8 +17,8 @@
 - 公开 Event / Thread / Person 的轻量站内检索已落地：索引只来自发布内容，结果顺序固定，Event 结果可恢复稳定深链并切换到正确 Track；不索引 Transcript 与 Chat；
 - `validate:publication` 已接入统一 `npm run validate`：当前构建核对 158 条公开检索项、350 KiB 单页预算，并阻止原始 ASR 文件标记、本机源档路径、`author_id`、SRT/VTT 文件名进入发布 HTML，同时要求 `published` Project 在首页拥有真实入口；
 - 首页已增加独立“专题档案”书架，只消费 `status: published` 的 Project，并显示由 collection 实时派生的 Event／Thread／Track 数量；专题不混入四类普通文章筛选；
-- 当前实现已完成 RC Media Pass：Hero 下方有常驻三来源栏，播放器有 Source Switcher，SP1/SP2 是 `video + external`，支持 `?track=`、Event 优先、Source Event Index、canonical Space CTA 与 provenance 链接；固定截图与本地 preview QA 也已完成，尚未进入最终功能冻结，因为仍需 Final Editorial Pass 与发布意图确认；
-- 当前仍未完成：最终编辑校样与 Release Gate。八张固定截图已保存于 `docs/qa/komatsu36-rc08/`；YouTube `origin`、dialog focus containment、external 来源文案和桌面/390px基础交互验收已完成。项目特例 validator 拆分延后到第二个 Project 接入前；Transcript 与 Evidence 是明确延后项，不阻塞 v1。不得因 16 条 Thread 已出现而误报为完整 Folio 愿景已经完成。
+- 当前实现已完成 RC Media Pass：Hero 下方有常驻三来源栏，播放器有 Source Switcher，SP1/SP2 是 `video + external`，支持 `?track=`、Event 优先、Source Event Index、canonical Space CTA 与 provenance 链接；固定截图、本地 preview QA 与发布层 Final Editorial Pass 也已完成，尚未进入最终功能冻结，因为仍需 Release Gate 与发布意图确认；
+- 当前仍未完成：Release Gate。八张固定截图已保存于 `docs/qa/komatsu36-rc08/`，全量发布层编辑审计见 `docs/qa/komatsu36-rc08/EDITORIAL-AUDIT.md`；源档中的词级、商品、speaker、画面和账号身份 TODO 仍保持原边界，不阻塞 v1，但不得在后续编辑中猜测补齐。项目特例 validator 拆分延后到第二个 Project 接入前；Transcript 与 Evidence 是明确延后项，不阻塞 v1。不得因 16 条 Thread 已出现而误报为完整 Folio 愿景已经完成。
 - X Space inline replay 调查对本 RC 正式关闭：`STATUS: CLOSED FOR RC`，`RESULT: unavailable through verified public integration`，`FALLBACK: first-class external source`。除非 X 的公开产品能力发生变化并可对具体 URL 复测，否则不再调查 GraphQL 私有字段、内部 HLS、临时 token、Periscope 私有 endpoint 或 `media_key` 变换。
 
 上述数字是当前仓库快照，新增内容后必须以验证器和实际文件计数更新，不作为永久常量。
@@ -844,13 +844,13 @@ package.json
 3. **Commit C — External source state（已完成）**：实现正常态 external panel、canonical CTA、Event TARGET、无 Event 时的“尚未选择定位节点”，并修复 Space 下仍显示 YouTube 360°说明的 P0 缺陷；
 4. **Commit D — Browse source events（已完成）**：实现 per-track Source Event Index，不新增 View / route；完成后已冻结新增媒体功能；
 5. **已完成**：修复 YouTube 动态 `origin` 与 Thread / Person focus containment；
-6. 面对最终交互形态执行 Final Editorial Pass：逐 Act 检查标题、summary、密度、入点和 qualification，逐 Thread 检查 setup / development / payoff、transition、跨平台标签及推断措辞，抽查 People 别名、reading、role 与回链；
+6. **已完成**：面对最终交互形态执行发布层 Final Editorial Pass；逐 Act 检查标题、summary、密度、入点和 qualification，逐 Thread 检查 setup / development / payoff、transition、跨平台标签及推断措辞，抽查 People 别名、reading、role 与回链；审计记录见 `docs/qa/komatsu36-rc08/EDITORIAL-AUDIT.md`。源级词条 TODO 仍按 `komatsu36_review_todo(10).md` 保持不阻塞 v1 的边界；
 7. **已完成**：执行桌面与 390px 的八张固定截图、console、overflow、键盘、深链及 back/forward 复测；截图保存于 `docs/qa/komatsu36-rc08/`，并以 1440×900 本地 preview 复测构建产物；
 8. 明确检查 `project.status`。当前为 `published`，首页又只筛选 `published` Project，因此合并到部署分支等价于正式发布，不得把 merge 当作无外部影响的代码整理。
 
 通用 validator 与 komatsu36 fixture 的分层不再列入本次 Release Blocker：通用层最终只校验 schema、关系、时间、隐私和确定性排序；`8 Acts`、manifest ARC 数与小松专属 publication assertions 留在项目 fixture，但该工作延后到第二个 Project 接入前完成。
 
-Media Pass、交互小修与 Visual QA 已通过本地验证；当前真正剩余的 Release Blocker 只有 Final Editorial Pass 与发布意图确认：
+Media Pass、交互小修、Visual QA 与发布层 Final Editorial Pass 已通过本地验证；当前真正剩余的 Release Blocker 只有 Release Gate 与发布意图确认：
 
 | Blocker | 状态 / 完成标准 |
 |---|---|
@@ -859,7 +859,7 @@ Media Pass、交互小修与 Visual QA 已通过本地验证；当前真正剩�
 | YouTube `origin` | **已完成代码修正**；使用 `window.location.origin`，仍需随最终 preview / production 做一次部署环境抽查 |
 | dialog focus containment | **已完成并复测**；背景不可 Tab、焦点循环、Esc 与 restore 均通过 |
 
-四类 Blocker 完成后只剩 Editorial / Visual QA 与明确的 Release Gate，不再增加产品能力。
+上述产品与 QA Blocker 已完成；现在只剩明确的 Release Gate，不再增加产品能力。
 
 除上述 Media Pass 外冻结新的基础 UI、Event 数量扩张、Tina Project 编辑器、Transcript、Evidence 与 Chat 浏览器。Transcript 和 Evidence 继续保持关闭，直到公开权、分片格式与隐私边界分别通过专项决策；不得用“已有 SRT”替代该决策。
 
@@ -885,7 +885,7 @@ Media Pass、交互小修与 Visual QA 已通过本地验证；当前真正剩�
 | canonical Space 与 status Post 分工 | Track / Source 数据已分为 canonical `/i/spaces/...` 媒体记录与 `/i/status/...` provenance 记录；validator 关系已通过 | **Commit A 已完成**：不扩 Track schema，来源证明链接以轻量 provenance 区呈现 |
 | 手动 Source 状态冲突 | controller 已实现 `?track=`；手动选源清除 Event / target，Event selection 删除冗余 track，刷新时 Event 优先 | **Commit B 已完成并复测** |
 | Source Event 浏览范围 | 主 Timeline 是 YT canonical clock，不能承载 SP1 / SP2 的本地时钟 | **Commit D 合同**：使用轻量 per-track Source Event Index；不新增第六 View、route 或多轨 Timeline |
-| Final Editorial 抽样 | 124 个公开 Event 按 YT 104 / SP1 8 / SP2 12 分布；42 个 `qualified`、15 个 lane annotation、16 条 Thread、18 个 Person；抽查跨平台 LINE Thread、Space 技术 Thread、俄罗斯章鱼烧 payoff、qualified Event 与 Person 反向索引 | **本轮通过**：未发现结构关系、限定措辞或来源职责冲突；完整逐 Act / 逐 Thread 校样仍是发布前人工步骤 |
-| 浏览器 Release QA | 1440×900 与 390×844 的八张真实路由截图已保存于 `docs/qa/komatsu36-rc08/`；三 Source 可见、无横向 overflow；console 0 error；Event / `?track=` / back-forward、Source Event Index、Thread / Person inert 与 focus trap 已实测；4322 preview 构建复测通过 | **本轮通过**：仅剩 Final Editorial Pass 与确认 preview / production 发布意图 |
+| Final Editorial 全量发布层审计 | 124 个公开 Event 按 YT 104 / SP1 8 / SP2 12 分布；82 个 `verified`、42 个 `qualified`、16 条 Thread、18 个 Person；逐 Act / 逐 Thread 核对 setup / development / payoff、跨 Track 顺序、限定措辞与 Person 回链 | **本轮通过**：审计记录见 `docs/qa/komatsu36-rc08/EDITORIAL-AUDIT.md`；源级逐字/商品/画面/身份 TODO 保持不提升为确定事实 |
+| 浏览器 Release QA | 1440×900 与 390×844 的八张真实路由截图已保存于 `docs/qa/komatsu36-rc08/`；三 Source 可见、无横向 overflow；console 0 error；Event / `?track=` / back-forward、Source Event Index、Thread / Person inert 与 focus trap 已实测；4322 preview 构建复测通过 | **本轮通过**：仅剩确认 preview / production 发布意图 |
 
 本表中的“已采纳”表示指导与仓库/媒体证据一致；“有条件采纳”表示方向可行但尚未满足发布前提。它不把本地持有媒体、文件后缀或可播放样本等同于公开托管授权与生产可用性。

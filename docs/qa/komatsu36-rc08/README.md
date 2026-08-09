@@ -1,4 +1,4 @@
-# Komatsu36 RC 0.8 Visual QA
+# Komatsu36 RC 0.9 Visual QA evidence
 
 Generated from the real `/projects/komatsu36/` route on the local Astro preview server (`127.0.0.1:4322`) on 2026-08-09. These files are review evidence only; they are not published site assets.
 
