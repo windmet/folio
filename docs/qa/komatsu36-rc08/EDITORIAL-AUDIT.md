@@ -53,4 +53,4 @@
 1. 确认 `project.status: published` 是否代表现在就允许合并到部署分支；
 2. 如要正式发布，再对 production URL 做与本地 preview 同范围的抽查。2026-08-09 对 `https://megazine-blog.pages.dev/` 的只读探测未完成：应用浏览器返回 `net::ERR_CONNECTION_CLOSED`，PowerShell HTTPS 连接也在握手阶段关闭；这只能证明本次环境没有取得 production 证据，不能推断该站点全球不可用。
 
-在这两个决定完成前，不把当前分支称为 production-accepted，也不执行推送或部署。
+在这两个决定完成前，不把当前分支称为 production-accepted，也不合并到部署分支或执行 production 部署。当前 review 分支可以继续推送供 CI 与人工审阅，但这不等于正式发布。
