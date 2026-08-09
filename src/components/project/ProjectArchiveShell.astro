@@ -369,8 +369,8 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
   class ProjectArchiveShellElement extends HTMLElement {
     data!: ControllerData;
     activeView = 'timeline';
-    playerPresentationMode: 'expanded' | 'compact' = 'expanded';
-    playerModePreferences: Record<string, 'expanded' | 'compact'> = {};
+    playerPresentationMode: 'expanded' | 'docked' = 'expanded';
+    playerModePreferences: Record<string, 'expanded' | 'docked'> = {};
     activeTrackId = '';
     selectedEventId: string | null = null;
     selectedThreadId: string | null = null;
@@ -476,7 +476,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.querySelectorAll<HTMLElement>('[data-close-person]').forEach((button) => button.addEventListener('click', () => this.closePerson(true)));
       this.querySelector<HTMLElement>('[data-load-player]')?.addEventListener('click', () => this.ensurePlayer());
       this.querySelector<HTMLElement>('[data-player-mode-toggle]')?.addEventListener('click', () => {
-        this.setPlayerPresentationMode(this.playerPresentationMode === 'expanded' ? 'compact' : 'expanded');
+        this.setPlayerPresentationMode(this.playerPresentationMode === 'expanded' ? 'docked' : 'expanded');
       });
       this.querySelectorAll<HTMLButtonElement>('[data-player-text-toggle]').forEach((button) => {
         button.addEventListener('click', () => this.togglePlayerText(button.dataset.playerTextToggle || ''));
@@ -1181,18 +1181,21 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     }
 
     playerModeStorageKey() {
-      return `folio:player-mode:${this.data?.projectId || 'archive'}:v1`;
+      return `folio:player-mode:${this.data?.projectId || 'archive'}:v2`;
     }
 
     loadPlayerModePreferences() {
       try {
-        const raw = window.sessionStorage.getItem(this.playerModeStorageKey());
+        const raw = window.sessionStorage.getItem(this.playerModeStorageKey())
+          || window.sessionStorage.getItem(`folio:player-mode:${this.data?.projectId || 'archive'}:v1`);
         if (!raw) return;
         const parsed = JSON.parse(raw);
         if (!parsed || typeof parsed !== 'object') return;
         this.playerModePreferences = Object.fromEntries(
-          Object.entries(parsed).filter(([, value]) => value === 'expanded' || value === 'compact'),
-        ) as Record<string, 'expanded' | 'compact'>;
+          Object.entries(parsed)
+            .map(([view, value]) => [view, value === 'compact' ? 'docked' : value] as const)
+            .filter(([, value]) => value === 'expanded' || value === 'docked'),
+        ) as Record<string, 'expanded' | 'docked'>;
       } catch {
         this.playerModePreferences = {};
       }
@@ -1206,8 +1209,8 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       }
     }
 
-    defaultPlayerPresentationMode(view: string): 'expanded' | 'compact' {
-      return view === 'timeline' || view === 'storylines' ? 'expanded' : 'compact';
+    defaultPlayerPresentationMode(view: string): 'expanded' | 'docked' {
+      return view === 'timeline' || view === 'storylines' ? 'expanded' : 'docked';
     }
 
     applyPlayerPresentationMode(view: string) {
@@ -1219,16 +1222,18 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       const mode = desktop ? requested : 'expanded';
       this.playerPresentationMode = mode;
       frame.dataset.playerMode = mode;
+      this.classList.toggle('is-player-docked', mode === 'docked');
+      document.body.classList.toggle('archive-player-docked', mode === 'docked');
       if (!toggle) return;
       toggle.hidden = !desktop;
-      const compact = mode === 'compact';
-      toggle.setAttribute('aria-pressed', String(compact));
-      toggle.setAttribute('aria-label', compact ? '切换为完整播放器' : '切换为紧凑播放器');
+      const docked = mode === 'docked';
+      toggle.setAttribute('aria-pressed', String(docked));
+      toggle.setAttribute('aria-label', docked ? '展开完整播放器' : '切换为底部播放栏');
       const label = toggle.querySelector<HTMLElement>('[data-player-mode-toggle-label]');
-      if (label) label.textContent = compact ? '展开播放器' : '收起播放器';
+      if (label) label.textContent = docked ? '展开播放器' : '收起为底部播放栏';
     }
 
-    setPlayerPresentationMode(mode: 'expanded' | 'compact') {
+    setPlayerPresentationMode(mode: 'expanded' | 'docked') {
       if (!window.matchMedia('(min-width: 901px)').matches) return;
       this.playerModePreferences[this.activeView] = mode;
       this.savePlayerModePreferences();

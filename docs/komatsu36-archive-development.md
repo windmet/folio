@@ -890,7 +890,7 @@ Media Pass、RC 0.9 Structural Editorial Audit、RC 0.10 Reader & Entity Editori
 | YouTube `origin` | **已完成代码修正**；使用 `window.location.origin`，仍需随最终 preview / production 做一次部署环境抽查 |
 | dialog focus containment | **已完成并复测**；背景不可 Tab、焦点循环、Esc 与 restore 均通过 |
 | 构建与生产依赖安全 | **本地与 CI 均有门禁**；`npm ci` 后执行 `npm audit --omit=dev`（当前为 0 vulnerabilities）与 `npm exec -- tsc --noEmit`；`npm run validate` 通过，完整 audit 的 dev-only 告警不作为生产站点漏洞接受 |
-| Player presentation | **RC12-A 第一版工程通过、产品未通过**：当前 Compact 与 Expanded 差异不足且仍占右栏；RC12-A2 必须改为真正释放正文宽度的 Docked Bottom Bar，并保持同一媒体实例／Track／Event／seek |
+| Player presentation | **RC12-A2 已完成源码与 Browser QA，人工停点待确认**：`expanded | docked`、旧 `compact` session 迁移、右栏释放、底部安全区与同一媒体 mount 合同已实现；证据见 `docs/qa/komatsu36-rc12/a2/README.md`。未收到 A2 产品接受前，不进入 C2 |
 | Cast / People 信息架构 | **RC12-C 第一版工程通过、桌面产品投影未通过**：既有 `808 / 808` 等测量只证明无 overflow；RC12-C2 要恢复桌面横向高密度 People rows，并明确 Cast wide / medium / mobile 三档；移动纵向投影保留 |
 | Media platform pictograms | **RC12-D 图标化方向通过、当前视觉未通过**：RC12-D2 重做 X Space 声场图标和 Source card 平台／状态／动作三层层级；文字、外链、Source Event Index 与 `?track=` 合同不得删减 |
 | Expandable text | **RC12-B 机制保留、覆盖需补齐**：Target / Context 的 overflow + inline expand + ARIA 路径继续使用；RC12-B2 补当前 Act title 与 Source 长标题，tooltip 不得成为唯一全文入口 |

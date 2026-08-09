@@ -1286,49 +1286,6 @@ project-archive-shell {
   line-height: 1.65;
 }
 
-.archive-player-frame[data-player-mode='compact'] {
-  --player-context-rail-offset: 72px;
-}
-
-.archive-player-frame[data-player-mode='compact'] .archive-player__viewport {
-  aspect-ratio: 16 / 5;
-}
-
-.archive-player-frame[data-player-mode='compact'] .archive-player__viewport[data-player-loaded='true'] img[data-player-poster] {
-  opacity: 0.62;
-}
-
-.archive-player-frame[data-player-mode='compact'] .archive-player__sources {
-  gap: 8px;
-  padding-top: 7px;
-  padding-bottom: 7px;
-}
-
-.archive-player-frame[data-player-mode='compact'] .archive-player__sources .archive-kicker {
-  display: none;
-}
-
-.archive-player-frame[data-player-mode='compact'] .archive-player__sources button {
-  padding-top: 3px;
-  padding-bottom: 3px;
-  font-size: 10px;
-}
-
-.archive-player-frame[data-player-mode='compact'] .archive-player__sources .media-platform-icon {
-  width: 15px;
-  height: 15px;
-}
-
-.archive-player-frame[data-player-mode='compact'] .archive-player__current,
-.archive-player-frame[data-player-mode='compact'] .archive-player__context {
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-.archive-player-frame[data-player-mode='compact'] .archive-player__note {
-  display: none;
-}
-
 .player-context-rail {
   position: relative;
   z-index: 4;
@@ -1442,6 +1399,146 @@ project-archive-shell {
 .player-context-rail__menu button:hover {
   color: var(--archive-red);
   background: rgba(156, 67, 60, 0.055);
+}
+
+/* RC12-A2: Docked is a real bottom player, not a shorter right-column card. */
+@media (min-width: 901px) {
+  body.project-page.archive-player-docked {
+    padding-bottom: 124px;
+  }
+
+  project-archive-shell.is-player-docked .project-workspace {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    padding-bottom: 124px;
+  }
+
+  project-archive-shell.is-player-docked .project-player-column {
+    display: contents;
+  }
+
+  .archive-player-frame[data-player-mode='docked'] {
+    position: fixed;
+    z-index: 30;
+    left: max(16px, calc((100vw - 1320px) / 2));
+    right: max(16px, calc((100vw - 1320px) / 2));
+    bottom: max(16px, env(safe-area-inset-bottom));
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: stretch;
+    width: auto;
+    min-height: 72px;
+    border: 1px solid #cfc5b5;
+    background: var(--archive-paper);
+    box-shadow: 0 16px 42px rgba(55, 47, 37, 0.2);
+  }
+
+  .archive-player-frame[data-player-mode='docked'] .archive-player {
+    display: grid;
+    grid-template-columns: 112px minmax(170px, 1fr) minmax(220px, 1.55fr);
+    grid-template-areas: 'media head current';
+    min-width: 0;
+    min-height: 70px;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .archive-player-frame[data-player-mode='docked'] .archive-player__viewport,
+  .archive-player-frame[data-player-mode='docked'] .archive-player__unavailable {
+    grid-area: media;
+    width: 112px;
+    height: 70px;
+    min-height: 70px;
+    aspect-ratio: auto;
+  }
+
+  .archive-player-frame[data-player-mode='docked'] .archive-player__head {
+    grid-area: head;
+    min-width: 0;
+    min-height: 70px;
+    padding: 10px 14px;
+    border-right: 1px solid var(--archive-line);
+  }
+
+  .archive-player-frame[data-player-mode='docked'] .archive-player__head > div {
+    min-width: 0;
+  }
+
+  .archive-player-frame[data-player-mode='docked'] .archive-player__head strong {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .archive-player-frame[data-player-mode='docked'] .archive-player__sources,
+  .archive-player-frame[data-player-mode='docked'] .archive-player__context,
+  .archive-player-frame[data-player-mode='docked'] .archive-player__fallback,
+  .archive-player-frame[data-player-mode='docked'] .archive-player__note {
+    display: none;
+  }
+
+  .archive-player-frame[data-player-mode='docked'] .archive-player__current {
+    grid-area: current;
+    min-width: 0;
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding: 10px 16px;
+    border: 0;
+  }
+
+  .archive-player-frame[data-player-mode='docked'] .archive-player__current [data-player-expandable] {
+    max-height: 3.4em;
+    overflow: hidden;
+  }
+
+  .archive-player-frame[data-player-mode='docked'] .archive-player__text-toggle {
+    display: none !important;
+  }
+
+  .archive-player-frame[data-player-mode='docked'] .archive-player__load {
+    width: 42px;
+    height: 42px;
+  }
+
+  .archive-player-frame[data-player-mode='docked'] .archive-player__load span {
+    font-size: 15px;
+  }
+
+  .archive-player-frame[data-player-mode='docked'] .archive-player__load small {
+    display: none;
+  }
+
+  .archive-player-frame[data-player-mode='docked'] .player-context-rail {
+    display: flex;
+    width: auto;
+    margin: 0;
+    border-top: 0;
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 1px solid var(--archive-line);
+  }
+
+  .archive-player-frame[data-player-mode='docked'] .player-context-rail > button,
+  .archive-player-frame[data-player-mode='docked'] .player-context-rail > a,
+  .archive-player-frame[data-player-mode='docked'] .player-context-rail__thread-slot > button {
+    width: 48px;
+    min-height: 70px;
+    border-right: 1px solid var(--archive-line);
+    border-bottom: 0;
+  }
+
+  .archive-player-frame[data-player-mode='docked'] .player-context-rail > :last-child {
+    border-right: 0;
+  }
+
+  .archive-player-frame[data-player-mode='docked'] .player-context-rail__menu {
+    top: auto;
+    right: 0;
+    bottom: calc(100% - 1px);
+    width: min(270px, calc(100vw - 32px));
+  }
 }
 
 @container player-column (max-width: 379px) {
