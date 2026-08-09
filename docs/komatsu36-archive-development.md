@@ -17,8 +17,8 @@
 - 公开 Event / Thread / Person 的轻量站内检索已落地：索引只来自发布内容，结果顺序固定，Event 结果可恢复稳定深链并切换到正确 Track；不索引 Transcript 与 Chat；
 - `validate:publication` 已接入统一 `npm run validate`：当前构建核对 158 条公开检索项、350 KiB 单页预算，并阻止原始 ASR 文件标记、本机源档路径、`author_id`、SRT/VTT 文件名进入发布 HTML，同时要求 `published` Project 在首页拥有真实入口；
 - 首页已增加独立“专题档案”书架，只消费 `status: published` 的 Project，并显示由 collection 实时派生的 Event／Thread／Track 数量；专题不混入四类普通文章筛选；
-- 当前实现已完成 RC Media Pass：Hero 下方有常驻三来源栏，播放器有 Source Switcher，SP1/SP2 是 `video + external`，支持 `?track=`、Event 优先、Source Event Index、canonical Space CTA 与 provenance 链接；尚未进入最终功能冻结，因为仍需 Final Editorial Pass、固定截图验收与发布意图确认；
-- 当前仍未完成：最终编辑校样、八张固定截图与 Release Gate。YouTube `origin`、dialog focus containment、external 来源文案和桌面/390px基础交互验收已完成。项目特例 validator 拆分延后到第二个 Project 接入前；Transcript 与 Evidence 是明确延后项，不阻塞 v1。不得因 16 条 Thread 已出现而误报为完整 Folio 愿景已经完成。
+- 当前实现已完成 RC Media Pass：Hero 下方有常驻三来源栏，播放器有 Source Switcher，SP1/SP2 是 `video + external`，支持 `?track=`、Event 优先、Source Event Index、canonical Space CTA 与 provenance 链接；固定截图与本地 preview QA 也已完成，尚未进入最终功能冻结，因为仍需 Final Editorial Pass 与发布意图确认；
+- 当前仍未完成：最终编辑校样与 Release Gate。八张固定截图已保存于 `docs/qa/komatsu36-rc08/`；YouTube `origin`、dialog focus containment、external 来源文案和桌面/390px基础交互验收已完成。项目特例 validator 拆分延后到第二个 Project 接入前；Transcript 与 Evidence 是明确延后项，不阻塞 v1。不得因 16 条 Thread 已出现而误报为完整 Folio 愿景已经完成。
 - X Space inline replay 调查对本 RC 正式关闭：`STATUS: CLOSED FOR RC`，`RESULT: unavailable through verified public integration`，`FALLBACK: first-class external source`。除非 X 的公开产品能力发生变化并可对具体 URL 复测，否则不再调查 GraphQL 私有字段、内部 HLS、临时 token、Periscope 私有 endpoint 或 `media_key` 变换。
 
 上述数字是当前仓库快照，新增内容后必须以验证器和实际文件计数更新，不作为永久常量。
@@ -746,7 +746,7 @@ Tina 集成作为后续独立任务，只管理 Project 摘要、精选顺序等
 每个前端阶段除功能 QA 外，固定输出以下真实路由截图：
 
 ```text
-1440×900：Overview 首屏、Timeline、Thread 打开、Player 已播放
+1440×900：Overview 首屏、Timeline、Thread 打开、Player 已载入（仅证明 iframe/UI，不等同于真实音频验收）
 390×844：Overview、Timeline、Thread bottom sheet、mini player
 ```
 
@@ -845,12 +845,12 @@ package.json
 4. **Commit D — Browse source events（已完成）**：实现 per-track Source Event Index，不新增 View / route；完成后已冻结新增媒体功能；
 5. **已完成**：修复 YouTube 动态 `origin` 与 Thread / Person focus containment；
 6. 面对最终交互形态执行 Final Editorial Pass：逐 Act 检查标题、summary、密度、入点和 qualification，逐 Thread 检查 setup / development / payoff、transition、跨平台标签及推断措辞，抽查 People 别名、reading、role 与回链；
-7. 执行桌面与 390px 的八张固定截图、console、overflow、键盘、深链及 back/forward 复测；
+7. **已完成**：执行桌面与 390px 的八张固定截图、console、overflow、键盘、深链及 back/forward 复测；截图保存于 `docs/qa/komatsu36-rc08/`，并以 1440×900 本地 preview 复测构建产物；
 8. 明确检查 `project.status`。当前为 `published`，首页又只筛选 `published` Project，因此合并到部署分支等价于正式发布，不得把 merge 当作无外部影响的代码整理。
 
 通用 validator 与 komatsu36 fixture 的分层不再列入本次 Release Blocker：通用层最终只校验 schema、关系、时间、隐私和确定性排序；`8 Acts`、manifest ARC 数与小松专属 publication assertions 留在项目 fixture，但该工作延后到第二个 Project 接入前完成。
 
-Media Pass 与交互小修已通过本地验证；当前真正剩余的 Release Blocker 只有 Editorial / Visual QA 与发布意图确认：
+Media Pass、交互小修与 Visual QA 已通过本地验证；当前真正剩余的 Release Blocker 只有 Final Editorial Pass 与发布意图确认：
 
 | Blocker | 状态 / 完成标准 |
 |---|---|
@@ -886,6 +886,6 @@ Media Pass 与交互小修已通过本地验证；当前真正剩余的 Release 
 | 手动 Source 状态冲突 | controller 已实现 `?track=`；手动选源清除 Event / target，Event selection 删除冗余 track，刷新时 Event 优先 | **Commit B 已完成并复测** |
 | Source Event 浏览范围 | 主 Timeline 是 YT canonical clock，不能承载 SP1 / SP2 的本地时钟 | **Commit D 合同**：使用轻量 per-track Source Event Index；不新增第六 View、route 或多轨 Timeline |
 | Final Editorial 抽样 | 124 个公开 Event 按 YT 104 / SP1 8 / SP2 12 分布；42 个 `qualified`、15 个 lane annotation、16 条 Thread、18 个 Person；抽查跨平台 LINE Thread、Space 技术 Thread、俄罗斯章鱼烧 payoff、qualified Event 与 Person 反向索引 | **本轮通过**：未发现结构关系、限定措辞或来源职责冲突；完整逐 Act / 逐 Thread 校样仍是发布前人工步骤 |
-| 浏览器 Release QA | 1280×720 与 390×844：三 Source 可见、无横向 overflow；console 0 error；Event / `?track=` / back-forward、Source Event Index、Thread / Person inert 与 focus trap 已实测 | **本轮通过**：仍需生成并保存八张固定截图，以及确认 preview / production 发布意图 |
+| 浏览器 Release QA | 1440×900 与 390×844 的八张真实路由截图已保存于 `docs/qa/komatsu36-rc08/`；三 Source 可见、无横向 overflow；console 0 error；Event / `?track=` / back-forward、Source Event Index、Thread / Person inert 与 focus trap 已实测；4322 preview 构建复测通过 | **本轮通过**：仅剩 Final Editorial Pass 与确认 preview / production 发布意图 |
 
 本表中的“已采纳”表示指导与仓库/媒体证据一致；“有条件采纳”表示方向可行但尚未满足发布前提。它不把本地持有媒体、文件后缀或可播放样本等同于公开托管授权与生产可用性。
