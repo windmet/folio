@@ -1,15 +1,17 @@
 # Komatsu36 RC 0.12 Visual Polish & Source Navigation Plan
 
-> 状态：RC12-F LOCAL QA COMPLETE — 人工停点 1/2 待用户确认
+> 状态：SUPERSEDED FOR NEXT IMPLEMENTATION — 第一版工程 QA 完成，产品复核要求返工
 > 基线分支：`codex/komatsu36-project-archive`
 > 基线提交：`db866b3`
 > 前置状态：RC 0.11 `REVIEW BRANCH ACCEPTANCE COMPLETE`
-> 当前批次：RC12-F handoff（A/B/C/D 与本地 F QA 已完成；E 与产品接受待裁决）
+> 当前批次：历史第一版规格与证据；后续唯一入口为 `komatsu36-rc12-product-correction-runbook.md`
 > Release Gate：CLOSED；本文不授权 merge、deploy 或修改公开状态
 
 RC 0.11 已完成 Player Context Rail、Lead Person、lazy Source Event Index、lazy Search JSON、Desktop Timeline Navigator、移动端导航裁决与 R9 QA。本阶段不重写 RC 0.11 的 acceptance 文档，也不把已经验收的功能删减成 payload 优化；它只处理成熟页面在真实桌面阅读中暴露出的空间分配、文本可读性、People 投影与来源识别问题。
 
-本文是 RC 0.12 的唯一实施入口。RC 0.11 的产品合同、payload 合同和历史证据仍分别由以下文件保存：
+本文曾是 RC 0.12 第一版的唯一实施入口。RC 0.11 的产品合同、payload 合同和历史证据仍分别由以下文件保存：
+
+> 2026-08-09 产品复核补记：上句只适用于第一版实现。当前 `compact`、People 桌面投影与来源图标层级未通过产品验收；后续实现必须转入 `komatsu36-rc12-product-correction-runbook.md`，不得从本文“RC12-F LOCAL QA COMPLETE”推导可以直接收口。
 
 - `komatsu36-archive-navigation-pass.md`；
 - `komatsu36-static-payload-pass.md`；

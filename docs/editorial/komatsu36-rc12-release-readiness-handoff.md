@@ -1,11 +1,13 @@
 # Komatsu36 RC 0.12 Release-readiness handoff
 
-> 状态：LOCAL QA COMPLETE — `PRODUCT-ACCEPTED` 待人工停点 1/2
+> 状态：SUPERSEDED SNAPSHOT — LOCAL QA COMPLETE，但产品复核已退回返工
 > 分支：`codex/komatsu36-project-archive`
 > 交接快照基线：`22301ca`（后续文档同步提交不改变实现范围）
 > Release Gate：CLOSED；本文不授权 merge、deploy 或修改 `project.status`
 
 本 handoff 记录 RC12-A/B/C/D 与 RC12-F 本地复核结果。它是 review branch 的交接草案，不把本地 preview、静态门禁或短时交互提升为生产接受。
+
+2026-08-09 产品复核已明确否决当前右栏 Compact、People 桌面单列投影与来源图标层级，并要求补齐文本展开覆盖。本文只保存第一版工程证据，不再是 release-ready 候选；后续唯一入口为 `docs/editorial/komatsu36-rc12-product-correction-runbook.md`。RC12-E 继续作为显式 backlog，未被本次返工自动纳入。
 
 人工停点核对表见 `docs/qa/komatsu36-rc12/PRODUCT-CHECKPOINT.md`。
 
@@ -17,7 +19,7 @@
 | RC12-B | `SOURCE-VERIFIED` + `BROWSER-VERIFIED` | Target / Reading Context 实际 overflow 才显示展开；ARIA、inline expansion、ResizeObserver |
 | RC12-C | `SOURCE-VERIFIED` + `BROWSER-VERIFIED` | People container projection、PersonCard 四槽位、Cast medium/mobile fallback |
 | RC12-D | `SOURCE-VERIFIED` + `BROWSER-VERIFIED` | `MediaPlatformIcon.astro`；来源卡与 Player Source Switcher 的 YouTube / X Space 线稿图标 |
-| RC12-E | `DEFERRED BY DEFAULT`（待人工停点 2 最终记录） | 未实现 Source-scoped Timeline；不伪报多轨 Timeline |
+| RC12-E | `DEFERRED / NOT IMPLEMENTED`（产品复核已记录为 P1 backlog） | 未实现 Source-scoped Timeline；不伪报多轨 Timeline |
 | RC12-F | 本地 QA 完成 | 本文矩阵与自动门禁；产品接受、真实媒体和生产仍未完成 |
 
 ## 2. 当前提交链
@@ -71,19 +73,19 @@ A/B/C 与 D 的独立批次证据分别见：
 
 ## 5. 人工停点
 
-### 人工停点 1：Player / People 产品接受
+### 人工停点 1：Player / People 产品裁决（已记录）
 
-用户需要确认 1366×768 People 单列卡片、Timeline Expanded / Compact 层级、390px 长文本按需展开是否达到预期。源码和 Browser 证据不能自动产生 `PRODUCT-ACCEPTED`。
+结果不是 `PRODUCT-ACCEPTED`：当前右栏 Compact 与 Expanded 差异不足，People 单列卡片不适合作为桌面最终投影，Cast medium 仍需明确 role-row fallback；Target / Context 的展开机制保留，但覆盖需要扩展。转入 RC12-A2/C2/B2。
 
-### 人工停点 2：D / E 裁决
+### 人工停点 2：D / E 裁决（已记录）
 
-当前建议保留 RC12-D 的线稿图标，并将 RC12-E 记为 `DEFERRED TO V1.1`；只有用户明确提升 Source-scoped Timeline 优先级时，才重新打开 E 批次。该建议仍待用户确认。
+图标化方向通过，但当前 X Space 图形和 Source card 信息层级未通过，转入 RC12-D2。Source-scoped Timeline 正式保留为 P1 backlog，当前未纳入；只有用户明确提升优先级时才重新打开 E。
 
 ## 6. 未执行边界
 
 - `NOT EXECUTED`：真实 YouTube 播放、真实音频、长时 soak、播放器连续播放稳定性；
 - `NOT EXECUTED`：生产 preview、Cloudflare Pages、merge、deploy、公开状态变更；
-- `NOT EXECUTED`：人工停点 1/2 的 `PRODUCT-ACCEPTED`；
+- `REJECTED`：第一版人工停点没有产生 `PRODUCT-ACCEPTED`，已生成 A2/C2/D2/B2 返工合同；
 - `NOT EXECUTED`：RC12-E Source-scoped Timeline。
 
 只有人工停点记录完成、required 批次与 RC12-F 交接均确认后，才能把 RC 0.12 标记为 `REVIEW BRANCH ACCEPTANCE COMPLETE`；Release Gate 仍需用户另行授权。

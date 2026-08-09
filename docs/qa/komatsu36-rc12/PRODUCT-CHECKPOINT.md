@@ -1,41 +1,47 @@
 # Komatsu36 RC 0.12 人工停点核对表
 
-> 当前状态：`PRODUCT-ACCEPTED` 待确认
+> 当前状态：`PRODUCT REVIEW RECORDED — CORRECTION REQUIRED`
 > 预览地址：`http://127.0.0.1:4322/projects/komatsu36/`
-> 对应交接：`docs/editorial/komatsu36-rc12-release-readiness-handoff.md`
+> 当前执行入口：`docs/editorial/komatsu36-rc12-product-correction-runbook.md`
 
-这份表只用于记录产品裁决，不替代源码、构建或 Browser QA 证据。页面已通过本地自动门禁与响应式压力测试；请在真实页面查看后给出简短结论。
+这份表记录 2026-08-09 已收到的产品裁决，不替代源码、构建或 Browser QA 证据。第一版页面通过了自动门禁与响应式压力测试，但这只证明工程稳定，不证明形态获得产品接受。后续批次与验收合同见 `docs/editorial/komatsu36-rc12-product-correction-runbook.md`。
 
-## 人工停点 1：Player / People
+## 第一版停点 1 裁决：Player / People
 
 | 项目 | 页面 | 当前实现 | 裁决 |
 |---|---|---|---|
-| People 桌面层级 | `?view=people`，1366×768 | 单列 PersonCard，四槽位对齐，无组件溢出 | `PENDING` |
-| Timeline Player 层级 | `?view=timeline&event=yt-042252-seigura-superchat`，1366×768 / 1440×900 | 可切换 Expanded / Compact；Event、Track、target 与 URL 不变 | `PENDING` |
-| 长文本操作 | 同上，390×844 | Target 实际溢出时显示“展开”；展开后为“收起”，移动端 mode toggle 隐藏 | `PENDING` |
-| Cast 投影 | People 页面，901px / 390px | medium/mobile projection，无横向拖拽 | `PENDING` |
+| People 桌面层级 | `?view=people`，1366×768 | 单列 PersonCard 无组件溢出，但桌面信息效率下降 | `REJECTED — RC12-C2` |
+| Timeline Player 层级 | `?view=timeline&event=yt-042252-seigura-superchat`，1366×768 / 1440×900 | 当前 Compact 与 Expanded 差异不足，仍占右栏 | `REJECTED — RC12-A2` |
+| 长文本操作 | 同上，390×844 | Target / Context 机制保留；Act 与 Source 长标题覆盖不足 | `REVISE — RC12-B2` |
+| Cast 投影 | People 页面，901px / 390px | 工程无横滚；产品要求明确 desktop medium role-row fallback | `REVISE — RC12-C2` |
 
-## 人工停点 2：D / E
+## 第一版停点 2 裁决：D / E
 
 | 项目 | 当前建议 | 裁决 |
 |---|---|---|
-| RC12-D 来源图标 | 保留 YouTube / X Space monochrome 线稿；文字仍是主语义 | `PENDING` |
-| RC12-E Source-scoped Timeline | 按计划默认 `DEFERRED TO V1.1`，不阻塞 v1 | `PENDING` |
+| RC12-D 来源图标 | 图标化方向保留；重做 X Space 图形与 Source card 三层信息层级 | `REVISE — RC12-D2` |
+| RC12-E Source-scoped Timeline | 正式保留为 P1 backlog；未明确纳入当前视觉返工 | `DEFERRED / NOT IMPLEMENTED` |
 
-## 推荐回复格式
+## 下一轮人工停点回复格式
 
 直接回复以下任一形式即可：
 
 ```text
-停点 1：ACCEPT
-停点 2：D ACCEPT，E DEFERRED
+A2：ACCEPT
+C2：ACCEPT
+D2：ACCEPT
+B2：ACCEPT
+E：DEFERRED
 ```
 
 如需修改，只需指出具体项目，例如：
 
 ```text
-停点 1：People ACCEPT；Timeline Compact 需要更弱化；长文本 ACCEPT
-停点 2：D ACCEPT；E DEFERRED
+A2：Dock 高度需要降低；其余 ACCEPT
+C2：People ACCEPT；Cast medium 需要调整
+D2：X Space 图标需要调整
+B2：ACCEPT
+E：DEFERRED
 ```
 
-在收到裁决前，不标记 `RC 0.12 REVIEW BRANCH ACCEPTANCE COMPLETE`，不 merge、不 deploy、不修改公开状态。
+当前裁决已经明确第一版不通过。在 A2/C2/D2/B2 新证据和新人工停点完成前，不标记 `RC 0.12 REVIEW BRANCH ACCEPTANCE COMPLETE`，不 merge、不 deploy、不修改公开状态。

@@ -1,11 +1,13 @@
 # Komatsu36 RC 0.12-D QA
 
-> 状态：`SOURCE-VERIFIED` + `BROWSER-VERIFIED`；人工停点 1/2 尚未 `PRODUCT-ACCEPTED`
+> 状态：`SOURCE-VERIFIED` + `BROWSER-VERIFIED` 历史证据；图标方向保留，当前视觉已被产品复核退回 D2
 > 日期：2026-08-09
 > 路由：`/projects/komatsu36/`
 > 本地预览：`http://127.0.0.1:4322`
 
 RC12-D 只增加来源平台的站内 monochrome SVG pictogram，不改变 Track、Event、Source Event Index、播放能力、URL 或外链合同。它作为独立 P1 技术批次记录；即使图标已实现，也不替代人工停点 1 对 Player / People 层级的产品裁决。
+
+2026-08-09 产品复核确认“图标化”方向，但否决当前 X Space 图形与 Source card 信息层级。本页继续作为第一版工程证据；后续必须按 `docs/editorial/komatsu36-rc12-product-correction-runbook.md` 的 RC12-D2 执行，不得直接标记完成。
 
 ## 实现范围
 
@@ -40,5 +42,5 @@ git diff --check                         PASS
 ## 未执行边界
 
 - `NOT EXECUTED`：生产部署、真实 YouTube 播放、真实音频、长时 soak。
-- `NOT EXECUTED`：人工停点 1 对 Player / People 取舍的产品接受，以及人工停点 2 对 D 是否足够、E 是否进入 v1 的裁决。
+- `REJECTED / DEFERRED`：后续产品裁决要求 D2 返工；E 记录为 P1 backlog，仍未实现。
 - RC12-E Source-scoped Timeline 未实现；没有把来源图标批次误报为多轨时间线完成。

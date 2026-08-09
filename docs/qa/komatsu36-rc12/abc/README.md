@@ -1,11 +1,13 @@
 # Komatsu36 RC 0.12 A/B/C QA
 
-> 状态：`SOURCE-VERIFIED` + `BROWSER-VERIFIED`；`PRODUCT-ACCEPTED` 等待人工停点 1
+> 状态：`SOURCE-VERIFIED` + `BROWSER-VERIFIED` 历史证据；产品复核已要求 A2/C2/B2 返工
 > 日期：2026-08-09
 > 路由：`/projects/komatsu36/`
 > 本地预览：`http://127.0.0.1:4321`（dev）、`http://127.0.0.1:4322`（preview）
 
 本目录记录 RC12-A（Adaptive Player）、RC12-B（Target / Context 按需展开）与 RC12-C（People / Cast layout normalization）的实现后证据。它不改写 RC 0.11 acceptance，也不授权 merge、deploy 或公开 Release Gate。
+
+后续产品裁决不否认本页的工程测量，但否决了当前 Compact 和 People 桌面投影，并要求补齐文本覆盖。不得再从本页“无 overflow”推导 `PRODUCT-ACCEPTED`；执行入口改为 `docs/editorial/komatsu36-rc12-product-correction-runbook.md`。
 
 ## 实现摘要
 
@@ -42,9 +44,9 @@ git diff --check                         PASS
 
 RC12-A/B/C 后 publication audit：raw `261,812` bytes，Gzip `46,483`，Brotli `29,518`，350 KiB hard gate 余量 `96,588` bytes。初始 Source / Search buttons、controller coverage、公开检索项与隐私泄漏门禁均通过。
 
-## 人工停点 1
+## 第一版人工停点结果（已被后续裁决取代）
 
-请在本地真实页面确认以下产品取舍后，再决定进入 RC12-D（Media platform pictograms）或直接进入 RC12-F：
+本页原要求在本地真实页面确认以下产品取舍。2026-08-09 后续裁决已经给出：A 的当前 Compact 与 C 的桌面 People 投影不通过，B 的机制保留但覆盖不足。以下列表只保存当时检查范围，不再是待回答问题：
 
 1. 1366×768 People 的单列卡片与 Compact Player 是否已经达到桌面阅读层级；
 2. 1440×900 Timeline 的 Expanded Player 是否仍保留足够正文空间；
@@ -54,5 +56,5 @@ RC12-A/B/C 后 publication audit：raw `261,812` bytes，Gzip `46,483`，Brotli 
 ## 未执行边界
 
 - `NOT EXECUTED`：真实 YouTube 播放稳定性、真实音频、长时 soak、生产部署与 Cloudflare 环境复测。
-- `NOT EXECUTED`：RC12-D、RC12-E、RC12-F，以及人工停点 1 的产品接受裁决。
+- `HISTORICAL`：本页生成时 RC12-D/E/F 与产品裁决尚未执行；随后 D 第一版与本地 F QA 已执行，产品裁决为返工，E 仍未实现。
 - 不将本地 preview、静态 build 或 `noAudio` 浏览器抽查表述为 `release-accepted`。
