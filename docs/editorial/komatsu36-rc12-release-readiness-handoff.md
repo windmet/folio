@@ -2,7 +2,7 @@
 
 > 状态：LOCAL QA COMPLETE — `PRODUCT-ACCEPTED` 待人工停点 1/2
 > 分支：`codex/komatsu36-project-archive`
-> 当前 HEAD：`bb23d83`
+> 当前 HEAD：`22301ca`
 > Release Gate：CLOSED；本文不授权 merge、deploy 或修改 `project.status`
 
 本 handoff 记录 RC12-A/B/C/D 与 RC12-F 本地复核结果。它是 review branch 的交接草案，不把本地 preview、静态门禁或短时交互提升为生产接受。
@@ -25,6 +25,7 @@
 - `931b9ad` — source platform pictograms 与 D QA；
 - `864658a` — 修正移动端 mode toggle 必须隐藏的 RC12-A 缺口。
 - `bb23d83` — RC12-F 本地 QA 与 release-readiness handoff 草案。
+- `22301ca` — 补充 focus restore、modal containment 与 Event history 证据。
 
 工作树已清洁，分支已推送远端。
 
