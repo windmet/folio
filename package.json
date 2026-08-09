@@ -13,6 +13,7 @@
     "validate:projects": "node scripts/validate-projects.mjs",
     "validate:reader-copy": "node scripts/validate-reader-copy.mjs",
     "validate:publication": "node scripts/validate-publication.mjs",
+    "audit:payload": "node scripts/audit-payload.mjs",
     "editorial:reader-copy": "node scripts/generate-reader-copy-queue.mjs",
     "validate": "npm run validate:projects && npm run validate:reader-copy && npm run build && npm run validate:publication",
     "preview": "astro preview",

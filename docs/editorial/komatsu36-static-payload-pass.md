@@ -1,6 +1,6 @@
 # Komatsu36 RC 0.11 Static Payload Pass 实施规格
 
-> 状态：SPEC AUDIT COMPLETE / NEXT IMPLEMENTATION (R1 COMPLETE)
+> 状态：P0 AUDIT IMPLEMENTED / NEXT IMPLEMENTATION (P1)
 > 优先级：P0，独立工程治理；不阻塞或裁减已完成的 UX11-C
 > 审计基线：`effa314`；R1 完成后的当前 publication 基线：354,388 bytes
 > 范围：只治理初始 HTML 中的工具型重复投影；不拆 Timeline、Thread、Person，不改变内容 schema、URL schema、媒体能力或发布状态。
@@ -74,7 +74,7 @@ UX11-C 完整实现叠加 R1（opaque Player + Lead Person hierarchy）后的 pu
 
 ## 4. 实施顺序与提交边界
 
-本规格的三批现在进入执行，并严格保持 P0 → P1 → P2。跨批进入条件、提交 / push 规则、UX11-D～H 与 Release Gate 收尾见 `komatsu36-rc11-closeout-runbook.md`。
+本规格的三批按 P0 → P1 → P2 执行。P0 已完成且独立提交；下一批为 P1。跨批进入条件、提交 / push 规则、UX11-D～H 与 Release Gate 收尾见 `komatsu36-rc11-closeout-runbook.md`。
 
 ### UX11-P0 — Payload audit instrumentation
 
@@ -93,6 +93,10 @@ npm run audit:payload -- komatsu36
 - 缺少或过期的 `dist` 时必须明确提示先 build，不能静默读取错误文件。
 
 提交边界：只加入 audit script、package entry、fixture / 文档；不改页面 DOM。
+
+#### P0 退出证据（2026-08-09）
+
+`scripts/audit-payload.mjs` 通过 `npm run audit:payload -- komatsu36` 提供固定 `schema_version: 1` JSON。当前 R2 构建输出为 raw `354,388`、Gzip level 9 `69,334`、Brotli quality 11 `35,690`；raw gate 余量 `4,012`。Projection breakdown 为 Timeline `104 / 101,551` bytes、Source Event `124 / 24,973` bytes、Search `158 / 73,355` bytes、Thread `16 / 33,903` bytes、Person `18 / 66,983` bytes、Controller JSON `22,090` bytes / `124` Event records。审计会比较 output 与 source mtime；缺少或过期的 `dist` 明确要求先 build。页面 DOM、发布字段、URL 和运行时行为未在 P0 改动。
 
 ### UX11-P1 — Dynamic Source Event Index
 

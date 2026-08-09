@@ -2,8 +2,8 @@
 
 > 状态：ACTIVE
 > 当前分支：`codex/komatsu36-project-archive`
-> 当前远端检查点：R1 当前提交；R1 已在 review branch 完成实现、浏览器验收并提交
-> 下一批：R2 — UX11-P0 Payload audit instrumentation
+> 当前远端检查点：R2 当前提交；R2 已在 review branch 完成审计实现、构建验收并提交
+> 下一批：R3 — UX11-P1 Dynamic Source Event Index
 > Release Gate：CLOSED；本 Runbook 只把 review branch 做到可审阅、可合并状态，不授权 merge 或 deploy。
 
 ## 1. 用途与权威顺序
@@ -26,19 +26,19 @@
 
 | 项目 | 权威证据 | 结论 |
 |---|---|---|
-| Review branch | 本地与 `origin/codex/komatsu36-project-archive` 均为 R1 当前提交 | UX11-C 与 R1 不是仅本地状态，应称 **REVIEW BRANCH COMPLETE** |
+| Review branch | 本地与 `origin/codex/komatsu36-project-archive` 均为 R2 当前提交 | UX11-C、R1 与 R2 不是仅本地状态，应称 **REVIEW BRANCH COMPLETE** |
 | UX11-A / B | `effa314` | 已提交并保留既有回归合同 |
 | UX11-C | `PlayerContextRail.astro`、`ArchivePlayer.astro` import、`1162ba2` | 四标签、Act jump、Thread 0/1/N、原链、desktop compact 与 mobile fallback 已在远端分支 |
 | UX11-C1 | `.archive-player` 与 `.archive-player__context` 已改为实色 paper | 已实现并通过桌面 / 390px 样本验收 |
 | UX11-A1 | `LeadPersonCard.astro`、`leadPersonId = 'komatsu-shohei'`、Birthday filter | 已实现；lead / Cast / Production 回链同一 Person，Birthday 普通 grid 排除 lead |
-| UX11-P0 | `package.json` 无 `audit:payload` | 未开始 |
+| UX11-P0 | `scripts/audit-payload.mjs`、`package.json` `audit:payload`、R2 QA README | 已实现；固定输出 raw / gzip / brotli、投影计数与 bytes；dist 缺失 / 过期会明确失败 |
 | UX11-P1 | `MediaSourceNavigator.astro` 仍执行 `eventsForTrack(track).map(...)` | 124 个 Source Event buttons 仍静态输出，未开始 |
 | UX11-P2 | `ProjectSearch.astro` 仍输出所有 `data-search-item` | 158 个隐藏 Search items 仍在初始 HTML，未开始 |
 | UX11-D | Timeline heading 后直接渲染 `orderedActs.map(...)` | 没有 Timeline Navigator，未开始 |
 
 ### 2.2 当前构建基线
 
-在 R1 当前提交重新执行 `npm run validate` 后，构建与 publication gate 通过：
+在 R2 当前提交重新执行 `npm run validate` 与 `npm run audit:payload -- komatsu36` 后，构建、publication gate 与 payload audit 通过：
 
 | 指标 | 当前值 |
 |---|---:|
@@ -53,9 +53,24 @@
 | Controller script | 22,160 raw bytes |
 | Thread details / Person details | 16 / 18 |
 
+### 2.3 P0 audit 快照
+
+`npm run audit:payload -- komatsu36` 输出固定 JSON（`schema_version: 1`），以构建后的 `dist/projects/komatsu36/index.html` 为唯一输入；raw 使用 UTF-8 byte length，Gzip 固定 level 9，Brotli 固定 quality 11，section bytes 使用固定 HTML marker 截取，投影数量使用固定 data attribute 计数。
+
+| 投影 | count | bytes |
+|---|---:|---:|
+| Timeline Event cards | 104 | 101,551 |
+| Source Event Index buttons | 124 | 24,973 |
+| Search items | 158 | 73,355 |
+| Thread details / node buttons | 16 / 84 | 33,903 |
+| Person details / Event rows | 18 / 213 | 66,983 |
+| Controller JSON Event records / bytes | 124 | 22,090 |
+
+审计同时确认构建输出 mtime 晚于最新 source input，`stale: false`。对不存在的合法 project slug 会以非零退出并提示 `Run npm run build first`，不会静默读取缺失或旧 `dist`。
+
 这些数字证明 Payload Pass 的优先级，但不构成删减 Rail、Timeline、Thread、Person 或人物层级的授权。实际净减量只能在 P1 / P2 后重测，不能把两个 section 的毛体积直接当作承诺值。
 
-### 2.3 新审阅裁决
+### 2.4 新审阅裁决
 
 | 审阅项 | 本地核对 | 裁决 |
 |---|---|---|
@@ -270,8 +285,8 @@ UX11-H 通过后：
 |---|---|---|---|
 | UX11-A / B | COMPLETE | `effa314` | 保持回归 |
 | UX11-C | REVIEW BRANCH COMPLETE | `1162ba2` | R1 补视觉层级 |
-| R1 UX11-C1 / A1 | COMPLETE | R1 当前提交；本次浏览器验收；raw 354,388 | 进入 P0 |
-| R2 UX11-P0 | PENDING | — | R1 通过后开始 |
+| R1 UX11-C1 / A1 | COMPLETE | R1 当前提交；本次浏览器验收；raw 354,388 | 已进入 P0 |
+| R2 UX11-P0 | COMPLETE | R2 当前提交；audit JSON、构建与 stale/missing-dist 失败路径 | 进入 P1 |
 | R3 UX11-P1 | PENDING | — | P0 通过后开始 |
 | R4 UX11-P2 | PENDING | — | P1 通过后开始 |
 | R5 UX11-D | PENDING | — | P2 新基线后开始 |

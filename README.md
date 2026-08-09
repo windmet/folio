@@ -4,7 +4,7 @@
 
 ## 当前检查点
 
-- Komatsu36：RC 0.10 已完成本地验收；RC 0.11 的 UX11-A / B 已提交为 `effa314`，UX11-C 与 R1 opaque Player / Lead Person hierarchy 已完成。下一批进入 UX11-P0，再严格按 P1 → P2、UX11-D、UX11-E 决策、UX11-H 收尾；Release Gate 仍未授权。
+- Komatsu36：RC 0.10 已完成本地验收；RC 0.11 的 UX11-A / B 已提交为 `effa314`，UX11-C、R1 opaque Player / Lead Person hierarchy 与 R2 UX11-P0 payload audit 已完成。下一批进入 UX11-P1，再严格按 P2、UX11-D、UX11-E 决策、UX11-H 收尾；Release Gate 仍未授权。
 - 审阅分支：[codex/komatsu36-project-archive](https://github.com/windmet/folio/tree/codex/komatsu36-project-archive)
 - 专题路由：`/projects/komatsu36/`
 - Visual QA 与编辑审计：`docs/qa/komatsu36-rc08/`
@@ -29,6 +29,7 @@ npm run dev -- --host 127.0.0.1 --port 4321
 ```sh
 npm run validate:projects   # 内容关系、时间范围、隐私边界
 npm run build               # 生成 dist/
+npm run audit:payload -- komatsu36 # 固定 payload / projection 审计
 npm run validate:publication # 发布 HTML、检索项和单页预算
 npm run validate            # 按上述顺序执行完整门禁
 ```
