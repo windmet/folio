@@ -15,7 +15,7 @@
 | RC12-A2 | `SOURCE-VERIFIED` + `BROWSER-VERIFIED` | 用户本地复核基本接受，进入 F2 | `docs/qa/komatsu36-rc12/a2/README.md` |
 | RC12-C2 | `SOURCE-VERIFIED` + `BROWSER-VERIFIED` | 用户本地复核基本接受，进入 F2 | `docs/qa/komatsu36-rc12/c2/README.md` |
 | RC12-D2 | `SOURCE-VERIFIED` + `BROWSER-VERIFIED` | 用户本地复核基本接受，进入 F2 | `docs/qa/komatsu36-rc12/d2/README.md` |
-| RC12-B2 | `SOURCE-VERIFIED` + `BROWSER-VERIFIED` | 用户本地复核基本接受，进入 F2；当前 fixture 的真实长标题分支仍是 `TODO consumer-check` | `docs/qa/komatsu36-rc12/b2/README.md` |
+| RC12-B2 | `SOURCE-VERIFIED` + `BROWSER-VERIFIED` | 用户本地复核基本接受，Source title 已在 220px stress 完成展开／收起；Act／Timeline title 当前 fixture 仍是 `TODO consumer-check` | `docs/qa/komatsu36-rc12/b2/README.md` |
 | RC12-E | `DEFERRED / NOT IMPLEMENTED` | P1 backlog，未纳入本轮 | Source-scoped Timeline 不得伪报完成 |
 
 ## 2. F2 Browser 回归矩阵
@@ -61,7 +61,7 @@ F2 handoff 文档本身将在本批次形成独立 scoped commit；提交后必�
 ## 5. 保留边界
 
 - `NOT EXECUTED`：真实 YouTube 播放、真实音频、X 外部回放、连续播放长 soak、生产 preview、Cloudflare Pages、merge、deploy、公开状态变更。
-- `TODO consumer-check`：当前 Komatsu36 fixture 没有自然触发的超长 Act／Source title；Browser 已验证节点与真实 overflow 测量挂载、短标题不显示按钮，但没有把“展开 → 收起”点击伪报为实际内容样本通过。
+- `Source title consumer-check PASS`：220×780 压力断点自然触发 YouTube Source title 展开按钮，已验证展开／收起、ARIA、clamp、高度、URL 和 overflow；该断点仅用于行为验证，不改变产品支持断点。`TODO consumer-check` 仅保留给当前 fixture 未触发的 Act／Timeline title 点击分支。
 - `DEFERRED / NOT IMPLEMENTED`：RC12-E Source-scoped Timeline；现有 Source Event Index、`?track=` 和 Source icon 不等于多轨 Timeline。
 
 下一步只有两种合法方向：用户继续提供具体视觉修正，或在接受当前分支证据后另行授权 Release Gate。任何 agent 不得仅凭 F2 本地证据自动 merge、deploy 或改变 `project.status`。

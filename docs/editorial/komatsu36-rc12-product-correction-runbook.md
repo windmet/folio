@@ -5,7 +5,7 @@
 > 基线分支：`codex/komatsu36-project-archive`
 > 前置状态：RC 0.11 `REVIEW BRANCH ACCEPTANCE COMPLETE`
 > 当前入口：RC12-F2 final regression handoff
-> 当前进度：RC12-A2/C2/D2/B2 `SOURCE-VERIFIED` + `BROWSER-VERIFIED`；用户本地复核反馈“基本能接受”，F2 已完成；B2 长标题点击仍标记 `TODO consumer-check`
+> 当前进度：RC12-A2/C2/D2/B2 `SOURCE-VERIFIED` + `BROWSER-VERIFIED`；用户本地复核反馈“基本能接受”，F2 已完成；B2 Source title consumer-check 已通过 220px stress，Act／Timeline title 分支仍标记 `TODO consumer-check`
 > Release Gate：CLOSED；本文不授权 merge、deploy 或修改 `project.status`
 
 本文记录 RC12-A/B/C/D 第一版经过源码、构建和浏览器验证后，收到的产品层返工裁决。它是后续 agent 的**唯一实施入口**。原 `komatsu36-rc12-visual-polish-source-navigation-plan.md` 保存第一版规格与工程证据，不再代表下一批应直接收口；`komatsu36-rc12-release-readiness-handoff.md` 降级为被产品复核退回的本地 QA 快照。
@@ -224,4 +224,4 @@ Browser 必须检查真实 `/projects/komatsu36/` 构建预览，而不是只看
 
 用户在本地简要复核后反馈“基本能接受”，允许继续 RC12-F2。F2 已在真实 `/projects/komatsu36/` 预览完成桌面／中等／移动断点、Player mode、Source selection、Source Event Index、Event 深链、Timeline context、People/Cast、Person/Thread dialog、Search、Back/Forward、console 和 overflow 回归。
 
-F2 交接与精确证据见 `docs/editorial/komatsu36-rc12-f2-final-regression-handoff.md`。当前状态为 `F2 SOURCE-VERIFIED` + `BROWSER-VERIFIED`；用户反馈记录为允许继续收口，不把“基本能接受”扩大解释为 `PRODUCT-ACCEPTED`、真实媒体通过或 Release Gate 授权。B2 当前 fixture 没有自然触发的超长标题，展开点击保留 `TODO consumer-check`。
+F2 交接与精确证据见 `docs/editorial/komatsu36-rc12-f2-final-regression-handoff.md`。当前状态为 `F2 SOURCE-VERIFIED` + `BROWSER-VERIFIED`；用户反馈记录为允许继续收口，不把“基本能接受”扩大解释为 `PRODUCT-ACCEPTED`、真实媒体通过或 Release Gate 授权。B2 Source title 已在 220px stress 完成真实展开／收起；Act／Timeline title 当前 fixture 未触发点击分支，仍保留 `TODO consumer-check`。

@@ -22,10 +22,11 @@
 | 1440×900 Timeline | 检测到 3 个 Source title、1 个 sticky current title、8 个 Act title；所有短标题真实 `overflow = false`，展开按钮保持 `hidden`，各按钮 `aria-expanded="false"` 且仍提供完整 `aria-label`；document overflow `0` |
 | 390×844 Timeline | 8 个 Act title 在约 `343px` 内容宽度内保持两行以内；Timeline sticky navigator 按既有移动规则隐藏；Source title 按需节点仍存在但短标题按钮不显示；document overflow `0` |
 | 真实溢出规则 | 代码只在 clamp 后 `scrollHeight > clientHeight + 1` 或 `scrollWidth > clientWidth + 1` 时显示 inline button；展开后移除 clamp、同步 `aria-expanded="true"`，再次点击可收起 |
+| 220×780 Source title stress | YouTube Source title 自然触发按钮；点击后 `aria-expanded=true`、按钮变为「收起」、解除 clamp、高度约 `72px`；再次点击恢复 `aria-expanded=false`、按钮变为「展开」、clamp、高度约 `36px`；URL 不变、document overflow `0` |
 | Existing player paths | Target／Reading Context 继续由原 `[data-player-text-toggle]` 处理；新增 `[data-inline-text-toggle]` 不改变 player target、context、source 或 URL 行为 |
 | Console | 页面与 route 交互抽样 `error/warn = []` |
 
-当前 fixture 的实际 Act／Source 标题均未触发真实超长分支，因此 Browser 证据只确认短标题保持 `hidden`、测量逻辑已挂载且无横向溢出；「展开 → 收起」的 consumer interaction 仍标记为 `TODO consumer-check`，不在本批次伪报为已通过。
+390px 是产品目标断点，当前 Act／Source 标题在该宽度下不触发按钮；额外的 220×780 压力样本已真实验证 Source title 的「展开 → 收起」consumer interaction。Act title 与 Timeline current title 在当前数据下最多两行，未触发点击分支，仍标记为 `TODO consumer-check`；220px 仅用于行为验证，不改变产品支持断点。
 
 ## 自动门禁
 

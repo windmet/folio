@@ -893,7 +893,7 @@ Media Pass、RC 0.9 Structural Editorial Audit、RC 0.10 Reader & Entity Editori
 | Player presentation | **RC12-A2 + F2 已完成源码与 Browser QA**：`expanded | docked`、旧 `compact` session 迁移、右栏释放、底部安全区、同一媒体 mount 和 URL/history 合同已复测；证据见 `docs/qa/komatsu36-rc12/a2/README.md` 与 F2 handoff。真实媒体／长时播放仍 `NOT EXECUTED` |
 | Cast / People 信息架构 | **RC12-C2 + F2 已完成源码与 Browser QA**：1366px People rows 全宽约 `1221px`；901px Cast medium 显示 6 条 role rows；390px mobile projection 与 Person dialog 保留，三档无横向溢出。证据见 `docs/qa/komatsu36-rc12/c2/README.md` 与 F2 handoff |
 | Media platform pictograms | **RC12-D2 + F2 已完成源码与 Browser QA**：X Space 圆形声场图标、Source card 平台／状态／动作三层；1366px／390px 无横向溢出，SP2 selection、`?track=`、Source Event Index 和 Event 深链已复测。证据见 `docs/qa/komatsu36-rc12/d2/README.md` 与 F2 handoff |
-| Expandable text | **RC12-B2 + F2 已完成源码与 Browser QA**：Target / Context 原机制保留，并补齐 Act title、Timeline current title 与 Source 长标题的真实 overflow + inline expand + ARIA 路径；当前 fixture 未自然触发长标题按钮，点击分支保留 `TODO consumer-check`。证据见 `docs/qa/komatsu36-rc12/b2/README.md` 与 F2 handoff |
+| Expandable text | **RC12-B2 + F2 已完成源码与 Browser QA**：Target / Context 原机制保留；220px stress 已真实验证 Source title 展开／收起、ARIA、clamp、URL 与 overflow；Act title／Timeline current title 当前 fixture 未触发点击分支，仍保留 `TODO consumer-check`。证据见 `docs/qa/komatsu36-rc12/b2/README.md` 与 F2 handoff |
 | Initial HTML payload | **RC12-B2 已复测**：raw `270,135`、Gzip `47,664`、Brotli `30,087`，350 KiB hard gate 余量 `88,265`；初始 Source / Search buttons 仍为 0，Search 项与 controller coverage 通过；本轮未以减重名义删除 Rail 或 reader-facing 数据 |
 | Reader-facing copy | **RC 0.10 已完成**：52/52 decisions、full reader pass 与 publication leakage gate 已通过 |
 | External context 首样本 | **RC 0.10 已完成**：仲村烧肉 Post 已作为 related source 插入 Thread，不成为 Event 或静态 Post 镜像 |
