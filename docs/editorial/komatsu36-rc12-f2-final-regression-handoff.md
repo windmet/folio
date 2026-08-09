@@ -50,6 +50,8 @@ git diff --check                         PASS
 
 最新 publication audit：raw `270,135` bytes；Gzip `47,664`；Brotli `30,087`；350 KiB hard gate 余量 `88,265`；158 个公开检索项、3 个 Source track list、124 个 controller Event record、0 个初始 Source Event button 和 private-marker gate 均通过。
 
+本次 publication validator 同时通过 B2 静态 wiring：12 个 expandable title target（3 Source、1 Timeline current、8 Act）均唯一，并各自关联一个初始隐藏、`aria-expanded="false"`、`aria-controls` 指向真实 DOM id 的 inline toggle。此项只补强 `SOURCE-VERIFIED`，不替代 Act／Timeline 长标题的 Browser consumer-check。
+
 ## 4. 提交链与工作区
 
 - `f19443b` — `feat(komatsu36): refine media source hierarchy`

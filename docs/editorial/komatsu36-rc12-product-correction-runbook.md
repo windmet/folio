@@ -225,3 +225,5 @@ Browser 必须检查真实 `/projects/komatsu36/` 构建预览，而不是只看
 用户在本地简要复核后反馈“基本能接受”，允许继续 RC12-F2。F2 已在真实 `/projects/komatsu36/` 预览完成桌面／中等／移动断点、Player mode、Source selection、Source Event Index、Event 深链、Timeline context、People/Cast、Person/Thread dialog、Search、Back/Forward、console 和 overflow 回归。
 
 F2 交接与精确证据见 `docs/editorial/komatsu36-rc12-f2-final-regression-handoff.md`。当前状态为 `F2 SOURCE-VERIFIED` + `BROWSER-VERIFIED`；用户反馈记录为允许继续收口，不把“基本能接受”扩大解释为 `PRODUCT-ACCEPTED`、真实媒体通过或 Release Gate 授权。B2 Source title 已在 220px stress 完成真实展开／收起；Act／Timeline title 当前 fixture 未触发点击分支，仍保留 `TODO consumer-check`。
+
+为避免上述 TODO 被后续构建改动静默破坏，`scripts/validate-publication.mjs` 已加入 B2 静态契约：dist 必须输出 12 个唯一 expandable title target（3 Source、1 Timeline current、8 Act），并为每个 target 输出唯一、初始隐藏、`aria-expanded="false"` 且 `aria-controls` 指向真实 DOM id 的 inline toggle。该检查属于 `SOURCE-VERIFIED` 门禁，不会把没有真实长标题点击样本的 Act／Timeline 分支升级为 `BROWSER-VERIFIED`。

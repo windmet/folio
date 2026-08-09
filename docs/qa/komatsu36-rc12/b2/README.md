@@ -42,6 +42,8 @@ git diff --check
 
 本次门禁结果：publication raw HTML `270,135` bytes；Gzip `47,664`；Brotli `30,087`；350 KiB hard gate 余量 `88,265`；publication、project、reader-copy、TypeScript、build、payload audit 和 diff check 均通过。
 
+`validate:publication` 现在额外校验 RC12-B2 的静态发布契约：构建产物必须包含 3 个 Source title、1 个 Timeline current title、8 个 Act title，共 12 个唯一 expandable target；每个 target 恰有一个初始 `hidden`、`aria-expanded="false"` 且指向真实 `aria-controls` 的 inline toggle。该门禁只证明产物 wiring，不替代 220px Source title 或未来真实长 Act／Timeline title 的 Browser consumer-check。
+
 ## 产品停点
 
 工程证据不自动升级为 `PRODUCT-ACCEPTED`。人工复核需要确认：

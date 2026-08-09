@@ -139,6 +139,60 @@ if (actualSourceLists.length !== expectedTrackIds.size || actualSourceLists.some
   errors.push(`source event list hosts are ${actualSourceLists.join(', ')}; expected one host for each public track`);
 }
 
+// RC12-B2 publication contract: every reader-facing expandable title must have
+// exactly one hidden inline control wired to a real DOM target. This is a
+// structural check for the built artifact; overflow and click behavior remain
+// Browser consumer checks because they depend on the rendered viewport.
+const readAttribute = (tag, name) => tag.match(new RegExp(`${name}="([^"]*)"`))?.[1] ?? null;
+const expandableTags = [...html.matchAll(/<[^>]*data-inline-expandable="[^"]+"[^>]*>/g)]
+  .map((match) => match[0]);
+const expandableEntries = expandableTags.map((tag) => ({
+  id: readAttribute(tag, 'id'),
+  key: readAttribute(tag, 'data-inline-expandable'),
+}));
+const expandableIds = new Set(expandableEntries.map(({ id }) => id).filter(Boolean));
+const expandableKeys = new Set(expandableEntries.map(({ key }) => key).filter(Boolean));
+const toggleTags = [...html.matchAll(/<button[^>]*data-inline-text-toggle="[^"]+"[^>]*>/g)]
+  .map((match) => match[0]);
+const toggleEntries = toggleTags.map((tag) => ({
+  key: readAttribute(tag, 'data-inline-text-toggle'),
+  controls: readAttribute(tag, 'aria-controls'),
+  expanded: readAttribute(tag, 'aria-expanded'),
+  hidden: /\bhidden(?:\s|=|>)/.test(tag),
+}));
+
+const expectedInlineKeys = [
+  'source-title-yt-main',
+  'source-title-space-1',
+  'source-title-space-2',
+  'timeline-current-title',
+  ...Array.from({ length: 8 }, (_, index) => `act-title-act-${String(index + 1).padStart(2, '0')}`),
+];
+if (expandableEntries.some(({ id, key }) => !id || !key)) {
+  errors.push('inline expandable title is missing id or data-inline-expandable');
+}
+if (new Set(expandableEntries.map(({ id }) => id)).size !== expandableEntries.length) {
+  errors.push('inline expandable titles contain duplicate DOM ids');
+}
+if (expandableKeys.size !== expectedInlineKeys.length
+  || expectedInlineKeys.some((key) => !expandableKeys.has(key))) {
+  errors.push(`inline expandable title keys are ${[...expandableKeys].join(', ')}; expected RC12-B2 Act/Timeline/Source coverage`);
+}
+if (toggleEntries.length !== expandableEntries.length) {
+  errors.push(`inline text toggle count is ${toggleEntries.length}; expected one toggle per expandable title (${expandableEntries.length})`);
+}
+for (const { key, controls, expanded, hidden } of toggleEntries) {
+  if (!key || !expandableKeys.has(key)) errors.push(`inline text toggle targets unknown expandable key: ${key || '(missing)'}`);
+  if (!controls || !expandableIds.has(controls)) errors.push(`inline text toggle ${key || '(missing)'} targets missing DOM id: ${controls || '(missing)'}`);
+  if (expanded !== 'false') errors.push(`inline text toggle ${key || '(missing)'} must initialize aria-expanded="false"`);
+  if (!hidden) errors.push(`inline text toggle ${key || '(missing)'} must initialize hidden`);
+}
+const toggleKeys = new Set(toggleEntries.map(({ key }) => key).filter(Boolean));
+if (toggleKeys.size !== toggleEntries.length) errors.push('inline text toggles contain duplicate data-inline-text-toggle keys');
+for (const key of expandableKeys) {
+  if (!toggleKeys.has(key)) errors.push(`expandable title ${key} is missing its inline text toggle`);
+}
+
 const controllerMatch = html.match(
   /<script type="application\/json" data-archive-controller-data[^>]*>([\s\S]*?)<\/script>/,
 );
@@ -227,5 +281,5 @@ if (errors.length) {
 }
 
 console.log(
-  `Publication validation passed (${outputBytes} bytes, ${searchPayload?.items?.length || 0} search JSON items, ${actualSourceEventButtons} initial source event buttons, controller coverage verified, no private source markers).`,
+  `Publication validation passed (${outputBytes} bytes, ${searchPayload?.items?.length || 0} search JSON items, ${actualSourceEventButtons} initial source event buttons, ${expandableEntries.length} RC12-B2 expandable title contracts, controller coverage verified, no private source markers).`,
 );
