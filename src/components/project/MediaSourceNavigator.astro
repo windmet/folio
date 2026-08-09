@@ -34,22 +34,26 @@ const countEvents = (track: any) => events.filter((event) => referenceId(event.d
       const isYouTube = track.data.playback.provider === 'youtube';
       return (
         <article class="media-source" data-source-card={trackId}>
-          <button
-            type="button"
-            class="media-source__select"
-            data-source-track={trackId}
-            aria-pressed="false"
-            aria-label={`选择${track.data.label}`}
-          >
-            <MediaPlatformIcon platform={isYouTube ? 'youtube' : 'x-space'} />
-            <span class="media-source__code">{track.data.shortLabel}</span>
-            <span class="media-source__body">
-              <strong>{track.data.label}</strong>
-              <span>{formatDuration(track.data.durationMs)} · {track.data.kind.toUpperCase()}{isYouTube ? ' · 360°' : ''}</span>
-            </span>
+          <div class="media-source__identity-row">
+            <button
+              type="button"
+              class="media-source__select"
+              data-source-track={trackId}
+              aria-pressed="false"
+              aria-label={`选择${track.data.label}`}
+            >
+              <MediaPlatformIcon platform={isYouTube ? 'youtube' : 'x-space'} />
+              <span class="media-source__code">{track.data.shortLabel}</span>
+              <span class="media-source__body">
+                <strong>{track.data.label}</strong>
+              </span>
+            </button>
+            <span class="media-source__events">{countEvents(track)} EVENTS</span>
+          </div>
+          <div class="media-source__status-row">
             <span class="media-source__state">{isYouTube ? 'INLINE PLAYBACK' : 'EXTERNAL SOURCE'}</span>
-          </button>
-          <span class="media-source__events">{countEvents(track)} EVENTS</span>
+            <span class="media-source__meta">{formatDuration(track.data.durationMs)} · {track.data.kind.toUpperCase()}{isYouTube ? ' · 360°' : ''}</span>
+          </div>
           <span class="media-source__actions">
             {isYouTube ? (
               <span class="media-source__action">站内播放</span>

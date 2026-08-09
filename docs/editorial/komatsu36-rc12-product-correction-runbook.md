@@ -5,7 +5,7 @@
 > 基线分支：`codex/komatsu36-project-archive`
 > 前置状态：RC 0.11 `REVIEW BRANCH ACCEPTANCE COMPLETE`
 > 当前入口：RC12-A2 → RC12-C2 → RC12-D2 → RC12-B2 → 人工复核 → RC12-F2
-> 当前进度：RC12-A2/C2 `SOURCE-VERIFIED` + `BROWSER-VERIFIED`；人工停点 A2/C2 待确认
+> 当前进度：RC12-A2/C2/D2 `SOURCE-VERIFIED` + `BROWSER-VERIFIED`；人工停点 A2/C2/D2 待确认
 > Release Gate：CLOSED；本文不授权 merge、deploy 或修改 `project.status`
 
 本文记录 RC12-A/B/C/D 第一版经过源码、构建和浏览器验证后，收到的产品层返工裁决。它是后续 agent 的**唯一实施入口**。原 `komatsu36-rc12-visual-polish-source-navigation-plan.md` 保存第一版规格与工程证据，不再代表下一批应直接收口；`komatsu36-rc12-release-readiness-handoff.md` 降级为被产品复核退回的本地 QA 快照。
@@ -31,7 +31,7 @@ Release Gate                     CLOSED
 | Target / Context 按需展开 | 已实现真实 overflow 检测、button、ARIA、touch/keyboard 路径 | `PARTIAL PASS` | 保留机制，RC12-B2 补齐 Act title 与 Source 长标题 |
 | People 单列卡 | 无 overflow，但桌面空间利用率与扫读效率下降 | `REJECTED ON DESKTOP` | RC12-C2：桌面横向高密度；移动投影保留 |
 | Cast projection | 已有 table 与窄投影，工程压力测试无 overflow | `REVISE` | RC12-C2：明确 wide / medium / mobile 三档，不以横滚完成 |
-| Source pictograms | 图标已接入且文字降级存在 | `DIRECTION PASS, VISUAL REJECTED` | RC12-D2：重做图标和信息层级 |
+| Source pictograms | RC12-D2 已重做 X Space 声场图标与 Source card 三层信息层级，并完成桌面／移动 Browser QA | `DIRECTION PASS, PRODUCT REVIEW PENDING` | 保留文字、外链、`?track=` 与 Source Event Index 合同；等待人工视觉确认 |
 | Source-scoped Timeline | 未实现 | `BACKLOG / P1` | RC12-E 仍后置，不得伪报完成 |
 
 `SOURCE-VERIFIED`、`BROWSER-VERIFIED` 与 `PRODUCT-ACCEPTED` 必须继续分开。此前压力矩阵证明“没有溢出和交互回归”，不能推导“桌面形态好用”。
@@ -149,6 +149,8 @@ People 数据、分组、Lead Person、Person panel 与四类 participation 不�
 - 1366 与 390 均不因图标新增产生拥挤、断词或横向 overflow；
 - X Space 图标不再被理解为具体麦克风物体，YT／SP1／SP2 在单色条件下仍可区分；
 - 文本、source selection、`?track=`、Source Event Index、canonical link 与 external 能力合同无回归。
+
+本批次工程与 Browser 证据见 `docs/qa/komatsu36-rc12/d2/README.md`。证据只把 D2 标记为 `SOURCE-VERIFIED` + `BROWSER-VERIFIED`，不替代人工 `PRODUCT-ACCEPTED`。
 
 ## 6. RC12-B2 — Complete Expandable Text Coverage（P0）
 
