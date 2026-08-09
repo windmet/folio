@@ -1220,6 +1220,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.playerPresentationMode = mode;
       frame.dataset.playerMode = mode;
       if (!toggle) return;
+      toggle.hidden = !desktop;
       const compact = mode === 'compact';
       toggle.setAttribute('aria-pressed', String(compact));
       toggle.setAttribute('aria-label', compact ? '切换为完整播放器' : '切换为紧凑播放器');
