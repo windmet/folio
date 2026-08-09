@@ -16,6 +16,7 @@
 - Space 播放源决策已收口：用户提供的两条 X status 按创建时间与重开顺序映射为 SP1/SP2；页面只提供 canonical Space 外链，不重托管本地媒体，也不把 X 外链伪装成支持 timestamp seek；
 - 公开 Event / Thread / Person 的轻量站内检索已落地：索引只来自发布内容，结果顺序固定，Event 结果可恢复稳定深链并切换到正确 Track；不索引 Transcript 与 Chat；
 - `validate:publication` 已接入统一 `npm run validate`：当前构建核对 158 条公开检索项、350 KiB 单页预算，并阻止原始 ASR 文件标记、本机源档路径、`author_id`、SRT/VTT 文件名进入发布 HTML，同时要求 `published` Project 在首页拥有真实入口；
+- `.github/workflows/validate.yml` 已接入 push / pull request 验证：固定 Node.js 22.12.0，执行 `npm ci` 与完整 `npm run validate`；它只提供可审阅的 CI 证据，不触发部署；
 - 首页已增加独立“专题档案”书架，只消费 `status: published` 的 Project，并显示由 collection 实时派生的 Event／Thread／Track 数量；专题不混入四类普通文章筛选；
 - 当前实现已完成 RC Media Pass：Hero 下方有常驻三来源栏，播放器有 Source Switcher，SP1/SP2 是 `video + external`，支持 `?track=`、Event 优先、Source Event Index、canonical Space CTA 与 provenance 链接；固定截图、本地 preview QA 与发布层 Final Editorial Pass 也已完成，尚未进入最终功能冻结，因为仍需 Release Gate 与发布意图确认；
 - 当前仍未完成：Release Gate。八张固定截图已保存于 `docs/qa/komatsu36-rc08/`，全量发布层编辑审计见 `docs/qa/komatsu36-rc08/EDITORIAL-AUDIT.md`；源档中的词级、商品、speaker、画面和账号身份 TODO 仍保持原边界，不阻塞 v1，但不得在后续编辑中猜测补齐。项目特例 validator 拆分延后到第二个 Project 接入前；Transcript 与 Evidence 是明确延后项，不阻塞 v1。不得因 16 条 Thread 已出现而误报为完整 Folio 愿景已经完成。

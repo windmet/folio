@@ -26,6 +26,8 @@ npm run validate:publication # 发布 HTML、检索项和单页预算
 npm run validate            # 按上述顺序执行完整门禁
 ```
 
+每次 push 或 pull request 都会由 `.github/workflows/validate.yml` 在 Node.js 22.12.0 上重复执行 `npm ci` 与 `npm run validate`。该 workflow 只做验证，不负责部署。
+
 构建后的本地预览可以使用另一个端口，避免打断长期运行的开发服务器：
 
 ```sh
