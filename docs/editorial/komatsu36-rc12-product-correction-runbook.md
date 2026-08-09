@@ -1,11 +1,11 @@
 # Komatsu36 RC 0.12 Product Correction Runbook
 
-> 状态：`RC12-E E1–E3 IMPLEMENTED — BROWSER VERIFIED`
+> 状态：`RC12-E E1–E3 IMPLEMENTED — E4/E5 BROWSER HANDOFF DRAFT`
 > 裁决日期：2026-08-09
 > 基线分支：`codex/komatsu36-project-archive`
 > 前置状态：RC 0.11 `REVIEW BRANCH ACCEPTANCE COMPLETE`
-> 当前入口：RC12-E E1–E3 QA；F2 handoff 保留为前一批回归证据
-> 当前进度：RC12-A2/C2/D2/B2/F2 已完成；RC12-E E1–E3 已完成 `SOURCE-VERIFIED` + `BROWSER-VERIFIED`（YT 8 Act／104 Event；SP1 8 Event；SP2 12 Event）；E4/E5 待继续；B2 Act／Timeline title 分支仍标记 `TODO consumer-check`
+> 当前入口：RC12-E E4/E5 handoff；E1–E3 QA 与 F2 handoff 保留为对应批次证据
+> 当前进度：RC12-A2/C2/D2/B2/F2 已完成；RC12-E E1–E3 已完成 `SOURCE-VERIFIED` + `BROWSER-VERIFIED`（YT 8 Act／104 Event；SP1 8 Event；SP2 12 Event）；E4 focus indicator 与 E5 路由回归已形成 Browser handoff，但键盘激活和产品人工停点仍待完成；B2 Act／Timeline title 分支仍标记 `TODO consumer-check`
 > Release Gate：CLOSED；本文不授权 merge、deploy 或修改 `project.status`
 
 本文记录 RC12-A/B/C/D 第一版经过源码、构建和浏览器验证后，收到的产品层返工裁决。它是后续 agent 的**唯一实施入口**。原 `komatsu36-rc12-visual-polish-source-navigation-plan.md` 保存第一版规格与工程证据，不再代表下一批应直接收口；`komatsu36-rc12-release-readiness-handoff.md` 降级为被产品复核退回的本地 QA 快照。
@@ -172,7 +172,7 @@ People 数据、分组、Lead Person、Person panel 与四类 participation 不�
 
 RC12-E 已按当前继续开发指令启动 E1–E3；E4/E5 仍需独立小批次和证据。Media Source Navigator、Source Event Index 或来源图标都不等于 Source-scoped Timeline；任何 agent 不得把未完成的 E4/E5 或产品停点提前标记为整体完成，也不得因为 E 后置而删掉现有 SP1／SP2 入口。
 
-RC12-E 的数据审计、URL／native-clock 合同和批次边界见 `docs/editorial/komatsu36-rc12-e-source-scoped-timeline-proposal.md`；E1–E3 的精确实现与 Browser 证据见 `docs/qa/komatsu36-rc12/e/README.md`。E4/E5 尚未完成，Release Gate 仍 CLOSED。
+RC12-E 的数据审计、URL／native-clock 合同和批次边界见 `docs/editorial/komatsu36-rc12-e-source-scoped-timeline-proposal.md`；E1–E3 的精确实现与基础矩阵见 `docs/qa/komatsu36-rc12/e/README.md`；E4/E5 工程回归交接见 `docs/qa/komatsu36-rc12/e/E5-HANDOFF.md`。键盘激活、产品人工停点、真实媒体与生产仍未完成，Release Gate 继续 CLOSED。
 
 ## 8. 每批门禁与证据等级
 
@@ -236,3 +236,9 @@ F2 交接与精确证据见 `docs/editorial/komatsu36-rc12-f2-final-regression-h
 用户此前的“继续吧”作为下一批范围确认后，RC12-E 已启动 E1–E3：Timeline scope switch 输出 YT／SP1／SP2 三个来源；YT 继续使用 8 Act／104 Event 主线；SP1／SP2 各自使用 native-clock Event projection（8／12 Event）；scope、Event、URL/history、external no-iframe 与 390px overflow 已通过源码与 Browser 验证。
 
 精确矩阵见 `docs/qa/komatsu36-rc12/e/README.md`。E4 最终视觉收尾和 E5 完整 handoff 尚未完成；本批不把 E1–E3 证据升级为 `PRODUCT-ACCEPTED`，也不改变 Release Gate CLOSED、真实媒体和生产未执行边界。
+
+## 14. RC12-E E4/E5 工程回归交接
+
+E4 已修复 scope button 的可见焦点环，并由静态合同与本地 Browser 计算样式复核；E5 已补做 YT Event 深链、SP1 Event Back／Forward、SP2 直链刷新、single player mount invariant、页面 console 与 overflow 检查。完整证据、当前 payload 和未执行边界见 `docs/qa/komatsu36-rc12/e/E5-HANDOFF.md`。
+
+这只是 `SOURCE-VERIFIED` + `BROWSER-VERIFIED` 的工程交接草案，不是 `PRODUCT-ACCEPTED`。Browser surface 的 Enter／Space 激活消费尚未得到可靠证据，390px 人工信息层级、事件密度和键盘使用感受仍需产品停点确认。

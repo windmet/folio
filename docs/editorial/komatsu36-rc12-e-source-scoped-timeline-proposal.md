@@ -1,11 +1,11 @@
 # Komatsu36 RC12-E Source-scoped Timeline Proposal
 
-> 状态：`ACTIVE IMPLEMENTATION — E1–E3 SOURCE/BROWSER VERIFIED`
+> 状态：`ACTIVE IMPLEMENTATION — E4/E5 ENGINEERING HANDOFF DRAFT`
 > 日期：2026-08-10
 > 适用项目：`komatsu36`
 > 权威入口：`docs/editorial/komatsu36-rc12-product-correction-runbook.md`
 
-本文把 RC12-E 需要实施的最小合同、数据边界和验证批次写清楚。用户此前的“继续吧”被作为启动下一批的范围确认；E1–E3 已完成第一版实现与本地 Browser 验证，E4 最终视觉收尾和 E5 完整交接仍待继续。本提案不能把现有 Source Event Index、来源图标或 Source card 误报成 Source-scoped Timeline。
+本文把 RC12-E 需要实施的最小合同、数据边界和验证批次写清楚。用户此前的“继续吧”被作为启动下一批的范围确认；E1–E3 已完成第一版实现与本地 Browser 验证，E4 focus indicator 与 E5 工程回归已形成 handoff 草案，但键盘激活、产品停点和真实媒体边界仍未关闭。本提案不能把现有 Source Event Index、来源图标或 Source card 误报成 Source-scoped Timeline。
 
 ## 1. 当前代码与数据基线（只读审计）
 
@@ -123,4 +123,4 @@ Browser 至少覆盖：
 
 ## 5. 当前启动记录与剩余条件
 
-E1–E3 已在当前 review branch 启动并完成第一版；精确实现与 Browser 证据见 `docs/qa/komatsu36-rc12/e/README.md`。E4／E5 仍必须作为独立小批次继续验证；真实媒体、生产部署和 Release Gate 不因 E1–E3 通过而开启。
+E1–E3 已在当前 review branch 启动并完成第一版；基础矩阵见 `docs/qa/komatsu36-rc12/e/README.md`，E4/E5 工程回归交接见 `docs/qa/komatsu36-rc12/e/E5-HANDOFF.md`。键盘激活、产品停点、真实媒体、生产部署和 Release Gate 仍未关闭。
