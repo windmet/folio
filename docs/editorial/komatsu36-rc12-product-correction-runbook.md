@@ -5,7 +5,7 @@
 > 基线分支：`codex/komatsu36-project-archive`
 > 前置状态：RC 0.11 `REVIEW BRANCH ACCEPTANCE COMPLETE`
 > 当前入口：RC12-A2 → RC12-C2 → RC12-D2 → RC12-B2 → 人工复核 → RC12-F2
-> 当前进度：RC12-A2/C2/D2 `SOURCE-VERIFIED` + `BROWSER-VERIFIED`；人工停点 A2/C2/D2 待确认
+> 当前进度：RC12-A2/C2/D2/B2 `SOURCE-VERIFIED` + `BROWSER-VERIFIED`；人工停点 A2/C2/D2/B2 待确认
 > Release Gate：CLOSED；本文不授权 merge、deploy 或修改 `project.status`
 
 本文记录 RC12-A/B/C/D 第一版经过源码、构建和浏览器验证后，收到的产品层返工裁决。它是后续 agent 的**唯一实施入口**。原 `komatsu36-rc12-visual-polish-source-navigation-plan.md` 保存第一版规格与工程证据，不再代表下一批应直接收口；`komatsu36-rc12-release-readiness-handoff.md` 降级为被产品复核退回的本地 QA 快照。
@@ -28,7 +28,7 @@ Release Gate                     CLOSED
 | YT 8-Act Navigator | RC 0.11 已完成 | `PASS` | 冻结，不重做 Timeline 主轴 |
 | Player mode 状态框架 | 已有 `expanded | compact`、per-view preference、移动端规则 | `FRAMEWORK PASS` | 保留状态管理，替换 compact 投影 |
 | 当前右栏 Compact | 只缩短 viewport，仍占右栏宽度 | `REJECTED` | RC12-A2：重定义为 Docked Bottom Bar |
-| Target / Context 按需展开 | 已实现真实 overflow 检测、button、ARIA、touch/keyboard 路径 | `PARTIAL PASS` | 保留机制，RC12-B2 补齐 Act title 与 Source 长标题 |
+| Target / Context 按需展开 | 已实现真实 overflow 检测、button、ARIA、touch/keyboard 路径；RC12-B2 已复用同一真实 overflow 机制覆盖 Act title 与 Source 长标题 | `ENGINEERING PASS, PRODUCT REVIEW PENDING` | 保留机制；人工确认完整标题入口与视觉密度 |
 | People 单列卡 | 无 overflow，但桌面空间利用率与扫读效率下降 | `REJECTED ON DESKTOP` | RC12-C2：桌面横向高密度；移动投影保留 |
 | Cast projection | 已有 table 与窄投影，工程压力测试无 overflow | `REVISE` | RC12-C2：明确 wide / medium / mobile 三档，不以横滚完成 |
 | Source pictograms | RC12-D2 已重做 X Space 声场图标与 Source card 三层信息层级，并完成桌面／移动 Browser QA | `DIRECTION PASS, PRODUCT REVIEW PENDING` | 保留文字、外链、`?track=` 与 Source Event Index 合同；等待人工视觉确认 |

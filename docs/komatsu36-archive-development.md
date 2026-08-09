@@ -7,11 +7,11 @@
 > 当前站点：Astro 7 静态站点，TinaCMS 只管理普通 MDX 文章。
 
 > **CURRENT CHECKPOINT**
-> RC 0.10 已完成本地验收，RC 0.11 已完成 R9 与 review-branch handoff；其 acceptance 文档保持历史合同，不因新一轮视觉问题回写。真实 1366×768 People 页面随后发现组件级越界与 Player 权重问题，独立开启 RC 0.12 Visual Polish & Source Navigation Pass。RC12-A2/C2/D2 已完成工程与 Browser 验证，但 2026-08-09 产品复核仍要求保留 A2/C2/D2 人工停点，并继续补齐 B2 文本展开覆盖。当前实施权威改为 `docs/editorial/komatsu36-rc12-product-correction-runbook.md`；第一版 Plan 与 handoff 仅保存历史证据。RC 0.11 历史流程、产品合同、Payload 合同与发布交接仍分别见 `komatsu36-rc11-closeout-runbook.md`、`komatsu36-archive-navigation-pass.md`、`komatsu36-static-payload-pass.md`、`komatsu36-rc11-release-readiness-handoff.md`。Release Gate 继续 CLOSED。
+> RC 0.10 已完成本地验收，RC 0.11 已完成 R9 与 review-branch handoff；其 acceptance 文档保持历史合同，不因新一轮视觉问题回写。真实 1366×768 People 页面随后发现组件级越界与 Player 权重问题，独立开启 RC 0.12 Visual Polish & Source Navigation Pass。RC12-A2/C2/D2/B2 已完成工程与 Browser 验证，但 2026-08-09 产品复核仍要求保留 A2/C2/D2/B2 人工停点。当前实施权威改为 `docs/editorial/komatsu36-rc12-product-correction-runbook.md`；第一版 Plan 与 handoff 仅保存历史证据。RC 0.11 历史流程、产品合同、Payload 合同与发布交接仍分别见 `komatsu36-rc11-closeout-runbook.md`、`komatsu36-archive-navigation-pass.md`、`komatsu36-static-payload-pass.md`、`komatsu36-rc11-release-readiness-handoff.md`。Release Gate 继续 CLOSED。
 
 ## 当前实施状态（2026-08-09）
 
-> **RC 0.12 状态覆盖**：RC 0.11 required 功能批次已全部完成，R6 为 `NO ADDITIONAL MOBILE NAV FOR V1`，R8 的 F/G 为 `DEFERRED BY DEFAULT` / `NOT NEEDED FOR V1`。RC12-A2、C2、D2 已通过 SOURCE/BROWSER 证据，产品接受仍待人工停点；下一顺序固定为 B2 → 人工停点 → F2。RC12-E 是显式 P1 backlog，未实现且不自动纳入。下方较早的 RC 0.11 历史段落只保留为演进记录。Release Gate 仍独立关闭。
+> **RC 0.12 状态覆盖**：RC 0.11 required 功能批次已全部完成，R6 为 `NO ADDITIONAL MOBILE NAV FOR V1`，R8 的 F/G 为 `DEFERRED BY DEFAULT` / `NOT NEEDED FOR V1`。RC12-A2、C2、D2、B2 已通过 SOURCE/BROWSER 证据，产品接受仍待人工停点；下一顺序固定为人工停点 → RC12-F2。RC12-E 是显式 P1 backlog，未实现且不自动纳入。下方较早的 RC 0.11 历史段落只保留为演进记录。Release Gate 仍独立关闭。
 
 - Phase 0A 已落地：`data/source-sets/komatsu36-20260808-r1.json` 精确锁定 6 个 `复核md/` 带后缀输入，并由 `validate:sources` 校验路径、SHA-256、物理行数与 16 条 ARC；
 - Phase 1 垂直切片已落地：真实 `/projects/komatsu36/` 路由、集中状态控制器、YouTube 延迟加载与 pending seek、动态时间 fallback、Timeline、Thread、Person 和 URL 恢复均已实现；
@@ -893,8 +893,8 @@ Media Pass、RC 0.9 Structural Editorial Audit、RC 0.10 Reader & Entity Editori
 | Player presentation | **RC12-A2 已完成源码与 Browser QA，人工停点待确认**：`expanded | docked`、旧 `compact` session 迁移、右栏释放、底部安全区与同一媒体 mount 合同已实现；证据见 `docs/qa/komatsu36-rc12/a2/README.md`。未收到 A2 产品接受前，不进入最终收口 |
 | Cast / People 信息架构 | **RC12-C2 已完成源码与 Browser QA，人工停点待确认**：1366px People rows 全宽约 `1221px`、metadata 槽约 `496px`；901px Cast medium 显示 6 条 role rows；390px mobile projection 保留，三档无横向溢出。证据见 `docs/qa/komatsu36-rc12/c2/README.md` |
 | Media platform pictograms | **RC12-D2 已完成源码与 Browser QA，产品视觉停点待确认**：X Space 改为圆形声场图标，Source card 固定平台／状态／动作三层；1366px／390px 无横向溢出，SP1 selection、`?track=` 与 Source Event Index 已复测。证据见 `docs/qa/komatsu36-rc12/d2/README.md` |
-| Expandable text | **RC12-B 机制保留、覆盖需补齐**：Target / Context 的 overflow + inline expand + ARIA 路径继续使用；RC12-B2 补当前 Act title 与 Source 长标题，tooltip 不得成为唯一全文入口 |
-| Initial HTML payload | **RC12-D2 已复测**：raw `266,710`、Gzip `47,316`、Brotli `29,915`，350 KiB hard gate 余量 `91,690`；初始 Source / Search buttons 仍为 0，Search 项与 controller coverage 通过；本轮未以减重名义删除 Rail 或 reader-facing 数据 |
+| Expandable text | **RC12-B2 已完成源码与 Browser QA，产品停点待确认**：Target / Context 原机制保留，并补齐 Act title、Timeline current title 与 Source 长标题的真实 overflow + inline expand + ARIA 路径；tooltip 不作为唯一全文入口。证据见 `docs/qa/komatsu36-rc12/b2/README.md` |
+| Initial HTML payload | **RC12-B2 已复测**：raw `270,135`、Gzip `47,664`、Brotli `30,087`，350 KiB hard gate 余量 `88,265`；初始 Source / Search buttons 仍为 0，Search 项与 controller coverage 通过；本轮未以减重名义删除 Rail 或 reader-facing 数据 |
 | Reader-facing copy | **RC 0.10 已完成**：52/52 decisions、full reader pass 与 publication leakage gate 已通过 |
 | External context 首样本 | **RC 0.10 已完成**：仲村烧肉 Post 已作为 related source 插入 Thread，不成为 Event 或静态 Post 镜像 |
 

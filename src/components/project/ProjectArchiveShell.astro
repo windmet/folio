@@ -409,13 +409,20 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.bindEvents();
       const playerFrame = this.querySelector<HTMLElement>('[data-player-frame]');
       if (playerFrame && typeof ResizeObserver !== 'undefined') {
-        this.playerTextResizeObserver = new ResizeObserver(() => this.refreshPlayerText());
+        this.playerTextResizeObserver = new ResizeObserver(() => {
+          this.refreshPlayerText();
+          this.refreshInlineText();
+        });
         this.playerTextResizeObserver.observe(playerFrame);
+        this.querySelectorAll<HTMLElement>('[data-inline-expandable]').forEach((text) => {
+          this.playerTextResizeObserver?.observe(text);
+        });
       }
       window.addEventListener('scroll', this.timelineScrollHandler, { passive: true });
       window.addEventListener('resize', this.timelineResizeHandler, { passive: true });
       this.scheduleTimelineNavigatorUpdate();
       this.restoreFromUrl();
+      this.refreshInlineText();
     }
 
     disconnectedCallback() {
@@ -480,6 +487,9 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       });
       this.querySelectorAll<HTMLButtonElement>('[data-player-text-toggle]').forEach((button) => {
         button.addEventListener('click', () => this.togglePlayerText(button.dataset.playerTextToggle || ''));
+      });
+      this.querySelectorAll<HTMLButtonElement>('[data-inline-text-toggle]').forEach((button) => {
+        button.addEventListener('click', () => this.toggleInlineText(button.dataset.inlineTextToggle || ''));
       });
       this.querySelector<HTMLElement>('[data-player-context-cta]')?.addEventListener('click', () => {
         if (!this.selectedEventId) return;
@@ -711,6 +721,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       if (label) label.textContent = `ACT ${String(order).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
       if (currentTitle) currentTitle.textContent = title;
       if (currentTime) currentTime.textContent = `${this.formatArchiveTime(startMs)}–${this.formatArchiveTime(endMs)}`;
+      this.refreshInlineText();
       navigator.dataset.currentAct = current.dataset.act || '';
       navigator.querySelectorAll<HTMLElement>('[data-timeline-navigator-segment]').forEach((button) => {
         button.setAttribute('aria-current', button.dataset.timelineNavigatorSegment === current.dataset.act ? 'step' : 'false');
@@ -742,6 +753,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       });
       this.applyPlayerPresentationMode(view);
       this.refreshPlayerText();
+      this.refreshInlineText();
       this.updatePlayerRailActiveState();
       if (view === 'timeline') this.scheduleTimelineNavigatorUpdate();
       if (push) this.updateUrl();
@@ -1269,6 +1281,36 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       if (!text || !toggle || toggle.hidden) return;
       text.dataset.expanded = String(text.dataset.expanded !== 'true');
       this.refreshPlayerText();
+    }
+
+    refreshInlineText() {
+      this.querySelectorAll<HTMLElement>('[data-inline-expandable]').forEach((text) => {
+        const key = text.dataset.inlineExpandable;
+        const toggle = key
+          ? this.querySelector<HTMLButtonElement>(`[data-inline-text-toggle="${CSS.escape(key)}"]`)
+          : null;
+        if (!toggle) return;
+        const wasExpanded = text.dataset.expanded === 'true';
+        text.classList.add('is-clamped');
+        const overflow = text.scrollHeight > text.clientHeight + 1 || text.scrollWidth > text.clientWidth + 1;
+        const expanded = overflow && wasExpanded;
+        text.classList.toggle('is-clamped', overflow && !expanded);
+        text.dataset.expanded = String(expanded);
+        toggle.hidden = !overflow;
+        toggle.setAttribute('aria-expanded', String(expanded));
+        toggle.textContent = expanded ? '收起' : '展开';
+        toggle.setAttribute('aria-label', `${expanded ? '收起' : '展开'}${text.textContent?.trim() || '完整标题'}`);
+        if (overflow) text.title = text.textContent?.trim() || '';
+        else text.removeAttribute('title');
+      });
+    }
+
+    toggleInlineText(key: string) {
+      const text = this.querySelector<HTMLElement>(`[data-inline-expandable="${CSS.escape(key)}"]`);
+      const toggle = this.querySelector<HTMLButtonElement>(`[data-inline-text-toggle="${CSS.escape(key)}"]`);
+      if (!text || !toggle || toggle.hidden) return;
+      text.dataset.expanded = String(text.dataset.expanded !== 'true');
+      this.refreshInlineText();
     }
 
     replaceUrl() {

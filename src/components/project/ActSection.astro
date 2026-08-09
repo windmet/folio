@@ -9,6 +9,7 @@ export interface Props {
 }
 
 const { act, events, peopleById, threadsByEvent } = Astro.props;
+const localActId = act.id.split('/').at(-1) || act.id;
 const formatTime = (milliseconds: number) => {
   const total = Math.floor(milliseconds / 1000);
   const hours = Math.floor(total / 3600);
@@ -31,7 +32,17 @@ const formatTime = (milliseconds: number) => {
     </div>
     <div>
       <p>{formatTime(act.data.startMs)}–{formatTime(act.data.endMs)}</p>
-      <h2>{act.data.title}</h2>
+      <div class="act-title-row">
+        <h2 id={`act-title-${localActId}`} data-inline-expandable={`act-title-${localActId}`}>{act.data.title}</h2>
+        <button
+          type="button"
+          class="archive-inline-text-toggle"
+          data-inline-text-toggle={`act-title-${localActId}`}
+          aria-expanded="false"
+          aria-controls={`act-title-${localActId}`}
+          hidden
+        >展开</button>
+      </div>
       <span>{act.data.summary}</span>
     </div>
   </header>

@@ -45,10 +45,19 @@ const countEvents = (track: any) => events.filter((event) => referenceId(event.d
               <MediaPlatformIcon platform={isYouTube ? 'youtube' : 'x-space'} />
               <span class="media-source__code">{track.data.shortLabel}</span>
               <span class="media-source__body">
-                <strong>{track.data.label}</strong>
+                <strong id={`source-title-${trackId}`} data-inline-expandable={`source-title-${trackId}`}>{track.data.label}</strong>
               </span>
             </button>
             <span class="media-source__events">{countEvents(track)} EVENTS</span>
+            <button
+              type="button"
+              class="archive-inline-text-toggle media-source__text-toggle"
+              data-inline-text-toggle={`source-title-${trackId}`}
+              aria-expanded="false"
+              aria-controls={`source-title-${trackId}`}
+              aria-label={`展开${track.data.label}`}
+              hidden
+            >展开</button>
           </div>
           <div class="media-source__status-row">
             <span class="media-source__state">{isYouTube ? 'INLINE PLAYBACK' : 'EXTERNAL SOURCE'}</span>

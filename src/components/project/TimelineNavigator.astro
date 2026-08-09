@@ -20,7 +20,19 @@ const totalDuration = acts.reduce((sum, act) => sum + Math.max(1, act.data.endMs
     <span class="archive-kicker" data-timeline-navigator-current-label>
       ACT {String(firstAct?.data.order || 1).padStart(2, '0')} / {String(actTotal).padStart(2, '0')}
     </span>
-    <strong data-timeline-navigator-current-title>{firstAct?.data.title || 'Timeline'}</strong>
+    <strong
+      id="timeline-navigator-current-title"
+      data-timeline-navigator-current-title
+      data-inline-expandable="timeline-current-title"
+    >{firstAct?.data.title || 'Timeline'}</strong>
+    <button
+      type="button"
+      class="archive-inline-text-toggle"
+      data-inline-text-toggle="timeline-current-title"
+      aria-expanded="false"
+      aria-controls="timeline-navigator-current-title"
+      hidden
+    >展开</button>
     <span data-timeline-navigator-current-time>
       {firstAct ? `${formatTime(firstAct.data.startMs)}–${formatTime(firstAct.data.endMs)}` : '—'}
     </span>
