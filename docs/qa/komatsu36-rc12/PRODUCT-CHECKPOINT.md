@@ -1,10 +1,10 @@
 # Komatsu36 RC 0.12 人工停点核对表
 
-> 当前状态：`PRODUCT REVIEW RECORDED — CORRECTION REQUIRED`
+> 当前状态：`PRODUCT REVIEW ACKNOWLEDGED — F2 REGRESSION COMPLETE`
 > 预览地址：`http://127.0.0.1:4322/projects/komatsu36/`
 > 当前执行入口：`docs/editorial/komatsu36-rc12-product-correction-runbook.md`
 
-这份表记录 2026-08-09 已收到的产品裁决，不替代源码、构建或 Browser QA 证据。第一版页面通过了自动门禁与响应式压力测试，但这只证明工程稳定，不证明形态获得产品接受。后续批次与验收合同见 `docs/editorial/komatsu36-rc12-product-correction-runbook.md`。
+这份表保留 2026-08-09 第一版产品裁决，并追加当前状态；它不替代源码、构建或 Browser QA 证据。RC12-A2/C2/D2/B2 与 F2 已完成，用户在本地简要复核后反馈“基本能接受”并允许继续收口。该反馈不等同于真实媒体通过、生产验收或 Release Gate 授权。后续边界见 `docs/editorial/komatsu36-rc12-product-correction-runbook.md` 与 `docs/editorial/komatsu36-rc12-f2-final-regression-handoff.md`。
 
 ## 第一版停点 1 裁决：Player / People
 
@@ -44,4 +44,8 @@ B2：ACCEPT
 E：DEFERRED
 ```
 
-当前裁决已经明确第一版不通过。在 A2/C2/D2/B2 新证据和新人工停点完成前，不标记 `RC 0.12 REVIEW BRANCH ACCEPTANCE COMPLETE`，不 merge、不 deploy、不修改公开状态。
+上方“第一版裁决”只保存 2026-08-09 的历史事实；A2/C2/D2/B2 新证据与 F2 回归现已完成。当前仍不标记 `RC 0.12 REVIEW BRANCH ACCEPTANCE COMPLETE`，不 merge、不 deploy、不修改公开状态，除非用户另行授权。
+
+## 2026-08-10 复核跟进
+
+用户本地简要复核反馈：“基本能接受，请你继续”。据此允许执行 RC12-F2 完整回归并建立 corrected handoff；当前记录为 `PRODUCT REVIEW ACKNOWLEDGED — F2 REGRESSION COMPLETE`。除非用户另行明确授权，仍保持 `Release Gate: CLOSED`，不执行 merge、deploy、生产 preview 或 `project.status` 变更。

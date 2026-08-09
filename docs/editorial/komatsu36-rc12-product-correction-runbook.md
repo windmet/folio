@@ -1,11 +1,11 @@
 # Komatsu36 RC 0.12 Product Correction Runbook
 
-> 状态：`PRODUCT REVIEW RECORDED — CORRECTION REQUIRED`
+> 状态：`PRODUCT REVIEW ACKNOWLEDGED — F2 REGRESSION COMPLETE`
 > 裁决日期：2026-08-09
 > 基线分支：`codex/komatsu36-project-archive`
 > 前置状态：RC 0.11 `REVIEW BRANCH ACCEPTANCE COMPLETE`
-> 当前入口：RC12-A2 → RC12-C2 → RC12-D2 → RC12-B2 → 人工复核 → RC12-F2
-> 当前进度：RC12-A2/C2/D2/B2 `SOURCE-VERIFIED` + `BROWSER-VERIFIED`；人工停点 A2/C2/D2/B2 待确认
+> 当前入口：RC12-F2 final regression handoff
+> 当前进度：RC12-A2/C2/D2/B2 `SOURCE-VERIFIED` + `BROWSER-VERIFIED`；用户本地复核反馈“基本能接受”，F2 已完成；B2 长标题点击仍标记 `TODO consumer-check`
 > Release Gate：CLOSED；本文不授权 merge、deploy 或修改 `project.status`
 
 本文记录 RC12-A/B/C/D 第一版经过源码、构建和浏览器验证后，收到的产品层返工裁决。它是后续 agent 的**唯一实施入口**。原 `komatsu36-rc12-visual-polish-source-navigation-plan.md` 保存第一版规格与工程证据，不再代表下一批应直接收口；`komatsu36-rc12-release-readiness-handoff.md` 降级为被产品复核退回的本地 QA 快照。
@@ -28,10 +28,10 @@ Release Gate                     CLOSED
 | YT 8-Act Navigator | RC 0.11 已完成 | `PASS` | 冻结，不重做 Timeline 主轴 |
 | Player mode 状态框架 | 已有 `expanded | compact`、per-view preference、移动端规则 | `FRAMEWORK PASS` | 保留状态管理，替换 compact 投影 |
 | 当前右栏 Compact | 只缩短 viewport，仍占右栏宽度 | `REJECTED` | RC12-A2：重定义为 Docked Bottom Bar |
-| Target / Context 按需展开 | 已实现真实 overflow 检测、button、ARIA、touch/keyboard 路径；RC12-B2 已复用同一真实 overflow 机制覆盖 Act title 与 Source 长标题 | `ENGINEERING PASS, PRODUCT REVIEW PENDING` | 保留机制；人工确认完整标题入口与视觉密度 |
+| Target / Context 按需展开 | 已实现真实 overflow 检测、button、ARIA、touch/keyboard 路径；RC12-B2 已复用同一真实 overflow 机制覆盖 Act title 与 Source 长标题 | `F2 VERIFIED, USER REVIEW ACKNOWLEDGED` | 当前 fixture 未自然触发长标题按钮，保留 `TODO consumer-check` |
 | People 单列卡 | 无 overflow，但桌面空间利用率与扫读效率下降 | `REJECTED ON DESKTOP` | RC12-C2：桌面横向高密度；移动投影保留 |
 | Cast projection | 已有 table 与窄投影，工程压力测试无 overflow | `REVISE` | RC12-C2：明确 wide / medium / mobile 三档，不以横滚完成 |
-| Source pictograms | RC12-D2 已重做 X Space 声场图标与 Source card 三层信息层级，并完成桌面／移动 Browser QA | `DIRECTION PASS, PRODUCT REVIEW PENDING` | 保留文字、外链、`?track=` 与 Source Event Index 合同；等待人工视觉确认 |
+| Source pictograms | RC12-D2 已重做 X Space 声场图标与 Source card 三层信息层级，并完成桌面／移动 Browser QA | `F2 VERIFIED, USER REVIEW ACKNOWLEDGED` | 保留文字、外链、`?track=` 与 Source Event Index 合同 |
 | Source-scoped Timeline | 未实现 | `BACKLOG / P1` | RC12-E 仍后置，不得伪报完成 |
 
 `SOURCE-VERIFIED`、`BROWSER-VERIFIED` 与 `PRODUCT-ACCEPTED` 必须继续分开。此前压力矩阵证明“没有溢出和交互回归”，不能推导“桌面形态好用”。
@@ -198,7 +198,7 @@ Browser 必须检查真实 `/projects/komatsu36/` 构建预览，而不是只看
 - 每批只提交本批文件和对应 QA 文档，使用 scoped commit；不得混入无关清理。
 - 开始前、提交前、推送后记录 branch、HEAD、worktree；保留用户的无关改动。
 - 文档状态只在证据成立后升级。第一版 QA README 保留历史事实，但必须注明产品裁决已 supersede 其“待接受”状态。
-- A2、C2、D2、B2 全部通过人工停点后，才新增 RC12-F2 handoff；不得复用旧 handoff 标题冒充当前 release readiness。
+- A2、C2、D2、B2 完成并收到用户本地复核反馈后，RC12-F2 handoff 才能建立；当前 F2 交接见 `docs/editorial/komatsu36-rc12-f2-final-regression-handoff.md`，不得复用旧 handoff 标题冒充当前 release readiness。
 - 即使 RC 0.12 最终 `REVIEW BRANCH ACCEPTANCE COMPLETE`，merge／deploy／`project.status` 仍由独立 Release Gate 授权。
 
 ## 10. 明确冻结与非目标
@@ -215,7 +215,13 @@ Browser 必须检查真实 `/projects/komatsu36/` 构建预览，而不是只看
 
 1. 读取本文全文，再读目标批次对应的旧实现与 QA；
 2. 核对 `git branch --show-current`、`git rev-parse HEAD`、`git status --short`；
-3. 确认本批只做 A2、C2、D2 或 B2 中一个；
+3. 当前 F2 已完成；若继续开发，必须先获得新的明确范围，不得回头混改 A2/C2/D2/B2；
 4. 在动代码前写下本批“不改变”的状态／数据／URL 合同；
 5. 完成后同时给出 source、browser、product 三种状态，不能用一个 `PASS` 混写；
-6. 到人工停点就停止，不自行宣布产品接受或打开 Release Gate。
+6. F2 之后不得自行宣布生产接受或打开 Release Gate；真实媒体、长时 soak 与生产授权仍需独立证据和用户授权。
+
+## 12. RC12-F2 最终回归
+
+用户在本地简要复核后反馈“基本能接受”，允许继续 RC12-F2。F2 已在真实 `/projects/komatsu36/` 预览完成桌面／中等／移动断点、Player mode、Source selection、Source Event Index、Event 深链、Timeline context、People/Cast、Person/Thread dialog、Search、Back/Forward、console 和 overflow 回归。
+
+F2 交接与精确证据见 `docs/editorial/komatsu36-rc12-f2-final-regression-handoff.md`。当前状态为 `F2 SOURCE-VERIFIED` + `BROWSER-VERIFIED`；用户反馈记录为允许继续收口，不把“基本能接受”扩大解释为 `PRODUCT-ACCEPTED`、真实媒体通过或 Release Gate 授权。B2 当前 fixture 没有自然触发的超长标题，展开点击保留 `TODO consumer-check`。

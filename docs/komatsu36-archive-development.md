@@ -7,11 +7,11 @@
 > 当前站点：Astro 7 静态站点，TinaCMS 只管理普通 MDX 文章。
 
 > **CURRENT CHECKPOINT**
-> RC 0.10 已完成本地验收，RC 0.11 已完成 R9 与 review-branch handoff；其 acceptance 文档保持历史合同，不因新一轮视觉问题回写。真实 1366×768 People 页面随后发现组件级越界与 Player 权重问题，独立开启 RC 0.12 Visual Polish & Source Navigation Pass。RC12-A2/C2/D2/B2 已完成工程与 Browser 验证，但 2026-08-09 产品复核仍要求保留 A2/C2/D2/B2 人工停点。当前实施权威改为 `docs/editorial/komatsu36-rc12-product-correction-runbook.md`；第一版 Plan 与 handoff 仅保存历史证据。RC 0.11 历史流程、产品合同、Payload 合同与发布交接仍分别见 `komatsu36-rc11-closeout-runbook.md`、`komatsu36-archive-navigation-pass.md`、`komatsu36-static-payload-pass.md`、`komatsu36-rc11-release-readiness-handoff.md`。Release Gate 继续 CLOSED。
+> RC 0.10 已完成本地验收，RC 0.11 已完成 R9 与 review-branch handoff；其 acceptance 文档保持历史合同，不因新一轮视觉问题回写。真实 1366×768 People 页面随后发现组件级越界与 Player 权重问题，独立开启 RC 0.12 Visual Polish & Source Navigation Pass。RC12-A2/C2/D2/B2 与 F2 已完成工程与 Browser 验证；用户 2026-08-10 本地简要复核反馈“基本能接受”，允许继续 F2 收口。当前实施权威改为 `docs/editorial/komatsu36-rc12-product-correction-runbook.md`，F2 交接见 `docs/editorial/komatsu36-rc12-f2-final-regression-handoff.md`；第一版 Plan 与旧 handoff 仅保存历史证据。RC 0.11 历史流程、产品合同、Payload 合同与发布交接仍分别见 `komatsu36-rc11-closeout-runbook.md`、`komatsu36-archive-navigation-pass.md`、`komatsu36-static-payload-pass.md`、`komatsu36-rc11-release-readiness-handoff.md`。Release Gate 继续 CLOSED。
 
 ## 当前实施状态（2026-08-09）
 
-> **RC 0.12 状态覆盖**：RC 0.11 required 功能批次已全部完成，R6 为 `NO ADDITIONAL MOBILE NAV FOR V1`，R8 的 F/G 为 `DEFERRED BY DEFAULT` / `NOT NEEDED FOR V1`。RC12-A2、C2、D2、B2 已通过 SOURCE/BROWSER 证据，产品接受仍待人工停点；下一顺序固定为人工停点 → RC12-F2。RC12-E 是显式 P1 backlog，未实现且不自动纳入。下方较早的 RC 0.11 历史段落只保留为演进记录。Release Gate 仍独立关闭。
+> **RC 0.12 状态覆盖**：RC 0.11 required 功能批次已全部完成，R6 为 `NO ADDITIONAL MOBILE NAV FOR V1`，R8 的 F/G 为 `DEFERRED BY DEFAULT` / `NOT NEEDED FOR V1`。RC12-A2、C2、D2、B2 与 F2 已通过 SOURCE/BROWSER 证据；用户复核基本接受并允许继续收口，但不等同于真实媒体通过或 Release Gate 授权。RC12-E 是显式 P1 backlog，未实现且不自动纳入。F2 交接见 `docs/editorial/komatsu36-rc12-f2-final-regression-handoff.md`。下方较早的 RC 0.11 历史段落只保留为演进记录。Release Gate 仍独立关闭。
 
 - Phase 0A 已落地：`data/source-sets/komatsu36-20260808-r1.json` 精确锁定 6 个 `复核md/` 带后缀输入，并由 `validate:sources` 校验路径、SHA-256、物理行数与 16 条 ARC；
 - Phase 1 垂直切片已落地：真实 `/projects/komatsu36/` 路由、集中状态控制器、YouTube 延迟加载与 pending seek、动态时间 fallback、Timeline、Thread、Person 和 URL 恢复均已实现；
@@ -890,10 +890,10 @@ Media Pass、RC 0.9 Structural Editorial Audit、RC 0.10 Reader & Entity Editori
 | YouTube `origin` | **已完成代码修正**；使用 `window.location.origin`，仍需随最终 preview / production 做一次部署环境抽查 |
 | dialog focus containment | **已完成并复测**；背景不可 Tab、焦点循环、Esc 与 restore 均通过 |
 | 构建与生产依赖安全 | **本地与 CI 均有门禁**；`npm ci` 后执行 `npm audit --omit=dev`（当前为 0 vulnerabilities）与 `npm exec -- tsc --noEmit`；`npm run validate` 通过，完整 audit 的 dev-only 告警不作为生产站点漏洞接受 |
-| Player presentation | **RC12-A2 已完成源码与 Browser QA，人工停点待确认**：`expanded | docked`、旧 `compact` session 迁移、右栏释放、底部安全区与同一媒体 mount 合同已实现；证据见 `docs/qa/komatsu36-rc12/a2/README.md`。未收到 A2 产品接受前，不进入最终收口 |
-| Cast / People 信息架构 | **RC12-C2 已完成源码与 Browser QA，人工停点待确认**：1366px People rows 全宽约 `1221px`、metadata 槽约 `496px`；901px Cast medium 显示 6 条 role rows；390px mobile projection 保留，三档无横向溢出。证据见 `docs/qa/komatsu36-rc12/c2/README.md` |
-| Media platform pictograms | **RC12-D2 已完成源码与 Browser QA，产品视觉停点待确认**：X Space 改为圆形声场图标，Source card 固定平台／状态／动作三层；1366px／390px 无横向溢出，SP1 selection、`?track=` 与 Source Event Index 已复测。证据见 `docs/qa/komatsu36-rc12/d2/README.md` |
-| Expandable text | **RC12-B2 已完成源码与 Browser QA，产品停点待确认**：Target / Context 原机制保留，并补齐 Act title、Timeline current title 与 Source 长标题的真实 overflow + inline expand + ARIA 路径；tooltip 不作为唯一全文入口。证据见 `docs/qa/komatsu36-rc12/b2/README.md` |
+| Player presentation | **RC12-A2 + F2 已完成源码与 Browser QA**：`expanded | docked`、旧 `compact` session 迁移、右栏释放、底部安全区、同一媒体 mount 和 URL/history 合同已复测；证据见 `docs/qa/komatsu36-rc12/a2/README.md` 与 F2 handoff。真实媒体／长时播放仍 `NOT EXECUTED` |
+| Cast / People 信息架构 | **RC12-C2 + F2 已完成源码与 Browser QA**：1366px People rows 全宽约 `1221px`；901px Cast medium 显示 6 条 role rows；390px mobile projection 与 Person dialog 保留，三档无横向溢出。证据见 `docs/qa/komatsu36-rc12/c2/README.md` 与 F2 handoff |
+| Media platform pictograms | **RC12-D2 + F2 已完成源码与 Browser QA**：X Space 圆形声场图标、Source card 平台／状态／动作三层；1366px／390px 无横向溢出，SP2 selection、`?track=`、Source Event Index 和 Event 深链已复测。证据见 `docs/qa/komatsu36-rc12/d2/README.md` 与 F2 handoff |
+| Expandable text | **RC12-B2 + F2 已完成源码与 Browser QA**：Target / Context 原机制保留，并补齐 Act title、Timeline current title 与 Source 长标题的真实 overflow + inline expand + ARIA 路径；当前 fixture 未自然触发长标题按钮，点击分支保留 `TODO consumer-check`。证据见 `docs/qa/komatsu36-rc12/b2/README.md` 与 F2 handoff |
 | Initial HTML payload | **RC12-B2 已复测**：raw `270,135`、Gzip `47,664`、Brotli `30,087`，350 KiB hard gate 余量 `88,265`；初始 Source / Search buttons 仍为 0，Search 项与 controller coverage 通过；本轮未以减重名义删除 Rail 或 reader-facing 数据 |
 | Reader-facing copy | **RC 0.10 已完成**：52/52 decisions、full reader pass 与 publication leakage gate 已通过 |
 | External context 首样本 | **RC 0.10 已完成**：仲村烧肉 Post 已作为 related source 插入 Thread，不成为 Event 或静态 Post 镜像 |
