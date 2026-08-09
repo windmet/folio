@@ -887,6 +887,6 @@ Media Pass、交互小修、Visual QA 与发布层 Final Editorial Pass 已通�
 | 手动 Source 状态冲突 | controller 已实现 `?track=`；手动选源清除 Event / target，Event selection 删除冗余 track，刷新时 Event 优先 | **Commit B 已完成并复测** |
 | Source Event 浏览范围 | 主 Timeline 是 YT canonical clock，不能承载 SP1 / SP2 的本地时钟 | **Commit D 合同**：使用轻量 per-track Source Event Index；不新增第六 View、route 或多轨 Timeline |
 | Final Editorial 全量发布层审计 | 124 个公开 Event 按 YT 104 / SP1 8 / SP2 12 分布；82 个 `verified`、42 个 `qualified`、16 条 Thread、18 个 Person；逐 Act / 逐 Thread 核对 setup / development / payoff、跨 Track 顺序、限定措辞与 Person 回链 | **本轮通过**：审计记录见 `docs/qa/komatsu36-rc08/EDITORIAL-AUDIT.md`；源级逐字/商品/画面/身份 TODO 保持不提升为确定事实 |
-| 浏览器 Release QA | 1440×900 与 390×844 的八张真实路由截图已保存于 `docs/qa/komatsu36-rc08/`；三 Source 可见、无横向 overflow；console 0 error；Event / `?track=` / back-forward、Source Event Index、Thread / Person inert 与 focus trap 已实测；4322 preview 构建复测通过 | **本轮通过**：仅剩确认 preview / production 发布意图 |
+| 浏览器 Release QA | 1440×900 与 390×844 的八张真实路由截图已保存于 `docs/qa/komatsu36-rc08/`；三 Source 可见、无横向 overflow；console 0 error；Event / `?track=` / back-forward、Source Event Index、Thread / Person inert 与 focus trap 已实测；4322 preview 构建复测通过；候选 `megazine-blog.pages.dev` 的本轮 production 探测返回 `net::ERR_CONNECTION_CLOSED`，未取得 production 证据 | **本轮通过**：本地 QA 已完成；production 仍需在可达环境复测并确认发布意图 |
 
 本表中的“已采纳”表示指导与仓库/媒体证据一致；“有条件采纳”表示方向可行但尚未满足发布前提。它不把本地持有媒体、文件后缀或可播放样本等同于公开托管授权与生产可用性。
