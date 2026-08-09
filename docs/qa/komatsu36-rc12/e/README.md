@@ -27,7 +27,8 @@
 | SP2 直接 scope | `?view=timeline&track=space-2`；12 个 Event，首项 `sp2-000003-finally-vertical`／`00:00:03`；Player label `X Space ②`；无 iframe；overflow `0` |
 | 切回 YT | URL 回到无 `track` 的 Timeline；YT panel 可见，8 Act／104 Event；SP2 panel 隐藏；Player label `YouTube 主直播` |
 | 901×780 中等宽度 | scope button 约 `122px`、SP1 Event card 约 `382px`、Player 约 `372px`；document overflow `0` |
-| 390×844 | 3 个 scope tabs 各约 `109×74px`，scope block 约 `159px`；无横向 overflow；SP1 仍可触控切换并显示 8 个 Event |
+| 390×844（Playwright Chromium） | 3 个 scope tabs 各 `114×74px`，scope block `159px`；无横向 overflow；SP1 仍可触控切换并显示 8 个 Event |
+| Keyboard Enter／Space／focus restore（Playwright Chromium） | 1440×900：Enter 激活 SP1、Space 激活 SP2；URL、`aria-pressed`、当前 scope 和焦点同步；Back 恢复 SP1 且焦点回到 SP1 button；页面 console 为空 |
 | Console | 页面 `error/warn = []`；Browser 工具自身 Statsig dropped-events warning 不属于页面 console，不纳入产品错误证据 |
 | Scope focus indicator | 点击 scope 后焦点仍落在原生 button；计算样式含红色 `outline` 与 `outline-offset`；无横向 overflow |
 
@@ -38,14 +39,15 @@ npm run validate                         PASS
 npm run audit:payload -- komatsu36       PASS
 npm exec -- tsc --noEmit                 PASS
 git diff --check                         PASS
+node scripts/verify-rc12-e-browser.mjs   PASS
 ```
 
-最新产物：raw HTML `291,492` bytes；Gzip `50,600`；Brotli `31,995`；350 KiB hard gate 余量 `66,908`。publication validator 通过 `12` 个 RC12-B2 expandable title contracts、`3` 个 RC12-E timeline scopes、`124` 个 controller Event records、三 track native-clock projection 和 private-marker gate；scope button 的 native `type=button`、`aria-pressed`、`aria-controls`、`aria-label` 合同，以及 panel 的 `aria-hidden`／`aria-labelledby` 和动态描述的 `aria-live=polite` 合同也由静态门禁校验。
+最新产物：raw HTML `291,492` bytes；Gzip `50,601`；Brotli `32,015`；350 KiB hard gate 余量 `66,908`。publication validator 通过 `12` 个 RC12-B2 expandable title contracts、`3` 个 RC12-E timeline scopes、`124` 个 controller Event records、三 track native-clock projection 和 private-marker gate；scope button 的 native `type=button`、`aria-pressed`、`aria-controls`、`aria-label` 合同，以及 panel 的 `aria-hidden`／`aria-labelledby` 和动态描述的 `aria-live=polite` 合同也由静态门禁校验。
 
 ## 未执行与产品停点
 
 - `NOT EXECUTED`：真实 YouTube／X Space 播放、真实音频、长时 soak、生产 origin、生产部署和 Release Gate。
 - `NOT EXECUTED`：E4 最终视觉收尾与 E5 完整 handoff；本 README 只覆盖 E1–E3 第一版。
-- `NOT EXECUTED`：Browser 驱动的键盘激活消费检查。当前 Browser surface 的 `press`／CUA keypress 对现有 view-nav 与新增 scope button 均只完成聚焦、未触发 click；因此不将其写成键盘消费通过，native button 与 ARIA 合同仅作 source/static verified。
+- 本地 Browser surface 的 `press`／CUA keypress 仍只完成聚焦；但真实 Playwright Chromium 已完成 Enter／Space 消费回归，故不再把键盘行为标为未验证。两者差异仅作为工具边界记录，不作为产品错误证据。
 - 工程与 Browser 证据不自动升级为 `PRODUCT-ACCEPTED`；需要用户在桌面与 390px 人工复核 scope 的信息层级、时间语义和事件密度。
 - 不把 Source Event Index 或 Source card 能力替代为 RC12-E；三条来源仍必须保持各自 native local clock。

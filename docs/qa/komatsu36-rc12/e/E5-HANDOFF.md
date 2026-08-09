@@ -30,10 +30,11 @@
 | SP1 Back／Forward | Back 恢复 `track=space-1` 且无 selected Event；Forward 恢复 SP1 Event deep link、selected card 和 scope |
 | YT Event deep link | 直链 `?view=timeline&event=yt-000100-stream-start` 恢复 YT scope、selected Event 和 `TARGET · 00:01:00`；YT panel 可见；iframe `0`；overflow `0` |
 | SP2 direct + refresh | 直链 `?view=timeline&track=space-2` 连续加载后仍恢复 SP2；12 Event；首项 `sp2-000003-finally-vertical`／`00:00:03`；header 明确 `SP2 · NATIVE CLOCK`；Player label `X Space ②`；iframe `0`；overflow `0` |
+| Keyboard scope activation and focus restore | Playwright Chromium 1440×900：Enter 激活 SP1，Space 激活 SP2；URL、`aria-pressed`、scope 和焦点同步；Back 恢复 SP1 且焦点回到 SP1 button；页面 console 为空 |
 | Player mount invariant | 从 SP2 切回 YT 再切 SP1：`.archive-player__mount` 始终 `1`，iframe 始终 `0`；没有第二个媒体实例 |
 | Focus indicator | 点击 scope 后焦点仍在原生 button；计算样式含红色 `outline` 与 `outline-offset` |
 | Page console | 页面 `error/warn = []`；Browser 工具自身 Statsig 网络／dropped-events 日志不属于页面 console |
-| Narrow viewport | 390×844 的三列 scope tabs、SP1 8 Event 和无横向 overflow 证据保留在 `README.md`；当前 Browser surface 无 viewport resize API，未重复伪造该尺寸数据 |
+| Narrow viewport | Playwright Chromium 390×844：scope block `159px`，三按钮各 `114×74px`，SP1 8 Event，overflow `0`；页面 console 为空 |
 
 ## 3. 自动门禁
 
@@ -44,13 +45,16 @@ npm run validate                         PASS
 npm run audit:payload -- komatsu36       PASS
 npm exec -- tsc --noEmit                 PASS
 git diff --check                         PASS
+node scripts/verify-rc12-e-browser.mjs   PASS
 ```
 
-当前产物指标：raw HTML `291,492` bytes；Gzip `50,600`；Brotli `31,995`；350 KiB hard gate 余量 `66,908`；publication validator 通过 `3` 个 RC12-E scope、`124` 个 controller Event records 和三 track native-clock projection。
+Browser verifier 使用 `scripts/xhs-exporter` 的 Playwright 依赖；若该目录尚未安装依赖，先在 `scripts/xhs-exporter` 执行 `npm install`。可用 `RC12_E_BASE_URL` 覆盖默认的 `http://127.0.0.1:4321`。
+
+当前产物指标：raw HTML `291,492` bytes；Gzip `50,601`；Brotli `32,015`；350 KiB hard gate 余量 `66,908`；publication validator 通过 `3` 个 RC12-E scope、`124` 个 controller Event records 和三 track native-clock projection。
 
 ## 4. 尚未关闭的停点
 
-- `NOT EXECUTED`：Browser 驱动的 Tab → Enter／Space 激活消费检查。当前 Browser surface 对现有 view-nav 与新增 scope button 均只能完成聚焦，未可靠触发 click；因此不将其写成键盘消费通过。native button／ARIA 合同已有 source/static 证据。
+- 本地 Browser surface 的 Tab → Enter／Space 仍只能完成聚焦；真实 Playwright Chromium 已完成 Enter／Space 激活消费，故键盘行为已具备 `BROWSER-VERIFIED` 证据。保留工具差异记录，避免把 Browser surface 限制误报为产品缺陷。
 - `NOT EXECUTED`：真实 YouTube／X Space 播放、真实音频、长时 soak、production origin、production deploy。
 - `PRODUCT-ACCEPTED` 仍待用户在桌面与 390px 人工确认信息层级、事件密度、native-clock 语义、播放器邻接关系和键盘使用感受。
 - `Release Gate` 保持 `CLOSED`；本交接不授权 merge、deploy 或公开状态变更。

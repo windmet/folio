@@ -1428,6 +1428,10 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     }
 
     restoreFromUrl() {
+      const restoreTimelineScopeFocus = Boolean(
+        document.activeElement instanceof HTMLElement
+        && document.activeElement.closest('[data-timeline-scope-button]'),
+      );
       const params = new URLSearchParams(window.location.search);
       const view = params.get('view') || this.data.defaultView;
       this.selectedEventId = null;
@@ -1463,6 +1467,12 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       if (threadId) this.openThread(threadId, null, false);
       if (personId) this.openPerson(personId, null, false);
       this.replaceUrl();
+      if (restoreTimelineScopeFocus && this.activeView === 'timeline') {
+        window.requestAnimationFrame(() => {
+          this.querySelector<HTMLElement>(`[data-timeline-scope-button="${CSS.escape(this.timelineScopeId)}"]`)
+            ?.focus({ preventScroll: true });
+        });
+      }
     }
 
     async ensurePlayer() {
