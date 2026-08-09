@@ -5,6 +5,8 @@
 > 前置结论：RC 0.9 完成的是 Structural Editorial Audit，不是读者文案终审。
 > 范围冻结：不新增 Event，不开放 Transcript / Evidence / Chat，不增加播放器能力，不重开 X Space 私有链路调查。
 
+RC 0.10 已在 `14f1861` 完成本地验收。后续人物列表降密度、Player 上下文回链、URL/Back 修正与 Timeline Navigator 不回填到本阶段，统一进入 [`komatsu36-archive-navigation-pass.md`](./komatsu36-archive-navigation-pass.md)。
+
 ## 1. 为什么需要独立阶段
 
 当前专题的路由、三媒体来源、深链、跨 Track Thread、人物反向索引、检索、键盘交互与发布门禁均已成立。剩余问题不是“功能能不能跑”，而是读者能否在不理解数据工程术语的前提下，看懂这五小时由谁构成、人物为何出现、跨平台材料如何补足叙事。

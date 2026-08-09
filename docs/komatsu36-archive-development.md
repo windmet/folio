@@ -869,10 +869,11 @@ package.json
 12. **RC 0.10-C（已完成）**：按“全量裁决 → 五批修改 → 网站连续通读”处理 Reader Copy；停止渲染内部 qualification，完成 52/52 decisions 与 full reader pass；
 13. **RC 0.10-D（已完成）**：以仲村烧肉 X Post 完成首个 `social` related source 与 Folio SourcePost，插入指定 Event 后；不扩 Event、不加载 widget；
 14. **RC 0.10-E（本地完成）**：已重跑完整验证和桌面／390px 编辑体验 QA；当前 `project.status` 仍为 `published`，首页又只筛选 `published` Project，因此合并到部署分支等价于正式发布，不得把 merge 当作无外部影响的代码整理。Release Gate 仍待明确的合并／部署授权。
+15. **RC 0.11（审计完成，待实施）**：进入 Archive Navigation & Visual Hierarchy Pass；首批只做 Cast / People 降密度，以及 Person / Search / Player 共用的 Event 上下文导航与 URL/Back 修正。完整合同见 `docs/editorial/komatsu36-archive-navigation-pass.md`。
 
 通用 validator 与 komatsu36 fixture 的分层不再列入本次 Release Blocker：通用层最终只校验 schema、关系、时间、隐私和确定性排序；`8 Acts`、manifest ARC 数与小松专属 publication assertions 留在项目 fixture，但该工作延后到第二个 Project 接入前完成。
 
-Media Pass、交互小修、Visual QA 与 Structural Editorial Audit 已通过本地验证；恢复 Release Gate 前还必须完成 RC 0.10：
+Media Pass、RC 0.9 Structural Editorial Audit 与 RC 0.10 Reader & Entity Editorial Pass 均已通过本地验证。新的 RC 0.11 只收口导航与视觉层级；Release Gate 仍独立等待明确授权：
 
 | Blocker | 状态 / 完成标准 |
 |---|---|
@@ -881,11 +882,11 @@ Media Pass、交互小修、Visual QA 与 Structural Editorial Audit 已通过�
 | YouTube `origin` | **已完成代码修正**；使用 `window.location.origin`，仍需随最终 preview / production 做一次部署环境抽查 |
 | dialog focus containment | **已完成并复测**；背景不可 Tab、焦点循环、Esc 与 restore 均通过 |
 | 构建与生产依赖安全 | **本地与 CI 均有门禁**；`npm ci` 后执行 `npm audit --omit=dev`（当前为 0 vulnerabilities）与 `npm exec -- tsc --noEmit`；`npm run validate` 通过，完整 audit 的 dev-only 告警不作为生产站点漏洞接受 |
-| Cast / People 信息架构 | **RC 0.10 待实施**；角色 × 昼夜矩阵、参与分组、Person 项目语境和 Related Storylines 通过桌面／390px 验收 |
-| Reader-facing copy | **RC 0.10 待实施**；内部 qualification 不进入读者 HTML，generated candidates 对应的人工 decisions 全部裁决，必要的不确定性改写为自然语言 readerNote |
-| External context 首样本 | **RC 0.10 待实施**；仲村烧肉 Post 作为 related source 插入 Thread，使用编辑摘要＋原帖直链，不成为 Event 或静态 Post 镜像 |
+| Cast / People 信息架构 | **RC 0.10 已完成；RC 0.11 继续优化投影**：数据关系和 Person detail 已验收，下一批只降低列表密度并消除 Cast 移动端内部横滚 |
+| Reader-facing copy | **RC 0.10 已完成**：52/52 decisions、full reader pass 与 publication leakage gate 已通过 |
+| External context 首样本 | **RC 0.10 已完成**：仲村烧肉 Post 已作为 related source 插入 Thread，不成为 Event 或静态 Post 镜像 |
 
-上述工程与媒体 Blocker 已完成；RC 0.10 是发布前最后一个有界编辑阶段。完成后才只剩明确的 Release Gate，不再增加产品能力。
+上述工程、媒体与 RC 0.10 编辑 Blocker 已完成。RC 0.11 是合并前新增的有界可用性阶段，不增加资料量或媒体能力；完成后仍只剩明确的 Release Gate。
 
 除上述 Media Pass 外冻结新的基础 UI、Event 数量扩张、Tina Project 编辑器、Transcript、Evidence 与 Chat 浏览器。Transcript 和 Evidence 继续保持关闭，直到公开权、分片格式与隐私边界分别通过专项决策；不得用“已有 SRT”替代该决策。
 
