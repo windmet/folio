@@ -389,6 +389,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     sourceEventsOpen = false;
     sourceEventListsBuilt = new Set<string>();
     contextFocusObserver: ResizeObserver | null = null;
+    playerTextResizeObserver: ResizeObserver | null = null;
     contextArrivalTimer: number | null = null;
     timelineScrollScheduled = false;
     timelineScrollHandler = () => this.scheduleTimelineNavigatorUpdate();
@@ -406,6 +407,11 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.loadPlayerModePreferences();
       this.activeTrackId = this.data.defaultTrackId;
       this.bindEvents();
+      const playerFrame = this.querySelector<HTMLElement>('[data-player-frame]');
+      if (playerFrame && typeof ResizeObserver !== 'undefined') {
+        this.playerTextResizeObserver = new ResizeObserver(() => this.refreshPlayerText());
+        this.playerTextResizeObserver.observe(playerFrame);
+      }
       window.addEventListener('scroll', this.timelineScrollHandler, { passive: true });
       window.addEventListener('resize', this.timelineResizeHandler, { passive: true });
       this.scheduleTimelineNavigatorUpdate();
@@ -415,6 +421,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     disconnectedCallback() {
       this.stopPlaybackSync();
       this.contextFocusObserver?.disconnect();
+      this.playerTextResizeObserver?.disconnect();
       if (this.contextArrivalTimer !== null) window.clearTimeout(this.contextArrivalTimer);
       window.removeEventListener('scroll', this.timelineScrollHandler);
       window.removeEventListener('resize', this.timelineResizeHandler);
@@ -470,6 +477,9 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.querySelector<HTMLElement>('[data-load-player]')?.addEventListener('click', () => this.ensurePlayer());
       this.querySelector<HTMLElement>('[data-player-mode-toggle]')?.addEventListener('click', () => {
         this.setPlayerPresentationMode(this.playerPresentationMode === 'expanded' ? 'compact' : 'expanded');
+      });
+      this.querySelectorAll<HTMLButtonElement>('[data-player-text-toggle]').forEach((button) => {
+        button.addEventListener('click', () => this.togglePlayerText(button.dataset.playerTextToggle || ''));
       });
       this.querySelector<HTMLElement>('[data-player-context-cta]')?.addEventListener('click', () => {
         if (!this.selectedEventId) return;
@@ -731,6 +741,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         button.setAttribute('aria-pressed', String(button.dataset.viewButton === view));
       });
       this.applyPlayerPresentationMode(view);
+      this.refreshPlayerText();
       this.updatePlayerRailActiveState();
       if (view === 'timeline') this.scheduleTimelineNavigatorUpdate();
       if (push) this.updateUrl();
@@ -974,8 +985,9 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.classList.add('has-active-event');
       this.updateTrack(event.trackId);
       this.querySelectorAll<HTMLElement>('[data-event-card]').forEach((card) => card.classList.toggle('is-active', card.dataset.eventCard === eventId));
-      const current = this.querySelector<HTMLElement>('[data-player-current]');
+      const current = this.querySelector<HTMLElement>('[data-player-current-text]');
       if (current) current.textContent = `TARGET · ${this.formatArchiveTime(event.startMs)}\n${event.title}`;
+      this.refreshPlayerText();
       this.updatePlayerTime(event.startMs);
       this.updateFallback(event);
       this.updatePlayerContext(event);
@@ -993,10 +1005,11 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.updateTrack(trackId);
       this.updateSourceEventIndex(trackId);
       this.querySelectorAll<HTMLElement>('[data-event-card]').forEach((card) => card.classList.remove('is-active'));
-      const current = this.querySelector<HTMLElement>('[data-player-current]');
+      const current = this.querySelector<HTMLElement>('[data-player-current-text]');
       if (current) current.textContent = track.playback.provider === 'external'
         ? 'NO TARGET SELECTED\n选择一个此来源事件以获得定位时间'
         : '选择时间节点开始定位';
+      this.refreshPlayerText();
       this.updatePlayerTime(null);
       this.updateFallback(null);
       this.updatePlayerContext(null);
@@ -1219,7 +1232,37 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.playerModePreferences[this.activeView] = mode;
       this.savePlayerModePreferences();
       this.applyPlayerPresentationMode(this.activeView);
+      this.refreshPlayerText();
       this.scheduleTimelineNavigatorUpdate();
+    }
+
+    refreshPlayerText() {
+      this.querySelectorAll<HTMLElement>('[data-player-expandable]').forEach((text) => {
+        const key = text.dataset.playerExpandable;
+        const toggle = key
+          ? this.querySelector<HTMLButtonElement>(`[data-player-text-toggle="${CSS.escape(key)}"]`)
+          : null;
+        if (!toggle) return;
+        const wasExpanded = text.dataset.expanded === 'true';
+        text.classList.add('is-clamped');
+        const overflow = text.scrollHeight > text.clientHeight + 1;
+        const expanded = overflow && wasExpanded;
+        text.classList.toggle('is-clamped', overflow && !expanded);
+        text.dataset.expanded = String(expanded);
+        toggle.hidden = !overflow;
+        toggle.setAttribute('aria-expanded', String(expanded));
+        toggle.textContent = expanded ? '收起' : '展开';
+        if (overflow) text.title = text.textContent?.trim() || '';
+        else text.removeAttribute('title');
+      });
+    }
+
+    togglePlayerText(key: string) {
+      const text = this.querySelector<HTMLElement>(`[data-player-expandable="${CSS.escape(key)}"]`);
+      const toggle = this.querySelector<HTMLButtonElement>(`[data-player-text-toggle="${CSS.escape(key)}"]`);
+      if (!text || !toggle || toggle.hidden) return;
+      text.dataset.expanded = String(text.dataset.expanded !== 'true');
+      this.refreshPlayerText();
     }
 
     replaceUrl() {
@@ -1315,8 +1358,9 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         this.querySelector<HTMLElement>('[data-player-viewport]')?.setAttribute('data-player-loaded', 'true');
         return this.player;
       } catch {
-        const current = this.querySelector<HTMLElement>('[data-player-current]');
+        const current = this.querySelector<HTMLElement>('[data-player-current-text]');
         if (current) current.textContent = '播放器载入失败，请使用下方带时间外链';
+        this.refreshPlayerText();
         return null;
       }
     }
@@ -1440,6 +1484,8 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         context.hidden = true;
         threads.hidden = true;
         list?.replaceChildren();
+        summary.dataset.expanded = 'false';
+        this.querySelector<HTMLButtonElement>('[data-player-text-toggle="context"]')?.setAttribute('hidden', '');
         this.updatePlayerRail(null);
         return;
       }
@@ -1449,6 +1495,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       context.hidden = false;
       threads.hidden = true;
       list?.replaceChildren();
+      summary.dataset.expanded = 'false';
       if (event.trackId === this.data.defaultTrackId) {
         summary.textContent = archiveContext.actLabel && archiveContext.actTitle
           ? `${archiveContext.actLabel} · ${archiveContext.actTitle}`
@@ -1463,6 +1510,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
           ? '在 Storyline 选择上下文 →'
           : '在 Storyline 查看上下文 →';
       }
+      this.refreshPlayerText();
       this.updatePlayerRail(event, archiveContext);
     }
 

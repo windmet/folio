@@ -1,10 +1,10 @@
 # Komatsu36 RC 0.12 Visual Polish & Source Navigation Plan
 
-> 状态：PLANNED
+> 状态：RC12-A/B/C IMPLEMENTED — 人工停点 1 待用户确认
 > 基线分支：`codex/komatsu36-project-archive`
 > 基线提交：`db866b3`
 > 前置状态：RC 0.11 `REVIEW BRANCH ACCEPTANCE COMPLETE`
-> 当前批次：RC12-A（尚未开始）
+> 当前批次：人工停点 1（A/B/C 已完成；D/F 待裁决）
 > Release Gate：CLOSED；本文不授权 merge、deploy 或修改公开状态
 
 RC 0.11 已完成 Player Context Rail、Lead Person、lazy Source Event Index、lazy Search JSON、Desktop Timeline Navigator、移动端导航裁决与 R9 QA。本阶段不重写 RC 0.11 的 acceptance 文档，也不把已经验收的功能删减成 payload 优化；它只处理成熟页面在真实桌面阅读中暴露出的空间分配、文本可读性、People 投影与来源识别问题。
@@ -30,7 +30,7 @@ RC 0.11 已完成 Player Context Rail、Lead Person、lazy Source Event Index、
 
 ### 1.2 1366×768 @ 100% 的实测证据
 
-在构建预览 `/projects/komatsu36/?view=people` 中：
+在构建预览 `/projects/komatsu36/?view=people` 中，RC12-C 实施前的基线为：
 
 | 区域 | client width | scroll width | 结论 |
 |---|---:|---:|---|
@@ -266,7 +266,23 @@ IDENTITY | PRIMARY RELATION | METADATA | COUNT
 
 小松继续独立为 `00 HOST / BIRTHDAY`，并继续在 Cast 与 Production 中按现有结构化身份出现；不进入普通 Birthday participant list。RC 0.12 不重设计 Lead Person。
 
-## 7. 人工停点 1
+## 7. RC12-A/B/C 当前证据（SOURCE-VERIFIED / BROWSER-VERIFIED）
+
+RC12-A、RC12-B、RC12-C 已完成源码实现与本地构建验证；产品层仍停在人工停点 1，尚未标记 `PRODUCT-ACCEPTED`。本批证据记录在 `docs/qa/komatsu36-rc12/abc/README.md`，摘要如下：
+
+| 场景 | 结果 |
+|---|---|
+| 1366×768 People（选中 Event） | People grid `clientWidth=808 / scrollWidth=808`；PersonCard 四个槽位起点一致；Rail 在窄 Player 中投影为横排 action row；document overflow `0` |
+| 901px 内容列回退 | People grid 与 PersonCard `382 / 382`；Cast desktop 隐藏、mobile projection 显示；document overflow `0` |
+| 390×844 People | People grid、PersonCard 与 Cast 无横向溢出；保留移动端既有导航合同；document overflow `0` |
+| 390×844 长 Target | `yt-042252-seigura-superchat` 默认两行截断；“展开”仅在真实 overflow 出现；点击后 `aria-expanded=true`、按钮改为“收起”，URL 不变 |
+| 短 Target / Context | `yt-000913-first-space-departure` 与实际短 Context 不显示空按钮 |
+| 1440×900 Timeline / 1920×1080 Overview | 按 view 默认值分别使用 Expanded / Compact；不重建 Player，不丢失 Event / Track / seek |
+| 控制台与构建 | Browser console 0 error / warning；`npm run validate`、`npm run audit:payload -- komatsu36`、`npm exec -- tsc --noEmit`、`git diff --check` 通过 |
+
+RC12-A/B/C 后 publication audit 基线为 raw `261,812` bytes、Gzip `46,483`、Brotli `29,518`，350 KiB hard gate 余量 `96,588` bytes。该余量用于证明本轮没有为了卡体积而删减 Rail、People、Source 或 reader-facing 语义，不是继续压缩功能的目标。
+
+### 7.1 人工停点 1
 
 完成 A / B / C 后停止编码并让用户查看真实页面。至少提供：
 
