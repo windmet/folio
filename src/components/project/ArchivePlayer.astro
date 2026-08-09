@@ -1,4 +1,6 @@
 ---
+import PlayerContextRail from './PlayerContextRail.astro';
+
 export interface Props {
   trackId: string;
   label: string;
@@ -14,6 +16,7 @@ const orderedTracks = [...tracks].sort((left, right) =>
 );
 ---
 
+<div class="archive-player-frame" data-player-frame>
 <section class="archive-player" data-player data-track-id={trackId} data-video-id={videoId || ''}>
   <div class="archive-player__head">
     <div>
@@ -67,3 +70,5 @@ const orderedTracks = [...tracks].sort((left, right) =>
   )}
   <p class="archive-player__note" data-player-note>使用 YouTube 原生 360°能力；移动设备的视角支持取决于 YouTube 与设备。</p>
 </section>
+<PlayerContextRail />
+</div>

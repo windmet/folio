@@ -4,7 +4,7 @@
 
 ## 当前检查点
 
-- Komatsu36：RC 0.10 已完成本地验收；RC 0.11 的 UX11-A / B 已提交为 `effa314`。下一阶段已提升为 UX11-P Static Payload Pass：先审计并移除 Source Event Index / Search 的初始重复 DOM，再进入 Player Context Rail（UX11-C）；Release Gate 仍未授权。
+- Komatsu36：RC 0.10 已完成本地验收；RC 0.11 的 UX11-A / B 已提交为 `effa314`，UX11-C Desktop Player Context Rail 已完成本地实现与浏览器验收。下一阶段仍优先处理 UX11-P Static Payload Pass，但它只治理 Source Event Index / Search 的初始重复 DOM，不阻塞或裁减已验收的 Rail 功能；Release Gate 仍未授权。
 - 审阅分支：[codex/komatsu36-project-archive](https://github.com/windmet/folio/tree/codex/komatsu36-project-archive)
 - 专题路由：`/projects/komatsu36/`
 - Visual QA 与编辑审计：`docs/qa/komatsu36-rc08/`

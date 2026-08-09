@@ -421,7 +421,10 @@ project-archive-shell {
 .timeline-event button:focus-visible,
 .storyline-card:focus-visible,
 .person-index-row:focus-visible,
-.featured-jump:focus-visible {
+.featured-jump:focus-visible,
+.player-context-rail button:focus-visible,
+.player-context-rail a:focus-visible,
+.player-context-rail__menu button:focus-visible {
   outline: 2px solid var(--archive-red);
   outline-offset: -2px;
 }
@@ -730,6 +733,11 @@ project-archive-shell {
   box-shadow: inset 3px 0 var(--archive-red);
 }
 
+.timeline-event.is-context-arrival {
+  background: rgba(156, 67, 60, 0.14);
+  box-shadow: inset 5px 0 var(--archive-red);
+}
+
 .event-time {
   align-self: stretch;
   padding: 24px 12px;
@@ -874,7 +882,17 @@ project-archive-shell {
   font-size: 10px;
 }
 
+.archive-player-frame {
+  --player-context-rail-width: 48px;
+  --player-context-rail-offset: 110px;
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--player-context-rail-width);
+  align-items: start;
+}
+
 .archive-player {
+  min-width: 0;
   overflow: hidden;
   border: 1px solid #cfc5b5;
   background: rgba(255,255,255,0.45);
@@ -1081,6 +1099,121 @@ project-archive-shell {
   color: #91897d;
   font-size: 9px;
   line-height: 1.65;
+}
+
+.player-context-rail {
+  position: relative;
+  z-index: 4;
+  display: grid;
+  width: var(--player-context-rail-width);
+  margin-top: var(--player-context-rail-offset);
+  margin-left: -1px;
+  border-top: 1px solid var(--archive-line);
+  border-right: 1px solid var(--archive-line);
+  background: #f7f4ed;
+}
+
+.player-context-rail[hidden] {
+  display: none;
+}
+
+.player-context-rail > button,
+.player-context-rail > a,
+.player-context-rail__thread-slot > button {
+  position: relative;
+  width: 48px;
+  min-height: 48px;
+  display: grid;
+  place-items: center;
+  padding: 4px 2px;
+  border: 0;
+  border-bottom: 1px solid var(--archive-line);
+  color: var(--archive-muted);
+  background: #f7f4ed;
+  font: 9px/1 ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: 0.03em;
+  text-align: center;
+  text-decoration: none;
+}
+
+.player-context-rail > button,
+.player-context-rail__thread-slot > button {
+  cursor: pointer;
+}
+
+.player-context-rail > button:hover,
+.player-context-rail > a:hover,
+.player-context-rail__thread-slot > button:hover,
+.player-context-rail .is-current-destination {
+  color: var(--archive-red);
+  background: rgba(156, 67, 60, 0.065);
+  box-shadow: inset 2px 0 var(--archive-red);
+}
+
+.player-context-rail button:disabled {
+  color: #bbb3a7;
+  background: #f3efe7;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.player-context-rail__thread-slot {
+  position: relative;
+}
+
+.player-context-rail__menu {
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  right: calc(100% - 1px);
+  width: min(270px, calc(100vw - 96px));
+  border: 1px solid var(--archive-line);
+  background: #f7f4ed;
+  box-shadow: 0 12px 28px rgba(55, 47, 37, 0.14);
+}
+
+.player-context-rail__menu[hidden] {
+  display: none;
+}
+
+.player-context-rail__menu header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--archive-line);
+}
+
+.player-context-rail__menu header strong {
+  color: var(--archive-muted);
+  font: 9px ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-weight: 400;
+}
+
+.player-context-rail__menu [data-player-rail-thread-list] {
+  display: grid;
+}
+
+.player-context-rail__menu button {
+  padding: 11px 12px;
+  border: 0;
+  border-bottom: 1px solid var(--archive-line);
+  color: var(--archive-ink);
+  background: transparent;
+  font-size: 11px;
+  line-height: 1.5;
+  text-align: left;
+  cursor: pointer;
+}
+
+.player-context-rail__menu button:last-child {
+  border-bottom: 0;
+}
+
+.player-context-rail__menu button:hover {
+  color: var(--archive-red);
+  background: rgba(156, 67, 60, 0.055);
 }
 
 .storyline-list,
@@ -1592,6 +1725,54 @@ project-archive-shell {
   text-align: center;
 }
 
+@media (min-width: 901px) {
+  project-archive-shell.has-active-event .archive-player__context-cta,
+  project-archive-shell.has-active-event .archive-player__context-threads,
+  project-archive-shell.has-active-event .archive-player__fallback {
+    display: none;
+  }
+
+  project-archive-shell.has-active-event .archive-player__context p {
+    margin-bottom: 0;
+  }
+}
+
+@media (min-width: 901px) and (max-width: 1440px) {
+  .project-workspace {
+    grid-template-columns: minmax(0, 1fr) minmax(350px, 372px);
+    gap: clamp(28px, 3vw, 42px);
+    padding: 48px clamp(28px, 3vw, 44px) 92px;
+  }
+
+  .archive-player-frame {
+    --player-context-rail-offset: 102px;
+  }
+
+  .archive-player__head {
+    min-height: 62px;
+    padding: 12px 14px;
+  }
+
+  .archive-player__sources {
+    gap: 9px;
+    padding: 8px 14px;
+  }
+
+  .archive-player__current,
+  .archive-player__note {
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+
+  .archive-player__context {
+    padding: 10px 14px 12px;
+  }
+
+  .archive-player__note {
+    display: none;
+  }
+}
+
 @media (max-width: 900px) {
   .project-workspace {
     grid-template-columns: 1fr;
@@ -1600,6 +1781,14 @@ project-archive-shell {
   .project-player-column {
     grid-row: 1;
     position: static;
+  }
+
+  .archive-player-frame {
+    display: block;
+  }
+
+  .player-context-rail {
+    display: none !important;
   }
 
   .overview-grid,
@@ -1971,5 +2160,17 @@ project-archive-shell {
 
   .source-post {
     margin-left: 75px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .timeline-event,
+  .player-context-rail {
+    transition: none;
+  }
+
+  .timeline-event.is-context-arrival {
+    background: rgba(156, 67, 60, 0.06);
+    box-shadow: inset 3px 0 var(--archive-red);
   }
 }

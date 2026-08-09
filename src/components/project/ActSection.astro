@@ -18,7 +18,7 @@ const formatTime = (milliseconds: number) => {
 ---
 
 <section class="act-section" data-act={act.id.split('/').at(-1)}>
-  <header class="act-header">
+  <header class="act-header" data-act-header tabindex="-1">
     <div class="act-number">
       <strong>ACT {String(act.data.order).padStart(2, '0')}</strong>
       {act.data.editorialStatus === 'draft' && <span>编辑草案</span>}

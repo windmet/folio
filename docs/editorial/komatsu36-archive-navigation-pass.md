@@ -1,8 +1,8 @@
 # Komatsu36 RC 0.11 档案导航与视觉层级实施规格
 
-> 状态：UX11-A / B COMMITTED / NEXT: UX11-P STATIC PAYLOAD PASS
+> 状态：UX11-A / B COMMITTED；UX11-C LOCAL ACCEPTANCE COMPLETE / NEXT: UX11-P STATIC PAYLOAD PASS
 > 阶段：RC 0.11 — Archive Navigation & Visual Hierarchy Pass
-> 基线：`codex/komatsu36-project-archive` @ `effa314`，RC 0.10 本地验收完成
+> 基线：`codex/komatsu36-project-archive`，RC 0.10 本地验收完成；UX11-A / B 基线提交 `effa314`
 > 范围冻结：不新增 Event、Person 字段、媒体 provider、Transcript、Evidence 或 X widget。
 
 ## 1. 阶段目标
@@ -43,7 +43,7 @@ RC 0.10 已经解决“档案里有没有足够且可信的信息”。RC 0.11 �
 - desktop 1440×900 与 mobile 390×844 已完成真实路由、overflow、focus、history 与 console 验收；
 - `npm run validate`、`npm exec -- tsc --noEmit` 与 `git diff --check` 已通过；publication 输出为 352,541 bytes，仍受 350 KiB（358,400 bytes）硬门禁约束。
 
-下一功能不是 Player Context Rail，而是先完成 UX11-P Static Payload Pass。当前 initial HTML 只余 5,859 bytes 门禁空间；先移除工具型重复 DOM，再继续增加 UI。完整合同见 `docs/editorial/komatsu36-static-payload-pass.md`。
+UX11-C 此后按完整产品合同实施，并没有为迁就 350 KiB 缩减功能。包含四枚标签、Act jump、Thread 0 / 1 / many、左向菜单、原链、到达反馈、compact desktop 与 mobile fallback 的完整构建为 353,913 bytes，仍低于 358,400-byte hard gate。UX11-P 继续作为下一项 P0 工程治理，但不再被描述为 Rail 的前置阻塞；它只移除工具型重复投影，不能以减重名义删除已验收交互。完整合同见 `docs/editorial/komatsu36-static-payload-pass.md`。
 
 ## 3. People 页：按分组投影，不复制详情
 
@@ -169,12 +169,12 @@ People → Person(hama-kento) → YT Event(02:42:07)
 
 Search 与 Source Event Index 两个工具型 section 毛体积合计约占 raw HTML 的 27.9%。它们优先退出初始 DOM；Timeline、Thread detail 与 Person detail 继续静态渲染。当前 350 KiB hard gate 暂不放宽，compressed size 只作为传输指标，不能替代 raw / DOM 指标。
 
-实施顺序固定为：
+后续 Payload 实施顺序固定为：
 
 1. UX11-P0：加入可重复的 raw / gzip / brotli 与 projection audit；
 2. UX11-P1：Source Event Index 改为复用 controller events 首次展开时生成；
 3. UX11-P2：Search 改为 Astro build-time static JSON + first-use lazy fetch；
-4. 重测并写回新基线后，才恢复 UX11-C Player Context Rail。
+4. 重测并写回新基线；UX11-C 已独立完成，不等待本 Pass，也不因本 Pass 回退。
 
 不得在本 Pass lazy-load Timeline、Thread 或 Person，也不得引入 React、SSR、数据库、Pagefind 或拆 View 路由。详细字段、fallback、validator、提交边界与浏览器验收见 `docs/editorial/komatsu36-static-payload-pass.md`。
 
@@ -201,7 +201,7 @@ Space Event 不显示伪 Act；显示 Track label 与 Thread 选项。无选中 
 
 移动 mini-player 已保留短 CTA，没有把桌面整段文案塞入 132px 媒体网格。Desktop Rail 实施后，移动端继续保留当前卡片内 CTA 与原来源文字链接。
 
-### 6.2 Payload Pass 后的产品合同：Attached Context Rail
+### 6.2 已实现的产品合同：Attached Context Rail
 
 Player Context Rail 是 `ArchivePlayer` 自身长出的四枚档案索引签，不是页面右缘的 Floating UI，也不是与 Player 分离的 sticky toolbar。它只回答“当前 Event 还能去哪里”，不承载长段说明文字。
 
@@ -335,14 +335,14 @@ Map 是章节索引，不是第二条事件时间线。它不显示 104 个 Even
 | UX11-P0 | Static payload audit：raw / gzip / brotli / projection breakdown | P0 | 可重复命令与固定指标；记录 `effa314` 基线；不改可见 UI |
 | UX11-P1 | Source Event Index 首次展开动态生成 | P0 | 初始 HTML 不含 124 个 buttons；三 Track 浏览、选择、focus 与 Space fallback 无回归 |
 | UX11-P2 | Search static JSON + first-use lazy fetch | P0 | 初始 HTML 不含 158 个隐藏结果；JSON count/leakage/sort 与 Event/Thread/Person 导航通过；raw 目标 `<=300 KiB` |
-| UX11-C | Desktop Player Context Rail；Act jump；compact desktop；Thread popover；Player 纵向减负 | P0 | 100% zoom 的 1366 / 1440 / 1920 桌面均无 overflow；四动作与键盘合同通过；390px fallback actions 无回归 |
+| UX11-C | Desktop Player Context Rail；Act jump；compact desktop；Thread popover；Player 纵向减负 | P0 | **本地完成**：1366 / 1440 / 1920 桌面均无 overflow；YT / Space 四动作、单线直达、多线菜单、Esc / focus 与原链通过；390px fallback actions 无回归 |
 | UX11-D | Desktop proportional Timeline Map；current Act | P0 | 8 Act 可直接定位；滚动时 current Act 稳定；不遮挡标题；与 Rail 的局部导航职责不重复 |
 | UX11-E | 选定并实现 Mobile compact navigator 组合 | P0（设计待选） | 与 Project Nav / mini-player 同时出现时仍保留足够阅读区域 |
 | UX11-F | Timeline playback playhead | P1 | unloaded / playing / paused / external 状态明确；不滚动、不增 history |
 | UX11-G | Quick / Detail density | P1（条件） | 只有 UX11-D/E 后复测仍过密才启动 |
 | UX11-H | 1366×768、1440×900、1920×1080、390×844、键盘、console、overflow、history QA | P0 | 固定序列全部通过并保存证据；80% zoom 不作为通过条件 |
 
-UX11-A + UX11-B 已在 `effa314` 完成本地验收。下一阶段按 UX11-P0 → P1 → P2 分三个小提交；完成并重测 initial HTML 后才进入 UX11-C。Timeline Map 仍顺延到 UX11-D，不能与 Rail 同批实施。
+UX11-A + UX11-B 已在 `effa314` 完成本地验收，UX11-C 已按完整合同完成本地实现与浏览器验收。下一阶段按 UX11-P0 → P1 → P2 分三个小提交，作为独立工程治理；不得借 payload 目标裁减 Rail。Timeline Map 仍顺延到 UX11-D，不能与 Rail 同批实施。
 
 ## 9. 约束与非目标
 
@@ -353,7 +353,7 @@ UX11-A + UX11-B 已在 `effa314` 完成本地验收。下一阶段按 UX11-P0 �
 - 不让 Thread 多关联事件默认选择“第一条”；
 - 不把 Rail 做成页面右缘 Floating UI、独立 sticky toolbar 或移动端第三条常驻导航；
 - 不新增 `?act=`、不扩大 controller JSON 来重复序列化 Act 文案；
-- 不为绕过 Payload Pass 把 350 KiB 直接改成 warning 或 450 KiB；迁移完成后再以实测决定双层门禁；
+- 不把 350 KiB 直接改成 warning 或 450 KiB；也不为了守门禁删除完整 Rail 功能。若后续超限，先移除已识别的工具型重复投影，再以实测决定双层门禁；
 - 不把 Search / Source Index 的工具型重复与 Timeline / Thread / Person 的 reader content 混为一类；
 - 不在 UX11-C 同批实现 Timeline Map、playhead 或 Quick / Detail；
 - 不把“页面无横向 overflow”误写成“所有内部组件都无需横滚”；

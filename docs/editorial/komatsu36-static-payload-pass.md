@@ -1,13 +1,13 @@
 # Komatsu36 RC 0.11 Static Payload Pass 实施规格
 
 > 状态：AUDIT COMPLETE / NEXT IMPLEMENTATION
-> 优先级：P0，阻塞 UX11-C Desktop Player Context Rail
-> 基线：`codex/komatsu36-project-archive` @ `effa314`
+> 优先级：P0，独立工程治理；不阻塞或裁减已完成的 UX11-C
+> 审计基线：`effa314`；UX11-C 完整实现后的 publication 基线：353,913 bytes
 > 范围：只治理初始 HTML 中的工具型重复投影；不拆 Timeline、Thread、Person，不改变内容 schema、URL schema、媒体能力或发布状态。
 
 ## 1. 结论
 
-当前 350 KiB 是 Folio 自己的 initial HTML 架构门禁，不是 Cloudflare Pages 的单文件平台上限。Cloudflare Pages 当前单个静态资源上限为 25 MiB，且 `text/html` 可按客户端与配置使用 Gzip、Brotli 或 Zstandard；这些事实只说明 352,541 bytes 不会因平台文件大小被拒绝，不代表浏览器的解压、HTML parse 和 DOM 创建成本可以忽略。
+当前 350 KiB 是 Folio 自己的 initial HTML 架构门禁，不是 Cloudflare Pages 的单文件平台上限。Cloudflare Pages 当前单个静态资源上限为 25 MiB，且 `text/html` 可按客户端与配置使用 Gzip、Brotli 或 Zstandard；这些事实只说明页面不会因平台单文件大小被拒绝，不代表浏览器的解压、HTML parse 和 DOM 创建成本可以忽略。UX11-C 完整实现后 raw HTML 为 353,913 bytes，仍低于 358,400-byte hard gate；因此 Payload Pass 的理由是减少重复投影和长期控制解析成本，不是用体积压力缩水产品功能。
 
 官方依据：
 
@@ -40,6 +40,8 @@ Player / Controller 必需状态
 | Controller JSON | 22,090 raw bytes | 运行时必需；不是当前第一减重目标 |
 | 近似 opening tags | 5,037 | 仅作趋势指标，不冒充完整 DOM node count |
 
+UX11-C 完整实现（四枚 Rail 标签、Act jump、Thread 0 / 1 / many、左向菜单、原链、到达反馈、compact desktop 与 mobile fallback）后的 publication raw 为 353,913 bytes，比 `effa314` 增加 1,372 bytes，门禁仍余 4,487 bytes。该值是当前功能基线，不是要求 UI 继续压缩的理由。
+
 两个工具型 section 毛体积合计 98,328 bytes，约占当前 raw HTML 的 27.9%。这证明优先级应提升，但实施后的净节省必须由新 audit 重测，不能直接把 98,328 bytes 当作承诺值。
 
 当前投影计数：
@@ -61,7 +63,7 @@ Player / Controller 必需状态
 | 审阅判断 | 本地核对 | 裁决 |
 |---|---|---|
 | 350 KiB 不是 Cloudflare 上限 | validator 本地写死 `350 * 1024`；Cloudflare 官方单 asset 为 25 MiB | **采纳**：文档明确区分 Folio target 与平台限制 |
-| 先做 Payload Audit，再继续 Rail | 当前只输出总 raw bytes，且只余 5,859 bytes | **采纳，P0** |
+| 先做 Payload Audit，再继续 Rail | 审阅时只输出总 raw bytes；随后完整 Rail 构建为 353,913 bytes，仍通过门禁 | **修正执行顺序**：Payload 仍为 P0，但不阻塞已完成 Rail，也不得裁减功能 |
 | Source Event Index 动态生成 | 124 个静态 button 需要的 `id/trackId/startMs/title` 已在 controller events 中存在 | **采纳，P0** |
 | Search 外置为 lazy static JSON | 158 个隐藏 button 占 Search section 73,355 raw bytes；Astro static endpoint 可在 build 生成 JSON | **采纳，P0** |
 | Thread / Person 同时 lazy-load | 涉及 Markdown render、dialog history、focus 与 Event 回链，且属于 reader content | **延后**：不进入本 Pass |
@@ -147,7 +149,7 @@ type ProjectSearchItem =
 - `validate:publication` 继续以 350 KiB（358,400 bytes）为 hard fail；
 - audit 额外报告 gzip / brotli，但不设置未经基线论证的 compressed hard cap；
 - 不把 Cloudflare 25 MiB 平台上限用作页面体验验收线；
-- 不为了普通 UI 增量临时放宽 budget。
+- 不为了普通 UI 增量临时放宽 budget；同样不得用 budget 作为删除已验收产品能力的理由，超限时先治理已识别的重复投影。
 
 UX11-P2 完成后：
 
@@ -160,7 +162,7 @@ UX11-P2 完成后：
 - 不引入 React、数据库、SSR、Worker、Pagefind 或客户端路由；
 - 不拆五个 View 为独立页面；
 - 不把 Timeline / Thread / Person 改为 JS-only 内容；
-- 不修改 Player Rail 的产品合同，只把它顺延到 Payload Pass 后；
+- 不修改、缩水或回退已完成的 Player Rail 产品合同；
 - 不新增 Transcript、Evidence、Event、媒体 provider 或 X widget；
 - 不重开 Release Gate。
 

@@ -1,0 +1,42 @@
+<nav class="player-context-rail" data-player-context-rail hidden aria-label="当前节点档案索引">
+  <button type="button" data-player-rail-node aria-label="在档案中查看当前节点">
+    <span>节点</span>
+  </button>
+  <button type="button" data-player-rail-act disabled aria-label="当前节点没有可用章节">
+    <span data-player-rail-act-label>ACT</span>
+  </button>
+  <div class="player-context-rail__thread-slot">
+    <button
+      type="button"
+      data-player-rail-thread
+      disabled
+      aria-label="当前节点没有事件线"
+      aria-expanded="false"
+      aria-controls="player-context-rail-thread-menu"
+    >
+      <span>线索</span>
+    </button>
+    <section
+      class="player-context-rail__menu"
+      id="player-context-rail-thread-menu"
+      data-player-rail-thread-menu
+      aria-label="相关事件线"
+      hidden
+    >
+      <header>
+        <span class="archive-kicker">RELATED STORYLINES</span>
+        <strong data-player-rail-thread-count></strong>
+      </header>
+      <div data-player-rail-thread-list></div>
+    </section>
+  </div>
+  <a
+    data-player-rail-source
+    href="#"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="打开当前节点原来源"
+  >
+    <span>原链</span>
+  </a>
+</nav>
