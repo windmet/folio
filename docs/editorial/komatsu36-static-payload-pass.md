@@ -1,6 +1,6 @@
 # Komatsu36 RC 0.11 Static Payload Pass 实施规格
 
-> 状态：P2 IMPLEMENTED；UX11-D 已完成 / NEXT: UX11-E decision
+> 状态：P2 IMPLEMENTED；UX11-D / UX11-E 已完成 / NEXT: UX11-H
 > 优先级：P0，独立工程治理；不阻塞或裁减已完成的 UX11-C
 > 审计基线：`effa314`；R5（UX11-D）完成后的当前 publication 基线：261,080 bytes
 > 范围：只治理初始 HTML 中的工具型重复投影；不拆 Timeline、Thread、Person，不改变内容 schema、URL schema、媒体能力或发布状态。

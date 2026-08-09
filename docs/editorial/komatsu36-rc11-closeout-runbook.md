@@ -2,9 +2,9 @@
 
 > 状态：ACTIVE
 > 当前分支：`codex/komatsu36-project-archive`
-> 当前远端检查点：R4 当前提交；R4 已在 review branch 完成 Search JSON、lazy UI、构建与浏览器验收
-> 当前批次：R5 — UX11-D Desktop proportional Timeline Navigator
-> 下一批：R6 — UX11-E Mobile navigator 决策门
+> 当前远端检查点：R5 当前提交；R5 已在 review branch 完成 Desktop Navigator、构建与浏览器验收
+> 当前批次：R6 — UX11-E Mobile navigator 决策门
+> 下一批：R8/R9 — UX11-F/G 条件裁决与 UX11-H Final QA
 > Release Gate：CLOSED；本 Runbook 只把 review branch 做到可审阅、可合并状态，不授权 merge 或 deploy。
 
 ## 1. 用途与权威顺序
@@ -27,7 +27,7 @@
 
 | 项目 | 权威证据 | 结论 |
 |---|---|---|
-| Review branch | R4 已推送；R5 当前批次将在本轮完成提交 | UX11-C、R1、R2、R3 与 R4 已是 **REVIEW BRANCH COMPLETE**；R5 完成后再更新远端检查点 |
+| Review branch | R5 已推送；R6 为文档裁决批次 | UX11-C、R1、R2、R3、R4 与 R5 均为 **REVIEW BRANCH COMPLETE**；R6 不新增运行时代码 |
 | UX11-A / B | `effa314` | 已提交并保留既有回归合同 |
 | UX11-C | `PlayerContextRail.astro`、`ArchivePlayer.astro` import、`1162ba2` | 四标签、Act jump、Thread 0/1/N、原链、desktop compact 与 mobile fallback 已在远端分支 |
 | UX11-C1 | `.archive-player` 与 `.archive-player__context` 已改为实色 paper | 已实现并通过桌面 / 390px 样本验收 |
@@ -87,7 +87,11 @@ R4 初始 HTML 不再包含 `data-search-item` 或 `data-search-text`；`/projec
 
 R5 在 Timeline heading 后、Act 正文前加入 8 段 Desktop Navigator。各段使用 Act `endMs - startMs` 的真实比例，第一行显示 current `ACT xx / 08`、标题和 YT 本地时间范围；滚动采样更新 current Act，点击只定位并聚焦 Act header，不写入 `?act=`。Navigator 在实际 Project Nav 高度下 sticky（桌面约 69px），只存在左内容列，不跨 Player column。1366×768、1440×900、1920×1080 均通过 8 段、target header 不被遮挡与页面 overflow `0`；390×844 按 UX11-E 边界隐藏，不叠加第三条 sticky bar。R5 raw `261,080`、Gzip `46,163`、Brotli `29,420`，余量 `97,320`。
 
-### 2.7 新审阅裁决
+### 2.7 R6 Mobile navigator 决策快照
+
+在 390×844 build preview 对未选中 Event、选中 Event 与 mini-player 状态复核后，三案均不如保留现有结构：未选中状态已有 Project Nav + 完整 Timeline 顺序；选中状态 mini-player sticky top 约 59px、高约 214.4px，底部约 273.4px，首屏再叠加 Act bar 会进一步压缩可见阅读区。最终裁决为 **`NO ADDITIONAL MOBILE NAV FOR V1`**，R7 标记 **NOT REQUIRED**，不创建空代码提交；保留既有 Project Nav、mini-player、Act heading 与 Event context jump。
+
+### 2.8 新审阅裁决
 
 | 审阅项 | 本地核对 | 裁决 |
 |---|---|---|
@@ -95,7 +99,7 @@ R5 在 Timeline heading 后、Act 正文前加入 8 段 Desktop Navigator。各�
 | 小松缺少中心人物层级 | Lead 出现为 `00 HOST / BIRTHDAY`，`komatsu-shohei` 在 Cast / Production 保留，Birthday 普通 grid 不再出现 | **R1 已完成**：lead / Cast / Production 三处均回链同一 Person |
 | 小松应从所有后续分组移除 | Cast 与 Production 是角色、制作 credit 真值 | **不采纳**：只从普通 Birthday Live participant grid 排除；Cast 与 Production 保留 |
 | 以 Event 数自动选主角 | 出现次数不等于编辑中心 | **禁止**：使用 Komatsu36 presentation fixture 中唯一的 `leadPersonId = 'komatsu-shohei'`，不改 Person schema |
-| 立即开发 Timeline Navigator | 当前 hard-gate 余量 97,320 bytes，R5 已完成 | **转入 R6**：先比较移动端三案，不把桌面 Map 缩小后叠加到手机 |
+| 立即开发 Timeline Navigator | 当前 hard-gate 余量 97,320 bytes，R5 已完成 | **R6 已裁决**：`NO ADDITIONAL MOBILE NAV FOR V1`，不把桌面 Map 缩小后叠加到手机 |
 | Navigator 第一版加入 playhead | 阅读位置与媒体位置可能不同 | **不采纳到 UX11-D**：第一版只有 current Act + Act jump；playhead 保持 UX11-F 条件项 |
 
 ## 3. 全局批次规则
@@ -307,7 +311,8 @@ UX11-H 通过后：
 | R3 UX11-P1 | COMPLETE | R3 当前提交；初始 buttons 0、Controller 124；1440 / 1366 / 390 preview 验收 | 进入 P2 |
 | R4 UX11-P2 | COMPLETE | R4 当前提交；Search JSON 158 项、初始 Search DOM 0；Event / Thread / Person preview 验收 | 进入 UX11-D |
 | R5 UX11-D | COMPLETE | R5 QA README；8 段比例、current Act、Act jump、1366 / 1440 / 1920 preview | 进入 R6 移动合同裁决 |
-| R6/R7 UX11-E | PENDING DECISION | — | D 稳定后比较三案 |
+| R6 UX11-E | COMPLETE — NO ADDITIONAL MOBILE NAV FOR V1 | R6 QA README；390×844 未选中 / 选中 Event + mini-player 三案裁决 | R7 NOT REQUIRED；进入 F/G 条件裁决与 H |
+| R7 UX11-E implementation | NOT REQUIRED | R6 已明确不新增 mobile navigator | 不创建空实现 |
 | R8 UX11-F | DEFERRED BY DEFAULT | — | 仅明确提级后启动 |
 | R8 UX11-G | CONDITIONAL | — | D/E 后以证据裁决 |
 | R9 UX11-H | PENDING | — | 所有 required 批次完成后执行 |

@@ -1,6 +1,6 @@
 # Komatsu36 RC 0.11 档案导航与视觉层级实施规格
 
-> 状态：UX11-A / B COMMITTED；UX11-C + UX11-C1 + UX11-A1 + UX11-P0 + UX11-P1 + UX11-P2 + UX11-D REVIEW BRANCH READY / NEXT: UX11-E decision
+> 状态：UX11-A / B COMMITTED；UX11-C + UX11-C1 + UX11-A1 + UX11-P0 + UX11-P1 + UX11-P2 + UX11-D + UX11-E REVIEW BRANCH READY / NEXT: UX11-H
 > 阶段：RC 0.11 — Archive Navigation & Visual Hierarchy Pass
 > 基线：`codex/komatsu36-project-archive` 当前 R5 批次；RC 0.10 本地验收完成；完整收尾顺序见 `komatsu36-rc11-closeout-runbook.md`
 > 范围冻结：不新增 Event、Person 字段、媒体 provider、Transcript、Evidence 或 X widget。
@@ -314,7 +314,7 @@ Map 是章节索引，不是第二条事件时间线。它不显示 104 个 Even
 
 1. 以 UX11-A / B 已取得的 390px 实际截图为回归基线；
 2. UX11-D 的 Desktop Map 稳定后，比较“非 sticky 章节下拉”“合并进 mini-player”“Player 未激活时 sticky、激活后收起”三种方案；
-3. 选择后记录唯一合同，再实施。
+3. **R6 裁决：`NO ADDITIONAL MOBILE NAV FOR V1`**。保留 Project Nav、既有 mini-player、Act heading 与 Event context jump；R7 不需要代码。
 
 ### 7.3 Playback playhead（UX11-F，P1）
 
@@ -339,12 +339,12 @@ Map 是章节索引，不是第二条事件时间线。它不显示 104 个 Even
 | UX11-P1 | Source Event Index 首次展开动态生成 | P0 | **R3 已完成**：初始 HTML 不含 Source Event buttons；三 Track 首次生成、缓存、选择、focus 与 history 验收通过；当前 fixture 无 0-Thread Space 样本 |
 | UX11-P2 | Search static JSON + first-use lazy fetch | P0 | **R4 已完成**：`search.json` 158 项；初始 Search DOM 0；schema / leakage / stable order 与 Event / Thread / Person 导航通过；raw 257,893 |
 | UX11-D | Desktop proportional Timeline Map；current Act | P0 | **R5 已完成**：8 Act 按真实时长比例、滚动 current Act、Act header jump；1366 / 1440 / 1920 无 overflow，不遮挡标题，与 Rail 局部导航职责分离 |
-| UX11-E | 选定并实现 Mobile compact navigator 组合 | P0（设计待选） | 与 Project Nav / mini-player 同时出现时仍保留足够阅读区域 |
+| UX11-E | 选定并实现 Mobile compact navigator 组合 | P0（设计待选） | **R6 已裁决：`NO ADDITIONAL MOBILE NAV FOR V1`；R7 NOT REQUIRED** |
 | UX11-F | Timeline playback playhead | P1 | unloaded / playing / paused / external 状态明确；不滚动、不增 history |
 | UX11-G | Quick / Detail density | P1（条件） | 只有 UX11-D/E 后复测仍过密才启动 |
 | UX11-H | 1366×768、1440×900、1920×1080、390×844、键盘、console、overflow、history QA | P0 | 固定序列全部通过并保存证据；80% zoom 不作为通过条件 |
 
-UX11-A + UX11-B 已在 `effa314` 完成，UX11-C 已在 review branch 的 `1162ba2` 按完整合同完成；UX11-C1 + UX11-A1、UX11-P0、UX11-P1、UX11-P2 与 UX11-D 已完成并通过对应验收。下一步进入 UX11-E 移动合同裁决；移动端当前不叠加第三条 sticky bar，需比较三案后只批准一个合同。UX11-F 默认延后，UX11-G 保持条件项。完整进入／退出条件与逐批 push 规则见 `komatsu36-rc11-closeout-runbook.md`。
+UX11-A + UX11-B 已在 `effa314` 完成，UX11-C 已在 review branch 的 `1162ba2` 按完整合同完成；UX11-C1 + UX11-A1、UX11-P0、UX11-P1、UX11-P2、UX11-D 与 UX11-E 已完成并通过对应验收。R6 已裁决移动端 `NO ADDITIONAL MOBILE NAV FOR V1`，R7 不需要代码；下一步进入 UX11-H，UX11-F 默认延后，UX11-G 保持条件项。完整进入／退出条件与逐批 push 规则见 `komatsu36-rc11-closeout-runbook.md`。
 
 ## 9. 约束与非目标
 
