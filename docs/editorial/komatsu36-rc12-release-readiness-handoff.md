@@ -7,6 +7,8 @@
 
 本 handoff 记录 RC12-A/B/C/D 与 RC12-F 本地复核结果。它是 review branch 的交接草案，不把本地 preview、静态门禁或短时交互提升为生产接受。
 
+人工停点核对表见 `docs/qa/komatsu36-rc12/PRODUCT-CHECKPOINT.md`。
+
 ## 1. 已实现批次
 
 | 批次 | 状态 | 证据 |
