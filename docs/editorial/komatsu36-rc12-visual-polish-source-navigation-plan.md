@@ -1,10 +1,10 @@
 # Komatsu36 RC 0.12 Visual Polish & Source Navigation Plan
 
-> 状态：RC12-D IMPLEMENTED — 人工停点 1/2 待用户确认
+> 状态：RC12-F LOCAL QA COMPLETE — 人工停点 1/2 待用户确认
 > 基线分支：`codex/komatsu36-project-archive`
 > 基线提交：`db866b3`
 > 前置状态：RC 0.11 `REVIEW BRANCH ACCEPTANCE COMPLETE`
-> 当前批次：人工停点 1/2（A/B/C/D 已完成；E/F 待裁决）
+> 当前批次：RC12-F handoff（A/B/C/D 与本地 F QA 已完成；E 与产品接受待裁决）
 > Release Gate：CLOSED；本文不授权 merge、deploy 或修改公开状态
 
 RC 0.11 已完成 Player Context Rail、Lead Person、lazy Source Event Index、lazy Search JSON、Desktop Timeline Navigator、移动端导航裁决与 R9 QA。本阶段不重写 RC 0.11 的 acceptance 文档，也不把已经验收的功能删减成 payload 优化；它只处理成熟页面在真实桌面阅读中暴露出的空间分配、文本可读性、People 投影与来源识别问题。
@@ -399,6 +399,10 @@ git diff --check
 - 用户在人工停点确认产品取舍：`PRODUCT-ACCEPTED`；
 - 生产环境、真实媒体或长时行为未执行：明确写 `NOT EXECUTED`；
 - 只有 required 批次、RC12-F 与交接均完成，才可标记 `RC 0.12 REVIEW BRANCH ACCEPTANCE COMPLETE`。
+
+### 10.4 当前 F 交接
+
+RC12-F 的本地矩阵与交接草案已完成，见 `docs/editorial/komatsu36-rc12-release-readiness-handoff.md`。该文件当前仍是 `LOCAL QA COMPLETE`，因为人工停点 1/2 尚未产生 `PRODUCT-ACCEPTED`，RC12-E 也只保留默认延后建议。
 
 ## 11. 明确非目标
 

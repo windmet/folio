@@ -1,17 +1,17 @@
 # 小松昌平 36 岁生日会 Project Archive 开发设计
 
-> 状态：RC 0.12 RC12-D IMPLEMENTED — 人工停点 1/2 待用户确认（2026-08-09；RC 0.11 REVIEW BRANCH ACCEPTANCE COMPLETE）
+> 状态：RC 0.12 RC12-F LOCAL QA COMPLETE — 人工停点 1/2 待用户确认（2026-08-09；RC 0.11 REVIEW BRANCH ACCEPTANCE COMPLETE）
 > 目标：把一场多平台、多人物、长时、存在跨轨回收的活动做成可浏览、可追溯、可逐步发布的专题档案，而不是把工作稿直接塞进普通博客正文。
 > 当前源档根：`E:\AI_Subtitle_Studio\02_Projects\小松昌平生日会`（只通过 CLI 参数或 `KOMATSU36_SOURCE_ROOT` 提供）
 > 当前权威文档集：源档根下的 `复核md/` 带版本后缀文件；根目录同名无后缀文件是旧工作稿，不得自动选用。
 > 当前站点：Astro 7 静态站点，TinaCMS 只管理普通 MDX 文章。
 
 > **CURRENT CHECKPOINT**
-> RC 0.10 已完成本地验收，RC 0.11 已完成 R9 与 review-branch handoff；其 acceptance 文档保持历史合同，不因新一轮视觉问题回写。真实 1366×768 People 页面随后发现组件级越界与 Player 权重问题，现独立进入 RC 0.12 Visual Polish & Source Navigation Pass。RC12-A（Adaptive Player）、RC12-B（Target / Context 按需展开）、RC12-C（People / Cast layout normalization）与 RC12-D（Media platform pictograms）已完成本地实现、构建门禁与浏览器矩阵抽查；当前保留人工停点 1 的视觉裁决，并进入人工停点 2 记录 D / E 优先级。当前实施权威为 `docs/editorial/komatsu36-rc12-visual-polish-source-navigation-plan.md`；RC 0.11 历史流程、产品合同、Payload 合同与发布交接仍分别见 `komatsu36-rc11-closeout-runbook.md`、`komatsu36-archive-navigation-pass.md`、`komatsu36-static-payload-pass.md`、`komatsu36-rc11-release-readiness-handoff.md`。Release Gate 继续 CLOSED。
+> RC 0.10 已完成本地验收，RC 0.11 已完成 R9 与 review-branch handoff；其 acceptance 文档保持历史合同，不因新一轮视觉问题回写。真实 1366×768 People 页面随后发现组件级越界与 Player 权重问题，现独立进入 RC 0.12 Visual Polish & Source Navigation Pass。RC12-A（Adaptive Player）、RC12-B（Target / Context 按需展开）、RC12-C（People / Cast layout normalization）与 RC12-D（Media platform pictograms）已完成，本地 RC12-F 复核与 handoff 草案也已完成；当前仍保留人工停点 1/2 的产品裁决。当前实施权威为 `docs/editorial/komatsu36-rc12-visual-polish-source-navigation-plan.md`，交接草案为 `docs/editorial/komatsu36-rc12-release-readiness-handoff.md`；RC 0.11 历史流程、产品合同、Payload 合同与发布交接仍分别见 `komatsu36-rc11-closeout-runbook.md`、`komatsu36-archive-navigation-pass.md`、`komatsu36-static-payload-pass.md`、`komatsu36-rc11-release-readiness-handoff.md`。Release Gate 继续 CLOSED。
 
 ## 当前实施状态（2026-08-09）
 
-> **RC 0.12 状态覆盖**：RC 0.11 required 功能批次已全部完成，R6 为 `NO ADDITIONAL MOBILE NAV FOR V1`，R8 的 F/G 为 `DEFERRED BY DEFAULT` / `NOT NEEDED FOR V1`。RC 0.12 现作为独立视觉收尾阶段推进中：RC12-A/B/C/D 已完成并通过本地 SOURCE/BROWSER 证据，人工停点 1 的视觉取舍与人工停点 2 的 D/E 优先级仍待用户确认；RC12-E 默认延后 v1.1，随后进入 RC12-F。下方较早的 RC 0.11 历史段落只保留为演进记录。Release Gate 仍独立关闭。
+> **RC 0.12 状态覆盖**：RC 0.11 required 功能批次已全部完成，R6 为 `NO ADDITIONAL MOBILE NAV FOR V1`，R8 的 F/G 为 `DEFERRED BY DEFAULT` / `NOT NEEDED FOR V1`。RC 0.12 的 A/B/C/D 与本地 F QA 已完成并通过 SOURCE/BROWSER 证据，人工停点 1 的视觉取舍与人工停点 2 的 D/E 优先级仍待用户确认；RC12-E 默认延后 v1.1。独立交接草案见 `docs/editorial/komatsu36-rc12-release-readiness-handoff.md`。下方较早的 RC 0.11 历史段落只保留为演进记录。Release Gate 仍独立关闭。
 
 - Phase 0A 已落地：`data/source-sets/komatsu36-20260808-r1.json` 精确锁定 6 个 `复核md/` 带后缀输入，并由 `validate:sources` 校验路径、SHA-256、物理行数与 16 条 ARC；
 - Phase 1 垂直切片已落地：真实 `/projects/komatsu36/` 路由、集中状态控制器、YouTube 延迟加载与 pending seek、动态时间 fallback、Timeline、Thread、Person 和 URL 恢复均已实现；
@@ -877,7 +877,7 @@ package.json
 13. **RC 0.10-D（已完成）**：以仲村烧肉 X Post 完成首个 `social` related source 与 Folio SourcePost，插入指定 Event 后；不扩 Event、不加载 widget；
 14. **RC 0.10-E（本地完成）**：已重跑完整验证和桌面／390px 编辑体验 QA；当前 `project.status` 仍为 `published`，首页又只筛选 `published` Project，因此合并到部署分支等价于正式发布，不得把 merge 当作无外部影响的代码整理。Release Gate 仍待明确的合并／部署授权。
 15. **RC 0.11（review branch acceptance complete）**：UX11-A / B 已提交为 `effa314`；UX11-C Desktop Player Context Rail、R1 opaque Player / `00 HOST / BIRTHDAY`、R2 UX11-P0 audit、R3 UX11-P1 Source Index、R4 UX11-P2 Search JSON、R5 UX11-D proportional 8-Act Timeline Navigator、R6 Mobile 决策与 R9 UX11-H Final QA 已完成。R8 Playhead 保持默认延后，Quick / Detail 已裁决 `NOT NEEDED FOR V1`；该阶段在收口时只等待 Release Gate。完整逐批流程见 `docs/editorial/komatsu36-rc11-closeout-runbook.md`。
-16. **RC 0.12（A/B/C/D implemented）**：Adaptive Player、Target / Context 按需展开、People / Cast layout normalization 与 Media platform pictograms 已完成；A/B/C 证据见 `docs/qa/komatsu36-rc12/abc/README.md`，D 证据见 `docs/qa/komatsu36-rc12/d/README.md`。当前等待人工停点 1/2；Source-scoped Timeline 默认延后 v1.1。不得回写 RC 0.11 acceptance 合同，完整逐批流程见 `docs/editorial/komatsu36-rc12-visual-polish-source-navigation-plan.md`。
+16. **RC 0.12（A/B/C/D + local F QA complete）**：Adaptive Player、Target / Context 按需展开、People / Cast layout normalization、Media platform pictograms 与本地最终 QA 已完成；A/B/C 证据见 `docs/qa/komatsu36-rc12/abc/README.md`，D 证据见 `docs/qa/komatsu36-rc12/d/README.md`，交接草案见 `docs/editorial/komatsu36-rc12-release-readiness-handoff.md`。当前等待人工停点 1/2；Source-scoped Timeline 默认延后 v1.1。不得回写 RC 0.11 acceptance 合同，完整逐批流程见 `docs/editorial/komatsu36-rc12-visual-polish-source-navigation-plan.md`。
 
 通用 validator 与 komatsu36 fixture 的分层不再列入本次 Release Blocker：通用层最终只校验 schema、关系、时间、隐私和确定性排序；`8 Acts`、manifest ARC 数与小松专属 publication assertions 留在项目 fixture，但该工作延后到第二个 Project 接入前完成。
 
