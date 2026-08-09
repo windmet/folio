@@ -1,6 +1,6 @@
 # Komatsu36 RC 0.11 Static Payload Pass 实施规格
 
-> 状态：P0 AUDIT IMPLEMENTED / NEXT IMPLEMENTATION (P1)
+> 状态：P1 IMPLEMENTED / NEXT IMPLEMENTATION (P2)
 > 优先级：P0，独立工程治理；不阻塞或裁减已完成的 UX11-C
 > 审计基线：`effa314`；R1 完成后的当前 publication 基线：354,388 bytes
 > 范围：只治理初始 HTML 中的工具型重复投影；不拆 Timeline、Thread、Person，不改变内容 schema、URL schema、媒体能力或发布状态。
@@ -112,6 +112,10 @@ npm run audit:payload -- komatsu36
 - 不增加 endpoint 或网络请求。
 
 提交边界：只动态化 Source Event Index；Search 保持原状。浏览器验收 YT / SP1 / SP2 展开、Event 选择、Space 0-Thread fallback、Back/Forward 与键盘。
+
+#### P1 退出证据（2026-08-09）
+
+R3 构建后的初始 HTML 为 raw `330,024`、Gzip level 9 `63,584`、Brotli quality 11 `33,685`，raw gate 余量 `28,376`。`data-source-event` 初始 button 为 `0`，保留 3 个 list host；Controller JSON 仍为 `124` 条 Event records。首次展开后由 `ensureSourceEventIndex()` 按 `startMs → id` 生成并缓存：YT `104`、SP1 `8`、SP2 `12`。`validate:publication` 已改为核对 shell、controller Event 的 `id / trackId / startMs / title` 完整度与无初始 button，而不是要求静态按钮。当前公开 Space fixture 没有 0-Thread Event；代码保留空数组 fallback，未伪造内容数据。
 
 ### UX11-P2 — Lazy static Search JSON
 

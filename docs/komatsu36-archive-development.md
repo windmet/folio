@@ -7,7 +7,7 @@
 > 当前站点：Astro 7 静态站点，TinaCMS 只管理普通 MDX 文章。
 
 > **CURRENT CHECKPOINT**
-> RC 0.10 A0 / A / B / C / D / E 已完成本地验收；RC 0.11 UX11-A / B 已提交为 `effa314`，UX11-C Desktop Player Context Rail 已在 review branch `1162ba2` 完成；R1 opaque Player + Lead Person 与 R2 UX11-P0 payload audit 已完成。下一批是 UX11-P1，随后严格执行 P2，再做 UX11-D、UX11-E 决策与 UX11-H。当前流程权威为 `docs/editorial/komatsu36-rc11-closeout-runbook.md`，产品合同见 `docs/editorial/komatsu36-archive-navigation-pass.md`，Payload 合同见 `docs/editorial/komatsu36-static-payload-pass.md`。本文后续 Phase / 历史 Next Step 保留为设计演进记录；冲突时以上述三份 RC 0.11 文档为准。
+> RC 0.10 A0 / A / B / C / D / E 已完成本地验收；RC 0.11 UX11-A / B 已提交为 `effa314`，UX11-C Desktop Player Context Rail 已在 review branch `1162ba2` 完成；R1 opaque Player + Lead Person、R2 UX11-P0 payload audit 与 R3 UX11-P1 Source Index 已完成。下一批是 UX11-P2，随后再做 UX11-D、UX11-E 决策与 UX11-H。当前流程权威为 `docs/editorial/komatsu36-rc11-closeout-runbook.md`，产品合同见 `docs/editorial/komatsu36-archive-navigation-pass.md`，Payload 合同见 `docs/editorial/komatsu36-static-payload-pass.md`。本文后续 Phase / 历史 Next Step 保留为设计演进记录；冲突时以上述三份 RC 0.11 文档为准。
 
 ## 当前实施状态（2026-08-09）
 
@@ -25,7 +25,7 @@
 - 依赖安全边界已收口：Astro `7.2.0`、MDX `7.0.5`、PostCSS `8.5.26` 等保留在构建依赖面；Tina CLI / runtime 只用于编辑器命令，已移入 `devDependencies`，`public/admin/` 继续忽略。2026-08-09 `npm audit --omit=dev` 为 0 vulnerabilities；完整 audit 的剩余项属于 Tina/GraphQL 等 dev-only 工具链，不执行无审查的 `audit fix --force`；
 - 首页已增加独立“专题档案”书架，只消费 `status: published` 的 Project，并显示由 collection 实时派生的 Event／Thread／Track 数量；专题不混入四类普通文章筛选；
 - 当前实现已完成 RC Media Pass：Hero 下方有常驻三来源栏，播放器有 Source Switcher，SP1/SP2 是 `video + external`，支持 `?track=`、Event 优先、Source Event Index、canonical Space CTA 与 provenance 链接；固定截图、本地 preview QA 与 RC 0.9 Structural Editorial Audit 已完成。该审计证明结构、关系、顺序与限定没有漏项，不等于读者文案已经终审；
-- RC 0.10 Reader & Entity Editorial Pass 已完成；52/52 decisions、full reader pass 与 publication leakage gate 已通过。RC 0.11 UX11-C、R1 与 R2 UX11-P0 已在 review branch 完成，当前 required 待办是 P1/P2、D、E 决策与 H；F 默认延后 v1.1，G 仍是证据驱动的条件项。RC 0.10 历史合同见 `docs/editorial/komatsu36-editorial-experience-pass.md`；自动候选写入 `docs/editorial/komatsu36-reader-copy-candidates.generated.md`，人工真值只写入 `docs/editorial/komatsu36-reader-copy-decisions.yml`，生成器不得覆盖后者。八张既有截图保存于 `docs/qa/komatsu36-rc08/`，结构性审计见 `docs/qa/komatsu36-rc08/EDITORIAL-AUDIT.md`；源档中的词级、商品、speaker、画面和账号身份 TODO 仍保持原边界，不得在后续编辑中猜测补齐。项目特例 validator 拆分延后到第二个 Project 接入前；Transcript 与 Evidence 是明确延后项，不阻塞 v1。不得因 16 条 Thread 已出现而误报为完整 Folio 愿景已经完成；
+- RC 0.10 Reader & Entity Editorial Pass 已完成；52/52 decisions、full reader pass 与 publication leakage gate 已通过。RC 0.11 UX11-C、R1、R2 UX11-P0 与 R3 UX11-P1 已在 review branch 完成，当前 required 待办是 P2、D、E 决策与 H；F 默认延后 v1.1，G 仍是证据驱动的条件项。RC 0.10 历史合同见 `docs/editorial/komatsu36-editorial-experience-pass.md`；自动候选写入 `docs/editorial/komatsu36-reader-copy-candidates.generated.md`，人工真值只写入 `docs/editorial/komatsu36-reader-copy-decisions.yml`，生成器不得覆盖后者。八张既有截图保存于 `docs/qa/komatsu36-rc08/`，结构性审计见 `docs/qa/komatsu36-rc08/EDITORIAL-AUDIT.md`；源档中的词级、商品、speaker、画面和账号身份 TODO 仍保持原边界，不得在后续编辑中猜测补齐。项目特例 validator 拆分延后到第二个 Project 接入前；Transcript 与 Evidence 是明确延后项，不阻塞 v1。不得因 16 条 Thread 已出现而误报为完整 Folio 愿景已经完成；
 - X Space inline replay 调查对本 RC 正式关闭：`STATUS: CLOSED FOR RC`，`RESULT: unavailable through verified public integration`，`FALLBACK: first-class external source`。除非 X 的公开产品能力发生变化并可对具体 URL 复测，否则不再调查 GraphQL 私有字段、内部 HLS、临时 token、Periscope 私有 endpoint 或 `media_key` 变换。
 
 上述数字是当前仓库快照，新增内容后必须以验证器和实际文件计数更新，不作为永久常量。
@@ -872,7 +872,7 @@ package.json
 12. **RC 0.10-C（已完成）**：按“全量裁决 → 五批修改 → 网站连续通读”处理 Reader Copy；停止渲染内部 qualification，完成 52/52 decisions 与 full reader pass；
 13. **RC 0.10-D（已完成）**：以仲村烧肉 X Post 完成首个 `social` related source 与 Folio SourcePost，插入指定 Event 后；不扩 Event、不加载 widget；
 14. **RC 0.10-E（本地完成）**：已重跑完整验证和桌面／390px 编辑体验 QA；当前 `project.status` 仍为 `published`，首页又只筛选 `published` Project，因此合并到部署分支等价于正式发布，不得把 merge 当作无外部影响的代码整理。Release Gate 仍待明确的合并／部署授权。
-15. **RC 0.11（实施中）**：UX11-A / B 已提交为 `effa314`；UX11-C Desktop Player Context Rail、R1 opaque Player / `00 HOST / BIRTHDAY` 与 R2 UX11-P0 audit 已完成。下一批按 UX11-P1/P2 动态化 124 个 Source Event Index buttons、把 158 项 Search 索引迁移到 Astro build-time static JSON；记录新基线后才进入左内容列的 proportional 8-Act Timeline Navigator。Mobile 先裁决唯一合同；Playhead 默认延后，Quick / Detail 保持条件项；最终执行 UX11-H。完整逐批流程见 `docs/editorial/komatsu36-rc11-closeout-runbook.md`。
+15. **RC 0.11（实施中）**：UX11-A / B 已提交为 `effa314`；UX11-C Desktop Player Context Rail、R1 opaque Player / `00 HOST / BIRTHDAY`、R2 UX11-P0 audit 与 R3 UX11-P1 Source Index 已完成。下一批按 UX11-P2 把 158 项 Search 索引迁移到 Astro build-time static JSON；记录新基线后才进入左内容列的 proportional 8-Act Timeline Navigator。Mobile 先裁决唯一合同；Playhead 默认延后，Quick / Detail 保持条件项；最终执行 UX11-H。完整逐批流程见 `docs/editorial/komatsu36-rc11-closeout-runbook.md`。
 
 通用 validator 与 komatsu36 fixture 的分层不再列入本次 Release Blocker：通用层最终只校验 schema、关系、时间、隐私和确定性排序；`8 Acts`、manifest ARC 数与小松专属 publication assertions 留在项目 fixture，但该工作延后到第二个 Project 接入前完成。
 
@@ -886,7 +886,7 @@ Media Pass、RC 0.9 Structural Editorial Audit 与 RC 0.10 Reader & Entity Edito
 | dialog focus containment | **已完成并复测**；背景不可 Tab、焦点循环、Esc 与 restore 均通过 |
 | 构建与生产依赖安全 | **本地与 CI 均有门禁**；`npm ci` 后执行 `npm audit --omit=dev`（当前为 0 vulnerabilities）与 `npm exec -- tsc --noEmit`；`npm run validate` 通过，完整 audit 的 dev-only 告警不作为生产站点漏洞接受 |
 | Cast / People 信息架构 | **RC 0.11 UX11-A 本地完成**：People 使用 group-specific compact projection；Cast 390px 使用六行布局，页面与组件均无横滚 |
-| Initial HTML payload | **RC 0.11 P0 已完成**：固定 audit 输出 R1 后 354,388 raw bytes、Gzip 69,334、Brotli 35,690，仍通过 350 KiB hard gate；Search section 73,355 bytes、Source Event Index 24,973 bytes；下一步独立移除工具型重复 DOM，不裁减 Rail |
+| Initial HTML payload | **RC 0.11 P1 已完成**：固定 audit 输出 R3 后 330,024 raw bytes、Gzip 63,584、Brotli 33,685，仍通过 350 KiB hard gate；初始 Source Event buttons 为 0、Controller records 为 124；下一步独立移除 Search 工具型重复 DOM，不裁减 Rail |
 | Reader-facing copy | **RC 0.10 已完成**：52/52 decisions、full reader pass 与 publication leakage gate 已通过 |
 | External context 首样本 | **RC 0.10 已完成**：仲村烧肉 Post 已作为 related source 插入 Thread，不成为 Event 或静态 Post 镜像 |
 

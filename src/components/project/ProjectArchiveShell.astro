@@ -380,6 +380,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     lockedBodyPaddingRight = '';
     searchOpen = false;
     sourceEventsOpen = false;
+    sourceEventListsBuilt = new Set<string>();
     contextFocusObserver: ResizeObserver | null = null;
     contextArrivalTimer: number | null = null;
 
@@ -417,8 +418,10 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
           this.showSourceEventIndex(trackId);
         });
       });
-      this.querySelectorAll<HTMLElement>('[data-source-event]').forEach((button) => {
-        button.addEventListener('click', () => this.selectEvent(button.dataset.sourceEvent || '', true, true));
+      this.querySelector<HTMLElement>('[data-source-event-index]')?.addEventListener('click', (event) => {
+        const target = event.target instanceof Element ? event.target : null;
+        const button = target?.closest<HTMLElement>('[data-source-event]');
+        if (button) this.selectEvent(button.dataset.sourceEvent || '', true, true);
       });
       this.querySelectorAll<HTMLElement>('[data-thread-event-id]').forEach((button) => {
         button.addEventListener('click', () => this.selectEvent(button.dataset.threadEventId || '', true, true));
@@ -687,6 +690,8 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     }
 
     focusSourceEvent(eventId: string) {
+      const event = this.data.events[eventId];
+      if (event) this.ensureSourceEventIndex(event.trackId);
       this.querySelector<HTMLElement>(`[data-source-event="${CSS.escape(eventId)}"]`)?.focus({ preventScroll: true });
     }
 
@@ -845,13 +850,41 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
 
     showSourceEventIndex(trackId: string) {
       if (!this.data.tracks[trackId]) return;
+      if (!this.ensureSourceEventIndex(trackId)) return;
       this.sourceEventsOpen = true;
       this.updateSourceEventIndex(trackId);
+    }
+
+    ensureSourceEventIndex(trackId: string) {
+      const list = this.querySelector<HTMLElement>(`[data-source-event-list="${CSS.escape(trackId)}"]`);
+      if (!list) return null;
+      if (this.sourceEventListsBuilt.has(trackId)) return list;
+
+      const events = Object.values(this.data.events)
+        .filter((event) => event.trackId === trackId)
+        .sort((left, right) => left.startMs - right.startMs || left.id.localeCompare(right.id, 'en'));
+      const fragment = document.createDocumentFragment();
+      for (const event of events) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.dataset.sourceEvent = event.id;
+        button.dataset.eventCard = event.id;
+        const time = document.createElement('time');
+        time.textContent = this.formatArchiveTime(event.startMs);
+        const title = document.createElement('span');
+        title.textContent = event.title;
+        button.append(time, title);
+        fragment.append(button);
+      }
+      list.replaceChildren(fragment);
+      this.sourceEventListsBuilt.add(trackId);
+      return list;
     }
 
     updateSourceEventIndex(trackId: string) {
       const index = this.querySelector<HTMLElement>('[data-source-event-index]');
       if (!index) return;
+      if (this.sourceEventsOpen) this.ensureSourceEventIndex(trackId);
       index.hidden = !this.sourceEventsOpen;
       this.querySelectorAll<HTMLElement>('[data-source-event-list]').forEach((list) => {
         list.hidden = list.dataset.sourceEventList !== trackId || !this.sourceEventsOpen;

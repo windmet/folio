@@ -11,12 +11,18 @@ const listFiles = async (folder, extension) => (await readdir(path.join(projectR
   .filter((name) => name.endsWith(extension));
 const readJson = async (filePath) => JSON.parse(await readFile(filePath, 'utf8'));
 
+const trackFiles = await listFiles('tracks', '.json');
 const eventFiles = await listFiles('events', '.json');
-const publicEvents = (await Promise.all(eventFiles.map((name) => readJson(path.join(projectRoot, 'events', name)))))
-  .filter((event) => event.publicationStatus !== 'withheld');
+const eventEntries = await Promise.all(eventFiles.map(async (name) => ({
+  id: name.replace(/\.json$/, ''),
+  data: await readJson(path.join(projectRoot, 'events', name)),
+})));
+const publicEventEntries = eventEntries.filter(({ data }) => data.publicationStatus !== 'withheld');
+const publicEvents = publicEventEntries.map(({ data }) => data);
 const threadCount = (await listFiles('threads', '.md')).length;
 const peopleCount = (await listFiles('people', '.json')).length;
 const expectedSearchItems = publicEvents.length + threadCount + peopleCount;
+const expectedTrackIds = new Set(trackFiles.map((name) => name.replace(/\.json$/, '')));
 
 let html;
 let homeHtml;
@@ -49,6 +55,54 @@ if (outputBytes > maxOutputBytes) {
 const actualSearchItems = (html.match(/\bdata-search-item(?:[=>\s])/g) || []).length;
 if (actualSearchItems !== expectedSearchItems) {
   errors.push(`search index contains ${actualSearchItems} items; expected ${expectedSearchItems} public Event/Thread/Person items`);
+}
+
+const actualSourceEventButtons = (html.match(/data-source-event="/g) || []).length;
+if (actualSourceEventButtons !== 0) {
+  errors.push(`source event index contains ${actualSourceEventButtons} initial buttons; expected 0 for lazy generation`);
+}
+
+const actualSourceBrowseButtons = (html.match(/data-source-browse="/g) || []).length;
+if (actualSourceBrowseButtons !== expectedTrackIds.size) {
+  errors.push(`source browse shell contains ${actualSourceBrowseButtons} buttons; expected ${expectedTrackIds.size} tracks`);
+}
+
+const actualSourceLists = [...html.matchAll(/data-source-event-list="([^"]+)"/g)].map((match) => match[1]);
+if (actualSourceLists.length !== expectedTrackIds.size || actualSourceLists.some((trackId) => !expectedTrackIds.has(trackId))) {
+  errors.push(`source event list hosts are ${actualSourceLists.join(', ')}; expected one host for each public track`);
+}
+
+const controllerMatch = html.match(
+  /<script type="application\/json" data-archive-controller-data[^>]*>([\s\S]*?)<\/script>/,
+);
+if (!controllerMatch) {
+  errors.push('archive controller JSON is missing');
+} else {
+  try {
+    const controller = JSON.parse(controllerMatch[1]);
+    const controllerEvents = controller.events || {};
+    const expectedEventIds = new Set(publicEventEntries.map(({ id }) => id));
+    const actualEventIds = Object.keys(controllerEvents);
+    if (actualEventIds.length !== expectedEventIds.size) {
+      errors.push(`controller contains ${actualEventIds.length} events; expected ${expectedEventIds.size} public events`);
+    }
+    for (const { id, data } of publicEventEntries) {
+      const event = controllerEvents[id];
+      if (!event) {
+        errors.push(`controller is missing public Event ${id}`);
+        continue;
+      }
+      const expectedTrackId = data.track.split('/').at(-1) || data.track;
+      if (event.trackId !== expectedTrackId || typeof event.startMs !== 'number' || typeof event.title !== 'string') {
+        errors.push(`controller Event ${id} is missing stable trackId/startMs/title fields`);
+      }
+    }
+    for (const id of actualEventIds) {
+      if (!expectedEventIds.has(id)) errors.push(`controller exposes unexpected or withheld Event ${id}`);
+    }
+  } catch (error) {
+    errors.push(`archive controller JSON is invalid: ${error.message}`);
+  }
 }
 
 const forbiddenPublicationMarkers = [
@@ -98,5 +152,5 @@ if (errors.length) {
 }
 
 console.log(
-  `Publication validation passed (${outputBytes} bytes, ${actualSearchItems} public search items, no private source markers).`,
+  `Publication validation passed (${outputBytes} bytes, ${actualSearchItems} public search items, ${actualSourceEventButtons} initial source event buttons, controller coverage verified, no private source markers).`,
 );
