@@ -47,9 +47,11 @@ for (const projectDir of projectDirs) {
   const eventIds = new Set(events.map(({ id }) => id));
   const threadIds = new Set(threads.map(({ id }) => id));
   const peopleIds = new Set(people.map(({ id }) => id));
+  const sourceIds = new Set(sources.map(({ id }) => id));
   const trackById = new Map(tracks.map((entry) => [entry.id, entry.data]));
   const actById = new Map(acts.map((entry) => [entry.id, entry.data]));
   const eventById = new Map(events.map((entry) => [entry.id, entry.data]));
+  const sourceById = new Map(sources.map((entry) => [entry.id, entry.data]));
   const referencedEventIds = new Set();
 
   if (threads.length !== manifest.files.arcs.arcCount) {
@@ -117,6 +119,9 @@ for (const projectDir of projectDirs) {
     if (data.publicationStatus === 'qualified' && !data.qualification) {
       errors.push(`${id}: qualified event requires qualification text`);
     }
+    if (data.readerNote && data.publicationStatus !== 'qualified') {
+      errors.push(`${id}: readerNote is only allowed on qualified events`);
+    }
     const serialized = JSON.stringify(data);
     if (/[A-Z]:\\|author_id/.test(serialized)) errors.push(`${id}: contains private source data`);
   }
@@ -142,6 +147,17 @@ for (const projectDir of projectDirs) {
         }
       }
     }
+    for (const relatedSource of data.relatedSources || []) {
+      exists(sourceIds, relatedSource.source, id);
+      exists(eventIds, relatedSource.afterEvent, id);
+      if (relatedSource.afterEvent && !data.nodes.some((node) => node.event === relatedSource.afterEvent)) {
+        errors.push(`${id}: related source anchor must be a node in this thread`);
+      }
+      const source = sourceById.get(relatedSource.source);
+      if (source && source.kind !== 'social') {
+        errors.push(`${id}: relatedSources currently require a social source`);
+      }
+    }
   }
 
   for (const { id, data } of events) {
@@ -155,9 +171,20 @@ for (const projectDir of projectDirs) {
     }
   }
 
-  for (const { id } of people) {
+  for (const { id, data } of people) {
     const used = events.some(({ data }) => data.people.includes(id));
     if (!used) errors.push(`${id}: person is not referenced by any event`);
+    for (const participation of data.participation || []) {
+      if (participation.kind === 'ore-shiri-cast' && (!participation.character || !participation.sessions?.length)) {
+        errors.push(`${id}: ore-shiri-cast participation requires character and at least one session`);
+      }
+      if (participation.kind === 'space-account' && participation.character) {
+        errors.push(`${id}: space-account participation must not declare a character`);
+      }
+    }
+    for (const link of data.links || []) {
+      if (link.kind === 'social' && !link.platform) errors.push(`${id}: social link requires platform`);
+    }
   }
 
   for (const collection of [tracks, acts, events, threads, people, sources]) {

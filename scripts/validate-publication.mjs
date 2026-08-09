@@ -58,10 +58,17 @@ const forbiddenPublicationMarkers = [
   ['private source root with forward slashes', /E:\/AI_Subtitle_Studio/i],
   ['process archive filename', /小松昌平生日会流程-所有对话存档/i],
   ['subtitle filename', /(?:^|[\s"'=\/\\])[^\s"'=<>]*\.(?:srt|vtt)(?:[\s"'<>]|$)/i],
+  ['internal publication status label', /(?:已复核|有限定)/],
 ];
 
 for (const [label, pattern] of forbiddenPublicationMarkers) {
   if (pattern.test(html)) errors.push(`published HTML contains ${label}`);
+}
+
+for (const event of publicEvents) {
+  if (event.qualification && html.includes(event.qualification)) {
+    errors.push(`published HTML contains internal qualification for event ${event.title}`);
+  }
 }
 
 for (const required of [

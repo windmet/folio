@@ -23,6 +23,12 @@ const searchText = (...values: unknown[]) => values
   .filter(Boolean)
   .join(' ')
   .toLocaleLowerCase('ja-JP');
+const participationText = (person: any) => (person.data.participation || []).map((item: any) => [
+  item.kind,
+  item.character,
+  item.credit,
+  ...(item.sessions || []),
+]);
 ---
 
 <section class="project-search" role="search" aria-label="搜索专题档案">
@@ -64,7 +70,7 @@ const searchText = (...values: unknown[]) => values
               event.data.title,
               event.data.summary,
               event.data.tags,
-              event.data.qualification,
+              event.data.readerNote,
               relatedPeople.map((person: any) => [person.data.displayName, person.data.aliases]),
             )}
             hidden
@@ -97,8 +103,9 @@ const searchText = (...values: unknown[]) => values
             person.data.displayName,
             person.data.reading,
             person.data.aliases,
-            person.data.role,
-            person.data.note,
+            person.data.projectContext,
+            participationText(person),
+            (person.data.links || []).map((link: any) => [link.label, link.platform]),
           )}
           hidden
         >

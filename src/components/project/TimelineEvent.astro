@@ -25,12 +25,9 @@ const formatTime = (totalSeconds: number) => {
   <div class="event-body">
     <div class="event-heading">
       <h3>{event.data.title}</h3>
-      <span class:list={['event-status', `event-status--${event.data.publicationStatus}`]}>
-        {event.data.publicationStatus === 'qualified' ? '有限定' : '已复核'}
-      </span>
     </div>
     <p>{event.data.summary}</p>
-    {event.data.qualification && <p class="event-qualification">注：{event.data.qualification}</p>}
+    {event.data.readerNote && <p class="event-reader-note">{event.data.readerNote}</p>}
     <ConcurrentLanes lanes={event.data.laneAnnotations} />
     <div class="event-meta">
       <div class="event-people" aria-label="相关人物">

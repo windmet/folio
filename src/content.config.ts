@@ -115,6 +115,7 @@ const projectEvents = defineCollection({
     tags: z.array(z.string()),
     publicationStatus: z.enum(['verified', 'qualified', 'withheld']),
     qualification: z.string().optional(),
+    readerNote: z.string().optional(),
     narrativeMode: z.enum(['threaded', 'timeline-only']).default('threaded'),
     laneAnnotations: z.array(z.object({
       lane: z.string(),
@@ -140,6 +141,11 @@ const projectThreads = defineCollection({
       transition: z.string().optional(),
     })).min(2),
     featured: z.boolean().default(false),
+    relatedSources: z.array(z.object({
+      source: reference('projectSources'),
+      afterEvent: reference('projectEvents'),
+      context: z.string(),
+    })).default([]),
   }),
 });
 
@@ -154,8 +160,30 @@ const projectPeople = defineCollection({
     displayName: z.string(),
     reading: z.string().optional(),
     aliases: z.array(z.string()),
-    role: z.string(),
-    note: z.string(),
+    role: z.string().optional(),
+    note: z.string().optional(),
+    projectContext: z.string().optional(),
+    participation: z.array(z.object({
+      kind: z.enum([
+        'ore-shiri-cast',
+        'production',
+        'ensemble',
+        'birthday-live',
+        'space-guest',
+        'remote-call',
+        'space-account',
+        'submitted-comment',
+      ]),
+      character: z.string().optional(),
+      sessions: z.array(z.enum(['day', 'night'])).optional(),
+      credit: z.string().optional(),
+    })).default([]),
+    links: z.array(z.object({
+      kind: z.enum(['social', 'agency', 'official']),
+      platform: z.enum(['x', 'instagram', 'youtube']).optional(),
+      label: z.string(),
+      url: z.string().url(),
+    })).default([]),
   }),
 });
 
@@ -167,7 +195,13 @@ const projectSources = defineCollection({
   }),
   schema: z.object({
     project: reference('projects'),
-    kind: z.enum(['media', 'transcript', 'chat', 'editorial']),
+    kind: z.enum(['media', 'transcript', 'chat', 'editorial', 'social']),
+    platform: z.enum(['x', 'web']).optional(),
+    publishedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}(?:T[^\s]+)?$/).optional(),
+    author: z.object({
+      name: z.string(),
+      handle: z.string().optional(),
+    }).optional(),
     label: z.string(),
     publicUrl: z.string().url().optional(),
     note: z.string(),
