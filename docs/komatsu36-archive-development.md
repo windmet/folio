@@ -875,7 +875,7 @@ Media Pass、交互小修、Visual QA 与发布层 Final Editorial Pass 已通�
 | YouTube `origin` | `playerVars` 已增加 `origin: window.location.origin` | **代码已修正**：最终 preview / production 抽查仍列入 Release Gate |
 | modal focus containment | Thread / Person 打开后背景 children 设置 `inert`；Tab / Shift+Tab 由 controller 循环；Esc 后返回触发器 | **已完成并复测**：Thread / Person 均通过焦点留在 dialog 内与 restore |
 | validator 通用性 | `validate-projects.mjs` 遍历所有项目，却硬编码 `acts.length !== 8` 并将 Thread 数绑定 manifest `arcCount`；`validate-publication.mjs` 固定 `projectId = 'komatsu36'` | **第二个 Project 前必须拆分**，不是当前 v1 blocker；拆分时保留小松 fixture 的严格度 |
-| merge 即发布 | `project.json` 为 `status: published`，首页 `index.astro` 只筛选 `published` | **Release Gate**：合并前必须确认内容公开、截图 QA 和部署意图 |
+| merge 即发布 | `project.json` 为 `status: published`，首页 `index.astro` 只筛选 `published`；截至 2026-08-09 `origin/main` 尚未包含 Komatsu36，GitHub deployments API 为 0，候选 `megazine-blog.pages.dev` 在公共 DNS 返回 NXDOMAIN | **Release Gate**：合并前必须确认内容公开、截图 QA、Cloudflare Pages provision/deploy 和部署意图 |
 | 播放器说明随来源变化 | 原 SP2 Event 下错误显示“使用 YouTube 原生 360°能力”；现按 provider 更新 external panel、note、CTA 与 target/no-target | **已完成并复测**：SP2 显示 `EXTERNAL SOURCE`，不再显示 YouTube 360°说明 |
 | X 原生回放指导 | X 官方一般性文档支持 Recorded Spaces 网站嵌入；2026-08-09 实测 SP1 `1dKrPEwrAoQJX` 与 SP2 `1OxwblPnkDDJB`：status oEmbed 只得到 `twitter-tweet` + `t.co`，canonical Space oEmbed 均为 404，X Publish Broadcast 均显示 `Not found` | **本项目 Probe 未通过**：RC 不实现 X widget；baseline 固定为 external + target time + canonical Space 链接，并保留 status 来源帖 |
 | canonical Post 最后探测 | 两条标准 `x.com/shohei_k0414/status/{id}` 均可由 oEmbed 生成普通 Post；Publish 识别为 Embedded Video / Embedded Post 候选，但没有得到可验证的 Space replay player | **不改变结论**：可嵌入来源帖是可选装饰，不是播放能力；RC 不加载 X widget，只保留轻量直链 |

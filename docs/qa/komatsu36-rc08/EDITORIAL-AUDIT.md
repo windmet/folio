@@ -42,6 +42,12 @@
 
 ## Release Gate
 
+截至 2026-08-09 的外部状态核对：
+
+- `origin/main` 为 `09cb5cc`，尚未包含 `src/content/projects/komatsu36/project.json`；当前专题只存在于审阅分支。
+- GitHub repository deployments API 返回 `0` 条部署记录。
+- `megazine-blog.pages.dev` 在本机 DNS、Cloudflare 公共 DNS `1.1.1.1` 和 Google 公共 DNS `8.8.8.8` 均返回 NXDOMAIN；因此候选 production 域名当前没有可验证的公开站点。
+
 本审计完成后，剩余阻塞项只有：
 
 1. 确认 `project.status: published` 是否代表现在就允许合并到部署分支；
