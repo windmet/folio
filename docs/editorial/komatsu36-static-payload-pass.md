@@ -1,8 +1,8 @@
 # Komatsu36 RC 0.11 Static Payload Pass 实施规格
 
-> 状态：P1 IMPLEMENTED / NEXT IMPLEMENTATION (P2)
+> 状态：P2 IMPLEMENTED / NEXT IMPLEMENTATION (UX11-D)
 > 优先级：P0，独立工程治理；不阻塞或裁减已完成的 UX11-C
-> 审计基线：`effa314`；R1 完成后的当前 publication 基线：354,388 bytes
+> 审计基线：`effa314`；R4（P2）完成后的当前 publication 基线：257,893 bytes
 > 范围：只治理初始 HTML 中的工具型重复投影；不拆 Timeline、Thread、Person，不改变内容 schema、URL schema、媒体能力或发布状态。
 
 ## 1. 结论
@@ -74,7 +74,7 @@ UX11-C 完整实现叠加 R1（opaque Player + Lead Person hierarchy）后的 pu
 
 ## 4. 实施顺序与提交边界
 
-本规格的三批按 P0 → P1 → P2 执行。P0 已完成且独立提交；下一批为 P1。跨批进入条件、提交 / push 规则、UX11-D～H 与 Release Gate 收尾见 `komatsu36-rc11-closeout-runbook.md`。
+本规格的三批按 P0 → P1 → P2 执行，现已全部完成并各自独立提交。下一批转入 UX11-D；跨批进入条件、提交 / push 规则、UX11-D～H 与 Release Gate 收尾见 `komatsu36-rc11-closeout-runbook.md`。
 
 ### UX11-P0 — Payload audit instrumentation
 
@@ -151,6 +151,10 @@ type ProjectSearchItem =
 - `validate:publication` 改为读取 `search.json`，验证 158 项、稳定顺序、公开字段和 leakage；不能再用“HTML 中有 158 个 `data-search-item`”作为成功条件。
 
 提交边界：Search endpoint / builder / lazy UI / validator / browser QA 独立提交，不与 Player Rail 混做。
+
+#### P2 退出证据（2026-08-09）
+
+R4 构建后的初始 HTML 为 raw `257,893`、Gzip level 9 `45,501`、Brotli quality 11 `28,998`，raw gate 余量 `100,507`，同时达到 raw `<=300 KiB` 工程目标。初始 HTML 的 `data-search-item` / `data-search-text` 均为 `0`；`/projects/komatsu36/search.json` 为 `63,433` bytes，包含 Event `124`、Thread `16`、Person `18` 共 `158` 项。Builder 保留稳定顺序与公开字段边界，前端第一次 focus 或 input 只 fetch 一次并缓存，结果按需生成；失败显示可读 alert，不阻塞核心档案。`validate:publication` 已读取 JSON 并核对 count、顺序、最小字段与 leakage。
 
 ## 5. Budget 合同
 

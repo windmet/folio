@@ -493,6 +493,17 @@ project-archive-shell {
   cursor: pointer;
 }
 
+.project-search__status,
+.project-search__error {
+  margin: 6px 2px 0;
+  color: var(--archive-muted);
+  font: 9px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+
+.project-search__error {
+  color: var(--archive-red);
+}
+
 .project-search__results {
   position: absolute;
   inset: calc(100% + 6px) 0 auto;

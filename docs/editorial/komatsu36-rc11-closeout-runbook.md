@@ -2,8 +2,8 @@
 
 > 状态：ACTIVE
 > 当前分支：`codex/komatsu36-project-archive`
-> 当前远端检查点：R3 当前提交；R3 已在 review branch 完成动态 Source Index 实现、构建与浏览器验收
-> 下一批：R4 — UX11-P2 Lazy static Search JSON
+> 当前远端检查点：R4 当前提交；R4 已在 review branch 完成 Search JSON、lazy UI、构建与浏览器验收
+> 下一批：R5 — UX11-D Desktop proportional Timeline Navigator
 > Release Gate：CLOSED；本 Runbook 只把 review branch 做到可审阅、可合并状态，不授权 merge 或 deploy。
 
 ## 1. 用途与权威顺序
@@ -26,29 +26,29 @@
 
 | 项目 | 权威证据 | 结论 |
 |---|---|---|
-| Review branch | 本地与 `origin/codex/komatsu36-project-archive` 均为 R3 当前提交 | UX11-C、R1、R2 与 R3 不是仅本地状态，应称 **REVIEW BRANCH COMPLETE** |
+| Review branch | 本地与 `origin/codex/komatsu36-project-archive` 均为 R4 当前提交 | UX11-C、R1、R2、R3 与 R4 不是仅本地状态，应称 **REVIEW BRANCH COMPLETE** |
 | UX11-A / B | `effa314` | 已提交并保留既有回归合同 |
 | UX11-C | `PlayerContextRail.astro`、`ArchivePlayer.astro` import、`1162ba2` | 四标签、Act jump、Thread 0/1/N、原链、desktop compact 与 mobile fallback 已在远端分支 |
 | UX11-C1 | `.archive-player` 与 `.archive-player__context` 已改为实色 paper | 已实现并通过桌面 / 390px 样本验收 |
 | UX11-A1 | `LeadPersonCard.astro`、`leadPersonId = 'komatsu-shohei'`、Birthday filter | 已实现；lead / Cast / Production 回链同一 Person，Birthday 普通 grid 排除 lead |
 | UX11-P0 | `scripts/audit-payload.mjs`、`package.json` `audit:payload`、R2 QA README | 已实现；固定输出 raw / gzip / brotli、投影计数与 bytes；dist 缺失 / 过期会明确失败 |
 | UX11-P1 | `MediaSourceNavigator.astro` 空 list host；Controller `ensureSourceEventIndex()`；publication controller coverage | 已实现；初始 Source Event buttons 为 0，首次展开按 `startMs → id` 生成并按页面生命周期缓存 |
-| UX11-P2 | `ProjectSearch.astro` 仍输出所有 `data-search-item` | 158 个隐藏 Search items 仍在初始 HTML，未开始 |
+| UX11-P2 | `search.json` endpoint、Search shell、`ensureSearchIndex()`、P2 publication validator | 已实现；初始 Search items / `data-search-text` 为 0，静态 JSON 158 项，首次 focus/input 单次加载并按需生成结果 |
 | UX11-D | Timeline heading 后直接渲染 `orderedActs.map(...)` | 没有 Timeline Navigator，未开始 |
 
 ### 2.2 当前构建基线
 
-在 R3 当前提交重新执行 `npm run validate` 与 `npm run audit:payload -- komatsu36` 后，构建、publication gate 与 payload audit 通过：
+在 R4 当前提交重新执行 `npm run validate` 与 `npm run audit:payload -- komatsu36` 后，构建、publication gate 与 payload audit 通过：
 
 | 指标 | 当前值 |
 |---|---:|
-| Raw HTML | 330,024 bytes |
-| Gzip level 9 | 63,584 bytes |
-| Brotli quality 11 | 33,685 bytes |
-| 350 KiB hard gate 余量 | 28,376 bytes |
-| Search items | 158 |
+| Raw HTML | 257,893 bytes |
+| Gzip level 9 | 45,501 bytes |
+| Brotli quality 11 | 28,998 bytes |
+| 350 KiB hard gate 余量 | 100,507 bytes |
+| Initial Search items / Search JSON items | 0 / 158 |
 | Source Event buttons | 0（Controller Event records 124） |
-| Search section | 73,355 raw bytes |
+| Search shell / Search JSON | 1,232 / 63,433 raw bytes |
 | Source Event Index shell | 609 raw bytes |
 | Controller script | 22,090 raw bytes |
 | Thread details / Person details | 16 / 18 |
@@ -74,9 +74,15 @@ R3 初始 HTML 不再包含 `data-source-event` button；仍保留 3 个 `data-s
 
 当前公开 fixture 的 20 个 Space Event 均至少关联 1 条 Thread（19 个为 1 条、1 个为 2 条）；0-Thread 分支仍由 `navigateToEventContext()` 的空数组路径与 `focusSourceEvent()` 的 ensure-before-focus 实现覆盖，但本批不伪造一个公开 Event 作为浏览器样本。
 
+### 2.5 P2 Search JSON 快照
+
+R4 初始 HTML 不再包含 `data-search-item` 或 `data-search-text`；`/projects/komatsu36/search.json` 输出 158 项（Event 124、Thread 16、Person 18），文件 63,433 bytes。Builder 保持原有 Event → Thread → Person 分组与稳定排序，JSON 只包含渲染与导航所需字段；`validate:publication` 同时核对 schemaVersion、公开成员、稳定顺序、字段最小集、withheld / qualification / 私有路径 leakage。
+
+构建后 preview 验收：第一次 focus 加载公开索引，首次输入按需生成结果；Event、Thread、Person 三类结果分别可导航到目标 URL / panel，Back 可恢复前一状态；重复输入复用页面内存缓存，390px 页面 overflow 为 0。加载失败状态使用 `role="alert"`，不会阻塞 Timeline、Thread、Person 核心阅读。
+
 这些数字证明 Payload Pass 的优先级，但不构成删减 Rail、Timeline、Thread、Person 或人物层级的授权。实际净减量只能在 P1 / P2 后重测，不能把两个 section 的毛体积直接当作承诺值。
 
-### 2.5 新审阅裁决
+### 2.6 新审阅裁决
 
 | 审阅项 | 本地核对 | 裁决 |
 |---|---|---|
@@ -84,7 +90,7 @@ R3 初始 HTML 不再包含 `data-source-event` button；仍保留 3 个 `data-s
 | 小松缺少中心人物层级 | Lead 出现为 `00 HOST / BIRTHDAY`，`komatsu-shohei` 在 Cast / Production 保留，Birthday 普通 grid 不再出现 | **R1 已完成**：lead / Cast / Production 三处均回链同一 Person |
 | 小松应从所有后续分组移除 | Cast 与 Production 是角色、制作 credit 真值 | **不采纳**：只从普通 Birthday Live participant grid 排除；Cast 与 Production 保留 |
 | 以 Event 数自动选主角 | 出现次数不等于编辑中心 | **禁止**：使用 Komatsu36 presentation fixture 中唯一的 `leadPersonId = 'komatsu-shohei'`，不改 Person schema |
-| 立即开发 Timeline Navigator | 当前 hard-gate 余量 28,376 bytes，P2 尚未实施 | **顺延**：先做 P2，再进入 UX11-D |
+| 立即开发 Timeline Navigator | 当前 hard-gate 余量 100,507 bytes，P2 已完成 | **进入**：按 R5 实施 UX11-D，继续重跑 audit / budget |
 | Navigator 第一版加入 playhead | 阅读位置与媒体位置可能不同 | **不采纳到 UX11-D**：第一版只有 current Act + Act jump；playhead 保持 UX11-F 条件项 |
 
 ## 3. 全局批次规则
@@ -294,7 +300,7 @@ UX11-H 通过后：
 | R1 UX11-C1 / A1 | COMPLETE | R1 当前提交；本次浏览器验收；raw 354,388 | 已进入 P0 |
 | R2 UX11-P0 | COMPLETE | R2 当前提交；audit JSON、构建与 stale/missing-dist 失败路径 | 进入 P1 |
 | R3 UX11-P1 | COMPLETE | R3 当前提交；初始 buttons 0、Controller 124；1440 / 1366 / 390 preview 验收 | 进入 P2 |
-| R4 UX11-P2 | PENDING | — | P1 通过后开始 |
+| R4 UX11-P2 | COMPLETE | R4 当前提交；Search JSON 158 项、初始 Search DOM 0；Event / Thread / Person preview 验收 | 进入 UX11-D |
 | R5 UX11-D | PENDING | — | P2 新基线后开始 |
 | R6/R7 UX11-E | PENDING DECISION | — | D 稳定后比较三案 |
 | R8 UX11-F | DEFERRED BY DEFAULT | — | 仅明确提级后启动 |

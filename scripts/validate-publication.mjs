@@ -1,9 +1,11 @@
 import { readFile, readdir, stat } from 'node:fs/promises';
 import path from 'node:path';
+import YAML from 'yaml';
 
 const projectId = 'komatsu36';
 const projectRoot = path.resolve('src/content/projects', projectId);
 const outputFile = path.resolve('dist/projects', projectId, 'index.html');
+const searchOutputFile = path.resolve('dist/projects', projectId, 'search.json');
 const homeOutputFile = path.resolve('dist/index.html');
 const errors = [];
 
@@ -19,8 +21,19 @@ const eventEntries = await Promise.all(eventFiles.map(async (name) => ({
 })));
 const publicEventEntries = eventEntries.filter(({ data }) => data.publicationStatus !== 'withheld');
 const publicEvents = publicEventEntries.map(({ data }) => data);
-const threadCount = (await listFiles('threads', '.md')).length;
-const peopleCount = (await listFiles('people', '.json')).length;
+const threadFiles = await listFiles('threads', '.md');
+const threadEntries = await Promise.all(threadFiles.map(async (name) => {
+  const source = await readFile(path.join(projectRoot, 'threads', name), 'utf8');
+  const frontmatter = source.match(/^---\r?\n([\s\S]*?)\r?\n---/)?.[1] || '';
+  return { id: name.replace(/\.md$/, ''), data: YAML.parse(frontmatter) };
+}));
+const peopleFiles = await listFiles('people', '.json');
+const peopleEntries = await Promise.all(peopleFiles.map(async (name) => ({
+  id: name.replace(/\.json$/, ''),
+  data: await readJson(path.join(projectRoot, 'people', name)),
+})));
+const threadCount = threadEntries.length;
+const peopleCount = peopleEntries.length;
 const expectedSearchItems = publicEvents.length + threadCount + peopleCount;
 const expectedTrackIds = new Set(trackFiles.map((name) => name.replace(/\.json$/, '')));
 
@@ -53,8 +66,62 @@ if (outputBytes > maxOutputBytes) {
 }
 
 const actualSearchItems = (html.match(/\bdata-search-item(?:[=>\s])/g) || []).length;
-if (actualSearchItems !== expectedSearchItems) {
-  errors.push(`search index contains ${actualSearchItems} items; expected ${expectedSearchItems} public Event/Thread/Person items`);
+if (actualSearchItems !== 0) {
+  errors.push(`initial HTML contains ${actualSearchItems} search items; expected 0 for lazy generation`);
+}
+
+let searchPayload;
+try {
+  searchPayload = JSON.parse(await readFile(searchOutputFile, 'utf8'));
+} catch (error) {
+  errors.push(`search JSON is missing or invalid: ${searchOutputFile} (${error.message})`);
+}
+
+const expectedSearchOrder = [
+  ...publicEventEntries
+    .slice()
+    .sort((left, right) => String(left.data.track).localeCompare(String(right.data.track), 'en')
+      || left.data.startMs - right.data.startMs
+      || left.id.localeCompare(right.id, 'en'))
+    .map(({ id }) => ({ kind: 'event', id })),
+  ...threadEntries
+    .slice()
+    .sort((left, right) => Number(right.data.featured) - Number(left.data.featured)
+      || left.data.title.localeCompare(right.data.title, 'zh-CN'))
+    .map(({ id }) => ({ kind: 'thread', id })),
+  ...peopleEntries
+    .slice()
+    .sort((left, right) => left.data.displayName.localeCompare(right.data.displayName, 'zh-CN'))
+    .map(({ id }) => ({ kind: 'person', id })),
+];
+
+if (!searchPayload || searchPayload.schemaVersion !== 1 || searchPayload.project !== projectId || !Array.isArray(searchPayload.items)) {
+  errors.push('search JSON must expose schemaVersion 1, project komatsu36, and an items array');
+} else {
+  const searchItems = searchPayload.items;
+  if (searchItems.length !== expectedSearchItems) {
+    errors.push(`search JSON contains ${searchItems.length} items; expected ${expectedSearchItems} public Event/Thread/Person items`);
+  }
+  const actualSearchOrder = searchItems.map((item) => ({ kind: item.kind, id: item.id }));
+  if (JSON.stringify(actualSearchOrder) !== JSON.stringify(expectedSearchOrder)) {
+    errors.push('search JSON order or public Event/Thread/Person membership is not stable');
+  }
+  for (const [index, item] of searchItems.entries()) {
+    const itemKind = item?.kind;
+    const allowedKeys = itemKind === 'event'
+      ? new Set(['kind', 'id', 'label', 'title', 'searchText', 'trackId', 'startMs', 'preferredThreadId'])
+      : new Set(['kind', 'id', 'label', 'title', 'searchText']);
+    if (!item || !['event', 'thread', 'person'].includes(itemKind) || Object.keys(item).some((key) => !allowedKeys.has(key))) {
+      errors.push(`search JSON item ${index} has an unexpected public field`);
+    }
+    if (!item || typeof item.id !== 'string' || typeof item.label !== 'string' || typeof item.title !== 'string'
+      || typeof item.searchText !== 'string' || item.searchText !== item.searchText.toLocaleLowerCase('ja-JP')) {
+      errors.push(`search JSON item ${index} has invalid searchable fields`);
+    }
+    if (item?.kind === 'event' && (typeof item.trackId !== 'string' || typeof item.startMs !== 'number')) {
+      errors.push(`search JSON Event item ${index} is missing trackId/startMs`);
+    }
+  }
 }
 
 const actualSourceEventButtons = (html.match(/data-source-event="/g) || []).length;
@@ -120,9 +187,17 @@ for (const [label, pattern] of forbiddenPublicationMarkers) {
   if (pattern.test(html)) errors.push(`published HTML contains ${label}`);
 }
 
+const searchJsonText = searchPayload ? JSON.stringify(searchPayload) : '';
+for (const [label, pattern] of forbiddenPublicationMarkers) {
+  if (pattern.test(searchJsonText)) errors.push(`search JSON contains ${label}`);
+}
+
 for (const event of publicEvents) {
   if (event.qualification && html.includes(event.qualification)) {
     errors.push(`published HTML contains internal qualification for event ${event.title}`);
+  }
+  if (event.qualification && searchJsonText.includes(event.qualification)) {
+    errors.push(`search JSON contains internal qualification for event ${event.title}`);
   }
 }
 
@@ -152,5 +227,5 @@ if (errors.length) {
 }
 
 console.log(
-  `Publication validation passed (${outputBytes} bytes, ${actualSearchItems} public search items, ${actualSourceEventButtons} initial source event buttons, controller coverage verified, no private source markers).`,
+  `Publication validation passed (${outputBytes} bytes, ${searchPayload?.items?.length || 0} search JSON items, ${actualSourceEventButtons} initial source event buttons, controller coverage verified, no private source markers).`,
 );

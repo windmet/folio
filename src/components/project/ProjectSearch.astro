@@ -1,37 +1,13 @@
 ---
 export interface Props {
-  events: any[];
-  threads: any[];
-  people: any[];
-  tracks: any[];
-  threadsByEvent: Map<string, string[]>;
+  projectSlug: string;
 }
 
-const { events, threads, people, tracks, threadsByEvent } = Astro.props;
-const localId = (id: string) => id.split('/').at(-1) || id;
-const referenceId = (reference: any) => reference.id;
-const tracksById = new Map(tracks.map((track) => [track.id, track]));
-const peopleById = new Map(people.map((person) => [person.id, person]));
-const formatTime = (milliseconds: number) => {
-  const total = Math.floor(milliseconds / 1000);
-  return [Math.floor(total / 3600), Math.floor((total % 3600) / 60), total % 60]
-    .map((part) => String(part).padStart(2, '0'))
-    .join(':');
-};
-const searchText = (...values: unknown[]) => values
-  .flat(Infinity)
-  .filter(Boolean)
-  .join(' ')
-  .toLocaleLowerCase('ja-JP');
-const participationText = (person: any) => (person.data.participation || []).map((item: any) => [
-  item.kind,
-  item.character,
-  item.credit,
-  ...(item.sessions || []),
-]);
+const { projectSlug } = Astro.props;
+const endpoint = `/projects/${projectSlug}/search.json`;
 ---
 
-<section class="project-search" role="search" aria-label="搜索专题档案">
+<section class="project-search" role="search" aria-label="搜索专题档案" data-search-shell data-search-endpoint={endpoint}>
   <div class="project-search__field">
     <label for="project-archive-search">搜索事件、事件线或人物</label>
     <input
@@ -47,71 +23,15 @@ const participationText = (person: any) => (person.data.participation || []).map
     <button type="button" data-search-clear hidden aria-label="清除搜索">×</button>
   </div>
 
+  <p class="project-search__status" data-search-status role="status" aria-live="polite">首次输入时加载公开索引。</p>
+  <p class="project-search__error" data-search-error role="alert" hidden>搜索索引暂时无法载入，专题其余内容仍可继续浏览。</p>
+
   <div class="project-search__results" id="project-search-results" data-search-results hidden>
     <header>
       <strong data-search-count>0 条结果</strong>
       <span>仅索引已公开的 Event、Thread 与 Person</span>
     </header>
-    <div class="project-search__list">
-      {events.map((event) => {
-        const track = tracksById.get(referenceId(event.data.track));
-        const relatedPeople = event.data.people
-          .map((person: any) => peopleById.get(referenceId(person)))
-          .filter(Boolean);
-        const relatedThread = threadsByEvent.get(event.id)?.[0];
-        return (
-          <button
-            type="button"
-            data-search-item
-            data-search-kind="event"
-            data-search-event={localId(event.id)}
-            data-search-thread={relatedThread}
-            data-search-text={searchText(
-              event.data.title,
-              event.data.summary,
-              relatedPeople.map((person: any) => [person.data.displayName, person.data.aliases]),
-            )}
-            hidden
-          >
-            <span>EVENT · {track?.data.shortLabel} {formatTime(event.data.startMs)}</span>
-            <strong>{event.data.title}</strong>
-          </button>
-        );
-      })}
-      {threads.map((thread) => (
-        <button
-          type="button"
-          data-search-item
-          data-search-kind="thread"
-          data-search-thread={localId(thread.id)}
-          data-search-text={searchText(thread.data.title, thread.data.deck, thread.data.category)}
-          hidden
-        >
-          <span>THREAD · {thread.data.nodes.length} NODES</span>
-          <strong>{thread.data.title}</strong>
-        </button>
-      ))}
-      {people.map((person) => (
-        <button
-          type="button"
-          data-search-item
-          data-search-kind="person"
-          data-search-person={localId(person.id)}
-          data-search-text={searchText(
-            person.data.displayName,
-            person.data.reading,
-            person.data.aliases,
-            person.data.projectContext,
-            participationText(person),
-            (person.data.links || []).map((link: any) => [link.label, link.platform]),
-          )}
-          hidden
-        >
-          <span>PERSON · {person.data.reading || '人物索引'}</span>
-          <strong>{person.data.displayName}</strong>
-        </button>
-      ))}
-      <p class="project-search__empty" data-search-empty hidden>没有找到公开索引中的匹配项。</p>
-    </div>
+    <div class="project-search__list" data-search-list></div>
+    <p class="project-search__empty" data-search-empty hidden>没有找到公开索引中的匹配项。</p>
   </div>
 </section>

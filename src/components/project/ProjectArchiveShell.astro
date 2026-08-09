@@ -99,10 +99,6 @@ const orderedPeople = [...people].sort((a, b) => a.data.displayName.localeCompar
 const leadPersonId = 'komatsu-shohei';
 const leadPerson = orderedPeople.find((person) => localId(person.id) === leadPersonId);
 const publishedEvents = events.filter((event) => event.data.publicationStatus !== 'withheld');
-const orderedSearchEvents = [...publishedEvents].sort((a, b) =>
-  referenceId(a.data.track).localeCompare(referenceId(b.data.track), 'en')
-  || a.data.startMs - b.data.startMs
-  || localId(a.id).localeCompare(localId(b.id), 'en'));
 const eventsForAct = (actId: string) => publishedEvents
   .filter((event) => event.data.act?.id === actId)
   .sort((a, b) => a.data.startMs - b.data.startMs);
@@ -167,13 +163,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     ))}
   </nav>
 
-  <ProjectSearch
-    events={orderedSearchEvents}
-    threads={orderedThreads}
-    people={orderedPeople}
-    tracks={tracks}
-    threadsByEvent={threadsByEvent}
-  />
+  <ProjectSearch projectSlug={project.data.slug} />
 
   <div class="project-workspace">
     <div class="project-content">
@@ -315,6 +305,16 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     title: string;
     threadIds: string[];
   };
+  type SearchItem = {
+    kind: 'event' | 'thread' | 'person';
+    id: string;
+    label: string;
+    title: string;
+    searchText: string;
+    trackId?: string;
+    startMs?: number;
+    preferredThreadId?: string;
+  };
   type ArchiveTrack = {
     id: string;
     label: string;
@@ -379,6 +379,9 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     lockedScrollY = 0;
     lockedBodyPaddingRight = '';
     searchOpen = false;
+    searchItems: SearchItem[] = [];
+    searchLoadPromise: Promise<SearchItem[] | null> | null = null;
+    searchLoaded = false;
     sourceEventsOpen = false;
     sourceEventListsBuilt = new Set<string>();
     contextFocusObserver: ResizeObserver | null = null;
@@ -489,33 +492,16 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         if (slot && !slot.contains(event.target as Node)) this.closePlayerRailThreadMenu(false);
       });
       const searchInput = this.querySelector<HTMLInputElement>('[data-archive-search]');
-      searchInput?.addEventListener('input', () => this.filterSearch(searchInput.value));
+      searchInput?.addEventListener('focus', () => { void this.ensureSearchIndex(); });
+      searchInput?.addEventListener('input', () => { void this.filterSearch(searchInput.value); });
       this.querySelector<HTMLElement>('[data-search-clear]')?.addEventListener('click', () => {
         if (searchInput) searchInput.value = '';
         this.closeSearch(true);
       });
-      this.querySelectorAll<HTMLElement>('[data-search-event]').forEach((button) => {
-        button.addEventListener('click', () => {
-          const eventId = button.dataset.searchEvent || '';
-          this.navigateToEventContext(eventId, {
-            origin: 'search',
-            preferredThreadId: button.dataset.searchThread,
-          });
-        });
-      });
-      this.querySelectorAll<HTMLElement>('[data-search-kind="thread"]').forEach((button) => {
-        button.addEventListener('click', () => {
-          this.closeSearch(false);
-          this.showView('storylines', false);
-          this.openThread(button.dataset.searchThread || '', searchInput || null, true);
-        });
-      });
-      this.querySelectorAll<HTMLElement>('[data-search-person]').forEach((button) => {
-        button.addEventListener('click', () => {
-          this.closeSearch(false);
-          this.showView('people', false);
-          this.openPerson(button.dataset.searchPerson || '', searchInput || null, true);
-        });
+      this.querySelector<HTMLElement>('[data-search-results]')?.addEventListener('click', (event) => {
+        const target = event.target instanceof Element ? event.target : null;
+        const button = target?.closest<HTMLElement>('[data-search-item]');
+        if (button) this.handleSearchResult(button, searchInput || null);
       });
       window.addEventListener('popstate', () => this.restoreFromUrl());
       document.addEventListener('keydown', (event) => {
@@ -532,30 +518,111 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       });
     }
 
-    filterSearch(query: string) {
+    async ensureSearchIndex(): Promise<SearchItem[] | null> {
+      if (this.searchLoaded) return this.searchItems;
+      if (this.searchLoadPromise) return this.searchLoadPromise;
+      const endpoint = this.querySelector<HTMLElement>('[data-search-shell]')?.dataset.searchEndpoint;
+      const status = this.querySelector<HTMLElement>('[data-search-status]');
+      const errorPanel = this.querySelector<HTMLElement>('[data-search-error]');
+      if (!endpoint) {
+        if (status) status.textContent = '搜索索引配置缺失';
+        if (errorPanel) {
+          errorPanel.hidden = false;
+          errorPanel.textContent = '搜索索引暂时无法载入，专题其余内容仍可继续浏览。';
+        }
+        this.searchLoadPromise = Promise.resolve(null);
+        return this.searchLoadPromise;
+      }
+      if (status) status.textContent = '正在加载公开搜索索引…';
+      if (errorPanel) errorPanel.hidden = true;
+      this.searchLoadPromise = fetch(endpoint, { headers: { Accept: 'application/json' } })
+        .then(async (response) => {
+          if (!response.ok) throw new Error(`Search index request failed: ${response.status}`);
+          const payload = await response.json() as { schemaVersion?: number; items?: SearchItem[] };
+          if (payload.schemaVersion !== 1 || !Array.isArray(payload.items)) throw new Error('Search index payload is invalid');
+          if (payload.items.some((item) => !item || !['event', 'thread', 'person'].includes(item.kind)
+            || typeof item.id !== 'string' || typeof item.title !== 'string' || typeof item.searchText !== 'string')) {
+            throw new Error('Search index item is invalid');
+          }
+          this.searchItems = payload.items;
+          this.searchLoaded = true;
+          if (status) status.textContent = `公开搜索索引已加载 · ${payload.items.length} 项`;
+          return this.searchItems;
+        })
+        .catch((loadError) => {
+          if (status) status.textContent = '搜索索引未载入';
+          if (errorPanel) {
+            errorPanel.hidden = false;
+            errorPanel.textContent = '搜索索引暂时无法载入，专题其余内容仍可继续浏览。';
+          }
+          void loadError;
+          return null;
+        });
+      return this.searchLoadPromise;
+    }
+
+    createSearchResultButton(item: SearchItem) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.dataset.searchItem = '';
+      button.dataset.searchKind = item.kind;
+      if (item.kind === 'event') {
+        button.dataset.searchEvent = item.id;
+        if (item.preferredThreadId) button.dataset.searchThread = item.preferredThreadId;
+      } else if (item.kind === 'thread') {
+        button.dataset.searchThread = item.id;
+      } else {
+        button.dataset.searchPerson = item.id;
+      }
+      const label = document.createElement('span');
+      label.textContent = item.label;
+      const title = document.createElement('strong');
+      title.textContent = item.title;
+      button.append(label, title);
+      return button;
+    }
+
+    handleSearchResult(button: HTMLElement, searchInput: HTMLInputElement | null) {
+      if (button.dataset.searchKind === 'event') {
+        this.navigateToEventContext(button.dataset.searchEvent || '', {
+          origin: 'search',
+          preferredThreadId: button.dataset.searchThread,
+        });
+        return;
+      }
+      this.closeSearch(false);
+      if (button.dataset.searchKind === 'thread') {
+        this.showView('storylines', false);
+        this.openThread(button.dataset.searchThread || '', searchInput, true);
+      } else if (button.dataset.searchKind === 'person') {
+        this.showView('people', false);
+        this.openPerson(button.dataset.searchPerson || '', searchInput, true);
+      }
+    }
+
+    async filterSearch(query: string) {
       const normalized = query.trim().toLocaleLowerCase('ja-JP');
       const panel = this.querySelector<HTMLElement>('[data-search-results]');
       const input = this.querySelector<HTMLInputElement>('[data-archive-search]');
       const clear = this.querySelector<HTMLElement>('[data-search-clear]');
       const empty = this.querySelector<HTMLElement>('[data-search-empty]');
       const count = this.querySelector<HTMLElement>('[data-search-count]');
+      const list = this.querySelector<HTMLElement>('[data-search-list]');
       if (!panel || !input) return;
       if (!normalized) {
         this.closeSearch(false);
         return;
       }
-      let matches = 0;
-      this.querySelectorAll<HTMLElement>('[data-search-item]').forEach((item) => {
-        const matched = (item.dataset.searchText || '').includes(normalized);
-        item.hidden = !matched;
-        if (matched) matches += 1;
-      });
+      const items = await this.ensureSearchIndex();
+      if (!items || input.value.trim().toLocaleLowerCase('ja-JP') !== normalized) return;
+      const matches = items.filter((item) => item.searchText.includes(normalized));
+      list?.replaceChildren(...matches.map((item) => this.createSearchResultButton(item)));
       this.searchOpen = true;
       panel.hidden = false;
       input.setAttribute('aria-expanded', 'true');
       if (clear) clear.hidden = false;
-      if (empty) empty.hidden = matches !== 0;
-      if (count) count.textContent = `${matches} 条结果`;
+      if (empty) empty.hidden = matches.length !== 0;
+      if (count) count.textContent = `${matches.length} 条结果`;
     }
 
     closeSearch(focus: boolean) {
