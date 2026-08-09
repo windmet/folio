@@ -39,11 +39,12 @@ npm exec -- tsc --noEmit                 PASS
 git diff --check                         PASS
 ```
 
-最新产物：raw HTML `291,352` bytes；Gzip `50,580`；Brotli `31,989`；350 KiB hard gate 余量 `67,048`。publication validator 通过 `12` 个 RC12-B2 expandable title contracts、`3` 个 RC12-E timeline scopes、`124` 个 controller Event records、三 track native-clock projection 和 private-marker gate。
+最新产物：raw HTML `291,352` bytes；Gzip `50,580`；Brotli `31,989`；350 KiB hard gate 余量 `67,048`。publication validator 通过 `12` 个 RC12-B2 expandable title contracts、`3` 个 RC12-E timeline scopes、`124` 个 controller Event records、三 track native-clock projection 和 private-marker gate；scope button 的 native `type=button`、`aria-pressed`、`aria-controls`、`aria-label` 合同也由静态门禁校验。
 
 ## 未执行与产品停点
 
 - `NOT EXECUTED`：真实 YouTube／X Space 播放、真实音频、长时 soak、生产 origin、生产部署和 Release Gate。
 - `NOT EXECUTED`：E4 最终视觉收尾与 E5 完整 handoff；本 README 只覆盖 E1–E3 第一版。
+- `NOT EXECUTED`：Browser 驱动的键盘激活消费检查。当前 Browser surface 的 `press`／CUA keypress 对现有 view-nav 与新增 scope button 均只完成聚焦、未触发 click；因此不将其写成键盘消费通过，native button 与 ARIA 合同仅作 source/static verified。
 - 工程与 Browser 证据不自动升级为 `PRODUCT-ACCEPTED`；需要用户在桌面与 390px 人工复核 scope 的信息层级、时间语义和事件密度。
 - 不把 Source Event Index 或 Source card 能力替代为 RC12-E；三条来源仍必须保持各自 native local clock。

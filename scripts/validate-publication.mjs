@@ -274,6 +274,21 @@ if (actualTimelineScopeButtons !== expectedTimelineTrackIds.length) {
 if (actualTimelineScopePanels !== expectedTimelineTrackIds.length) {
   errors.push(`RC12-E timeline scope has ${actualTimelineScopePanels} panels; expected ${expectedTimelineTrackIds.length}`);
 }
+const timelineScopePanelIds = new Set(
+  [...html.matchAll(/<[^>]*data-timeline-scope-panel="[^"]+"[^>]*>/g)]
+    .map((match) => readAttribute(match[0], 'id'))
+    .filter(Boolean),
+);
+const timelineScopeButtonTags = [...html.matchAll(/<button[^>]*data-timeline-scope-button="[^"]+"[^>]*>/g)]
+  .map((match) => match[0]);
+for (const tag of timelineScopeButtonTags) {
+  const key = readAttribute(tag, 'data-timeline-scope-button');
+  const controls = readAttribute(tag, 'aria-controls');
+  if (readAttribute(tag, 'type') !== 'button') errors.push(`RC12-E scope ${key || '(missing)'} must be a button`);
+  if (!['true', 'false'].includes(readAttribute(tag, 'aria-pressed') || '')) errors.push(`RC12-E scope ${key || '(missing)'} must expose aria-pressed`);
+  if (!controls || !timelineScopePanelIds.has(controls)) errors.push(`RC12-E scope ${key || '(missing)'} has invalid aria-controls`);
+  if (!readAttribute(tag, 'aria-label')) errors.push(`RC12-E scope ${key || '(missing)'} is missing an accessible label`);
+}
 
 const forbiddenPublicationMarkers = [
   ['raw ASR file marker', /external_asr_raw/i],
