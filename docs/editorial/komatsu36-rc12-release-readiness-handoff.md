@@ -2,7 +2,7 @@
 
 > 状态：LOCAL QA COMPLETE — `PRODUCT-ACCEPTED` 待人工停点 1/2
 > 分支：`codex/komatsu36-project-archive`
-> 当前 HEAD：`22301ca`
+> 交接快照基线：`22301ca`（后续文档同步提交不改变实现范围）
 > Release Gate：CLOSED；本文不授权 merge、deploy 或修改 `project.status`
 
 本 handoff 记录 RC12-A/B/C/D 与 RC12-F 本地复核结果。它是 review branch 的交接草案，不把本地 preview、静态门禁或短时交互提升为生产接受。
@@ -26,6 +26,7 @@
 - `864658a` — 修正移动端 mode toggle 必须隐藏的 RC12-A 缺口。
 - `bb23d83` — RC12-F 本地 QA 与 release-readiness handoff 草案。
 - `22301ca` — 补充 focus restore、modal containment 与 Event history 证据。
+- `fdf50b2` — 同步 handoff 快照基线与提交链。
 
 工作树已清洁，分支已推送远端。
 
@@ -56,6 +57,8 @@ git diff --check                         PASS
 | Search | 输入 `Bingo` 得到 13 条公开结果；无错误态；document overflow `0` |
 | Event history | 从 Timeline Event 切到 People 后 Back 恢复 Timeline、原 Event、active card 与深链 URL；document overflow `0` |
 | 应用 console | Browser dev logs 为空；未发现 page error / warning |
+
+文字与 ARIA 降级核验：来源按钮 accessible label 为 `选择YouTube 主直播`、`选择X Space ①`、`选择X Space ②`；播放器 Source Switcher 保留 `YT` / `SP1` / `SP2` 文本；Target / Context 两个展开按钮的 `aria-controls` 均解析到唯一目标 ID，页面无重复 ID。Browser 评估 DOM 为只读，因此未把临时禁用 CSS 伪报成执行过的测试。
 
 追加压力矩阵覆盖 320、360、375、390、414、540、600、768、820、900、901、1024、1100、1200、1280、1366、1440、1600、1920px：People grid、PersonCard、Cast projection、来源卡与 Player 均无组件溢出，document overflow 全部为 `0`。
 
