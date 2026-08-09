@@ -51,8 +51,9 @@ git diff --check                         PASS
 | Overview 390×844 | 强制 Expanded；mode toggle `hidden=true`；来源卡纵向堆叠；document overflow `0` |
 | 长 Target 390×844 | “展开”可见；点击后 `aria-expanded=true`、按钮变“收起”、URL 不变；document overflow `0` |
 | Source selector | `X Space ①` 选择后 `?track=space-1`；Source card 与 Player switcher 同步 active；Back 恢复 YouTube 来源 |
-| Thread / Person | 打开后 dialog 获得焦点、背景锁定；Escape 关闭并解除锁定；focus restore 合同保持 |
+| Thread / Person | 打开后 dialog 获得焦点、背景锁定；Escape 关闭并解除锁定；焦点精确回到原触发按钮 |
 | Search | 输入 `Bingo` 得到 13 条公开结果；无错误态；document overflow `0` |
+| Event history | 从 Timeline Event 切到 People 后 Back 恢复 Timeline、原 Event、active card 与深链 URL；document overflow `0` |
 | 应用 console | Browser dev logs 为空；未发现 page error / warning |
 
 追加压力矩阵覆盖 320、360、375、390、414、540、600、768、820、900、901、1024、1100、1200、1280、1366、1440、1600、1920px：People grid、PersonCard、Cast projection、来源卡与 Player 均无组件溢出，document overflow 全部为 `0`。
