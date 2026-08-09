@@ -1,8 +1,8 @@
 # Komatsu36 RC 0.11 档案导航与视觉层级实施规格
 
-> 状态：UX11-A / B COMMITTED；UX11-C REVIEW BRANCH COMPLETE (`1162ba2`) / NEXT: UX11-C1 + UX11-A1
+> 状态：UX11-A / B COMMITTED；UX11-C + UX11-C1 + UX11-A1 REVIEW BRANCH READY / NEXT: UX11-P0
 > 阶段：RC 0.11 — Archive Navigation & Visual Hierarchy Pass
-> 基线：`codex/komatsu36-project-archive` @ `1162ba2`；RC 0.10 本地验收完成；完整收尾顺序见 `komatsu36-rc11-closeout-runbook.md`
+> 基线：`codex/komatsu36-project-archive` 当前 R1 提交；RC 0.10 本地验收完成；完整收尾顺序见 `komatsu36-rc11-closeout-runbook.md`
 > 范围冻结：不新增 Event、Person 字段、媒体 provider、Transcript、Evidence 或 X widget。
 
 ## 1. 阶段目标
@@ -272,7 +272,7 @@ ProjectArchiveShell
 - 原媒体 URL 继续由 Track `fallbackUrl` + Event `startMs` 派生；
 - 可在 Controller 内建立一次性的 runtime cache，但不得写回 JSON 或内容 schema。
 
-`1162ba2` 的当前 publication 输出为 353,913 / 358,400 bytes，只剩 4,487 bytes；Gzip 为 69,117 bytes，Brotli quality 11 为 35,598 bytes。后续新增 markup、ARIA 与 Navigator 前后都必须重跑 budget；若超限，优先执行已批准的工具型重复投影治理，不得删除读者内容、Rail 功能或放宽门禁。
+R1（opaque Player + Lead Person）后的当前 publication 输出为 354,388 / 358,400 bytes，只剩 4,012 bytes；Gzip 为 69,334 bytes，Brotli quality 11 为 35,690 bytes。后续新增 markup、ARIA 与 Navigator 前后都必须重跑 budget；若超限，优先执行已批准的工具型重复投影治理，不得删除读者内容、Rail 功能或放宽门禁。
 
 ### 6.7 Desktop 空间治理
 
@@ -332,9 +332,9 @@ Map 是章节索引，不是第二条事件时间线。它不显示 104 个 Even
 |---|---|---:|---|
 | UX11-A | Cast 390px 六行；People group-specific compact projection | P0 | **本地完成**：桌面关系清楚；390px 无页面/组件横滚；列表不显示完整 `projectContext` |
 | UX11-B | `navigateToEventContext()`；Player CTA；URL 状态重置；YT scroll/focus；Space 0/1/many | P0 | **本地完成**：Person/Search/Player 三入口共用；Back/Forward 原样恢复；无长距离滚动演出 |
-| UX11-A1 | Komatsu36 Lead Person hierarchy；Birthday 普通列表排除 lead | P0 | 小松作为 `00 HOST / BIRTHDAY` 独立入口；Cast / Production 真值保留；不新增 schema、不按 Event count 推断 |
+| UX11-A1 | Komatsu36 Lead Person hierarchy；Birthday 普通列表排除 lead | P0 | **R1 已完成**：小松作为 `00 HOST / BIRTHDAY` 独立入口；Cast / Production 真值保留；不新增 schema、不按 Event count 推断 |
 | UX11-C | Desktop Player Context Rail；Act jump；compact desktop；Thread popover；Player 纵向减负 | P0 | **review branch 完成 `1162ba2`**：1366 / 1440 / 1920 桌面均无 overflow；YT / Space 四动作、单线直达、多线菜单、Esc / focus 与原链通过；390px fallback actions 无回归 |
-| UX11-C1 | Sticky Player / Context opaque foreground | P0 | Player 覆盖 Timeline / People 时无底层文字透出；Rail surface 连续；桌面与 mobile player 无回归 |
+| UX11-C1 | Sticky Player / Context opaque foreground | P0 | **R1 已完成**：Player 覆盖 Timeline / People 时使用实色 surface；Rail surface 连续；桌面与 mobile player 无回归 |
 | UX11-P0 | Static payload audit：raw / gzip / brotli / projection breakdown | P0 | 可重复命令与固定指标；记录 `effa314` 基线；不改可见 UI |
 | UX11-P1 | Source Event Index 首次展开动态生成 | P0 | 初始 HTML 不含 124 个 buttons；三 Track 浏览、选择、focus 与 Space fallback 无回归 |
 | UX11-P2 | Search static JSON + first-use lazy fetch | P0 | 初始 HTML 不含 158 个隐藏结果；JSON count/leakage/sort 与 Event/Thread/Person 导航通过；raw 目标 `<=300 KiB` |
@@ -344,7 +344,7 @@ Map 是章节索引，不是第二条事件时间线。它不显示 104 个 Even
 | UX11-G | Quick / Detail density | P1（条件） | 只有 UX11-D/E 后复测仍过密才启动 |
 | UX11-H | 1366×768、1440×900、1920×1080、390×844、键盘、console、overflow、history QA | P0 | 固定序列全部通过并保存证据；80% zoom 不作为通过条件 |
 
-UX11-A + UX11-B 已在 `effa314` 完成，UX11-C 已在 review branch 的 `1162ba2` 按完整合同完成。固定下一步为 UX11-C1 + UX11-A1 小修，然后按 UX11-P0 → P1 → P2 三个独立提交治理 payload，再进入 UX11-D。UX11-E 先做移动合同裁决；UX11-F 默认延后，UX11-G 保持条件项。完整进入／退出条件与逐批 push 规则见 `komatsu36-rc11-closeout-runbook.md`。
+UX11-A + UX11-B 已在 `effa314` 完成，UX11-C 已在 review branch 的 `1162ba2` 按完整合同完成；UX11-C1 + UX11-A1 已在本批实现并通过桌面 / 390px 验收。下一步按 UX11-P0 → P1 → P2 三个独立提交治理 payload，再进入 UX11-D。UX11-E 先做移动合同裁决；UX11-F 默认延后，UX11-G 保持条件项。完整进入／退出条件与逐批 push 规则见 `komatsu36-rc11-closeout-runbook.md`。
 
 ## 9. 约束与非目标
 

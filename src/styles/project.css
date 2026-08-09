@@ -421,6 +421,7 @@ project-archive-shell {
 .timeline-event button:focus-visible,
 .storyline-card:focus-visible,
 .person-index-row:focus-visible,
+.lead-person-index:focus-visible,
 .featured-jump:focus-visible,
 .player-context-rail button:focus-visible,
 .player-context-rail a:focus-visible,
@@ -895,7 +896,7 @@ project-archive-shell {
   min-width: 0;
   overflow: hidden;
   border: 1px solid #cfc5b5;
-  background: rgba(255,255,255,0.45);
+  background: var(--archive-paper);
   box-shadow: 0 14px 36px rgba(55, 47, 37, 0.08);
 }
 
@@ -1042,7 +1043,7 @@ project-archive-shell {
 .archive-player__context {
   padding: 12px 16px 14px;
   border-bottom: 1px solid var(--archive-line);
-  background: rgba(156, 67, 60, 0.045);
+  background: var(--archive-paper-deep);
 }
 
 .archive-player__context p {
@@ -1230,6 +1231,82 @@ project-archive-shell {
   background: rgba(255,255,255,0.34);
   text-align: left;
   cursor: pointer;
+}
+
+.lead-person-index {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 20px;
+  width: 100%;
+  padding: 24px 26px;
+  border: 1px solid var(--archive-line);
+  color: var(--archive-ink);
+  background: var(--archive-paper-deep);
+  text-align: left;
+  cursor: pointer;
+}
+
+.lead-person-index:hover {
+  color: var(--archive-red);
+  border-color: var(--archive-red);
+}
+
+.lead-person-index__number {
+  color: var(--archive-red);
+  font: 11px ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: 0.08em;
+}
+
+.lead-person-index__body {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+
+.lead-person-index__eyebrow,
+.lead-person-index__reading {
+  color: var(--archive-muted);
+  font: 9px ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: 0.08em;
+}
+
+.lead-person-index__eyebrow {
+  color: var(--archive-red);
+}
+
+.lead-person-index__body strong {
+  color: var(--archive-ink);
+  font-size: 25px;
+  font-weight: 400;
+}
+
+.lead-person-index__roles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.lead-person-index__roles span {
+  padding: 4px 6px;
+  border: 1px solid var(--archive-line);
+  color: var(--archive-muted);
+  font: 9px ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+
+.lead-person-index__context {
+  max-width: 760px;
+  margin-top: 5px;
+  color: var(--archive-muted);
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.lead-person-index__count {
+  align-self: end;
+  color: var(--archive-red);
+  font: 10px ui-monospace, SFMono-Regular, Consolas, monospace;
+  white-space: nowrap;
 }
 
 .storyline-card > span,
@@ -1928,6 +2005,26 @@ project-archive-shell {
   .person-index-row__count {
     grid-column: 1 / -1;
     grid-row: 3;
+  }
+
+  .lead-person-index {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 12px;
+    padding: 18px 16px;
+  }
+
+  .lead-person-index__body strong {
+    font-size: 21px;
+  }
+
+  .lead-person-index__count {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: auto;
+  }
+
+  .lead-person-index__context {
+    font-size: 11px;
   }
 
   .cast-matrix-desktop {

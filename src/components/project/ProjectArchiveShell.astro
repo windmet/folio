@@ -8,6 +8,7 @@ import ProjectSearch from './ProjectSearch.astro';
 import MediaSourceNavigator from './MediaSourceNavigator.astro';
 import CastMatrix from './CastMatrix.astro';
 import PersonCard from './PersonCard.astro';
+import LeadPersonCard from './LeadPersonCard.astro';
 
 export interface Props {
   project: any;
@@ -95,6 +96,8 @@ const defaultTrack = tracks.find((track) => track.id === referenceId(project.dat
 const orderedActs = [...acts].sort((a, b) => a.data.order - b.data.order);
 const orderedThreads = [...threads].sort((a, b) => Number(b.data.featured) - Number(a.data.featured) || a.data.title.localeCompare(b.data.title, 'zh-CN'));
 const orderedPeople = [...people].sort((a, b) => a.data.displayName.localeCompare(b.data.displayName, 'zh-CN'));
+const leadPersonId = 'komatsu-shohei';
+const leadPerson = orderedPeople.find((person) => localId(person.id) === leadPersonId);
 const publishedEvents = events.filter((event) => event.data.publicationStatus !== 'withheld');
 const orderedSearchEvents = [...publishedEvents].sort((a, b) =>
   referenceId(a.data.track).localeCompare(referenceId(b.data.track), 'en')
@@ -233,8 +236,14 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         <div class="view-heading">
           <span class="archive-kicker">PEOPLE / CAST</span>
           <h2>People</h2>
-          <p>先看《俺知》昼夜 Cast，再看制作、生日会和 X Space / Remote 参与关系。人物事件仍由 Event → Person 引用反向生成。</p>
+          <p>先看这场企划的中心人物与《俺知》昼夜 Cast，再看制作、生日会和 X Space / Remote 参与关系。人物事件仍由 Event → Person 引用反向生成。</p>
         </div>
+        {leadPerson && (
+          <section class="people-lead" aria-labelledby="people-lead-title">
+            <div class="people-group__heading"><span>00</span><h3 id="people-lead-title">HOST / BIRTHDAY</h3></div>
+            <LeadPersonCard person={leadPerson} eventCount={(eventsByPerson.get(leadPerson.id) || []).length} />
+          </section>
+        )}
         <section class="people-group">
           <div class="people-group__heading"><span>01</span><h3>ORE-SHIRI CAST</h3></div>
           <CastMatrix people={orderedPeople} />
@@ -250,7 +259,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         <section class="people-group">
           <div class="people-group__heading"><span>03</span><h3>BIRTHDAY LIVE PARTICIPANTS</h3></div>
           <div class="people-grid">
-            {orderedPeople.filter((person) => (person.data.participation || []).some((item: any) => item.kind === 'birthday-live')).map((person) => (
+            {orderedPeople.filter((person) => localId(person.id) !== leadPersonId && (person.data.participation || []).some((item: any) => item.kind === 'birthday-live')).map((person) => (
               <PersonCard person={person} group="birthday-live" eventCount={(eventsByPerson.get(person.id) || []).length} />
             ))}
           </div>

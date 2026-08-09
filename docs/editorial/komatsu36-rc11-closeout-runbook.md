@@ -2,8 +2,8 @@
 
 > 状态：ACTIVE
 > 当前分支：`codex/komatsu36-project-archive`
-> 当前远端检查点：`1162ba2`（UX11-C Player Context Rail 已在 review branch）
-> 下一批：R1 — UX11-C1 Opaque Player + UX11-A1 Lead Person hierarchy
+> 当前远端检查点：R1 当前提交；R1 已在 review branch 完成实现、浏览器验收并提交
+> 下一批：R2 — UX11-P0 Payload audit instrumentation
 > Release Gate：CLOSED；本 Runbook 只把 review branch 做到可审阅、可合并状态，不授权 merge 或 deploy。
 
 ## 1. 用途与权威顺序
@@ -26,9 +26,11 @@
 
 | 项目 | 权威证据 | 结论 |
 |---|---|---|
-| Review branch | 本地与 `origin/codex/komatsu36-project-archive` 均为 `1162ba2` | UX11-C 不是仅本地状态，应称 **REVIEW BRANCH COMPLETE** |
+| Review branch | 本地与 `origin/codex/komatsu36-project-archive` 均为 R1 当前提交 | UX11-C 与 R1 不是仅本地状态，应称 **REVIEW BRANCH COMPLETE** |
 | UX11-A / B | `effa314` | 已提交并保留既有回归合同 |
 | UX11-C | `PlayerContextRail.astro`、`ArchivePlayer.astro` import、`1162ba2` | 四标签、Act jump、Thread 0/1/N、原链、desktop compact 与 mobile fallback 已在远端分支 |
+| UX11-C1 | `.archive-player` 与 `.archive-player__context` 已改为实色 paper | 已实现并通过桌面 / 390px 样本验收 |
+| UX11-A1 | `LeadPersonCard.astro`、`leadPersonId = 'komatsu-shohei'`、Birthday filter | 已实现；lead / Cast / Production 回链同一 Person，Birthday 普通 grid 排除 lead |
 | UX11-P0 | `package.json` 无 `audit:payload` | 未开始 |
 | UX11-P1 | `MediaSourceNavigator.astro` 仍执行 `eventsForTrack(track).map(...)` | 124 个 Source Event buttons 仍静态输出，未开始 |
 | UX11-P2 | `ProjectSearch.astro` 仍输出所有 `data-search-item` | 158 个隐藏 Search items 仍在初始 HTML，未开始 |
@@ -36,14 +38,14 @@
 
 ### 2.2 当前构建基线
 
-在 `1162ba2` 重新执行 `npm run validate` 后，构建与 publication gate 通过：
+在 R1 当前提交重新执行 `npm run validate` 后，构建与 publication gate 通过：
 
 | 指标 | 当前值 |
 |---|---:|
-| Raw HTML | 353,913 bytes |
-| Gzip level 9 | 69,117 bytes |
-| Brotli quality 11 | 35,598 bytes |
-| 350 KiB hard gate 余量 | 4,487 bytes |
+| Raw HTML | 354,388 bytes |
+| Gzip level 9 | 69,334 bytes |
+| Brotli quality 11 | 35,690 bytes |
+| 350 KiB hard gate 余量 | 4,012 bytes |
 | Search items | 158 |
 | Source Event buttons | 124 |
 | Search section | 73,355 raw bytes |
@@ -57,11 +59,11 @@
 
 | 审阅项 | 本地核对 | 裁决 |
 |---|---|---|
-| Sticky Player 透出下层内容 | `.archive-player` 为 `rgba(255,255,255,0.45)`；`.archive-player__context` 为 alpha red；下层 People row 也为半透明 | **成立，UX11-C1 P0 小修**：sticky 前景必须改为不透明 paper surface |
-| 小松缺少中心人物层级 | `orderedPeople` 只按 `displayName` 排序；People 只有 Cast / Production / Birthday / Space 四组 | **成立，UX11-A1 P0 小修**：新增 `00 HOST / BIRTHDAY` lead projection |
+| Sticky Player 透出下层内容 | 1440 / 1366 / 390 页面计算样式均为实色 Player / Context；1440 sticky 样本无横向溢出 | **R1 已完成**：sticky 前景不再依赖透明度遮挡正文 |
+| 小松缺少中心人物层级 | Lead 出现为 `00 HOST / BIRTHDAY`，`komatsu-shohei` 在 Cast / Production 保留，Birthday 普通 grid 不再出现 | **R1 已完成**：lead / Cast / Production 三处均回链同一 Person |
 | 小松应从所有后续分组移除 | Cast 与 Production 是角色、制作 credit 真值 | **不采纳**：只从普通 Birthday Live participant grid 排除；Cast 与 Production 保留 |
 | 以 Event 数自动选主角 | 出现次数不等于编辑中心 | **禁止**：使用 Komatsu36 presentation fixture 中唯一的 `leadPersonId = 'komatsu-shohei'`，不改 Person schema |
-| 立即开发 Timeline Navigator | 当前 hard-gate 余量仅 4,487 bytes，P0/P1/P2 尚未实施 | **顺延**：先做 R1 与 Payload 三批，再进入 UX11-D |
+| 立即开发 Timeline Navigator | 当前 hard-gate 余量仅 4,012 bytes，P0/P1/P2 尚未实施 | **顺延**：先做 R1 与 Payload 三批，再进入 UX11-D |
 | Navigator 第一版加入 playhead | 阅读位置与媒体位置可能不同 | **不采纳到 UX11-D**：第一版只有 current Act + Act jump；playhead 保持 UX11-F 条件项 |
 
 ## 3. 全局批次规则
@@ -268,7 +270,7 @@ UX11-H 通过后：
 |---|---|---|---|
 | UX11-A / B | COMPLETE | `effa314` | 保持回归 |
 | UX11-C | REVIEW BRANCH COMPLETE | `1162ba2` | R1 补视觉层级 |
-| R1 UX11-C1 / A1 | NEXT | — | opaque Player + Lead Person |
+| R1 UX11-C1 / A1 | COMPLETE | R1 当前提交；本次浏览器验收；raw 354,388 | 进入 P0 |
 | R2 UX11-P0 | PENDING | — | R1 通过后开始 |
 | R3 UX11-P1 | PENDING | — | P0 通过后开始 |
 | R4 UX11-P2 | PENDING | — | P1 通过后开始 |

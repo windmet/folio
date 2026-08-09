@@ -4,7 +4,7 @@
 
 ## 当前检查点
 
-- Komatsu36：RC 0.10 已完成本地验收；RC 0.11 的 UX11-A / B 已提交为 `effa314`，UX11-C Desktop Player Context Rail 已在 review branch 的 `1162ba2` 完成。下一批先修 opaque Player 与 Lead Person 层级，再严格按 UX11-P0 → P1 → P2、UX11-D、UX11-E 决策、UX11-H 收尾；Release Gate 仍未授权。
+- Komatsu36：RC 0.10 已完成本地验收；RC 0.11 的 UX11-A / B 已提交为 `effa314`，UX11-C 与 R1 opaque Player / Lead Person hierarchy 已完成。下一批进入 UX11-P0，再严格按 P1 → P2、UX11-D、UX11-E 决策、UX11-H 收尾；Release Gate 仍未授权。
 - 审阅分支：[codex/komatsu36-project-archive](https://github.com/windmet/folio/tree/codex/komatsu36-project-archive)
 - 专题路由：`/projects/komatsu36/`
 - Visual QA 与编辑审计：`docs/qa/komatsu36-rc08/`
