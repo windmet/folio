@@ -34,8 +34,10 @@ jobs:
       - name: Audit production dependency surface
         run: npm audit --omit=dev
 
-      - name: Run TypeScript check
-        run: npm exec -- tsc --noEmit
-
       - name: Run repository validation
         run: npm run validate
+
+      # Astro generates the `astro:content` declarations during the build
+      # included in repository validation; run tsc only after that generation.
+      - name: Run TypeScript check
+        run: npm exec -- tsc --noEmit
