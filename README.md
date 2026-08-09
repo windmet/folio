@@ -4,7 +4,7 @@
 
 ## 当前检查点
 
-- Komatsu36：RC 0.10 已完成本地验收；RC 0.11 的 UX11-A / B 已提交为 `effa314`，UX11-C Desktop Player Context Rail 已完成本地实现与浏览器验收。下一阶段仍优先处理 UX11-P Static Payload Pass，但它只治理 Source Event Index / Search 的初始重复 DOM，不阻塞或裁减已验收的 Rail 功能；Release Gate 仍未授权。
+- Komatsu36：RC 0.10 已完成本地验收；RC 0.11 的 UX11-A / B 已提交为 `effa314`，UX11-C Desktop Player Context Rail 已在 review branch 的 `1162ba2` 完成。下一批先修 opaque Player 与 Lead Person 层级，再严格按 UX11-P0 → P1 → P2、UX11-D、UX11-E 决策、UX11-H 收尾；Release Gate 仍未授权。
 - 审阅分支：[codex/komatsu36-project-archive](https://github.com/windmet/folio/tree/codex/komatsu36-project-archive)
 - 专题路由：`/projects/komatsu36/`
 - Visual QA 与编辑审计：`docs/qa/komatsu36-rc08/`
@@ -12,6 +12,7 @@
 - RC 0.10 编辑体验规格：`docs/editorial/komatsu36-editorial-experience-pass.md`
 - RC 0.11 导航与视觉层级规格：`docs/editorial/komatsu36-archive-navigation-pass.md`
 - RC 0.11 静态 payload 实施规格：`docs/editorial/komatsu36-static-payload-pass.md`
+- RC 0.11 分批收尾 Runbook：`docs/editorial/komatsu36-rc11-closeout-runbook.md`
 - Reader Copy 自动候选：`docs/editorial/komatsu36-reader-copy-candidates.generated.md`
 - Reader Copy 人工裁决：`docs/editorial/komatsu36-reader-copy-decisions.yml`
 - Cloudflare Pages provision / 首次部署清单：`docs/cloudflare-pages-release-checklist.md`

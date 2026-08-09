@@ -1,8 +1,8 @@
 # Komatsu36 RC 0.11 Static Payload Pass 实施规格
 
-> 状态：AUDIT COMPLETE / NEXT IMPLEMENTATION
+> 状态：SPEC AUDIT COMPLETE / QUEUED AFTER UX11-C1 + UX11-A1
 > 优先级：P0，独立工程治理；不阻塞或裁减已完成的 UX11-C
-> 审计基线：`effa314`；UX11-C 完整实现后的 publication 基线：353,913 bytes
+> 审计基线：`effa314`；review branch `1162ba2` 的当前 publication 基线：353,913 bytes
 > 范围：只治理初始 HTML 中的工具型重复投影；不拆 Timeline、Thread、Person，不改变内容 schema、URL schema、媒体能力或发布状态。
 
 ## 1. 结论
@@ -40,7 +40,7 @@ Player / Controller 必需状态
 | Controller JSON | 22,090 raw bytes | 运行时必需；不是当前第一减重目标 |
 | 近似 opening tags | 5,037 | 仅作趋势指标，不冒充完整 DOM node count |
 
-UX11-C 完整实现（四枚 Rail 标签、Act jump、Thread 0 / 1 / many、左向菜单、原链、到达反馈、compact desktop 与 mobile fallback）后的 publication raw 为 353,913 bytes，比 `effa314` 增加 1,372 bytes，门禁仍余 4,487 bytes。该值是当前功能基线，不是要求 UI 继续压缩的理由。
+UX11-C 完整实现（四枚 Rail 标签、Act jump、Thread 0 / 1 / many、左向菜单、原链、到达反馈、compact desktop 与 mobile fallback）在 review branch `1162ba2` 的 publication raw 为 353,913 bytes，Gzip 为 69,117 bytes，Brotli quality 11 为 35,598 bytes；比 `effa314` 增加 1,372 raw bytes，门禁仍余 4,487 bytes。该值是当前功能基线，不是要求 UI 继续压缩的理由。
 
 两个工具型 section 毛体积合计 98,328 bytes，约占当前 raw HTML 的 27.9%。这证明优先级应提升，但实施后的净节省必须由新 audit 重测，不能直接把 98,328 bytes 当作承诺值。
 
@@ -70,9 +70,11 @@ UX11-C 完整实现（四枚 Rail 标签、Act jump、Thread 0 / 1 / many、左�
 | Controller 增加全量 Act 字段 | 当前 controller 仅 22,090 bytes；YT Act 已从 Timeline DOM 派生，没有序列化 `actId/order/title` | **不采纳**：这是过时假设，继续避免重复 Act 文案 |
 | 立即改为 350 target / 450 hard cap | 当前仍低于 350 KiB，且两项便宜减重尚未实施 | **暂不采纳**：迁移完成前保留现有 350 KiB hard gate；用数据决定是否需要双层门禁 |
 | UX11-A/B 尚未提交 | 已提交为 `effa314` | **过时** |
-| 主开发文档顶部落后 | 顶部仍写 RC 0.10 Reader Pass 待实施 | **采纳，立即修文档** |
+| 主开发文档顶部落后 | 旧审阅时曾停留在 RC 0.10；当前已切到 RC 0.11 并引用分批收尾 Runbook | **已完成** |
 
 ## 4. 实施顺序与提交边界
+
+本规格的三批在 UX11-C1 / UX11-A1 视觉层级小修完成后立即执行，并严格保持 P0 → P1 → P2。跨批进入条件、提交 / push 规则、UX11-D～H 与 Release Gate 收尾见 `komatsu36-rc11-closeout-runbook.md`。
 
 ### UX11-P0 — Payload audit instrumentation
 
