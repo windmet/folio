@@ -40,7 +40,7 @@ npm exec -- tsc --noEmit                 PASS
 git diff --check                         PASS
 ```
 
-最新产物：raw HTML `291,352` bytes；Gzip `50,579`；Brotli `32,005`；350 KiB hard gate 余量 `67,048`。publication validator 通过 `12` 个 RC12-B2 expandable title contracts、`3` 个 RC12-E timeline scopes、`124` 个 controller Event records、三 track native-clock projection 和 private-marker gate；scope button 的 native `type=button`、`aria-pressed`、`aria-controls`、`aria-label` 合同也由静态门禁校验。
+最新产物：raw HTML `291,492` bytes；Gzip `50,600`；Brotli `31,995`；350 KiB hard gate 余量 `66,908`。publication validator 通过 `12` 个 RC12-B2 expandable title contracts、`3` 个 RC12-E timeline scopes、`124` 个 controller Event records、三 track native-clock projection 和 private-marker gate；scope button 的 native `type=button`、`aria-pressed`、`aria-controls`、`aria-label` 合同，以及 panel 的 `aria-hidden`／`aria-labelledby` 和动态描述的 `aria-live=polite` 合同也由静态门禁校验。
 
 ## 未执行与产品停点
 

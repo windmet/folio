@@ -279,6 +279,18 @@ const timelineScopePanelIds = new Set(
     .map((match) => readAttribute(match[0], 'id'))
     .filter(Boolean),
 );
+const timelineScopePanelTags = [...html.matchAll(/<[^>]*data-timeline-scope-panel="[^"]+"[^>]*>/g)]
+  .map((match) => match[0]);
+const htmlIds = new Set([...html.matchAll(/\sid="([^"]+)"/g)].map((match) => match[1]));
+for (const tag of timelineScopePanelTags) {
+  const key = readAttribute(tag, 'data-timeline-scope-panel');
+  const labelledBy = readAttribute(tag, 'aria-labelledby');
+  const hidden = readAttribute(tag, 'aria-hidden');
+  const expectedHidden = key === expectedTimelineTrackIds[0] ? 'false' : 'true';
+  if (!['true', 'false'].includes(hidden || '')) errors.push(`RC12-E panel ${key || '(missing)'} must expose aria-hidden`);
+  else if (hidden !== expectedHidden) errors.push(`RC12-E panel ${key || '(missing)'} has unexpected initial aria-hidden=${hidden}`);
+  if (!labelledBy || !htmlIds.has(labelledBy)) errors.push(`RC12-E panel ${key || '(missing)'} has invalid aria-labelledby`);
+}
 const timelineScopeButtonTags = [...html.matchAll(/<button[^>]*data-timeline-scope-button="[^"]+"[^>]*>/g)]
   .map((match) => match[0]);
 for (const tag of timelineScopeButtonTags) {
@@ -288,6 +300,10 @@ for (const tag of timelineScopeButtonTags) {
   if (!['true', 'false'].includes(readAttribute(tag, 'aria-pressed') || '')) errors.push(`RC12-E scope ${key || '(missing)'} must expose aria-pressed`);
   if (!controls || !timelineScopePanelIds.has(controls)) errors.push(`RC12-E scope ${key || '(missing)'} has invalid aria-controls`);
   if (!readAttribute(tag, 'aria-label')) errors.push(`RC12-E scope ${key || '(missing)'} is missing an accessible label`);
+}
+const timelineScopeDescriptionTag = html.match(/<p[^>]*data-timeline-scope-description[^>]*>/)?.[0];
+if (!timelineScopeDescriptionTag || readAttribute(timelineScopeDescriptionTag, 'aria-live') !== 'polite') {
+  errors.push('RC12-E scope description must expose aria-live=polite');
 }
 
 const forbiddenPublicationMarkers = [

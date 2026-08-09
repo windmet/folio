@@ -212,13 +212,13 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       <section class="project-view timeline-view" data-view-panel="timeline" hidden>
         <div class="view-heading">
           <span class="archive-kicker">CHRONOLOGICAL CANON · SOURCE-LOCAL CLOCKS</span>
-          <h2>Timeline</h2>
+          <h2 id="timeline-view-title">Timeline</h2>
           <p>选择一个来源查看其独立本地时钟。YouTube 保留八个 Act 主线，X Space 使用各自的事件列表，不把现场时钟硬拼在一起。</p>
         </div>
         <div class="timeline-scope" data-timeline-scope>
           <div class="timeline-scope__heading">
             <span class="archive-kicker">TIMELINE SCOPE</span>
-            <p data-timeline-scope-description>按来源切换；所有时间均保持原始媒体的 native clock。</p>
+            <p data-timeline-scope-description aria-live="polite">按来源切换；所有时间均保持原始媒体的 native clock。</p>
           </div>
           <div class="timeline-scope__buttons" role="group" aria-label="Timeline 来源范围">
             {orderedTimelineTracks.map((track) => {
@@ -241,7 +241,12 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
             })}
           </div>
         </div>
-        <div id={`timeline-scope-panel-${defaultTimelineTrackId}`} data-timeline-scope-panel={defaultTimelineTrackId}>
+        <div
+          id={`timeline-scope-panel-${defaultTimelineTrackId}`}
+          data-timeline-scope-panel={defaultTimelineTrackId}
+          aria-labelledby="timeline-view-title"
+          aria-hidden="false"
+        >
           <TimelineNavigator acts={orderedActs} />
           {orderedActs.map((act) => (
             <ActSection act={act} events={eventsForAct(act.id)} peopleById={peopleById} threadsByEvent={threadsByEvent} />
@@ -741,7 +746,9 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       const scope = this.data.tracks[trackId] ? trackId : this.data.defaultTrackId;
       this.timelineScopeId = scope;
       this.querySelectorAll<HTMLElement>('[data-timeline-scope-panel]').forEach((panel) => {
-        panel.hidden = panel.dataset.timelineScopePanel !== scope;
+        const isActive = panel.dataset.timelineScopePanel === scope;
+        panel.hidden = !isActive;
+        panel.setAttribute('aria-hidden', String(!isActive));
       });
       this.querySelectorAll<HTMLElement>('[data-timeline-scope-button]').forEach((button) => {
         button.setAttribute('aria-pressed', String(button.dataset.timelineScopeButton === scope));

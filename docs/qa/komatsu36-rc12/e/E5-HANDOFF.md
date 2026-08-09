@@ -15,7 +15,7 @@
 | Timeline scope | YT／SP1／SP2 三个 native-clock scope；YT 保留 8 Act／104 Event；SP1 8 Event；SP2 12 Event | `ProjectArchiveShell.astro`、`SourceTimeline.astro`、publication validator |
 | URL/history | 无 Event 时 `track` 表示 scope；有 Event 时 Event id 权威推导 track；Back／Forward 恢复 scope 与 selected Event | Browser 直链、Back／Forward |
 | External boundary | SP1／SP2 不创建伪播放器或 iframe；现有单一 player mount 不因切换 scope 增加 | Browser mount/iframe 计数 |
-| Accessibility contract | scope 控件是 native `button`，带 `aria-pressed`、有效 `aria-controls` 和 `aria-label`；focus-visible 保留可见焦点环 | `scripts/validate-publication.mjs`、CSS 计算样式 |
+| Accessibility contract | scope 控件是 native `button`，带 `aria-pressed`、有效 `aria-controls` 和 `aria-label`；panel 同步 `aria-hidden`／`aria-labelledby`，scope 描述使用 `aria-live=polite`；focus-visible 保留可见焦点环 | `scripts/validate-publication.mjs`、CSS 计算样式 |
 | Source-local time | SP1／SP2 显示各自 `NATIVE CLOCK`、独立 duration 和本地事件时间，不换算到 YT 轴 | SourceTimeline header 与首项时间 |
 
 ## 2. E5 Browser 回归记录
@@ -46,7 +46,7 @@ npm exec -- tsc --noEmit                 PASS
 git diff --check                         PASS
 ```
 
-当前产物指标：raw HTML `291,352` bytes；Gzip `50,579`；Brotli `32,005`；350 KiB hard gate 余量 `67,048`；publication validator 通过 `3` 个 RC12-E scope、`124` 个 controller Event records 和三 track native-clock projection。
+当前产物指标：raw HTML `291,492` bytes；Gzip `50,600`；Brotli `31,995`；350 KiB hard gate 余量 `66,908`；publication validator 通过 `3` 个 RC12-E scope、`124` 个 controller Event records 和三 track native-clock projection。
 
 ## 4. 尚未关闭的停点
 

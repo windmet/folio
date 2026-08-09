@@ -895,7 +895,7 @@ Media Pass、RC 0.9 Structural Editorial Audit、RC 0.10 Reader & Entity Editori
 | Media platform pictograms | **RC12-D2 + F2 已完成源码与 Browser QA**：X Space 圆形声场图标、Source card 平台／状态／动作三层；1366px／390px 无横向溢出，SP2 selection、`?track=`、Source Event Index 和 Event 深链已复测。证据见 `docs/qa/komatsu36-rc12/d2/README.md` 与 F2 handoff |
 | Expandable text | **RC12-B2 + F2 已完成源码与 Browser QA**：Target / Context 原机制保留；220px stress 已真实验证 Source title 展开／收起、ARIA、clamp、URL 与 overflow；Act title／Timeline current title 当前 fixture 未触发点击分支，仍保留 `TODO consumer-check`。证据见 `docs/qa/komatsu36-rc12/b2/README.md` 与 F2 handoff |
 | Source-scoped Timeline | **RC12-E E1–E3 已完成源码与 Browser QA；E4/E5 已形成工程回归交接草案**：YT 8 Act／104 Event 保留；SP1 8、SP2 12 各自使用 native local clock 与 source-local Event projection；scope URL、YT／SP1 Event 深链、Back／Forward、SP2 直链刷新、external no-iframe、single mount、focus indicator 和 390px overflow 已复测。键盘激活与产品停点仍待继续。证据见 `docs/qa/komatsu36-rc12/e/README.md` 与 `docs/qa/komatsu36-rc12/e/E5-HANDOFF.md` |
-| Initial HTML payload | **RC12-E 已复测**：raw `291,352`、Gzip `50,579`、Brotli `32,005`，350 KiB hard gate 余量 `67,048`；初始 Source / Search buttons 仍为 0，Search 项、124 controller Event records 和三 track projection 通过；本轮未以减重名义删除 Rail 或 reader-facing 数据 |
+| Initial HTML payload | **RC12-E 已复测**：raw `291,492`、Gzip `50,600`、Brotli `31,995`，350 KiB hard gate 余量 `66,908`；初始 Source / Search buttons 仍为 0，Search 项、124 controller Event records 和三 track projection 通过；本轮未以减重名义删除 Rail 或 reader-facing 数据 |
 | Reader-facing copy | **RC 0.10 已完成**：52/52 decisions、full reader pass 与 publication leakage gate 已通过 |
 | External context 首样本 | **RC 0.10 已完成**：仲村烧肉 Post 已作为 related source 插入 Thread，不成为 Event 或静态 Post 镜像 |
 

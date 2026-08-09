@@ -239,6 +239,6 @@ F2 交接与精确证据见 `docs/editorial/komatsu36-rc12-f2-final-regression-h
 
 ## 14. RC12-E E4/E5 工程回归交接
 
-E4 已修复 scope button 的可见焦点环，并由静态合同与本地 Browser 计算样式复核；E5 已补做 YT Event 深链、SP1 Event Back／Forward、SP2 直链刷新、single player mount invariant、页面 console 与 overflow 检查。完整证据、当前 payload 和未执行边界见 `docs/qa/komatsu36-rc12/e/E5-HANDOFF.md`。
+E4 已修复 scope button 的可见焦点环，并补上 panel `aria-hidden`／`aria-labelledby` 与动态 scope 描述 `aria-live=polite`，由静态合同和本地 Browser 计算样式复核；E5 已补做 YT Event 深链、SP1 Event Back／Forward、SP2 直链刷新、single player mount invariant、页面 console 与 overflow 检查。完整证据、当前 payload 和未执行边界见 `docs/qa/komatsu36-rc12/e/E5-HANDOFF.md`。
 
 这只是 `SOURCE-VERIFIED` + `BROWSER-VERIFIED` 的工程交接草案，不是 `PRODUCT-ACCEPTED`。Browser surface 的 Enter／Space 激活消费尚未得到可靠证据，390px 人工信息层级、事件密度和键盘使用感受仍需产品停点确认。
