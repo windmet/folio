@@ -73,8 +73,6 @@ const eventItems = fs.readdirSync(eventDir)
     || a.data.startMs - b.data.startMs
     || a.id.localeCompare(b.id)
   ));
-const eventCandidates = eventItems.filter((item) => item.flags.length > 0);
-
 const threadDir = path.join(projectRoot, 'threads');
 const threadItems = fs.readdirSync(threadDir)
   .filter((name) => name.endsWith('.md'))
@@ -91,8 +89,6 @@ const threadItems = fs.readdirSync(threadDir)
       flags: matchesByGroup(searchable),
     };
   });
-const threadCandidates = threadItems.filter((item) => item.flags.length > 0);
-
 const decisionDocument = fs.existsSync(decisionsPath)
   ? YAML.parse(fs.readFileSync(decisionsPath, 'utf8'))
   : { version: 1, decisions: {} };
@@ -100,8 +96,8 @@ if (decisionDocument?.version !== 1 || !decisionDocument?.decisions || typeof de
   throw new Error(`Invalid decisions document: ${decisionsPath}`);
 }
 const decisions = decisionDocument.decisions || {};
-const candidateIds = new Set([...eventCandidates, ...threadCandidates].map((item) => item.id));
-const unknownDecisionIds = Object.keys(decisions).filter((id) => !candidateIds.has(id));
+const knownIds = new Set([...eventItems, ...threadItems].map((item) => item.id));
+const unknownDecisionIds = Object.keys(decisions).filter((id) => !knownIds.has(id));
 if (unknownDecisionIds.length > 0) {
   throw new Error(`Decisions reference non-candidates: ${unknownDecisionIds.join(', ')}`);
 }
@@ -115,6 +111,12 @@ for (const [id, decision] of Object.entries(decisions)) {
     throw new Error(`${id}: invalid readerNoteAction ${decision.readerNoteAction}`);
   }
 }
+
+// Keep a resolved candidate in the generated ledger even when its approved
+// copy no longer matches the scanner. This makes decisions durable across a
+// successful rewrite while still rejecting IDs that do not exist in content.
+const eventCandidates = eventItems.filter((item) => item.flags.length > 0 || Object.hasOwn(decisions, item.id));
+const threadCandidates = threadItems.filter((item) => item.flags.length > 0 || Object.hasOwn(decisions, item.id));
 
 const project = readJson(path.join(projectRoot, 'project.json'));
 const lines = [
@@ -152,7 +154,7 @@ eventCandidates.forEach((item, index) => {
     '',
     `- Track / Time: ${trackLabels.get(item.data.track) || item.data.track} ${item.data.timingStatus === 'approximate' ? '≈' : ''}${formatTime(item.data.startMs)}`,
     `- Status: \`${item.data.publicationStatus}\``,
-    `- Flags: ${item.flags.map((flag) => `\`${flag}\``).join(', ')}`,
+    `- Flags: ${(item.flags.length > 0 ? item.flags : ['resolved-decision']).map((flag) => `\`${flag}\``).join(', ')}`,
     `- Source pointer: \`src/content/projects/komatsu36/events/${item.name}\``,
     '',
     '**CURRENT TITLE**',
@@ -190,7 +192,7 @@ threadCandidates.forEach((item, index) => {
   lines.push(
     `### RCOPY-${number} · ${item.id}`,
     '',
-    `- Flags: ${item.flags.map((flag) => `\`${flag}\``).join(', ')}`,
+    `- Flags: ${(item.flags.length > 0 ? item.flags : ['resolved-decision']).map((flag) => `\`${flag}\``).join(', ')}`,
     `- Source pointer: \`src/content/projects/komatsu36/threads/${item.name}\``,
     '',
     '**CURRENT DECK**',

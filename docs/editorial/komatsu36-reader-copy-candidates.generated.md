@@ -17,7 +17,7 @@
 
 - Event candidates: 43
 - Thread candidates: 9
-- Recorded decisions: 12
+- Recorded decisions: 28
 - 扫描词组：`evidence-language`、`editorial-meta-language`、`technical-language`；完整词表以生成脚本为准。
 
 ## Event candidates
@@ -415,9 +415,9 @@ BayStars 毛巾的品类与礼物动机已解决；具体商品、球员和款�
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: 礼物品类与动机已经足够支撑事件，具体商品限制不影响读者理解。
 
 **APPROVED REPLACEMENT**
 
@@ -446,9 +446,9 @@ BayStars 毛巾的品类与礼物动机已解决；具体商品、球员和款�
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: 蜡烛与收拾房间的现场玩笑已是完整读者摘要，品牌不确定性留在内部说明。
 
 **APPROVED REPLACEMENT**
 
@@ -460,7 +460,7 @@ BayStars 毛巾的品类与礼物动机已解决；具体商品、球员和款�
 
 - Track / Time: YT ≈02:05:55
 - Status: `verified`
-- Flags: `technical-language`
+- Flags: `resolved-decision`
 - Source pointer: `src/content/projects/komatsu36/events/yt-020555-uchida-call-announced.json`
 
 **CURRENT TITLE**
@@ -469,7 +469,7 @@ BayStars 毛巾的品类与礼物动机已解决；具体商品、球员和款�
 
 **CURRENT SUMMARY**
 
-小松收到个人联络后离开主区处理电话与 Space，主直播和另一轨道开始分流。
+小松收到个人联络后离开主区处理电话与 Space，主直播与电话另一边开始分开推进。
 
 **CURRENT QUALIFICATION**
 
@@ -477,14 +477,14 @@ BayStars 毛巾的品类与礼物动机已解决；具体商品、球员和款�
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `rewrite`
+- Reader note action: `none`
+- Editorial note: 将另一轨道替换为读者可理解的电话另一边，保留分流事实。
 
 **APPROVED REPLACEMENT**
 
 - New title: —
-- New summary: —
+- New summary: 小松收到个人联络后离开主区处理电话与 Space，主直播与电话另一边开始分开推进。
 - Reader note: —
 
 ### RCOPY-016 · yt-021540-milk-wordplay
@@ -508,9 +508,9 @@ M!LK 点歌被继续改成饮酒口令
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: 不发布逐字口令不妨碍读者理解歌曲被改成饮酒玩笑。
 
 **APPROVED REPLACEMENT**
 
@@ -539,9 +539,9 @@ M!LK 点歌被继续改成饮酒口令
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: 2900 作为现场当时的口头规模已在摘要中限定为观看现场，不冒充最终统计。
 
 **APPROVED REPLACEMENT**
 
@@ -570,9 +570,9 @@ M!LK 点歌被继续改成饮酒口令
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: 现有摘要自然说明誠如何从符号变成人物选择。
 
 **APPROVED REPLACEMENT**
 
@@ -601,9 +601,9 @@ M!LK 点歌被继续改成饮酒口令
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: 事件级离席摘要足够，未把未核实的逐字桥段写入正文。
 
 **APPROVED REPLACEMENT**
 
@@ -632,9 +632,9 @@ M!LK 点歌被继续改成饮酒口令
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: 现有摘要保留俳句构造和喜剧线，不需要完整逐字稿。
 
 **APPROVED REPLACEMENT**
 
@@ -663,9 +663,9 @@ M!LK 点歌被继续改成饮酒口令
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: 动作机制、投诉与歯白っ的闭环已经清楚，法证级逐字限制不属于读者说明。
 
 **APPROVED REPLACEMENT**
 
@@ -694,9 +694,9 @@ M!LK 点歌被继续改成饮酒口令
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: 后到来宾带出的连续小线已清楚，canonical 只存在于内部定位。
 
 **APPROVED REPLACEMENT**
 
@@ -725,9 +725,9 @@ M!LK 点歌被继续改成饮酒口令
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: 标题与摘要描述的是复盘入口，事故原始发生时刻的区别留在内部资格说明。
 
 **APPROVED REPLACEMENT**
 
@@ -756,9 +756,9 @@ M!LK 点歌被继续改成饮酒口令
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: 同步感和观众误以为是演出的笑点已经完整。
 
 **APPROVED REPLACEMENT**
 
@@ -787,9 +787,9 @@ M!LK 点歌被继续改成饮酒口令
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: 本与台本的重叠及即兴吸收已足够说明事件，不合并逐字版本。
 
 **APPROVED REPLACEMENT**
 
@@ -818,9 +818,9 @@ M!LK 点歌被继续改成饮酒口令
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: 文案明确区分腰伤时序与芝居效果，没有倒因为果。
 
 **APPROVED REPLACEMENT**
 
@@ -849,9 +849,9 @@ Opening 结构和选择理由已锁定；投稿第一句中一个名词仍不稳
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: Opening 的完整结构和选择理由可直接面向读者，投稿首句不影响理解。
 
 **APPROVED REPLACEMENT**
 
@@ -872,7 +872,7 @@ Opening 结构和选择理由已锁定；投稿第一句中一个名词仍不稳
 
 **CURRENT SUMMARY**
 
-汐谷查流派后提出血振り，并在双 cast 之间共享研究；制作锁定后最终只采用这一部分。
+汐谷查流派后提出血振り，并在两位演员之间共享研究；制作讨论最后把这一动作留在正式演出中。
 
 **CURRENT QUALIFICATION**
 
@@ -880,14 +880,14 @@ Opening 结构和选择理由已锁定；投稿第一句中一个名词仍不稳
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `rewrite`
+- Reader note action: `none`
+- Editorial note: 把制作锁定替换为制作讨论最后保留，避免把编辑流程词带给读者。
 
 **APPROVED REPLACEMENT**
 
 - New title: —
-- New summary: —
+- New summary: 汐谷查流派后提出血振り，并在两位演员之间共享研究；制作讨论最后把这一动作留在正式演出中。
 - Reader note: —
 
 ### RCOPY-029 · yt-034507-space-close-departure

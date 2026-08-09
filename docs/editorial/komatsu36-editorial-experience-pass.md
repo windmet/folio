@@ -183,7 +183,7 @@ komatsu36-reader-copy-decisions.yml            # 只由人工维护，生成器�
 npm run editorial:reader-copy
 ```
 
-生成器读取但绝不覆盖 decisions；输出中显示已记录决定。总 Event / Thread 数从目录实际派生，不硬编码 124 / 16；内部限定标记名为 `has-internal-qualification`，避免误称“当前一定可见”。对不存在的候选 ID、非法 action 或错误 decisions 版本立即失败。
+生成器读取但绝不覆盖 decisions；输出中显示已记录决定。总 Event / Thread 数从目录实际派生，不硬编码 124 / 16；内部限定标记名为 `has-internal-qualification`，避免误称“当前一定可见”。已经记录决定的条目即使改写后不再命中扫描词，也会以 `resolved-decision` 留在生成清单中；只有指向不存在 Event / Thread 的 ID 才是 stale ID。对不存在的候选 ID、非法 action 或错误 decisions 版本立即失败。
 
 Event 决策有两个独立维度：
 

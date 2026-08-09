@@ -70,3 +70,69 @@ decisions:
     copyAction: keep
     readerNoteAction: none
     note: "品牌和礼物细节的复核限制不改变主要事件，读者文案保持当前摘要。"
+  yt-020048-baystars-towel:
+    copyAction: keep
+    readerNoteAction: none
+    note: "礼物品类与动机已经足够支撑事件，具体商品限制不影响读者理解。"
+  yt-020445-candle-fire:
+    copyAction: keep
+    readerNoteAction: none
+    note: "蜡烛与收拾房间的现场玩笑已是完整读者摘要，品牌不确定性留在内部说明。"
+  yt-020555-uchida-call-announced:
+    copyAction: rewrite
+    readerNoteAction: none
+    newSummary: "小松收到个人联络后离开主区处理电话与 Space，主直播与电话另一边开始分开推进。"
+    note: "将另一轨道替换为读者可理解的电话另一边，保留分流事实。"
+  yt-021540-milk-wordplay:
+    copyAction: keep
+    readerNoteAction: none
+    note: "不发布逐字口令不妨碍读者理解歌曲被改成饮酒玩笑。"
+  yt-022240-public-drinking-pace:
+    copyAction: keep
+    readerNoteAction: none
+    note: "2900 作为现场当时的口头规模已在摘要中限定为观看现场，不冒充最终统计。"
+  yt-022700-makoto-theme:
+    copyAction: keep
+    readerNoteAction: none
+    note: "现有摘要自然说明誠如何从符号变成人物选择。"
+  yt-025037-kano-toilet:
+    copyAction: keep
+    readerNoteAction: none
+    note: "事件级离席摘要足够，未把未核实的逐字桥段写入正文。"
+  yt-025449-kano-haiku:
+    copyAction: keep
+    readerNoteAction: none
+    note: "现有摘要保留俳句构造和喜剧线，不需要完整逐字稿。"
+  yt-025829-hair-grab:
+    copyAction: keep
+    readerNoteAction: none
+    note: "动作机制、投诉与歯白っ的闭环已经清楚，法证级逐字限制不属于读者说明。"
+  yt-030202-yano-arrives:
+    copyAction: keep
+    readerNoteAction: none
+    note: "后到来宾带出的连续小线已清楚，canonical 只存在于内部定位。"
+  yt-031258-blade-accident-recount:
+    copyAction: keep
+    readerNoteAction: none
+    note: "标题与摘要描述的是复盘入口，事故原始发生时刻的区别留在内部资格说明。"
+  yt-031300-ryoma-line-callback:
+    copyAction: keep
+    readerNoteAction: none
+    note: "同步感和观众误以为是演出的笑点已经完整。"
+  yt-031615-book-improv:
+    copyAction: keep
+    readerNoteAction: none
+    note: "本与台本的重叠及即兴吸收已足够说明事件，不合并逐字版本。"
+  yt-032139-kano-back-pain:
+    copyAction: keep
+    readerNoteAction: none
+    note: "文案明确区分腰伤时序与芝居效果，没有倒因为果。"
+  yt-032828-seiten-opening:
+    copyAction: keep
+    readerNoteAction: none
+    note: "Opening 的完整结构和选择理由可直接面向读者，投稿首句不影响理解。"
+  yt-034011-blood-flick-research:
+    copyAction: rewrite
+    readerNoteAction: none
+    newSummary: "汐谷查流派后提出血振り，并在两位演员之间共享研究；制作讨论最后把这一动作留在正式演出中。"
+    note: "把制作锁定替换为制作讨论最后保留，避免把编辑流程词带给读者。"
