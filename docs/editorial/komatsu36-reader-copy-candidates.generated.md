@@ -17,7 +17,7 @@
 
 - Event candidates: 43
 - Thread candidates: 9
-- Recorded decisions: 0
+- Recorded decisions: 12
 - 扫描词组：`evidence-language`、`editorial-meta-language`、`technical-language`；完整词表以生成脚本为准。
 
 ## Event candidates
@@ -35,7 +35,7 @@
 
 **CURRENT SUMMARY**
 
-近五小时主直播由此进入可用时间轴；开场阶段以场地、技术与活动方式说明为主。
+近五小时主直播从这里开始，开场先介绍场地、技术和活动安排。
 
 **CURRENT QUALIFICATION**
 
@@ -43,14 +43,14 @@ canonical 只锁定为 00:01 左右，页面将其作为导航锚点，不主张
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `rewrite`
+- Reader note action: `none`
+- Editorial note: 把可用时间轴、canonical 和导航锚点留在内部资格说明，读者只需要知道节目从这里开始。
 
 **APPROVED REPLACEMENT**
 
 - New title: —
-- New summary: —
+- New summary: 近五小时主直播从这里开始，开场先介绍场地、技术和活动安排。
 - Reader note: —
 
 ### RCOPY-002 · yt-002044-first-space-return
@@ -66,7 +66,7 @@ canonical 只锁定为 00:01 左右，页面将其作为导航锚点，不主张
 
 **CURRENT SUMMARY**
 
-第一次跨平台往返结束，主持人回到主区；主直播与 Space 已被确立为会反复切换的两条现场轨。
+小松第一次离开 Space 后回到主直播；之后，主直播和 Space 会交替推进。
 
 **CURRENT QUALIFICATION**
 
@@ -74,14 +74,14 @@ canonical 只锁定为 00:01 左右，页面将其作为导航锚点，不主张
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `rewrite`
+- Reader note action: `none`
+- Editorial note: 用交替推进替代跨平台往返与现场轨，保留跨平台结构但移除工程术语。
 
 **APPROVED REPLACEMENT**
 
 - New title: —
-- New summary: —
+- New summary: 小松第一次离开 Space 后回到主直播；之后，主直播和 Space 会交替推进。
 - Reader note: —
 
 ### RCOPY-003 · yt-002541-second-space-departure
@@ -93,11 +93,11 @@ canonical 只锁定为 00:01 左右，页面将其作为导航锚点，不主张
 
 **CURRENT TITLE**
 
-小松再次离席，主直播进入长时间双轨
+小松再次离席，主直播与 Space 同时继续
 
 **CURRENT SUMMARY**
 
-小松第二次转入 Space；狩野、仲村与観世所在的 SP1 段落，与主直播现场各自推进。
+小松第二次转入 Space；狩野、仲村与観世所在的对话继续进行，主直播现场也没有停下。
 
 **CURRENT QUALIFICATION**
 
@@ -105,14 +105,14 @@ canonical 只锁定为 00:01 左右，页面将其作为导航锚点，不主张
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `rewrite`
+- Reader note action: `none`
+- Editorial note: 把双轨、并发标注与本地时钟换算留在内部资格说明，直接描述两个现场同时发生。
 
 **APPROVED REPLACEMENT**
 
-- New title: —
-- New summary: —
+- New title: 小松再次离席，主直播与 Space 同时继续
+- New summary: 小松第二次转入 Space；狩野、仲村与観世所在的对话继续进行，主直播现场也没有停下。
 - Reader note: —
 
 ### RCOPY-004 · yt-010711-first-guests-arrive
@@ -136,9 +136,9 @@ canonical 只锁定为 00:01 左右，页面将其作为导航锚点，不主张
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: 现有文案已能说明第一批来宾进入主区，限定只存在于内部资格说明。
 
 **APPROVED REPLACEMENT**
 
@@ -167,9 +167,9 @@ canonical 只锁定为 00:01 左右，页面将其作为导航锚点，不主张
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: 现有文案自然说明昼夜两位武市演员的关系。
 
 **APPROVED REPLACEMENT**
 
@@ -198,9 +198,9 @@ canonical 只锁定为 00:01 左右，页面将其作为导航锚点，不主张
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: 现有文案只保留回到主区及后续庆生段落，内部时间限定不向读者暴露。
 
 **APPROVED REPLACEMENT**
 
@@ -229,9 +229,9 @@ canonical 只锁定为 00:01 左右，页面将其作为导航锚点，不主张
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: 品牌和商品级不确定性不改变雪茄形巧克力这一事件理解。
 
 **APPROVED REPLACEMENT**
 
@@ -260,9 +260,9 @@ canonical 只锁定为 00:01 左右，页面将其作为导航锚点，不主张
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: 现有文案准确保留节目内的 34 円玩笑，没有把 J 扩写成正式单位。
 
 **APPROVED REPLACEMENT**
 
@@ -291,9 +291,9 @@ Big Dream 的夸张奖金想象一路滑向点高价酒；小松随后解释频�
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: 假设奖金和消费对话的限定保留在内部资格说明，读者文案已经是自然摘要。
 
 **APPROVED REPLACEMENT**
 
@@ -322,9 +322,9 @@ Big Dream 的夸张奖金想象一路滑向点高价酒；小松随后解释频�
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: 现有文案已经明确赛马与遗忘的关系是时序关联而非已证实因果。
 
 **APPROVED REPLACEMENT**
 
@@ -353,9 +353,9 @@ canonical 将约 01:55:25 起锁为批次到场；多人自我介绍重叠，不
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: 批次到场与自我介绍重叠属于内部定位限制，读者摘要本身无需改写。
 
 **APPROVED REPLACEMENT**
 
@@ -384,9 +384,9 @@ canonical 将约 01:55:25 起锁为批次到场；多人自我介绍重叠，不
 
 **RECORDED DECISION**
 
-- Copy action: `pending`
-- Reader note action: `pending`
-- Editorial note: —
+- Copy action: `keep`
+- Reader note action: `none`
+- Editorial note: 品牌和礼物细节的复核限制不改变主要事件，读者文案保持当前摘要。
 
 **APPROVED REPLACEMENT**
 

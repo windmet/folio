@@ -17,4 +17,56 @@ version: 1
 #     newBody: "Approved reader-facing body"
 #     note: "Remove editorial meta-language"
 
-decisions: {}
+decisions:
+  yt-000100-stream-start:
+    copyAction: rewrite
+    readerNoteAction: none
+    newSummary: "近五小时主直播从这里开始，开场先介绍场地、技术和活动安排。"
+    note: "把可用时间轴、canonical 和导航锚点留在内部资格说明，读者只需要知道节目从这里开始。"
+  yt-002044-first-space-return:
+    copyAction: rewrite
+    readerNoteAction: none
+    newSummary: "小松第一次离开 Space 后回到主直播；之后，主直播和 Space 会交替推进。"
+    note: "用交替推进替代跨平台往返与现场轨，保留跨平台结构但移除工程术语。"
+  yt-002541-second-space-departure:
+    copyAction: rewrite
+    readerNoteAction: none
+    newTitle: "小松再次离席，主直播与 Space 同时继续"
+    newSummary: "小松第二次转入 Space；狩野、仲村与観世所在的对话继续进行，主直播现场也没有停下。"
+    note: "把双轨、并发标注与本地时钟换算留在内部资格说明，直接描述两个现场同时发生。"
+  yt-010711-first-guests-arrive:
+    copyAction: keep
+    readerNoteAction: none
+    note: "现有文案已能说明第一批来宾进入主区，限定只存在于内部资格说明。"
+  yt-011036-terashima-arrives:
+    copyAction: keep
+    readerNoteAction: none
+    note: "现有文案自然说明昼夜两位武市演员的关系。"
+  yt-011311-host-returns:
+    copyAction: keep
+    readerNoteAction: none
+    note: "现有文案只保留回到主区及后续庆生段落，内部时间限定不向读者暴露。"
+  yt-012117-cigar-chocolate:
+    copyAction: keep
+    readerNoteAction: none
+    note: "品牌和商品级不确定性不改变雪茄形巧克力这一事件理解。"
+  yt-013800-thirty-four-yen:
+    copyAction: keep
+    readerNoteAction: none
+    note: "现有文案准确保留节目内的 34 円玩笑，没有把 J 扩写成正式单位。"
+  yt-013840-great-payback:
+    copyAction: keep
+    readerNoteAction: none
+    note: "假设奖金和消费对话的限定保留在内部资格说明，读者文案已经是自然摘要。"
+  yt-014822-race-interrupts:
+    copyAction: keep
+    readerNoteAction: none
+    note: "现有文案已经明确赛马与遗忘的关系是时序关联而非已证实因果。"
+  yt-015525-second-guests-arrive:
+    copyAction: keep
+    readerNoteAction: none
+    note: "批次到场与自我介绍重叠属于内部定位限制，读者摘要本身无需改写。"
+  yt-015910-tea-chatgpt:
+    copyAction: keep
+    readerNoteAction: none
+    note: "品牌和礼物细节的复核限制不改变主要事件，读者文案保持当前摘要。"
