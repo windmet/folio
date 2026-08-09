@@ -5,7 +5,7 @@
 ## Provision 前
 
 - [ ] 确认内容公开权、production URL 和正式发布意图。
-- [ ] 确认 GitHub 仓库 `windmet/folio` 与审阅分支 `codex/komatsu36-project-archive` 的 CI run 为 success（截至 2026-08-09 当前 HEAD `9e5f8ad`，run `31289343452` 已成功；后续以分支最新 run 为准）。
+- [ ] 确认 GitHub 仓库 `windmet/folio` 与审阅分支 `codex/komatsu36-project-archive` 的最新 CI run 为 success；至少应包含 `Install dependencies`、`Audit production dependency surface` 与 `Run repository validation` 三个成功步骤。
 - [ ] 在 Cloudflare Pages 创建或连接项目；候选项目名可使用 `megazine-blog`，但最终以 Cloudflare 控制台实际生成的 `*.pages.dev` 地址为准。
 - [ ] 生产分支设置为 `main`；`codex/*` 只作为 review / preview 分支，不直接代表 production。
 
@@ -30,4 +30,4 @@
 
 ## 当前已知状态
 
-截至 2026-08-09，候选 `https://megazine-blog.pages.dev` 在公共 DNS 返回 NXDOMAIN，GitHub deployments API 为 0，`origin/main` 尚未包含 Komatsu36。因此当前分支是可审阅的 RC，不是 production-accepted。
+截至 2026-08-09，最近一次已验证的 review HEAD 为 `0a496ac`，CI run `31289500331` 成功；候选 `https://megazine-blog.pages.dev` 在公共 DNS 返回 NXDOMAIN，GitHub deployments API 为 0，`origin/main` 尚未包含 Komatsu36。因此当前分支是可审阅的 RC，不是 production-accepted。后续提交后，以最新 CI run 替换这条快照证据。
