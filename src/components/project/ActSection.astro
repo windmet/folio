@@ -17,7 +17,13 @@ const formatTime = (milliseconds: number) => {
 };
 ---
 
-<section class="act-section" data-act={act.id.split('/').at(-1)}>
+<section
+  class="act-section"
+  data-act={act.id.split('/').at(-1)}
+  data-act-order={String(act.data.order)}
+  data-act-start-ms={String(act.data.startMs)}
+  data-act-end-ms={String(act.data.endMs)}
+>
   <header class="act-header" data-act-header tabindex="-1">
     <div class="act-number">
       <strong>ACT {String(act.data.order).padStart(2, '0')}</strong>

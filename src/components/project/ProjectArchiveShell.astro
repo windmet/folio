@@ -6,6 +6,7 @@ import ThreadPanel from './ThreadPanel.astro';
 import PersonPopover from './PersonPopover.astro';
 import ProjectSearch from './ProjectSearch.astro';
 import MediaSourceNavigator from './MediaSourceNavigator.astro';
+import TimelineNavigator from './TimelineNavigator.astro';
 import CastMatrix from './CastMatrix.astro';
 import PersonCard from './PersonCard.astro';
 import LeadPersonCard from './LeadPersonCard.astro';
@@ -199,6 +200,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
           <h2>Timeline</h2>
           <p>八个 Act 按 YouTube 主直播时间排列；Space 的相关段落请从 Storylines 查看，不把两个现场的时钟硬拼在一起。</p>
         </div>
+        <TimelineNavigator acts={orderedActs} />
         {orderedActs.map((act) => (
           <ActSection act={act} events={eventsForAct(act.id)} peopleById={peopleById} threadsByEvent={threadsByEvent} />
         ))}
@@ -386,6 +388,9 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     sourceEventListsBuilt = new Set<string>();
     contextFocusObserver: ResizeObserver | null = null;
     contextArrivalTimer: number | null = null;
+    timelineScrollScheduled = false;
+    timelineScrollHandler = () => this.scheduleTimelineNavigatorUpdate();
+    timelineResizeHandler = () => this.scheduleTimelineNavigatorUpdate();
 
     connectedCallback() {
       if (this.dataset.ready === 'true') return;
@@ -395,6 +400,9 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.data = JSON.parse(dataNode.textContent || '{}');
       this.activeTrackId = this.data.defaultTrackId;
       this.bindEvents();
+      window.addEventListener('scroll', this.timelineScrollHandler, { passive: true });
+      window.addEventListener('resize', this.timelineResizeHandler, { passive: true });
+      this.scheduleTimelineNavigatorUpdate();
       this.restoreFromUrl();
     }
 
@@ -402,11 +410,18 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.stopPlaybackSync();
       this.contextFocusObserver?.disconnect();
       if (this.contextArrivalTimer !== null) window.clearTimeout(this.contextArrivalTimer);
+      window.removeEventListener('scroll', this.timelineScrollHandler);
+      window.removeEventListener('resize', this.timelineResizeHandler);
     }
 
     bindEvents() {
       this.querySelectorAll<HTMLElement>('[data-view-button]').forEach((button) => {
         button.addEventListener('click', () => this.showView(button.dataset.viewButton || 'timeline', true));
+      });
+      this.querySelector<HTMLElement>('[data-timeline-navigator]')?.addEventListener('click', (event) => {
+        const target = event.target instanceof Element ? event.target : null;
+        const button = target?.closest<HTMLElement>('[data-timeline-navigator-segment]');
+        if (button) this.navigateToAct(button.dataset.timelineNavigatorSegment || '');
       });
       this.querySelectorAll<HTMLElement>('[data-event-seek]').forEach((button) => {
         button.addEventListener('click', () => this.selectEvent(button.dataset.eventSeek || '', true, true));
@@ -636,6 +651,68 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       if (focus) input?.focus({ preventScroll: true });
     }
 
+    getTimelineScrollOffset() {
+      const nav = this.querySelector<HTMLElement>('.project-nav');
+      const navigator = this.querySelector<HTMLElement>('[data-timeline-navigator]');
+      return (nav?.getBoundingClientRect().height || 0)
+        + (navigator?.getBoundingClientRect().height || 0)
+        + 16;
+    }
+
+    scheduleTimelineNavigatorUpdate() {
+      if (this.timelineScrollScheduled) return;
+      this.timelineScrollScheduled = true;
+      window.requestAnimationFrame(() => {
+        this.timelineScrollScheduled = false;
+        const nav = this.querySelector<HTMLElement>('.project-nav');
+        this.style.setProperty('--project-nav-height', `${Math.ceil(nav?.getBoundingClientRect().height || 68)}px`);
+        this.updateTimelineNavigator();
+      });
+    }
+
+    updateTimelineNavigator() {
+      const navigator = this.querySelector<HTMLElement>('[data-timeline-navigator]');
+      if (!navigator || this.activeView !== 'timeline') return;
+      const sections = [...this.querySelectorAll<HTMLElement>('[data-view-panel="timeline"] [data-act]')];
+      if (sections.length === 0) return;
+      const pivot = this.getTimelineScrollOffset() + 8;
+      let current = sections[0];
+      for (const section of sections) {
+        if (section.getBoundingClientRect().top <= pivot) current = section;
+        else break;
+      }
+      const order = Number(current.dataset.actOrder || 1);
+      const total = sections.length;
+      const startMs = Number(current.dataset.actStartMs || 0);
+      const endMs = Number(current.dataset.actEndMs || 0);
+      const title = current.querySelector<HTMLElement>('.act-header h2')?.textContent?.trim() || 'Timeline';
+      const label = navigator.querySelector<HTMLElement>('[data-timeline-navigator-current-label]');
+      const currentTitle = navigator.querySelector<HTMLElement>('[data-timeline-navigator-current-title]');
+      const currentTime = navigator.querySelector<HTMLElement>('[data-timeline-navigator-current-time]');
+      if (label) label.textContent = `ACT ${String(order).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
+      if (currentTitle) currentTitle.textContent = title;
+      if (currentTime) currentTime.textContent = `${this.formatArchiveTime(startMs)}–${this.formatArchiveTime(endMs)}`;
+      navigator.dataset.currentAct = current.dataset.act || '';
+      navigator.querySelectorAll<HTMLElement>('[data-timeline-navigator-segment]').forEach((button) => {
+        button.setAttribute('aria-current', button.dataset.timelineNavigatorSegment === current.dataset.act ? 'step' : 'false');
+      });
+    }
+
+    navigateToAct(actId: string) {
+      const section = this.querySelector<HTMLElement>(`[data-view-panel="timeline"] [data-act="${CSS.escape(actId)}"]`);
+      const header = section?.querySelector<HTMLElement>('[data-act-header]');
+      if (!section || !header) return;
+      this.closeSearch(false);
+      this.showView('timeline', false);
+      header.style.scrollMarginTop = `${Math.ceil(this.getTimelineScrollOffset())}px`;
+      header.scrollIntoView({
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+        block: 'start',
+      });
+      header.focus({ preventScroll: true });
+      this.scheduleTimelineNavigatorUpdate();
+    }
+
     showView(view: string, push: boolean) {
       const panel = this.querySelector(`[data-view-panel="${CSS.escape(view)}"]`);
       if (!panel) view = this.data.defaultView;
@@ -645,6 +722,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         button.setAttribute('aria-pressed', String(button.dataset.viewButton === view));
       });
       this.updatePlayerRailActiveState();
+      if (view === 'timeline') this.scheduleTimelineNavigatorUpdate();
       if (push) this.updateUrl();
     }
 
@@ -819,7 +897,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       const header = timelineTarget?.closest<HTMLElement>('[data-act]')?.querySelector<HTMLElement>('[data-act-header]');
       if (!header) return;
       const nav = this.querySelector<HTMLElement>('.project-nav');
-      const offset = (nav?.getBoundingClientRect().height || 0) + 16;
+      const offset = this.getTimelineScrollOffset();
       header.style.scrollMarginTop = `${Math.ceil(offset)}px`;
       header.scrollIntoView({ behavior: 'auto', block: 'start' });
       header.focus({ preventScroll: true });

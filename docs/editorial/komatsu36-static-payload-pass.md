@@ -1,8 +1,8 @@
 # Komatsu36 RC 0.11 Static Payload Pass 实施规格
 
-> 状态：P2 IMPLEMENTED / NEXT IMPLEMENTATION (UX11-D)
+> 状态：P2 IMPLEMENTED；UX11-D 已完成 / NEXT: UX11-E decision
 > 优先级：P0，独立工程治理；不阻塞或裁减已完成的 UX11-C
-> 审计基线：`effa314`；R4（P2）完成后的当前 publication 基线：257,893 bytes
+> 审计基线：`effa314`；R5（UX11-D）完成后的当前 publication 基线：261,080 bytes
 > 范围：只治理初始 HTML 中的工具型重复投影；不拆 Timeline、Thread、Person，不改变内容 schema、URL schema、媒体能力或发布状态。
 
 ## 1. 结论
@@ -74,7 +74,7 @@ UX11-C 完整实现叠加 R1（opaque Player + Lead Person hierarchy）后的 pu
 
 ## 4. 实施顺序与提交边界
 
-本规格的三批按 P0 → P1 → P2 执行，现已全部完成并各自独立提交。下一批转入 UX11-D；跨批进入条件、提交 / push 规则、UX11-D～H 与 Release Gate 收尾见 `komatsu36-rc11-closeout-runbook.md`。
+本规格的三批按 P0 → P1 → P2 执行，现已全部完成并各自独立提交；R5 UX11-D 也已完成。下一步转入 UX11-E 移动合同决策；跨批进入条件、提交 / push 规则、UX11-D～H 与 Release Gate 收尾见 `komatsu36-rc11-closeout-runbook.md`。
 
 ### UX11-P0 — Payload audit instrumentation
 

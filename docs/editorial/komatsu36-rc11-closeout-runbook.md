@@ -3,7 +3,8 @@
 > 状态：ACTIVE
 > 当前分支：`codex/komatsu36-project-archive`
 > 当前远端检查点：R4 当前提交；R4 已在 review branch 完成 Search JSON、lazy UI、构建与浏览器验收
-> 下一批：R5 — UX11-D Desktop proportional Timeline Navigator
+> 当前批次：R5 — UX11-D Desktop proportional Timeline Navigator
+> 下一批：R6 — UX11-E Mobile navigator 决策门
 > Release Gate：CLOSED；本 Runbook 只把 review branch 做到可审阅、可合并状态，不授权 merge 或 deploy。
 
 ## 1. 用途与权威顺序
@@ -26,7 +27,7 @@
 
 | 项目 | 权威证据 | 结论 |
 |---|---|---|
-| Review branch | 本地与 `origin/codex/komatsu36-project-archive` 均为 R4 当前提交 | UX11-C、R1、R2、R3 与 R4 不是仅本地状态，应称 **REVIEW BRANCH COMPLETE** |
+| Review branch | R4 已推送；R5 当前批次将在本轮完成提交 | UX11-C、R1、R2、R3 与 R4 已是 **REVIEW BRANCH COMPLETE**；R5 完成后再更新远端检查点 |
 | UX11-A / B | `effa314` | 已提交并保留既有回归合同 |
 | UX11-C | `PlayerContextRail.astro`、`ArchivePlayer.astro` import、`1162ba2` | 四标签、Act jump、Thread 0/1/N、原链、desktop compact 与 mobile fallback 已在远端分支 |
 | UX11-C1 | `.archive-player` 与 `.archive-player__context` 已改为实色 paper | 已实现并通过桌面 / 390px 样本验收 |
@@ -34,7 +35,7 @@
 | UX11-P0 | `scripts/audit-payload.mjs`、`package.json` `audit:payload`、R2 QA README | 已实现；固定输出 raw / gzip / brotli、投影计数与 bytes；dist 缺失 / 过期会明确失败 |
 | UX11-P1 | `MediaSourceNavigator.astro` 空 list host；Controller `ensureSourceEventIndex()`；publication controller coverage | 已实现；初始 Source Event buttons 为 0，首次展开按 `startMs → id` 生成并按页面生命周期缓存 |
 | UX11-P2 | `search.json` endpoint、Search shell、`ensureSearchIndex()`、P2 publication validator | 已实现；初始 Search items / `data-search-text` 为 0，静态 JSON 158 项，首次 focus/input 单次加载并按需生成结果 |
-| UX11-D | Timeline heading 后直接渲染 `orderedActs.map(...)` | 没有 Timeline Navigator，未开始 |
+| UX11-D | `TimelineNavigator.astro`、Act 时长比例、滚动 current Act 与 Act header jump | R5 已实现；等待本批 commit / push 后写入远端检查点 |
 
 ### 2.2 当前构建基线
 
@@ -42,10 +43,10 @@
 
 | 指标 | 当前值 |
 |---|---:|
-| Raw HTML | 257,893 bytes |
-| Gzip level 9 | 45,501 bytes |
-| Brotli quality 11 | 28,998 bytes |
-| 350 KiB hard gate 余量 | 100,507 bytes |
+| Raw HTML | 261,080 bytes |
+| Gzip level 9 | 46,163 bytes |
+| Brotli quality 11 | 29,420 bytes |
+| 350 KiB hard gate 余量 | 97,320 bytes |
 | Initial Search items / Search JSON items | 0 / 158 |
 | Source Event buttons | 0（Controller Event records 124） |
 | Search shell / Search JSON | 1,232 / 63,433 raw bytes |
@@ -82,7 +83,11 @@ R4 初始 HTML 不再包含 `data-search-item` 或 `data-search-text`；`/projec
 
 这些数字证明 Payload Pass 的优先级，但不构成删减 Rail、Timeline、Thread、Person 或人物层级的授权。实际净减量只能在 P1 / P2 后重测，不能把两个 section 的毛体积直接当作承诺值。
 
-### 2.6 新审阅裁决
+### 2.6 R5 Desktop Timeline Navigator 快照
+
+R5 在 Timeline heading 后、Act 正文前加入 8 段 Desktop Navigator。各段使用 Act `endMs - startMs` 的真实比例，第一行显示 current `ACT xx / 08`、标题和 YT 本地时间范围；滚动采样更新 current Act，点击只定位并聚焦 Act header，不写入 `?act=`。Navigator 在实际 Project Nav 高度下 sticky（桌面约 69px），只存在左内容列，不跨 Player column。1366×768、1440×900、1920×1080 均通过 8 段、target header 不被遮挡与页面 overflow `0`；390×844 按 UX11-E 边界隐藏，不叠加第三条 sticky bar。R5 raw `261,080`、Gzip `46,163`、Brotli `29,420`，余量 `97,320`。
+
+### 2.7 新审阅裁决
 
 | 审阅项 | 本地核对 | 裁决 |
 |---|---|---|
@@ -90,7 +95,7 @@ R4 初始 HTML 不再包含 `data-search-item` 或 `data-search-text`；`/projec
 | 小松缺少中心人物层级 | Lead 出现为 `00 HOST / BIRTHDAY`，`komatsu-shohei` 在 Cast / Production 保留，Birthday 普通 grid 不再出现 | **R1 已完成**：lead / Cast / Production 三处均回链同一 Person |
 | 小松应从所有后续分组移除 | Cast 与 Production 是角色、制作 credit 真值 | **不采纳**：只从普通 Birthday Live participant grid 排除；Cast 与 Production 保留 |
 | 以 Event 数自动选主角 | 出现次数不等于编辑中心 | **禁止**：使用 Komatsu36 presentation fixture 中唯一的 `leadPersonId = 'komatsu-shohei'`，不改 Person schema |
-| 立即开发 Timeline Navigator | 当前 hard-gate 余量 100,507 bytes，P2 已完成 | **进入**：按 R5 实施 UX11-D，继续重跑 audit / budget |
+| 立即开发 Timeline Navigator | 当前 hard-gate 余量 97,320 bytes，R5 已完成 | **转入 R6**：先比较移动端三案，不把桌面 Map 缩小后叠加到手机 |
 | Navigator 第一版加入 playhead | 阅读位置与媒体位置可能不同 | **不采纳到 UX11-D**：第一版只有 current Act + Act jump；playhead 保持 UX11-F 条件项 |
 
 ## 3. 全局批次规则
@@ -301,7 +306,7 @@ UX11-H 通过后：
 | R2 UX11-P0 | COMPLETE | R2 当前提交；audit JSON、构建与 stale/missing-dist 失败路径 | 进入 P1 |
 | R3 UX11-P1 | COMPLETE | R3 当前提交；初始 buttons 0、Controller 124；1440 / 1366 / 390 preview 验收 | 进入 P2 |
 | R4 UX11-P2 | COMPLETE | R4 当前提交；Search JSON 158 项、初始 Search DOM 0；Event / Thread / Person preview 验收 | 进入 UX11-D |
-| R5 UX11-D | PENDING | — | P2 新基线后开始 |
+| R5 UX11-D | COMPLETE | R5 QA README；8 段比例、current Act、Act jump、1366 / 1440 / 1920 preview | 进入 R6 移动合同裁决 |
 | R6/R7 UX11-E | PENDING DECISION | — | D 稳定后比较三案 |
 | R8 UX11-F | DEFERRED BY DEFAULT | — | 仅明确提级后启动 |
 | R8 UX11-G | CONDITIONAL | — | D/E 后以证据裁决 |

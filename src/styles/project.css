@@ -614,6 +614,94 @@ project-archive-shell {
   line-height: 1.9;
 }
 
+.timeline-navigator {
+  position: sticky;
+  top: var(--project-nav-height, 68px);
+  z-index: 12;
+  margin: -8px 0 44px;
+  padding: 14px 0 12px;
+  border-top: 1px solid var(--archive-line);
+  border-bottom: 1px solid var(--archive-line);
+  background: rgba(247, 244, 237, 0.97);
+  box-shadow: 0 8px 18px rgba(55, 47, 37, 0.06);
+  backdrop-filter: blur(14px);
+}
+
+.timeline-navigator__current {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 10px 16px;
+  align-items: baseline;
+}
+
+.timeline-navigator__current strong {
+  min-width: 0;
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.timeline-navigator__current > span:last-child {
+  color: var(--archive-muted);
+  font: 9px/1.4 ui-monospace, SFMono-Regular, Consolas, monospace;
+  white-space: nowrap;
+}
+
+.timeline-navigator__segments {
+  display: flex;
+  gap: 3px;
+  min-width: 0;
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.timeline-navigator__segments > li {
+  min-width: 0;
+  flex: var(--timeline-act-ratio) 1 0;
+}
+
+.timeline-navigator__segments button {
+  width: 100%;
+  min-width: 0;
+  min-height: 42px;
+  display: grid;
+  align-content: center;
+  gap: 4px;
+  padding: 7px 8px;
+  border: 1px solid var(--archive-line);
+  color: var(--archive-muted);
+  background: rgba(255, 255, 255, 0.32);
+  text-align: left;
+  cursor: pointer;
+}
+
+.timeline-navigator__segments button:hover,
+.timeline-navigator__segments button:focus-visible,
+.timeline-navigator__segments button[aria-current='step'] {
+  outline: 0;
+  border-color: var(--archive-red);
+  color: var(--archive-red);
+  background: var(--archive-red-soft);
+}
+
+.timeline-navigator__segments button > span {
+  font: 9px/1 ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: 0.05em;
+}
+
+.timeline-navigator__segments button > strong {
+  overflow: hidden;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .overview-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1862,6 +1950,10 @@ project-archive-shell {
 }
 
 @media (max-width: 900px) {
+  .timeline-navigator {
+    display: none;
+  }
+
   .project-workspace {
     grid-template-columns: 1fr;
   }

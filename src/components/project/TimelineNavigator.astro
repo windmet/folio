@@ -1,0 +1,48 @@
+---
+export interface Props {
+  acts: any[];
+}
+
+const { acts } = Astro.props;
+const formatTime = (milliseconds: number) => {
+  const total = Math.floor(milliseconds / 1000);
+  const parts = [Math.floor(total / 3600), Math.floor((total % 3600) / 60), total % 60];
+  return parts.map((part) => String(part).padStart(2, '0')).join(':');
+};
+const localActId = (act: any) => act.id.split('/').at(-1) || act.id;
+const firstAct = acts[0];
+const actTotal = acts.length;
+const totalDuration = acts.reduce((sum, act) => sum + Math.max(1, act.data.endMs - act.data.startMs), 0);
+---
+
+<nav class="timeline-navigator" aria-label="Timeline Acts" data-timeline-navigator>
+  <div class="timeline-navigator__current" aria-live="polite">
+    <span class="archive-kicker" data-timeline-navigator-current-label>
+      ACT {String(firstAct?.data.order || 1).padStart(2, '0')} / {String(actTotal).padStart(2, '0')}
+    </span>
+    <strong data-timeline-navigator-current-title>{firstAct?.data.title || 'Timeline'}</strong>
+    <span data-timeline-navigator-current-time>
+      {firstAct ? `${formatTime(firstAct.data.startMs)}–${formatTime(firstAct.data.endMs)}` : '—'}
+    </span>
+  </div>
+  <ol class="timeline-navigator__segments">
+    {acts.map((act) => {
+      const id = localActId(act);
+      const duration = Math.max(1, act.data.endMs - act.data.startMs);
+      const order = String(act.data.order).padStart(2, '0');
+      return (
+        <li style={`--timeline-act-ratio: ${duration / totalDuration};`}>
+          <button
+            type="button"
+            data-timeline-navigator-segment={id}
+            aria-current={act === firstAct ? 'step' : undefined}
+            aria-label={`跳转到 ACT ${order}：${act.data.title}`}
+          >
+            <span>A{order}</span>
+            <strong>{act.data.title}</strong>
+          </button>
+        </li>
+      );
+    })}
+  </ol>
+</nav>
