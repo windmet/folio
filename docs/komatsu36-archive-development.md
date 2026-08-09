@@ -11,7 +11,7 @@
 - Phase 0A 已落地：`data/source-sets/komatsu36-20260808-r1.json` 精确锁定 6 个 `复核md/` 带后缀输入，并由 `validate:sources` 校验路径、SHA-256、物理行数与 16 条 ARC；
 - Phase 1 垂直切片已落地：真实 `/projects/komatsu36/` 路由、集中状态控制器、YouTube 延迟加载与 pending seek、动态时间 fallback、Timeline、Thread、Person 和 URL 恢复均已实现；
 - Phase 2 已进入小批量补密：8 个 `editorialStatus: confirmed` Act、16 条 Thread、124 个代表性 Event、18 个 Person。K36-EVT-B01～B06 已覆盖 Bingo 主奖表、前后两批礼物、留守组副节目、换装回归、02:27–03:45《俺知》名场面复盘、04:14–04:55 卡拉 OK／Super Chat 并发与二次会散场，以及开场、360°形式、Space 往返、来宾批次和换场锚点；B04 同步补齐伊藤友紘与山本誠大的人物反向索引。16 条 Thread 是 canonical ARC 的首轮网页化，不表示每个源表行均已成为公开 Event；
-- `validate:projects` 现在要求 Thread 数与 manifest `arcCount` 一致、8 个主轨 Act 无缝覆盖完整时长、`threaded` Event 必须被至少一条 Thread 消费、`timeline-only` Event 不得伪装成 Thread 节点、Thread 不得泄露 `withheld` Event、人物不得成为孤儿引用、`qualified` Event 必须附限定说明；
+- `validate:projects` 现在要求 `defaultTrack` 有效且至少拥有一个 Act、Thread 数与 manifest `arcCount` 一致、8 个主轨 Act 无缝覆盖完整时长、`threaded` Event 必须被至少一条 Thread 消费、`timeline-only` Event 不得伪装成 Thread 节点、Thread 不得泄露 `withheld` Event、人物不得成为孤儿引用、`qualified` Event 必须附限定说明；
 - `ConcurrentLanes` 已以局部注记形式落地，只显示经确认的并发关系，并明确禁止将其消费为跨平台 offset；
 - Space 播放源决策已收口：用户提供的两条 X status 按创建时间与重开顺序映射为 SP1/SP2；页面只提供 canonical Space 外链，不重托管本地媒体，也不把 X 外链伪装成支持 timestamp seek；
 - 公开 Event / Thread / Person 的轻量站内检索已落地：索引只来自发布内容，结果顺序固定，Event 结果可恢复稳定深链并切换到正确 Track；不索引 Transcript 与 Chat；

@@ -80,6 +80,8 @@ for (const projectDir of projectDirs) {
   const mainActs = acts
     .filter(({ data }) => data.track === defaultTrackId)
     .sort((a, b) => a.data.order - b.data.order);
+  if (!defaultTrack) errors.push(`${projectId}: defaultTrack must reference a track in this project`);
+  if (!mainActs.length) errors.push(`${projectId}: defaultTrack must have at least one editorial act`);
   if (defaultTrack && mainActs.length) {
     if (mainActs[0].data.startMs !== 0) errors.push(`${projectId}: first main act must start at 0`);
     if (mainActs.at(-1).data.endMs !== defaultTrack.durationMs) {
