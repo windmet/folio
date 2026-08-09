@@ -1,6 +1,6 @@
 # 小松昌平 36 岁生日会 Project Archive 开发设计
 
-> 状态：RC 0.9（2026-08-09，发布层 Final Editorial Pass 完成，Release Gate 待确认）
+> 状态：RC 0.10（2026-08-09，RC 0.9 Structural Editorial Audit 完成；Reader & Entity Editorial Pass 待实施）
 > 目标：把一场多平台、多人物、长时、存在跨轨回收的活动做成可浏览、可追溯、可逐步发布的专题档案，而不是把工作稿直接塞进普通博客正文。
 > 当前源档根：`E:\AI_Subtitle_Studio\02_Projects\小松昌平生日会`（只通过 CLI 参数或 `KOMATSU36_SOURCE_ROOT` 提供）
 > 当前权威文档集：源档根下的 `复核md/` 带版本后缀文件；根目录同名无后缀文件是旧工作稿，不得自动选用。
@@ -21,8 +21,8 @@
 - 额外静态检查边界已实测：仓库自带 `tsc --noEmit` 通过；临时安装 `@astrojs/check` 后，`astro check` 会扫描生成的 `public/admin` bundle 并在约 4 GiB 堆上 OOM，因此未纳入 Release Gate，也不保留该临时依赖；
 - 依赖安全边界已收口：Astro `7.2.0`、MDX `7.0.5`、PostCSS `8.5.26` 等保留在构建依赖面；Tina CLI / runtime 只用于编辑器命令，已移入 `devDependencies`，`public/admin/` 继续忽略。2026-08-09 `npm audit --omit=dev` 为 0 vulnerabilities；完整 audit 的剩余项属于 Tina/GraphQL 等 dev-only 工具链，不执行无审查的 `audit fix --force`；
 - 首页已增加独立“专题档案”书架，只消费 `status: published` 的 Project，并显示由 collection 实时派生的 Event／Thread／Track 数量；专题不混入四类普通文章筛选；
-- 当前实现已完成 RC Media Pass：Hero 下方有常驻三来源栏，播放器有 Source Switcher，SP1/SP2 是 `video + external`，支持 `?track=`、Event 优先、Source Event Index、canonical Space CTA 与 provenance 链接；固定截图、本地 preview QA 与发布层 Final Editorial Pass 也已完成，尚未进入最终功能冻结，因为仍需 Release Gate 与发布意图确认；
-- 当前仍未完成：Release Gate。八张固定截图已保存于 `docs/qa/komatsu36-rc08/`，全量发布层编辑审计见 `docs/qa/komatsu36-rc08/EDITORIAL-AUDIT.md`；源档中的词级、商品、speaker、画面和账号身份 TODO 仍保持原边界，不阻塞 v1，但不得在后续编辑中猜测补齐。项目特例 validator 拆分延后到第二个 Project 接入前；Transcript 与 Evidence 是明确延后项，不阻塞 v1。不得因 16 条 Thread 已出现而误报为完整 Folio 愿景已经完成。
+- 当前实现已完成 RC Media Pass：Hero 下方有常驻三来源栏，播放器有 Source Switcher，SP1/SP2 是 `video + external`，支持 `?track=`、Event 优先、Source Event Index、canonical Space CTA 与 provenance 链接；固定截图、本地 preview QA 与 RC 0.9 Structural Editorial Audit 已完成。该审计证明结构、关系、顺序与限定没有漏项，不等于读者文案已经终审；
+- 当前仍未完成：RC 0.10 Reader & Entity Editorial Pass，以及其后的 Release Gate。详细合同见 `docs/editorial/komatsu36-editorial-experience-pass.md`，自动筛查／人工决策队列见 `docs/editorial/komatsu36-reader-copy-queue.md`。八张既有截图保存于 `docs/qa/komatsu36-rc08/`，结构性审计见 `docs/qa/komatsu36-rc08/EDITORIAL-AUDIT.md`；源档中的词级、商品、speaker、画面和账号身份 TODO 仍保持原边界，不得在后续编辑中猜测补齐。项目特例 validator 拆分延后到第二个 Project 接入前；Transcript 与 Evidence 是明确延后项，不阻塞 v1。不得因 16 条 Thread 已出现而误报为完整 Folio 愿景已经完成；
 - X Space inline replay 调查对本 RC 正式关闭：`STATUS: CLOSED FOR RC`，`RESULT: unavailable through verified public integration`，`FALLBACK: first-class external source`。除非 X 的公开产品能力发生变化并可对具体 URL 复测，否则不再调查 GraphQL 私有字段、内部 HLS、临时 token、Periscope 私有 endpoint 或 `media_key` 变换。
 
 上述数字是当前仓库快照，新增内容后必须以验证器和实际文件计数更新，不作为永久常量。
@@ -661,7 +661,7 @@ Tina 集成作为后续独立任务，只管理 Project 摘要、精选顺序等
 - 从 `main` 提炼 Event，不复制整段工作稿；
 - 将 canonical arcs 修正版的 16 条 ARC 迁移为分类 Thread；
 - 实现 People 聚合；
-- 加入 `qualified` 的限定显示；
+- 加入 `qualified` 的限定显示（历史实现；RC 0.10 将内部 `qualification` 与可选 `readerNote` 分离，不再把工程说明自动显示给读者）；
 - 实现 `ConcurrentLanes` 局部组件。
 
 退出条件：Event 无重复 ID，Thread 引用完整，主时间线可从头到尾浏览，普通文章构建无回归。
@@ -680,6 +680,16 @@ Tina 集成作为后续独立任务，只管理 Project 摘要、精选顺序等
 - 不在本阶段上传本地 MP4，不接 R2、`html5` provider、内部 m3u8 或 PlaybackAdapter；R2 / HTML5 已退出活动中的 RC 计划，仅在官方 X Embed 对具体来源不可用且公开托管权另行确认后重新评估。
 
 退出条件已在本地通过：读者进入页面十秒内可理解档案由三份独立媒体组成，并可主动选择任一来源；任何按钮文案都不夸大当前 embed、播放与 seek 能力；external 呈现为正常能力而非错误；手动 source、Event 深链、刷新恢复和 back/forward 均满足上述状态合同；SP2 事件索引节点可定位；既有 Event / Thread 跨 Track 定位无回归。退出后立即冻结功能，不继续做 X 技术探测或新媒体 provider。
+
+### Phase 2.6：RC 0.10 Reader & Entity Editorial Pass（待实施）
+
+- Cast / People：以 canonical `main` 的 cast / staff 表为依据呈现角色 × 昼夜矩阵、production/action、主直播参与者和 Space guest；Person 只增加项目语境、参与结构与官方链接，不扩成百科，不引入头像；
+- Reader Copy：保留 `publicationStatus` 与 `qualification` 供 editor / validator 使用，增加可选 `readerNote`；普通读者不再看到“已复核／有限定”或内部 qualification 的机械输出；
+- 运行 `npm run editorial:reader-copy` 扫描 124 Event 与 16 Thread，只生成嫌疑项队列，不自动改写。最终目标是 0 个不必要的工程说明，而不是 0 个 `qualified` Event；
+- External Context：首版只接仲村宗悟 2026-04-14 烧肉 X Post，以 `social` Source + Thread `relatedSources` + Folio `SourcePost` 呈现编辑摘要与原帖直链；它不是 Event，不加载官方 widget，不复制完整 Post；
+- 具体 schema、validator、UI、分批编辑和验收合同以 `docs/editorial/komatsu36-editorial-experience-pass.md` 为准。
+
+退出条件：People 首屏能解释昼夜 cast 与四类参与关系；Person panel 可看到相关 Storylines；读者 HTML 不含内部 qualification；Reader Copy Queue 全部有人工作出的裁决；首个外部来源卡位置和降级行为通过桌面／390px QA。完成前不进入 Release Gate。
 
 ### Phase 3：跨平台与 Transcript
 
@@ -841,21 +851,24 @@ package.json
 
 ## 15. 下一步
 
-端到端档案、16 条 Thread、跨 Track 外链、轻量检索、Media Pass 与发布门禁已经可运行。RC 不再寻找新能力，按以下小批次和顺序收口：
+端到端档案、16 条 Thread、跨 Track 外链、轻量检索、Media Pass 与发布门禁已经可运行。RC 不再寻找媒体或播放器新能力，按以下小批次和顺序收口：
 
 1. **Commit A — Media metadata（已完成）**：SP1 / SP2 `audio → video`；Track external URL 改为 canonical Space URL；`projectSources` 同时满足媒体 URL 的 validator 关系并保留 status Post provenance；
 2. **Commit B — Source selection（已完成）**：实现 Hero 与五视图导航之间的克制 `MediaSourceNavigator`、播放器 Source Switcher、无 Event 的 `?track=` 恢复、Event 优先规则，以及手动选源清除 Event / target；
 3. **Commit C — External source state（已完成）**：实现正常态 external panel、canonical CTA、Event TARGET、无 Event 时的“尚未选择定位节点”，并修复 Space 下仍显示 YouTube 360°说明的 P0 缺陷；
 4. **Commit D — Browse source events（已完成）**：实现 per-track Source Event Index，不新增 View / route；完成后已冻结新增媒体功能；
 5. **已完成**：修复 YouTube 动态 `origin` 与 Thread / Person focus containment；
-6. **已完成**：面对最终交互形态执行发布层 Final Editorial Pass；逐 Act 检查标题、summary、密度、入点和 qualification，逐 Thread 检查 setup / development / payoff、transition、跨平台标签及推断措辞，抽查 People 别名、reading、role 与回链；审计记录见 `docs/qa/komatsu36-rc08/EDITORIAL-AUDIT.md`。源级词条 TODO 仍按 `komatsu36_review_todo(10).md` 保持不阻塞 v1 的边界；
+6. **RC 0.9 已完成**：执行 Structural Editorial Audit；逐 Act 检查标题、summary、密度、入点和 qualification 是否完整，逐 Thread 检查 setup / development / payoff、transition、跨平台顺序及推断边界，抽查 People 别名、reading、role 与回链。它证明结构正确，不证明 reader-facing copy 已终审；记录见 `docs/qa/komatsu36-rc08/EDITORIAL-AUDIT.md`；
 7. **已完成**：执行桌面与 390px 的八张固定截图、console、overflow、键盘、深链及 back/forward 复测；截图保存于 `docs/qa/komatsu36-rc08/`，并以 1440×900 本地 preview 复测构建产物；
 8. **已完成**：刷新 Astro / MDX、PostCSS、Tina 编辑器依赖并将 Tina CLI / runtime 留在 `devDependencies`；`npm run validate`、`npx tsc --noEmit` 与 `npm audit --omit=dev` 均通过。完整 `npm audit` 的 22 条告警仍属于编辑器开发链，未执行无审查的 `audit fix --force`；
-9. 明确检查 `project.status`。当前为 `published`，首页又只筛选 `published` Project，因此合并到部署分支等价于正式发布，不得把 merge 当作无外部影响的代码整理。
+9. **RC 0.10-A～B**：落实 Cast / People schema、昼夜矩阵、四类分组、Person projectContext / links 与派生 Storylines；
+10. **RC 0.10-C**：运行并逐批处理 Reader Copy Queue；先停止渲染内部 qualification，再只为真正影响理解的项目撰写 `readerNote`；
+11. **RC 0.10-D**：以仲村烧肉 X Post 完成首个 `social` related source 与 Folio SourcePost，不扩 Event、不加载 widget；
+12. **RC 0.10-E**：重跑完整验证和桌面／390px 编辑体验 QA；完成后再明确检查 `project.status`。当前为 `published`，首页又只筛选 `published` Project，因此合并到部署分支等价于正式发布，不得把 merge 当作无外部影响的代码整理。
 
 通用 validator 与 komatsu36 fixture 的分层不再列入本次 Release Blocker：通用层最终只校验 schema、关系、时间、隐私和确定性排序；`8 Acts`、manifest ARC 数与小松专属 publication assertions 留在项目 fixture，但该工作延后到第二个 Project 接入前完成。
 
-Media Pass、交互小修、Visual QA 与发布层 Final Editorial Pass 已通过本地验证；当前真正剩余的 Release Blocker 只有 Release Gate 与发布意图确认：
+Media Pass、交互小修、Visual QA 与 Structural Editorial Audit 已通过本地验证；恢复 Release Gate 前还必须完成 RC 0.10：
 
 | Blocker | 状态 / 完成标准 |
 |---|---|
@@ -864,8 +877,11 @@ Media Pass、交互小修、Visual QA 与发布层 Final Editorial Pass 已通�
 | YouTube `origin` | **已完成代码修正**；使用 `window.location.origin`，仍需随最终 preview / production 做一次部署环境抽查 |
 | dialog focus containment | **已完成并复测**；背景不可 Tab、焦点循环、Esc 与 restore 均通过 |
 | 构建与生产依赖安全 | **本地与 CI 均有门禁**；`npm ci` 后执行 `npm audit --omit=dev`（当前为 0 vulnerabilities）与 `npm exec -- tsc --noEmit`；`npm run validate` 通过，完整 audit 的 dev-only 告警不作为生产站点漏洞接受 |
+| Cast / People 信息架构 | **RC 0.10 待实施**；角色 × 昼夜矩阵、参与分组、Person 项目语境和 Related Storylines 通过桌面／390px 验收 |
+| Reader-facing copy | **RC 0.10 待实施**；内部 qualification 不进入读者 HTML，人工队列全部裁决，必要的不确定性改写为自然语言 readerNote |
+| External context 首样本 | **RC 0.10 待实施**；仲村烧肉 Post 作为 related source 插入 Thread，使用编辑摘要＋原帖直链，不成为 Event 或静态 Post 镜像 |
 
-上述产品与 QA Blocker 已完成；现在只剩明确的 Release Gate，不再增加产品能力。
+上述工程与媒体 Blocker 已完成；RC 0.10 是发布前最后一个有界编辑阶段。完成后才只剩明确的 Release Gate，不再增加产品能力。
 
 除上述 Media Pass 外冻结新的基础 UI、Event 数量扩张、Tina Project 编辑器、Transcript、Evidence 与 Chat 浏览器。Transcript 和 Evidence 继续保持关闭，直到公开权、分片格式与隐私边界分别通过专项决策；不得用“已有 SRT”替代该决策。
 
@@ -891,7 +907,10 @@ Media Pass、交互小修、Visual QA 与发布层 Final Editorial Pass 已通�
 | canonical Space 与 status Post 分工 | Track / Source 数据已分为 canonical `/i/spaces/...` 媒体记录与 `/i/status/...` provenance 记录；validator 关系已通过 | **Commit A 已完成**：不扩 Track schema，来源证明链接以轻量 provenance 区呈现 |
 | 手动 Source 状态冲突 | controller 已实现 `?track=`；手动选源清除 Event / target，Event selection 删除冗余 track，刷新时 Event 优先 | **Commit B 已完成并复测** |
 | Source Event 浏览范围 | 主 Timeline 是 YT canonical clock，不能承载 SP1 / SP2 的本地时钟 | **Commit D 合同**：使用轻量 per-track Source Event Index；不新增第六 View、route 或多轨 Timeline |
-| Final Editorial 全量发布层审计 | 124 个公开 Event 按 YT 104 / SP1 8 / SP2 12 分布；82 个 `verified`、42 个 `qualified`、16 条 Thread、18 个 Person；逐 Act / 逐 Thread 核对 setup / development / payoff、跨 Track 顺序、限定措辞与 Person 回链 | **本轮通过**：审计记录见 `docs/qa/komatsu36-rc08/EDITORIAL-AUDIT.md`；源级逐字/商品/画面/身份 TODO 保持不提升为确定事实 |
+| Structural Editorial 全量结构审计 | 124 个公开 Event 按 YT 104 / SP1 8 / SP2 12 分布；82 个 `verified`、42 个 `qualified`、16 条 Thread、18 个 Person；逐 Act / 逐 Thread 核对 setup / development / payoff、跨 Track 顺序、限定完整性与 Person 回链 | **RC 0.9 通过**：它不代表 reader-facing copy 终审；记录见 `docs/qa/komatsu36-rc08/EDITORIAL-AUDIT.md` |
+| People 仍是扁平实体索引 | 当前 Person schema 只有 displayName / reading / aliases / role / note；权威 main 已有完整昼夜 cast 与 production credit | **RC 0.10 采纳**：按独立编辑体验规格实现 Cast matrix、participation、projectContext、links 与派生 Storylines；不加头像 |
+| qualification 暴露工程语言 | `TimelineEvent.astro` 自动显示“已复核／有限定”及每条 qualification；初次扫描得到 43 个 Event、9 个 Thread 嫌疑项 | **RC 0.10 采纳**：内部 qualification 与 readerNote 分层；队列只 flag，不自动改写 |
+| 仲村烧肉场外余波 | X 官方 oEmbed 于 2026-08-09 确认 `ShugoAbc/status/2044004452907266061` 的作者、日期及烧肉语境；该材料没有 Track 原生时钟 | **作为 related source 采纳**：不是 Event；默认编辑摘要＋直链，不复制完整 Post、不加载 widget |
 | 浏览器 Release QA | 1440×900 与 390×844 的八张真实路由截图已保存于 `docs/qa/komatsu36-rc08/`；三 Source 可见、无横向 overflow；console 0 error；Event / `?track=` / back-forward、Source Event Index、Thread / Person inert 与 focus trap 已实测；4322 preview 构建复测通过；候选 `megazine-blog.pages.dev` 的本轮 production 探测返回 `net::ERR_CONNECTION_CLOSED`，未取得 production 证据 | **本轮通过**：本地 QA 已完成；production 仍需在可达环境复测并确认发布意图 |
 
 本表中的“已采纳”表示指导与仓库/媒体证据一致；“有条件采纳”表示方向可行但尚未满足发布前提。它不把本地持有媒体、文件后缀或可播放样本等同于公开托管授权与生产可用性。

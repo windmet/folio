@@ -12,6 +12,7 @@
     "validate:sources": "node scripts/validate-source-set.mjs",
     "validate:projects": "node scripts/validate-projects.mjs",
     "validate:publication": "node scripts/validate-publication.mjs",
+    "editorial:reader-copy": "node scripts/generate-reader-copy-queue.mjs",
     "validate": "npm run validate:projects && npm run build && npm run validate:publication",
     "preview": "astro preview",
     "tina:dev": "tinacms dev -c \"npx astro dev --host 0.0.0.0\" --noTelemetry",

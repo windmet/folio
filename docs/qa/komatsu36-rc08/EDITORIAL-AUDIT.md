@@ -1,11 +1,13 @@
-# Komatsu36 RC 0.9 发布层编辑审计
+# Komatsu36 RC 0.9 结构性编辑审计
 
 日期：2026-08-09
 范围：`src/content/projects/komatsu36/` 的公开发布层数据；不把本机源档或原始 ASR 复制到站点。
 
 ## 结论
 
-发布层的 Final Editorial Pass 已完成，可以进入 Release Gate。当前没有发现会阻止 v1 发布的 Event、Thread、Person 关系错误、跨 Track 顺序错误或限定措辞缺失。
+Structural Editorial Audit 已完成。当前没有发现 Event、Thread、Person 关系错误、跨 Track 顺序错误或内部限定缺失；这证明发布数据结构可进入下一阶段，不等于 reader-facing copy 已经终审，也不再直接进入 Release Gate。
+
+2026-08-09 的后续网页审阅确认：当前 People 更接近实体索引，`TimelineEvent` 又会把 `publicationStatus` 与 `qualification` 自动暴露给读者。因此新增 RC 0.10 Reader & Entity Editorial Pass，合同见 `docs/editorial/komatsu36-editorial-experience-pass.md`，嫌疑项队列见 `docs/editorial/komatsu36-reader-copy-queue.md`。
 
 这不是“逐字稿全部封板”的声明。源档仍保留词级、人名 speaker、商品 SKU、画面确认和账号真实身份等 TODO；这些问题在页面中被限定、降级为事件级摘要，或明确不归因，不得在后续编辑中被补写成确定事实。
 
@@ -55,9 +57,10 @@
 - GitHub repository deployments API 返回 `0` 条部署记录。
 - `megazine-blog.pages.dev` 在本机 DNS、Cloudflare 公共 DNS `1.1.1.1` 和 Google 公共 DNS `8.8.8.8` 均返回 NXDOMAIN；因此候选 production 域名当前没有可验证的公开站点。
 
-本审计完成后，剩余阻塞项只有：
+本审计完成后，发布前顺序修正为：
 
-1. 确认 `project.status: published` 是否代表现在就允许合并到部署分支；
-2. 如要正式发布，再对 production URL 做与本地 preview 同范围的抽查。2026-08-09 对 `https://megazine-blog.pages.dev/` 的只读探测未完成：应用浏览器返回 `net::ERR_CONNECTION_CLOSED`，PowerShell HTTPS 连接也在握手阶段关闭；这只能证明本次环境没有取得 production 证据，不能推断该站点全球不可用。
+1. 完成 RC 0.10 Cast / People、Reader Copy 与首个 External Context 样本；
+2. 确认 `project.status: published` 是否代表现在就允许合并到部署分支；
+3. 如要正式发布，再对 production URL 做与本地 preview 同范围的抽查。2026-08-09 对 `https://megazine-blog.pages.dev/` 的只读探测未完成：应用浏览器返回 `net::ERR_CONNECTION_CLOSED`，PowerShell HTTPS 连接也在握手阶段关闭；这只能证明本次环境没有取得 production 证据，不能推断该站点全球不可用。
 
 在这两个决定完成前，不把当前分支称为 production-accepted，也不合并到部署分支或执行 production 部署。当前 review 分支可以继续推送供 CI 与人工审阅，但这不等于正式发布。

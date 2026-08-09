@@ -4,11 +4,13 @@
 
 ## 当前检查点
 
-- Komatsu36：RC 0.9；发布层编辑审计、桌面／窄屏 QA 和本地发布门禁已通过。
+- Komatsu36：RC 0.10；RC 0.9 结构性编辑审计、桌面／窄屏 QA 和本地发布门禁已通过，Reader & Entity Editorial Pass 正在收口。
 - 审阅分支：[codex/komatsu36-project-archive](https://github.com/windmet/folio/tree/codex/komatsu36-project-archive)
 - 专题路由：`/projects/komatsu36/`
 - Visual QA 与编辑审计：`docs/qa/komatsu36-rc08/`
 - 详细合同与剩余 Release Gate：`docs/komatsu36-archive-development.md`
+- RC 0.10 编辑体验规格：`docs/editorial/komatsu36-editorial-experience-pass.md`
+- Reader Copy 人工队列：`docs/editorial/komatsu36-reader-copy-queue.md`
 - Cloudflare Pages provision / 首次部署清单：`docs/cloudflare-pages-release-checklist.md`
 
 ## 本地开发
