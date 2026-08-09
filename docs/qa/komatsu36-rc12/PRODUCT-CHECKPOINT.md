@@ -53,3 +53,27 @@ E：DEFERRED
 ## 2026-08-10 RC12-E 工程跟进
 
 “继续”被作为下一批范围确认后，E1–E5 已完成工程与本地真实 Browser 验证；E5 交接记录见 `docs/qa/komatsu36-rc12/e/E5-HANDOFF.md`。人工产品接受、真实媒体与 Release Gate 仍未完成。
+
+## RC12-E 当前产品人工停点
+
+以下只需要人工判断信息层级和使用感受；工程门禁已经覆盖 URL、native clock、键盘、focus restore、ARIA、overflow、console 与 single player mount。
+
+| 尺寸／路径 | 人工只需确认 | 接受条件 |
+|---|---|---|
+| 桌面 1440×900：`?view=timeline&track=space-1` | 三个 scope 是否像 Timeline 的来源索引，而不是额外信息堆；SP1 标题、`NATIVE CLOCK`、8 个 Event 与右侧 Player 是否一眼可分层 | 选择来源的理由清楚；来源时间不会被误读成 YouTube 全局轴；Event 密度可扫读 |
+| 窄屏 390×844：同一路由 | 三列 scope tab 的文字是否仍可读；Player 是否遮挡 scope／首个 Event；source header、时间和 TARGET 是否需要来回寻找 | 不需要横向拖动；当前来源、native clock、首个事件和 Player 状态均能顺畅定位 |
+| 键盘／历史 | Enter／Space 后是否符合预期；Back 后焦点是否回到当前可见 scope；选中 Event 后是否仍知道自己所在来源 | 操作反馈明确，不出现焦点落在隐藏按钮或来源错位 |
+
+人工回复可直接使用：
+
+```text
+E：ACCEPT
+```
+
+如需继续调整，请具体指出信息层级或尺寸，例如：
+
+```text
+E：REVISE — 390px scope tab 文字太小；其余 ACCEPT
+```
+
+`E：ACCEPT` 只表示 RC12-E 产品停点通过；它不自动授权真实媒体、生产部署、merge 或 Release Gate。
