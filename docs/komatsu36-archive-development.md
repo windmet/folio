@@ -688,7 +688,7 @@ Tina 集成作为后续独立任务，只管理 Project 摘要、精选顺序等
 - Reader Copy（已完成）：保留 `publicationStatus` 与 `qualification` 供 editor / validator 使用，增加可选 `readerNote`；普通读者不再看到“已复核／有限定”或内部 qualification 的机械输出；52 个候选已完成 decisions 与全量 reader pass；
 - ProjectSearch（已完成）：停止把 qualification、Event tags 与 readerNote 写入 `data-search-text`，`validate:publication` 增加内部限定泄漏 fixture；People Search 只使用新字段；
 - `npm run editorial:reader-copy` 扫描实际目录中的全部 Event 与 Thread，只重建 generated candidates，不自动改写，也不写 decisions；`npm run validate:reader-copy` 现在强制每个候选都有完整 action。最终目标是 0 个不必要的工程说明，而不是 0 个 `qualified` Event；
-- External Context：首版只接仲村宗悟 2026-04-14 烧肉 X Post，以 `social` Source + Thread `relatedSources` + Folio `SourcePost` 呈现编辑摘要与原帖直链；它不是 Event，不加载官方 widget，不复制完整 Post。绝对时序未核实前只使用“同日”，不写“离开后／几分钟后”；
+- External Context（已完成）：首版只接仲村宗悟 2026-04-14 烧肉 X Post，以 `social` Source + Thread `relatedSources` + Folio `SourcePost` 呈现编辑摘要与原帖直链；它不是 Event，不加载官方 widget，不复制完整 Post。绝对时序未核实前只使用“同日”，不写“离开后／几分钟后”；
 - 具体 schema、validator、UI、分批编辑和验收合同以 `docs/editorial/komatsu36-editorial-experience-pass.md` 为准。
 
 退出条件：People 首屏能解释昼夜 cast 与四类参与关系；Person panel 可看到按主 Storylines 同一规则排序的相关 Storylines；读者 HTML 不含内部 qualification；Reader Copy decisions 覆盖全部候选且完成脱离关键词的 full reader pass；首个外部来源卡插入正确 Event 节点之间并通过桌面／390px QA。完成前不进入 Release Gate。
@@ -867,7 +867,7 @@ package.json
 10. **RC 0.10-A（已完成）**：落实 schema 与 leakage gate；补 `remote-call` / `space-account`，ProjectSearch 停止索引 qualification；
 11. **RC 0.10-B（已完成）**：迁移 18 人、昼夜矩阵、四类分组、Person projectContext / links 与派生 Storylines；Search 已切换到新字段；
 12. **RC 0.10-C（已完成）**：按“全量裁决 → 五批修改 → 网站连续通读”处理 Reader Copy；停止渲染内部 qualification，完成 52/52 decisions 与 full reader pass；
-13. **RC 0.10-D**：以仲村烧肉 X Post 完成首个 `social` related source 与 Folio SourcePost，插入指定 Event 后；不扩 Event、不加载 widget；
+13. **RC 0.10-D（已完成）**：以仲村烧肉 X Post 完成首个 `social` related source 与 Folio SourcePost，插入指定 Event 后；不扩 Event、不加载 widget；
 14. **RC 0.10-E**：重跑完整验证和桌面／390px 编辑体验 QA；完成后再明确检查 `project.status`。当前为 `published`，首页又只筛选 `published` Project，因此合并到部署分支等价于正式发布，不得把 merge 当作无外部影响的代码整理。
 
 通用 validator 与 komatsu36 fixture 的分层不再列入本次 Release Blocker：通用层最终只校验 schema、关系、时间、隐私和确定性排序；`8 Acts`、manifest ARC 数与小松专属 publication assertions 留在项目 fixture，但该工作延后到第二个 Project 接入前完成。

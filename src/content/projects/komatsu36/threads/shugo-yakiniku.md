@@ -14,6 +14,10 @@ nodes:
   - event: komatsu36/sp2-000702-shugo-celebration
     role: payoff
 featured: true
+relatedSources:
+  - source: komatsu36/x-shugo-yakiniku
+    afterEvent: komatsu36/sp1-002854-shugo-disappears
+    context: 同日，仲村又发布了一条烧肉相关帖子；它补足 Space 里“今晚吃烤肉”的场外余波，但不把发布时间写成离开后的精确顺序。
 ---
 
 它几乎没有留下具体内容，却很有仲村的存在感；不必再替这句话添加复杂背景。

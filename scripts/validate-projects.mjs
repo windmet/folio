@@ -157,6 +157,9 @@ for (const projectDir of projectDirs) {
       if (source && source.kind !== 'social') {
         errors.push(`${id}: relatedSources currently require a social source`);
       }
+      if (source && (source.platform !== 'x' || !source.publicUrl)) {
+        errors.push(`${id}: related social source requires platform x and publicUrl`);
+      }
     }
   }
 

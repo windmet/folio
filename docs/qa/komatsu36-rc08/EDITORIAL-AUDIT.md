@@ -56,6 +56,7 @@ Structural Editorial Audit 已完成。当前没有发现 Event、Thread、Perso
 - 保持 `127.0.0.1:4321` 不重启进行真实路由核验：桌面 Timeline 无页面横向溢出，`setup` 搜索返回 0 条、`章鱼烧` 返回 8 条；390px People 视图显示 6 行 Cast、Cast 表格在自身容器内滚动且页面无横向溢出；室元気 Person panel 可见 2 条 Related Storylines，面板自身无横向溢出。
 - 18 个 Person 的旧 `role` / `note` 字段已删除；最终 People 页面回归确认没有旧 `.person-role` 节点，People / Cast 仍可在桌面与 390px 正常渲染。
 - 浏览器应用层 error/warning 为 0；本地 Vite 注入的 `__SERVER_FORWARD_CONSOLE__` ReferenceError 仅属于开发服务器 instrumentation，不计为专题运行时错误。上述检查不提升为真实音频连续播放或 X Space 可用性证据。
+- RC10-D SourcePost 样本通过真实路由核验：打开 `shugo-yakiniku` 后，来源卡显示 `OUTSIDE THE STREAM · X`、仲村宗悟、`2026-04-14`、保守“同日”摘要和原帖直链；卡片紧跟 `sp1-002854-shugo-disappears`，不复制 Post 正文；390px（390×3000 测试视口）下卡片、Thread panel 与页面均无横向溢出，应用层 console error/warning 为 0。
 
 ## Release Gate
 

@@ -1376,6 +1376,56 @@ project-archive-shell {
   line-height: 1.7;
 }
 
+.source-post {
+  margin: 14px 0 16px 100px;
+  padding: 14px 15px;
+  border: 1px solid var(--archive-line);
+  border-left: 2px solid var(--archive-red);
+  background: #faf7f1;
+}
+
+.source-post__topline,
+.source-post__author {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.source-post__topline time,
+.source-post__author span {
+  color: var(--archive-muted);
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 9px;
+}
+
+.source-post__author {
+  justify-content: flex-start;
+  margin: 12px 0 0;
+  font-size: 12px;
+}
+
+.source-post__author span {
+  font-family: inherit;
+}
+
+.source-post__context {
+  margin: 8px 0 12px;
+  color: #554f47;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.source-post a,
+.source-post__unavailable {
+  color: var(--archive-red);
+  font-size: 10px;
+}
+
+.source-post__unavailable {
+  color: var(--archive-muted);
+}
+
 .thread-prose {
   padding-top: 10px;
   border-top: 3px double var(--archive-line);
@@ -1717,5 +1767,9 @@ project-archive-shell {
 
   .thread-transition {
     padding-left: 75px;
+  }
+
+  .source-post {
+    margin-left: 75px;
   }
 }

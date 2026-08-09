@@ -1,9 +1,12 @@
 ---
+import SourcePost from './SourcePost.astro';
+
 export interface Props {
   threads: Array<{
     entry: any;
     Content: any;
     nodes: Array<{ event: any; role: string; transition?: string; trackLabel: string }>;
+    relatedSources: Array<{ source: any; afterEvent: string; context: string }>;
   }>;
 }
 
@@ -26,7 +29,7 @@ const formatTime = (milliseconds: number) => {
   <button type="button" class="archive-overlay__backdrop" data-close-thread aria-label="关闭事件线"></button>
   <aside class="thread-panel" data-thread-panel role="dialog" aria-modal="true" aria-label="完整事件线" tabindex="-1">
     <button type="button" class="panel-close" data-close-thread aria-label="关闭事件线">×</button>
-    {threads.map(({ entry, Content, nodes }) => (
+    {threads.map(({ entry, Content, nodes, relatedSources }) => (
       <article class="thread-detail" data-thread-detail={entry.id.split('/').at(-1)} hidden>
         <span class="archive-kicker">STORY THREAD · {entry.data.category.replaceAll('-', ' ').toUpperCase()}</span>
         <h2>{entry.data.title}</h2>
@@ -40,6 +43,9 @@ const formatTime = (milliseconds: number) => {
                 <span class="thread-clock"><b>{trackLabel}</b><time>{formatTime(event.data.startMs)}</time></span>
                 <strong>{event.data.title}</strong>
               </button>
+              {relatedSources.filter((relatedSource) => relatedSource.afterEvent === event.id).map((relatedSource) => (
+                <SourcePost source={relatedSource.source} context={relatedSource.context} />
+              ))}
             </li>
           ))}
         </ol>

@@ -25,6 +25,7 @@ const referenceId = (reference: any) => reference.id;
 const peopleById = new Map(people.map((person) => [person.id, person]));
 const eventsById = new Map(events.map((event) => [event.id, event]));
 const tracksById = new Map(tracks.map((track) => [track.id, track]));
+const sourcesById = new Map(sources.map((source) => [source.id, source]));
 const threadsByEvent = new Map<string, string[]>();
 const threadsByPerson = new Map<string, string[]>();
 const eventsByPerson = new Map<string, any[]>();
@@ -76,6 +77,11 @@ const threadViews = await Promise.all(threads.map(async (entry) => {
   return {
     entry,
     Content,
+    relatedSources: (entry.data.relatedSources || []).map((relatedSource: any) => ({
+      source: sourcesById.get(referenceId(relatedSource.source)),
+      afterEvent: referenceId(relatedSource.afterEvent),
+      context: relatedSource.context,
+    })).filter((relatedSource: any) => relatedSource.source),
     nodes: entry.data.nodes.map((node: any) => ({
       event: eventsById.get(referenceId(node.event)),
       role: node.role,
