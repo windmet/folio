@@ -5,7 +5,7 @@
 > 基线分支：`codex/komatsu36-project-archive`
 > 前置状态：RC 0.11 `REVIEW BRANCH ACCEPTANCE COMPLETE`
 > 当前入口：RC12-A2 → RC12-C2 → RC12-D2 → RC12-B2 → 人工复核 → RC12-F2
-> 当前进度：RC12-A2 `SOURCE-VERIFIED` + `BROWSER-VERIFIED`；人工停点 A2 待确认
+> 当前进度：RC12-A2/C2 `SOURCE-VERIFIED` + `BROWSER-VERIFIED`；人工停点 A2/C2 待确认
 > Release Gate：CLOSED；本文不授权 merge、deploy 或修改 `project.status`
 
 本文记录 RC12-A/B/C/D 第一版经过源码、构建和浏览器验证后，收到的产品层返工裁决。它是后续 agent 的**唯一实施入口**。原 `komatsu36-rc12-visual-polish-source-navigation-plan.md` 保存第一版规格与工程证据，不再代表下一批应直接收口；`komatsu36-rc12-release-readiness-handoff.md` 降级为被产品复核退回的本地 QA 快照。

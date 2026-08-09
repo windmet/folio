@@ -1766,23 +1766,25 @@ project-archive-shell {
   white-space: nowrap;
 }
 
-@container people-view (min-width: 1200px) {
-  .people-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .person-index-row {
-    grid-template-columns: minmax(100px, 1.1fr) minmax(90px, 1fr) minmax(0, 1.3fr) 90px;
-  }
-}
-
-@container people-view (max-width: 1199px) {
+@container people-view (min-width: 960px) {
   .people-grid {
     grid-template-columns: 1fr;
   }
 
   .person-index-row {
-    grid-template-columns: minmax(140px, 1.1fr) minmax(140px, 1fr) minmax(0, 1.4fr) 96px;
+    grid-template-columns: minmax(190px, 1.1fr) minmax(210px, 1.2fr) minmax(0, 2fr) max-content;
+    min-height: 72px;
+  }
+}
+
+@container people-view (min-width: 641px) and (max-width: 959px) {
+  .people-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .person-index-row {
+    grid-template-columns: minmax(150px, 1fr) minmax(170px, 1.1fr) minmax(0, 1.5fr) max-content;
+    min-height: 72px;
   }
 }
 
@@ -1809,6 +1811,10 @@ project-archive-shell {
   }
 
   .cast-matrix-desktop {
+    display: none;
+  }
+
+  .cast-matrix-medium {
     display: none;
   }
 
@@ -1907,6 +1913,83 @@ project-archive-shell {
 
 .cast-matrix-mobile {
   display: none;
+}
+
+.cast-matrix-medium {
+  display: none;
+}
+
+.cast-matrix-medium__caption {
+  margin: 0 0 12px;
+  color: var(--archive-muted);
+  font-size: 11px;
+}
+
+.cast-matrix-medium__list {
+  border-top: 1px solid var(--archive-line);
+}
+
+.cast-matrix-medium__row {
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--archive-line);
+}
+
+.cast-matrix-medium__row > strong {
+  color: var(--archive-ink);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.cast-matrix-medium__session {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  min-width: 0;
+}
+
+.cast-matrix-medium__session > span:first-child {
+  flex: 0 0 auto;
+  color: var(--archive-red);
+  font: 9px ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+
+.cast-matrix-medium__session button,
+.cast-matrix-medium__session > span:last-child {
+  min-width: 0;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  color: var(--archive-ink);
+  background: transparent;
+  font-size: 11px;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cast-matrix-medium__session button {
+  text-decoration: underline;
+  text-decoration-color: var(--archive-line);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+@container people-view (min-width: 641px) and (max-width: 959px) {
+  .cast-matrix-desktop {
+    display: none;
+  }
+
+  .cast-matrix-medium {
+    display: block;
+  }
+
+  .cast-matrix-mobile {
+    display: none;
+  }
 }
 
 .cast-matrix {
