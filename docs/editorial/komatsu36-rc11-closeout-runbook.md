@@ -2,9 +2,9 @@
 
 > 状态：ACTIVE
 > 当前分支：`codex/komatsu36-project-archive`
-> 当前远端检查点：R5 当前提交；R5 已在 review branch 完成 Desktop Navigator、构建与浏览器验收
-> 当前批次：R6 — UX11-E Mobile navigator 决策门
-> 下一批：R8/R9 — UX11-F/G 条件裁决与 UX11-H Final QA
+> 当前远端检查点：R6 当前提交；R6 已完成 Mobile navigator 决策
+> 当前批次：R9 — UX11-H Final QA 与 release-readiness handoff
+> 下一步：Release Gate（仍 CLOSED，等待用户独立授权）
 > Release Gate：CLOSED；本 Runbook 只把 review branch 做到可审阅、可合并状态，不授权 merge 或 deploy。
 
 ## 1. 用途与权威顺序
@@ -27,7 +27,7 @@
 
 | 项目 | 权威证据 | 结论 |
 |---|---|---|
-| Review branch | R5 已推送；R6 为文档裁决批次 | UX11-C、R1、R2、R3、R4 与 R5 均为 **REVIEW BRANCH COMPLETE**；R6 不新增运行时代码 |
+| Review branch | R6 已推送；R9 Final QA 文档将在本轮提交 | UX11-C、R1、R2、R3、R4、R5 与 R6 均为 **REVIEW BRANCH COMPLETE**；R9 只补证据与 handoff |
 | UX11-A / B | `effa314` | 已提交并保留既有回归合同 |
 | UX11-C | `PlayerContextRail.astro`、`ArchivePlayer.astro` import、`1162ba2` | 四标签、Act jump、Thread 0/1/N、原链、desktop compact 与 mobile fallback 已在远端分支 |
 | UX11-C1 | `.archive-player` 与 `.archive-player__context` 已改为实色 paper | 已实现并通过桌面 / 390px 样本验收 |
@@ -101,6 +101,10 @@ R5 在 Timeline heading 后、Act 正文前加入 8 段 Desktop Navigator。各�
 | 以 Event 数自动选主角 | 出现次数不等于编辑中心 | **禁止**：使用 Komatsu36 presentation fixture 中唯一的 `leadPersonId = 'komatsu-shohei'`，不改 Person schema |
 | 立即开发 Timeline Navigator | 当前 hard-gate 余量 97,320 bytes，R5 已完成 | **R6 已裁决**：`NO ADDITIONAL MOBILE NAV FOR V1`，不把桌面 Map 缩小后叠加到手机 |
 | Navigator 第一版加入 playhead | 阅读位置与媒体位置可能不同 | **不采纳到 UX11-D**：第一版只有 current Act + Act jump；playhead 保持 UX11-F 条件项 |
+
+### 2.9 R9 Final QA 快照
+
+R9 在 build 后 preview 完成 1366×768、1440×900、1920×1080、390×844 四视口矩阵；五 View、Search、YT/SP1/SP2 Source Index、Player Rail、People lead、Cast mobile、Thread/Person overlay、Event → Thread history、Escape/focus restore、页面 overflow 与应用 console 均通过。`npm ci`、`npm audit --omit=dev`（0 vulnerabilities）、`npm run validate`、`npm exec -- tsc --noEmit`、`git diff --check` 与最终 `audit:payload` 均通过。详细证据与未执行边界见 `docs/qa/komatsu36-rc11/r9/README.md`；交接文件见 `docs/editorial/komatsu36-rc11-release-readiness-handoff.md`。
 
 ## 3. 全局批次规则
 
@@ -314,6 +318,6 @@ UX11-H 通过后：
 | R6 UX11-E | COMPLETE — NO ADDITIONAL MOBILE NAV FOR V1 | R6 QA README；390×844 未选中 / 选中 Event + mini-player 三案裁决 | R7 NOT REQUIRED；进入 F/G 条件裁决与 H |
 | R7 UX11-E implementation | NOT REQUIRED | R6 已明确不新增 mobile navigator | 不创建空实现 |
 | R8 UX11-F | DEFERRED BY DEFAULT | — | 仅明确提级后启动 |
-| R8 UX11-G | CONDITIONAL | — | D/E 后以证据裁决 |
-| R9 UX11-H | PENDING | — | 所有 required 批次完成后执行 |
+| R8 UX11-G | NOT NEEDED FOR V1 | R5 Navigator 后未再证明 Timeline 过密；不启动 Quick / Detail | 保持默认 Detail |
+| R9 UX11-H | COMPLETE — REVIEW BRANCH ACCEPTANCE COMPLETE | R9 QA README、最终 audit 与 release-readiness handoff | 等待 Release Gate 独立授权 |
 | Release Gate | CLOSED | 用户尚未授权 | 等待独立 merge / deploy 指令 |

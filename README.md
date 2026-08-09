@@ -4,7 +4,7 @@
 
 ## 当前检查点
 
-- Komatsu36：RC 0.10 已完成本地验收；RC 0.11 的 UX11-A / B 已提交为 `effa314`，UX11-C、R1 opaque Player / Lead Person hierarchy、R2 UX11-P0 payload audit、R3 UX11-P1 Source Index、R4 UX11-P2 Search JSON、R5 UX11-D Desktop Timeline Navigator 与 R6 UX11-E 移动合同决策已完成。R6 裁决为 `NO ADDITIONAL MOBILE NAV FOR V1`，下一步进入 UX11-H 收尾；Release Gate 仍未授权。
+- Komatsu36：RC 0.10 已完成本地验收；RC 0.11 的 UX11-A / B 已提交为 `effa314`，UX11-C、R1 opaque Player / Lead Person hierarchy、R2 UX11-P0 payload audit、R3 UX11-P1 Source Index、R4 UX11-P2 Search JSON、R5 UX11-D Desktop Timeline Navigator、R6 UX11-E 移动合同决策与 R9 UX11-H Final QA 已完成。R6 裁决为 `NO ADDITIONAL MOBILE NAV FOR V1`，R8 的 F/G 已裁决，review branch acceptance complete；Release Gate 仍未授权。
 - 审阅分支：[codex/komatsu36-project-archive](https://github.com/windmet/folio/tree/codex/komatsu36-project-archive)
 - 专题路由：`/projects/komatsu36/`
 - Visual QA 与编辑审计：`docs/qa/komatsu36-rc08/`

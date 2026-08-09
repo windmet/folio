@@ -7,7 +7,7 @@
 > 当前站点：Astro 7 静态站点，TinaCMS 只管理普通 MDX 文章。
 
 > **CURRENT CHECKPOINT**
-> RC 0.10 A0 / A / B / C / D / E 已完成本地验收；RC 0.11 UX11-A / B 已提交为 `effa314`，UX11-C Desktop Player Context Rail 已在 review branch `1162ba2` 完成；R1 opaque Player + Lead Person、R2 UX11-P0 payload audit、R3 UX11-P1 Source Index、R4 UX11-P2 Search JSON、R5 UX11-D Desktop Timeline Navigator 与 R6 UX11-E 移动合同决策已完成。R6 裁决为 `NO ADDITIONAL MOBILE NAV FOR V1`，下一步执行 UX11-H。当前流程权威为 `docs/editorial/komatsu36-rc11-closeout-runbook.md`，产品合同见 `docs/editorial/komatsu36-archive-navigation-pass.md`，Payload 合同见 `docs/editorial/komatsu36-static-payload-pass.md`。本文后续 Phase / 历史 Next Step 保留为设计演进记录；冲突时以上述三份 RC 0.11 文档为准。
+> RC 0.10 A0 / A / B / C / D / E 已完成本地验收；RC 0.11 UX11-A / B 已提交为 `effa314`，UX11-C Desktop Player Context Rail 已在 review branch `1162ba2` 完成；R1 opaque Player + Lead Person、R2 UX11-P0 payload audit、R3 UX11-P1 Source Index、R4 UX11-P2 Search JSON、R5 UX11-D Desktop Timeline Navigator、R6 UX11-E 移动合同决策与 R9 UX11-H Final QA 已完成。R6 裁决为 `NO ADDITIONAL MOBILE NAV FOR V1`，R8 的 F/G 已分别裁决为 `DEFERRED BY DEFAULT` / `NOT NEEDED FOR V1`。当前流程权威为 `docs/editorial/komatsu36-rc11-closeout-runbook.md`，产品合同见 `docs/editorial/komatsu36-archive-navigation-pass.md`，Payload 合同见 `docs/editorial/komatsu36-static-payload-pass.md`，发布交接见 `docs/editorial/komatsu36-rc11-release-readiness-handoff.md`。本文后续 Phase / 历史 Next Step 保留为设计演进记录；冲突时以上述三份 RC 0.11 文档为准。
 
 ## 当前实施状态（2026-08-09）
 
@@ -886,11 +886,11 @@ Media Pass、RC 0.9 Structural Editorial Audit 与 RC 0.10 Reader & Entity Edito
 | dialog focus containment | **已完成并复测**；背景不可 Tab、焦点循环、Esc 与 restore 均通过 |
 | 构建与生产依赖安全 | **本地与 CI 均有门禁**；`npm ci` 后执行 `npm audit --omit=dev`（当前为 0 vulnerabilities）与 `npm exec -- tsc --noEmit`；`npm run validate` 通过，完整 audit 的 dev-only 告警不作为生产站点漏洞接受 |
 | Cast / People 信息架构 | **RC 0.11 UX11-A 本地完成**：People 使用 group-specific compact projection；Cast 390px 使用六行布局，页面与组件均无横滚 |
-| Initial HTML payload | **RC 0.11 R6 已完成**：固定 audit 输出 R5 后 261,080 raw bytes、Gzip 46,163、Brotli 29,420，仍通过 350 KiB hard gate 且达到 raw `<=300 KiB` 工程目标；初始 Source / Search buttons 均为 0，Search JSON 为 158 项；Desktop Timeline Navigator 已按 Act 时长比例落地，R6 裁决移动端不新增第三条导航，不裁减 Rail |
+| Initial HTML payload | **RC 0.11 R9 已完成**：固定 audit 输出 R5 后 261,080 raw bytes、Gzip 46,163、Brotli 29,420，仍通过 350 KiB hard gate 且达到 raw `<=300 KiB` 工程目标；初始 Source / Search buttons 均为 0，Search JSON 为 158 项；Desktop Timeline Navigator 已按 Act 时长比例落地，R6 裁决移动端不新增第三条导航，R9 Final QA 与 handoff 已完成，不裁减 Rail |
 | Reader-facing copy | **RC 0.10 已完成**：52/52 decisions、full reader pass 与 publication leakage gate 已通过 |
 | External context 首样本 | **RC 0.10 已完成**：仲村烧肉 Post 已作为 related source 插入 Thread，不成为 Event 或静态 Post 镜像 |
 
-上述工程、媒体与 RC 0.10 编辑 Blocker 已完成，UX11-C 与 R1 视觉层级修正已在 review branch 完成；UX11-P0 / P1 / P2 Static Payload Pass、UX11-D Desktop Timeline Navigator 与 UX11-E 移动合同决策也已完成。R5 只新增左内容列的 proportional Act Map，R6 明确不新增移动代码，不改变资料、Rail、媒体能力或 URL schema。下一步进入 UX11-H；F/G 按 Runbook 裁决。全部完成后仍只剩明确的 Release Gate。
+上述工程、媒体与 RC 0.10 编辑 Blocker 已完成，UX11-C 与 R1 视觉层级修正已在 review branch 完成；UX11-P0 / P1 / P2 Static Payload Pass、UX11-D Desktop Timeline Navigator、UX11-E 移动合同决策与 UX11-H Final QA 也已完成。R5 只新增左内容列的 proportional Act Map，R6 明确不新增移动代码，R8 不启动 playhead 或 Quick / Detail，不改变资料、Rail、媒体能力或 URL schema。RC 0.11 现只剩用户独立决定 Release Gate；production preview、merge 与 deploy 仍未执行。
 
 除上述 Media Pass 外冻结新的基础 UI、Event 数量扩张、Tina Project 编辑器、Transcript、Evidence 与 Chat 浏览器。Transcript 和 Evidence 继续保持关闭，直到公开权、分片格式与隐私边界分别通过专项决策；不得用“已有 SRT”替代该决策。
 
