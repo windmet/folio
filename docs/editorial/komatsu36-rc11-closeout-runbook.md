@@ -2,8 +2,8 @@
 
 > 状态：ACTIVE
 > 当前分支：`codex/komatsu36-project-archive`
-> 当前远端检查点：R6 当前提交；R6 已完成 Mobile navigator 决策
-> 当前批次：R9 — UX11-H Final QA 与 release-readiness handoff
+> 当前远端检查点：R9 Final QA 与 release-readiness handoff 已完成
+> 当前批次：R9 已完成
 > 下一步：Release Gate（仍 CLOSED，等待用户独立授权）
 > Release Gate：CLOSED；本 Runbook 只把 review branch 做到可审阅、可合并状态，不授权 merge 或 deploy。
 
@@ -27,7 +27,7 @@
 
 | 项目 | 权威证据 | 结论 |
 |---|---|---|
-| Review branch | R6 已推送；R9 Final QA 文档将在本轮提交 | UX11-C、R1、R2、R3、R4、R5 与 R6 均为 **REVIEW BRANCH COMPLETE**；R9 只补证据与 handoff |
+| Review branch | R9 Final QA 与 handoff 已推送，本地与远端同步 | UX11-C、R1、R2、R3、R4、R5、R6 与 R9 均为 **REVIEW BRANCH ACCEPTANCE COMPLETE**；Release Gate 仍独立关闭 |
 | UX11-A / B | `effa314` | 已提交并保留既有回归合同 |
 | UX11-C | `PlayerContextRail.astro`、`ArchivePlayer.astro` import、`1162ba2` | 四标签、Act jump、Thread 0/1/N、原链、desktop compact 与 mobile fallback 已在远端分支 |
 | UX11-C1 | `.archive-player` 与 `.archive-player__context` 已改为实色 paper | 已实现并通过桌面 / 390px 样本验收 |
@@ -314,8 +314,8 @@ UX11-H 通过后：
 | R2 UX11-P0 | COMPLETE | R2 当前提交；audit JSON、构建与 stale/missing-dist 失败路径 | 进入 P1 |
 | R3 UX11-P1 | COMPLETE | R3 当前提交；初始 buttons 0、Controller 124；1440 / 1366 / 390 preview 验收 | 进入 P2 |
 | R4 UX11-P2 | COMPLETE | R4 当前提交；Search JSON 158 项、初始 Search DOM 0；Event / Thread / Person preview 验收 | 进入 UX11-D |
-| R5 UX11-D | COMPLETE | R5 QA README；8 段比例、current Act、Act jump、1366 / 1440 / 1920 preview | 进入 R6 移动合同裁决 |
-| R6 UX11-E | COMPLETE — NO ADDITIONAL MOBILE NAV FOR V1 | R6 QA README；390×844 未选中 / 选中 Event + mini-player 三案裁决 | R7 NOT REQUIRED；进入 F/G 条件裁决与 H |
+| R5 UX11-D | COMPLETE | R5 QA README；8 段比例、current Act、Act jump、1366 / 1440 / 1920 preview | 已由 R6 完成移动合同裁决 |
+| R6 UX11-E | COMPLETE — NO ADDITIONAL MOBILE NAV FOR V1 | R6 QA README；390×844 未选中 / 选中 Event + mini-player 三案裁决 | R7 NOT REQUIRED；F/G 已裁决，R9 已完成 |
 | R7 UX11-E implementation | NOT REQUIRED | R6 已明确不新增 mobile navigator | 不创建空实现 |
 | R8 UX11-F | DEFERRED BY DEFAULT | — | 仅明确提级后启动 |
 | R8 UX11-G | NOT NEEDED FOR V1 | R5 Navigator 后未再证明 Timeline 过密；不启动 Quick / Detail | 保持默认 Detail |
