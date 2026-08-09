@@ -16,13 +16,22 @@ const orderedTracks = [...tracks].sort((left, right) =>
 );
 ---
 
-<div class="archive-player-frame" data-player-frame>
+<div class="archive-player-frame" data-player-frame data-player-mode="expanded">
 <section class="archive-player" data-player data-track-id={trackId} data-video-id={videoId || ''}>
   <div class="archive-player__head">
     <div>
       <span class="archive-kicker">CURRENT SOURCE</span>
       <strong data-player-track-label>{label}</strong>
     </div>
+    <button
+      type="button"
+      class="archive-player__mode-toggle"
+      data-player-mode-toggle
+      aria-pressed="false"
+      aria-label="切换为紧凑播放器"
+    >
+      <span data-player-mode-toggle-label>收起播放器</span>
+    </button>
       <span class="archive-clock" data-player-time>00:00:00</span>
   </div>
   <nav class="archive-player__sources" aria-label="播放器来源切换">

@@ -369,6 +369,8 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
   class ProjectArchiveShellElement extends HTMLElement {
     data!: ControllerData;
     activeView = 'timeline';
+    playerPresentationMode: 'expanded' | 'compact' = 'expanded';
+    playerModePreferences: Record<string, 'expanded' | 'compact'> = {};
     activeTrackId = '';
     selectedEventId: string | null = null;
     selectedThreadId: string | null = null;
@@ -390,7 +392,10 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     contextArrivalTimer: number | null = null;
     timelineScrollScheduled = false;
     timelineScrollHandler = () => this.scheduleTimelineNavigatorUpdate();
-    timelineResizeHandler = () => this.scheduleTimelineNavigatorUpdate();
+    timelineResizeHandler = () => {
+      this.applyPlayerPresentationMode(this.activeView);
+      this.scheduleTimelineNavigatorUpdate();
+    };
 
     connectedCallback() {
       if (this.dataset.ready === 'true') return;
@@ -398,6 +403,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       const dataNode = this.querySelector('[data-archive-controller-data]');
       if (!(dataNode instanceof HTMLScriptElement)) return;
       this.data = JSON.parse(dataNode.textContent || '{}');
+      this.loadPlayerModePreferences();
       this.activeTrackId = this.data.defaultTrackId;
       this.bindEvents();
       window.addEventListener('scroll', this.timelineScrollHandler, { passive: true });
@@ -462,6 +468,9 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.querySelectorAll<HTMLElement>('[data-close-thread]').forEach((button) => button.addEventListener('click', () => this.closeThread(true)));
       this.querySelectorAll<HTMLElement>('[data-close-person]').forEach((button) => button.addEventListener('click', () => this.closePerson(true)));
       this.querySelector<HTMLElement>('[data-load-player]')?.addEventListener('click', () => this.ensurePlayer());
+      this.querySelector<HTMLElement>('[data-player-mode-toggle]')?.addEventListener('click', () => {
+        this.setPlayerPresentationMode(this.playerPresentationMode === 'expanded' ? 'compact' : 'expanded');
+      });
       this.querySelector<HTMLElement>('[data-player-context-cta]')?.addEventListener('click', () => {
         if (!this.selectedEventId) return;
         this.navigateToEventContext(this.selectedEventId, { origin: 'player' });
@@ -721,6 +730,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.querySelectorAll<HTMLElement>('[data-view-button]').forEach((button) => {
         button.setAttribute('aria-pressed', String(button.dataset.viewButton === view));
       });
+      this.applyPlayerPresentationMode(view);
       this.updatePlayerRailActiveState();
       if (view === 'timeline') this.scheduleTimelineNavigatorUpdate();
       if (push) this.updateUrl();
@@ -1157,6 +1167,61 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.writeUrl('push');
     }
 
+    playerModeStorageKey() {
+      return `folio:player-mode:${this.data?.projectId || 'archive'}:v1`;
+    }
+
+    loadPlayerModePreferences() {
+      try {
+        const raw = window.sessionStorage.getItem(this.playerModeStorageKey());
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== 'object') return;
+        this.playerModePreferences = Object.fromEntries(
+          Object.entries(parsed).filter(([, value]) => value === 'expanded' || value === 'compact'),
+        ) as Record<string, 'expanded' | 'compact'>;
+      } catch {
+        this.playerModePreferences = {};
+      }
+    }
+
+    savePlayerModePreferences() {
+      try {
+        window.sessionStorage.setItem(this.playerModeStorageKey(), JSON.stringify(this.playerModePreferences));
+      } catch {
+        // Session storage is an enhancement; the in-memory preference still applies.
+      }
+    }
+
+    defaultPlayerPresentationMode(view: string): 'expanded' | 'compact' {
+      return view === 'timeline' || view === 'storylines' ? 'expanded' : 'compact';
+    }
+
+    applyPlayerPresentationMode(view: string) {
+      const frame = this.querySelector<HTMLElement>('[data-player-frame]');
+      const toggle = this.querySelector<HTMLButtonElement>('[data-player-mode-toggle]');
+      if (!frame) return;
+      const desktop = window.matchMedia('(min-width: 901px)').matches;
+      const requested = this.playerModePreferences[view] || this.defaultPlayerPresentationMode(view);
+      const mode = desktop ? requested : 'expanded';
+      this.playerPresentationMode = mode;
+      frame.dataset.playerMode = mode;
+      if (!toggle) return;
+      const compact = mode === 'compact';
+      toggle.setAttribute('aria-pressed', String(compact));
+      toggle.setAttribute('aria-label', compact ? '切换为完整播放器' : '切换为紧凑播放器');
+      const label = toggle.querySelector<HTMLElement>('[data-player-mode-toggle-label]');
+      if (label) label.textContent = compact ? '展开播放器' : '收起播放器';
+    }
+
+    setPlayerPresentationMode(mode: 'expanded' | 'compact') {
+      if (!window.matchMedia('(min-width: 901px)').matches) return;
+      this.playerModePreferences[this.activeView] = mode;
+      this.savePlayerModePreferences();
+      this.applyPlayerPresentationMode(this.activeView);
+      this.scheduleTimelineNavigatorUpdate();
+    }
+
     replaceUrl() {
       this.writeUrl('replace');
     }
@@ -1221,7 +1286,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       if (!mount) return null;
       try {
         const YT = await loadYouTubeApi();
-        this.querySelector<HTMLElement>('[data-player-poster]')?.setAttribute('hidden', '');
+        this.querySelector<HTMLElement>('[data-player-poster]')?.removeAttribute('hidden');
         this.querySelector<HTMLElement>('[data-load-player]')?.setAttribute('hidden', '');
         this.player = new YT.Player(mount, {
           width: '100%',
@@ -1247,6 +1312,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
             },
           },
         });
+        this.querySelector<HTMLElement>('[data-player-viewport]')?.setAttribute('data-player-loaded', 'true');
         return this.player;
       } catch {
         const current = this.querySelector<HTMLElement>('[data-player-current]');
