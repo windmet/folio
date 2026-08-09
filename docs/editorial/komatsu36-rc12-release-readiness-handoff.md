@@ -2,7 +2,7 @@
 
 > 状态：LOCAL QA COMPLETE — `PRODUCT-ACCEPTED` 待人工停点 1/2
 > 分支：`codex/komatsu36-project-archive`
-> 当前 HEAD：`864658a`
+> 当前 HEAD：`bb23d83`
 > Release Gate：CLOSED；本文不授权 merge、deploy 或修改 `project.status`
 
 本 handoff 记录 RC12-A/B/C/D 与 RC12-F 本地复核结果。它是 review branch 的交接草案，不把本地 preview、静态门禁或短时交互提升为生产接受。
@@ -24,6 +24,7 @@
 - `90e79b0` — Target / Context expandable text 与 People / Cast normalization；
 - `931b9ad` — source platform pictograms 与 D QA；
 - `864658a` — 修正移动端 mode toggle 必须隐藏的 RC12-A 缺口。
+- `bb23d83` — RC12-F 本地 QA 与 release-readiness handoff 草案。
 
 工作树已清洁，分支已推送远端。
 
@@ -53,6 +54,8 @@ git diff --check                         PASS
 | Thread / Person | 打开后 dialog 获得焦点、背景锁定；Escape 关闭并解除锁定；focus restore 合同保持 |
 | Search | 输入 `Bingo` 得到 13 条公开结果；无错误态；document overflow `0` |
 | 应用 console | Browser dev logs 为空；未发现 page error / warning |
+
+追加压力矩阵覆盖 320、360、375、390、414、540、600、768、820、900、901、1024、1100、1200、1280、1366、1440、1600、1920px：People grid、PersonCard、Cast projection、来源卡与 Player 均无组件溢出，document overflow 全部为 `0`。
 
 A/B/C 与 D 的独立批次证据分别见：
 
