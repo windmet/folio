@@ -17,6 +17,7 @@
 - 公开 Event / Thread / Person 的轻量站内检索已落地：索引只来自发布内容，结果顺序固定，Event 结果可恢复稳定深链并切换到正确 Track；不索引 Transcript 与 Chat；
 - `validate:publication` 已接入统一 `npm run validate`：当前构建核对 158 条公开检索项、350 KiB 单页预算，并阻止原始 ASR 文件标记、本机源档路径、`author_id`、SRT/VTT 文件名进入发布 HTML，同时要求 `published` Project 在首页拥有真实入口；
 - `.github/workflows/validate.yml` 已接入 push / pull request 验证：固定 Node.js 22.12.0，执行 `npm ci` 与完整 `npm run validate`；它只提供可审阅的 CI 证据，不触发部署；
+- Cloudflare Pages 的首次 provision、构建设置、production 复测和证据追加步骤见 `docs/cloudflare-pages-release-checklist.md`；当前仓库没有部署 token 或 Wrangler 配置，不由本地自动执行；
 - 额外静态检查边界已实测：仓库自带 `tsc --noEmit` 通过；临时安装 `@astrojs/check` 后，`astro check` 会扫描生成的 `public/admin` bundle 并在约 4 GiB 堆上 OOM，因此未纳入 Release Gate，也不保留该临时依赖；
 - 首页已增加独立“专题档案”书架，只消费 `status: published` 的 Project，并显示由 collection 实时派生的 Event／Thread／Track 数量；专题不混入四类普通文章筛选；
 - 当前实现已完成 RC Media Pass：Hero 下方有常驻三来源栏，播放器有 Source Switcher，SP1/SP2 是 `video + external`，支持 `?track=`、Event 优先、Source Event Index、canonical Space CTA 与 provenance 链接；固定截图、本地 preview QA 与发布层 Final Editorial Pass 也已完成，尚未进入最终功能冻结，因为仍需 Release Gate 与发布意图确认；

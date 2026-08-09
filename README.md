@@ -9,6 +9,7 @@
 - 专题路由：`/projects/komatsu36/`
 - Visual QA 与编辑审计：`docs/qa/komatsu36-rc08/`
 - 详细合同与剩余 Release Gate：`docs/komatsu36-archive-development.md`
+- Cloudflare Pages provision / 首次部署清单：`docs/cloudflare-pages-release-checklist.md`
 
 ## 本地开发
 
