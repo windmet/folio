@@ -51,6 +51,15 @@ const orderedTracks = [...tracks].sort((left, right) =>
   </div>
   <div class="archive-player__unavailable" data-player-unavailable hidden>此轨道目前没有公开播放源</div>
   <p class="archive-player__current" data-player-current>选择时间节点开始定位</p>
+  <section class="archive-player__context" data-player-context hidden aria-label="当前节点上下文">
+    <span class="archive-kicker">READING CONTEXT</span>
+    <p data-player-context-summary></p>
+    <button type="button" class="archive-player__context-cta" data-player-context-cta>在 Timeline 查看此节点 →</button>
+    <div class="archive-player__context-threads" data-player-context-threads hidden>
+      <span>选择一条 Storyline</span>
+      <div data-player-context-thread-list></div>
+    </div>
+  </section>
   {fallbackUrl && (
     <a class="archive-player__fallback" href={fallbackUrl} target="_blank" rel="noopener noreferrer" data-player-fallback>
       在 YouTube 打开原来源 ↗

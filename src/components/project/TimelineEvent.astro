@@ -18,7 +18,7 @@ const formatTime = (totalSeconds: number) => {
 };
 ---
 
-<article class="timeline-event" data-event-card={localId} id={`event-${localId}`}>
+<article class="timeline-event" data-event-card={localId} data-timeline-event={localId} id={`event-${localId}`} tabindex="-1">
   <button type="button" class="event-time" data-event-seek={localId} data-seconds={seconds}>
     <span aria-hidden="true">▶</span> {event.data.timingStatus === 'approximate' ? '≈' : ''}{formatTime(seconds)}
   </button>

@@ -123,6 +123,7 @@ const controllerData = {
     trackId: localId(referenceId(event.data.track)),
     startMs: event.data.startMs,
     title: event.data.title,
+    threadIds: localId(referenceId(event.data.track)) === localId(defaultTrack.id) ? [] : (threadsByEvent.get(event.id) || []),
   }])),
 };
 const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', '\\u003c');
@@ -242,7 +243,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
           <div class="people-group__heading"><span>02</span><h3>PRODUCTION / ACTION</h3></div>
           <div class="people-grid">
             {orderedPeople.filter((person) => (person.data.participation || []).some((item: any) => ['production', 'ensemble'].includes(item.kind))).map((person) => (
-              <PersonCard person={person} eventCount={(eventsByPerson.get(person.id) || []).length} />
+              <PersonCard person={person} group="production" eventCount={(eventsByPerson.get(person.id) || []).length} />
             ))}
           </div>
         </section>
@@ -250,7 +251,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
           <div class="people-group__heading"><span>03</span><h3>BIRTHDAY LIVE PARTICIPANTS</h3></div>
           <div class="people-grid">
             {orderedPeople.filter((person) => (person.data.participation || []).some((item: any) => item.kind === 'birthday-live')).map((person) => (
-              <PersonCard person={person} eventCount={(eventsByPerson.get(person.id) || []).length} />
+              <PersonCard person={person} group="birthday-live" eventCount={(eventsByPerson.get(person.id) || []).length} />
             ))}
           </div>
         </section>
@@ -258,7 +259,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
           <div class="people-group__heading"><span>04</span><h3>X SPACE / REMOTE</h3></div>
           <div class="people-grid">
             {orderedPeople.filter((person) => (person.data.participation || []).some((item: any) => ['space-guest', 'remote-call', 'space-account'].includes(item.kind))).map((person) => (
-              <PersonCard person={person} eventCount={(eventsByPerson.get(person.id) || []).length} />
+              <PersonCard person={person} group="space-remote" eventCount={(eventsByPerson.get(person.id) || []).length} />
             ))}
           </div>
         </section>
@@ -298,7 +299,13 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
 </project-archive-shell>
 
 <script>
-  type ArchiveEvent = { id: string; trackId: string; startMs: number; title: string };
+  type ArchiveEvent = {
+    id: string;
+    trackId: string;
+    startMs: number;
+    title: string;
+    threadIds: string[];
+  };
   type ArchiveTrack = {
     id: string;
     label: string;
@@ -358,6 +365,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     lockedBodyPaddingRight = '';
     searchOpen = false;
     sourceEventsOpen = false;
+    contextFocusObserver: ResizeObserver | null = null;
 
     connectedCallback() {
       if (this.dataset.ready === 'true') return;
@@ -372,6 +380,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
 
     disconnectedCallback() {
       this.stopPlaybackSync();
+      this.contextFocusObserver?.disconnect();
     }
 
     bindEvents() {
@@ -400,18 +409,10 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.querySelectorAll<HTMLElement>('[data-person-event-id]').forEach((button) => {
         button.addEventListener('click', () => {
           const eventId = button.dataset.personEventId || '';
-          const event = this.data.events[eventId];
-          if (!event) return;
-          this.closePerson(false);
-          if (event.trackId === this.data.defaultTrackId) {
-            this.showView('timeline', false);
-          } else {
-            this.showView('storylines', false);
-            const threadId = button.dataset.personThread;
-            if (threadId) this.openThread(threadId, null, false);
-          }
-          this.selectEvent(eventId, false, true);
-          this.updateUrl();
+          this.navigateToEventContext(eventId, {
+            origin: 'person',
+            preferredThreadId: button.dataset.personThread,
+          });
         });
       });
       this.querySelectorAll<HTMLElement>('[data-open-thread]').forEach((button) => {
@@ -423,6 +424,18 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.querySelectorAll<HTMLElement>('[data-close-thread]').forEach((button) => button.addEventListener('click', () => this.closeThread(true)));
       this.querySelectorAll<HTMLElement>('[data-close-person]').forEach((button) => button.addEventListener('click', () => this.closePerson(true)));
       this.querySelector<HTMLElement>('[data-load-player]')?.addEventListener('click', () => this.ensurePlayer());
+      this.querySelector<HTMLElement>('[data-player-context-cta]')?.addEventListener('click', () => {
+        if (!this.selectedEventId) return;
+        this.navigateToEventContext(this.selectedEventId, { origin: 'player' });
+      });
+      this.querySelector<HTMLElement>('[data-player-context-thread-list]')?.addEventListener('click', (event) => {
+        const button = (event.target as HTMLElement).closest<HTMLElement>('[data-player-context-thread]');
+        if (!button || !this.selectedEventId) return;
+        this.navigateToEventContext(this.selectedEventId, {
+          origin: 'player',
+          preferredThreadId: button.dataset.playerContextThread,
+        });
+      });
       const searchInput = this.querySelector<HTMLInputElement>('[data-archive-search]');
       searchInput?.addEventListener('input', () => this.filterSearch(searchInput.value));
       this.querySelector<HTMLElement>('[data-search-clear]')?.addEventListener('click', () => {
@@ -432,18 +445,10 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.querySelectorAll<HTMLElement>('[data-search-event]').forEach((button) => {
         button.addEventListener('click', () => {
           const eventId = button.dataset.searchEvent || '';
-          const event = this.data.events[eventId];
-          if (!event) return;
-          this.closeSearch(false);
-          if (event.trackId === this.data.defaultTrackId) {
-            this.showView('timeline', false);
-          } else {
-            this.showView('storylines', false);
-            const threadId = button.dataset.searchThread;
-            if (threadId) this.openThread(threadId, searchInput || null, false);
-          }
-          this.selectEvent(eventId, false, true);
-          this.updateUrl();
+          this.navigateToEventContext(eventId, {
+            origin: 'search',
+            preferredThreadId: button.dataset.searchThread,
+          });
         });
       });
       this.querySelectorAll<HTMLElement>('[data-search-kind="thread"]').forEach((button) => {
@@ -521,6 +526,119 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       if (push) this.updateUrl();
     }
 
+    navigateToEventContext(eventId: string, options: { origin: 'person' | 'search' | 'player'; preferredThreadId?: string }) {
+      const event = this.data.events[eventId];
+      if (!event) return;
+
+      const contextTrigger = options.origin === 'player'
+        ? this.querySelector<HTMLElement>('[data-player-context-cta]')
+        : null;
+      this.closeSearch(false);
+      if (this.selectedThreadId) this.closeThread(false);
+      if (this.selectedPersonId) this.closePerson(false);
+
+      this.selectEvent(eventId, false, options.origin !== 'player');
+      const threadIds = event.threadIds || [];
+      const preferredThreadId = options.preferredThreadId && threadIds.includes(options.preferredThreadId)
+        ? options.preferredThreadId
+        : undefined;
+      const orderedThreadIds = preferredThreadId
+        ? [preferredThreadId, ...threadIds.filter((threadId) => threadId !== preferredThreadId)]
+        : threadIds;
+
+      if (event.trackId === this.data.defaultTrackId) {
+        this.showView('timeline', false);
+        this.writeUrl('push');
+        this.scheduleTimelineContextFocus(eventId);
+        return;
+      }
+
+      if (orderedThreadIds.length === 0) {
+        this.showSourceEventIndex(event.trackId);
+        this.writeUrl('push');
+        window.requestAnimationFrame(() => this.focusSourceEvent(eventId));
+        return;
+      }
+
+      this.showView('storylines', false);
+      if (orderedThreadIds.length === 1 || preferredThreadId) {
+        this.openThread(preferredThreadId || orderedThreadIds[0], contextTrigger, false);
+      } else {
+        this.renderPlayerContextThreads(eventId, orderedThreadIds);
+        const choices = this.querySelector<HTMLElement>('[data-player-context-threads]');
+        if (choices) choices.hidden = false;
+      }
+      this.writeUrl('push');
+      if (threadIds.length > 1) {
+        window.requestAnimationFrame(() => {
+          this.querySelector<HTMLElement>('[data-player-context-thread]')?.focus({ preventScroll: true });
+        });
+      }
+    }
+
+    scheduleTimelineContextFocus(eventId: string) {
+      this.contextFocusObserver?.disconnect();
+      this.contextFocusObserver = null;
+      const target = this.querySelector<HTMLElement>(`[data-timeline-event="${CSS.escape(eventId)}"]`);
+      const playerColumn = this.querySelector<HTMLElement>('.project-player-column');
+      if (target && playerColumn && typeof ResizeObserver !== 'undefined') {
+        this.contextFocusObserver = new ResizeObserver(() => {
+          this.focusTimelineEvent(eventId);
+        });
+        this.contextFocusObserver.observe(playerColumn);
+        let observationFrames = 0;
+        const releaseObservation = () => {
+          if (!this.contextFocusObserver) return;
+          observationFrames += 1;
+          if (observationFrames >= 180) {
+            this.contextFocusObserver.disconnect();
+            this.contextFocusObserver = null;
+            return;
+          }
+          window.requestAnimationFrame(releaseObservation);
+        };
+        window.requestAnimationFrame(releaseObservation);
+      }
+      this.focusTimelineEvent(eventId);
+    }
+
+    focusTimelineEvent(eventId: string) {
+      const target = this.querySelector<HTMLElement>(`[data-timeline-event="${CSS.escape(eventId)}"]`);
+      if (!target) return false;
+      const nav = this.querySelector<HTMLElement>('.project-nav');
+      const mobilePlayer = window.matchMedia('(max-width: 600px)').matches
+        ? this.querySelector<HTMLElement>('.project-player-column')
+        : null;
+      const offset = (nav?.getBoundingClientRect().height || 0)
+        + (mobilePlayer?.getBoundingClientRect().height || 0)
+        + 16;
+      target.style.scrollMarginTop = `${Math.ceil(offset)}px`;
+      target.scrollIntoView({ behavior: 'auto', block: 'start' });
+      target.focus({ preventScroll: true });
+      const rect = target.getBoundingClientRect();
+      return rect.top < window.innerHeight && rect.bottom > offset;
+    }
+
+    focusSourceEvent(eventId: string) {
+      this.querySelector<HTMLElement>(`[data-source-event="${CSS.escape(eventId)}"]`)?.focus({ preventScroll: true });
+    }
+
+    renderPlayerContextThreads(eventId: string, threadIds: string[]) {
+      const list = this.querySelector<HTMLElement>('[data-player-context-thread-list]');
+      if (!list) return;
+      list.replaceChildren();
+      for (const threadId of threadIds) {
+        const detail = this.querySelector<HTMLElement>(`[data-thread-detail="${CSS.escape(threadId)}"]`);
+        const title = detail?.querySelector('h2')?.textContent?.trim() || threadId;
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.dataset.playerContextThread = threadId;
+        button.textContent = title;
+        list.append(button);
+      }
+      list.dataset.playerContextEvent = eventId;
+    }
+
     selectEvent(eventId: string, push: boolean, seek: boolean) {
       const event = this.data.events[eventId];
       if (!event) return;
@@ -533,6 +651,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       if (current) current.textContent = `TARGET · ${this.formatArchiveTime(event.startMs)}\n${event.title}`;
       this.updatePlayerTime(event.startMs);
       this.updateFallback(event);
+      this.updatePlayerContext(event);
       if (push) this.updateUrl();
       if (seek) this.seekTo(event.startMs);
     }
@@ -553,6 +672,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         : '选择时间节点开始定位';
       this.updatePlayerTime(null);
       this.updateFallback(null);
+      this.updatePlayerContext(null);
       if (push) this.updateUrl();
     }
 
@@ -712,24 +832,38 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     restoreFromUrl() {
       const params = new URLSearchParams(window.location.search);
       const view = params.get('view') || this.data.defaultView;
+      this.selectedEventId = null;
+      this.selectedThreadId = null;
+      this.selectedPersonId = null;
+      this.activeTrackId = this.data.defaultTrackId;
+      this.pendingSeekMs = null;
+      this.returnFocus = null;
+      this.classList.remove('has-active-event');
+      this.querySelectorAll<HTMLElement>('[data-event-card]').forEach((card) => card.classList.remove('is-active'));
+      this.updatePlayerTime(null);
+      this.updatePlayerContext(null);
+      this.updateFallback(null);
+      this.querySelectorAll<HTMLElement>('[data-thread-detail]').forEach((item) => { item.hidden = true; });
+      this.querySelectorAll<HTMLElement>('[data-person-detail]').forEach((item) => { item.hidden = true; });
+      this.querySelector<HTMLElement>('[data-thread-overlay]')?.setAttribute('hidden', '');
+      this.querySelector<HTMLElement>('[data-person-overlay]')?.setAttribute('hidden', '');
+      if (document.body.classList.contains('archive-panel-open')) this.unlockPage();
+      this.updateModalBackgroundInert();
       this.showView(view, false);
       const eventId = params.get('event');
       if (eventId && this.data.events[eventId]) {
         this.selectEvent(eventId, false, false);
-        this.replaceUrl();
       }
       else {
         const trackId = params.get('track');
         if (trackId && this.data.tracks[trackId]) this.switchTrack(trackId, false);
         else this.updateTrack(this.data.defaultTrackId);
-        this.replaceUrl();
       }
-      if (this.selectedThreadId) this.closeThread(false);
-      if (this.selectedPersonId) this.closePerson(false);
       const threadId = params.get('thread');
       const personId = params.get('person');
       if (threadId) this.openThread(threadId, null, false);
       if (personId) this.openPerson(personId, null, false);
+      this.replaceUrl();
     }
 
     async ensurePlayer() {
@@ -808,6 +942,10 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         .sort(([leftId, left], [rightId, right]) => right.startMs - left.startMs || leftId.localeCompare(rightId))[0];
       if (!eventAtTime || eventAtTime[0] === this.selectedEventId) return;
 
+      const currentUrl = new URL(window.location.href);
+      const urlHasEvent = currentUrl.searchParams.has('event');
+      if (!urlHasEvent && this.activeView !== 'timeline') return;
+
       this.selectEvent(eventAtTime[0], false, false);
       // selectEvent shows the anchor time. While playback is active the clock
       // should continue to reflect the player's actual position.
@@ -876,6 +1014,44 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         link.textContent = track.playback.provider === 'external' ? '打开 X 原始回放 ↗' : '在 YouTube 打开原来源 ↗';
       }
       link.href = url.toString();
+    }
+
+    updatePlayerContext(event: ArchiveEvent | null) {
+      const context = this.querySelector<HTMLElement>('[data-player-context]');
+      const summary = this.querySelector<HTMLElement>('[data-player-context-summary]');
+      const cta = this.querySelector<HTMLButtonElement>('[data-player-context-cta]');
+      const threads = this.querySelector<HTMLElement>('[data-player-context-threads]');
+      const list = this.querySelector<HTMLElement>('[data-player-context-thread-list]');
+      if (!context || !summary || !cta || !threads) return;
+      if (!event) {
+        context.hidden = true;
+        threads.hidden = true;
+        list?.replaceChildren();
+        return;
+      }
+
+      const track = this.data.tracks[event.trackId];
+      context.hidden = false;
+      threads.hidden = true;
+      list?.replaceChildren();
+      if (event.trackId === this.data.defaultTrackId) {
+        const timelineTarget = this.querySelector<HTMLElement>(`[data-timeline-event="${CSS.escape(event.id)}"]`);
+        const actSection = timelineTarget?.closest<HTMLElement>('[data-act]');
+        const actLabel = actSection?.querySelector<HTMLElement>('.act-number strong')?.textContent?.trim();
+        const actTitle = actSection?.querySelector<HTMLElement>('.act-header h2')?.textContent?.trim();
+        summary.textContent = actLabel && actTitle
+          ? `${actLabel} · ${actTitle}`
+          : 'Timeline · YouTube 主直播';
+        cta.textContent = '在 Timeline 查看此节点 →';
+      } else {
+        const threadCount = (event.threadIds || []).length;
+        summary.textContent = `${track?.shortLabel || 'External Source'} · ${threadCount ? `${threadCount} 条 Storyline 上下文` : '暂无 Storyline 上下文'}`;
+        cta.textContent = threadCount === 0
+          ? '在来源事件索引中查看 →'
+          : threadCount > 1
+          ? '在 Storyline 选择上下文 →'
+          : '在 Storyline 查看上下文 →';
+      }
     }
   }
 

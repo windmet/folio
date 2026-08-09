@@ -14,7 +14,7 @@ const findPerson = (character: string, session: 'day' | 'night') => people.find(
 ));
 ---
 
-<div class="cast-matrix-wrap">
+<div class="cast-matrix-wrap cast-matrix-desktop">
   <table class="cast-matrix">
     <caption>《俺を知ってくれ！》2026 昼夜 Cast</caption>
     <thead>
@@ -40,4 +40,29 @@ const findPerson = (character: string, session: 'day' | 'night') => people.find(
       ))}
     </tbody>
   </table>
+</div>
+
+<div class="cast-matrix-mobile" aria-label="《俺を知ってくれ！》2026 昼夜 Cast">
+  <p class="cast-matrix-mobile__caption">《俺を知ってくれ！》2026 昼夜 Cast</p>
+  <div class="cast-matrix-mobile__list">
+    {rows.map((character) => (
+      <div class="cast-matrix-mobile__row">
+        <strong>{character}</strong>
+        {(['day', 'night'] as const).map((session) => {
+          const person = findPerson(character, session);
+          const sessionLabel = session === 'day' ? '昼' : '夜';
+          return (
+            <div class="cast-matrix-mobile__session">
+              <span>{sessionLabel}</span>
+              {person ? (
+                <button type="button" data-open-person={person.id.split('/').at(-1)} aria-label={`${character} ${sessionLabel} ${person.data.displayName}`}>
+                  {person.data.displayName}
+                </button>
+              ) : <span>—</span>}
+            </div>
+          );
+        })}
+      </div>
+    ))}
+  </div>
 </div>
