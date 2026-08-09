@@ -48,7 +48,7 @@ E：DEFERRED
 
 ## 2026-08-10 复核跟进
 
-用户本地简要复核反馈：“基本能接受，请你继续”。据此允许执行 RC12-F2 完整回归并建立 corrected handoff；当前记录为 `PRODUCT REVIEW ACKNOWLEDGED — F2 REGRESSION COMPLETE`。除非用户另行明确授权，仍保持 `Release Gate: CLOSED`，不执行 merge、deploy、生产 preview 或 `project.status` 变更。
+用户本地简要复核反馈：“基本能接受，请你继续”。据此先执行 RC12-F2 完整回归并建立 corrected handoff，随后启动 RC12-E E1–E3；F2 记录保留为前一批回归状态。除非用户另行明确授权，仍保持 `Release Gate: CLOSED`，不执行 merge、deploy、生产 preview 或 `project.status` 变更。
 
 ## 2026-08-10 RC12-E 工程跟进
 

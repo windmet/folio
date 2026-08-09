@@ -33,7 +33,7 @@ Release Gate                     CLOSED
 | People 单列卡 | 无 overflow，但桌面空间利用率与扫读效率下降 | `REJECTED ON DESKTOP` | RC12-C2：桌面横向高密度；移动投影保留 |
 | Cast projection | 已有 table 与窄投影，工程压力测试无 overflow | `REVISE` | RC12-C2：明确 wide / medium / mobile 三档，不以横滚完成 |
 | Source pictograms | RC12-D2 已重做 X Space 声场图标与 Source card 三层信息层级，并完成桌面／移动 Browser QA | `F2 VERIFIED, USER REVIEW ACKNOWLEDGED` | 保留文字、外链、`?track=` 与 Source Event Index 合同 |
-| Source-scoped Timeline | 未实现 | `BACKLOG / P1` | RC12-E 仍后置，不得伪报完成 |
+| Source-scoped Timeline | E1–E3 已实现：三 scope、source-local Event projection、native clock、URL/history、external no-iframe | `SOURCE-VERIFIED + BROWSER-VERIFIED` | E4/E5 视觉收尾与产品停点仍待完成，不得提前标记整体接受 |
 
 `SOURCE-VERIFIED`、`BROWSER-VERIFIED` 与 `PRODUCT-ACCEPTED` 必须继续分开。此前压力矩阵证明“没有溢出和交互回归”，不能推导“桌面形态好用”。
 
@@ -48,7 +48,7 @@ RC12-B2  Remaining expandable text coverage
   ↓ 人工停点 C2/D2/B2
 RC12-F2  Full regression and corrected handoff
 
-RC12-E Source-scoped Timeline only starts after an explicit user decision.
+RC12-E E1–E3 目前已启动并完成第一版；E4/E5 只能按独立小批次继续，不能回头混改 A2/C2/D2/B2。
 ```
 
 不得把四批合成一次“大改一切”。每批独立：读取本节合同 → 改最小文件面 → 自动门禁 → 真实路由 Browser QA → 截止点记录 → scoped commit。上一批存在产品方向疑问时停止，不用下一批的 CSS 顺手掩盖。
@@ -166,7 +166,7 @@ People 数据、分组、Lead Person、Person panel 与四类 participation 不�
 
 默认 clamp；只有实际 overflow 才显示“展开”；展开后显示全文并可“收起”。桌面 `title`／tooltip 只能作为增强，touch、keyboard 和移动端必须有可点击全文入口。Timeline Navigator 小 segment 可以继续截断，但其当前章节 header 必须提供完整标题。
 
-## 7. RC12-E — Source-scoped Timeline（显式 backlog）
+## 7. RC12-E — Source-scoped Timeline（E1–E3 已落地，E4/E5 待收尾）
 
 本次审阅确认它值得正式保留，但不强行并入视觉返工。其合同仍是 Timeline scope switch：YouTube 主线／X Space ①／X Space ②，各自使用 source-local clock 和 Event list；不得把三条来源混成伪统一时间轴。
 

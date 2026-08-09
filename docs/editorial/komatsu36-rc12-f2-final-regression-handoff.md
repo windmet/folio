@@ -8,6 +8,8 @@
 
 本文是 RC12-A2/C2/D2/B2 完成后的 F2 回归交接，不回写 RC 0.11 acceptance，也不授权 merge、deploy 或修改 `project.status`。用户的“基本能接受”被记录为**允许继续 F2 的产品复核反馈**；它不等同于生产媒体、长时稳定性或 Release Gate 授权。
 
+本文保留 F2 截止点的历史状态；RC12-E 随后已在 `e11135b` 启动 E1–E3，当前证据改见 `docs/qa/komatsu36-rc12/e/README.md`。本表中的 E `DEFERRED / NOT IMPLEMENTED` 不回写为当前状态。
+
 ## 1. 批次状态
 
 | 批次 | 源码 / Browser | 产品状态 | 证据 |
