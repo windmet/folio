@@ -33,6 +33,7 @@
 | Keyboard scope activation and focus restore | Playwright Chromium 1440×900：Enter 激活 SP1，Space 激活 SP2；URL、`aria-pressed`、scope 和焦点同步；Back 恢复 SP1 且焦点回到 SP1 button；页面 console 为空 |
 | Player mount invariant | 从 SP2 切回 YT 再切 SP1：`.archive-player__mount` 始终 `1`，iframe 始终 `0`；没有第二个媒体实例 |
 | Focus indicator | 点击 scope 后焦点仍在原生 button；计算样式含红色 `outline` 与 `outline-offset` |
+| Visual render spot check | Playwright 截图抽查 1440×900 与 390×844：scope row、source header、Event cards 和 Player 保持预期层级，无 app-level clipping／fixed overlay；Codex 工具注入的 `#codex-browser-sidebar-comments-root` 不纳入产品页面证据 |
 | Page console | 页面 `error/warn = []`；Browser 工具自身 Statsig 网络／dropped-events 日志不属于页面 console |
 | Narrow viewport | Playwright Chromium 390×844：scope block `159px`，三按钮各 `114×74px`，SP1 8 Event，overflow `0`；页面 console 为空 |
 
