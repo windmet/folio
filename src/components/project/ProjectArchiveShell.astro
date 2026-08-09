@@ -6,6 +6,8 @@ import ThreadPanel from './ThreadPanel.astro';
 import PersonPopover from './PersonPopover.astro';
 import ProjectSearch from './ProjectSearch.astro';
 import MediaSourceNavigator from './MediaSourceNavigator.astro';
+import CastMatrix from './CastMatrix.astro';
+import PersonCard from './PersonCard.astro';
 
 export interface Props {
   project: any;
@@ -24,6 +26,7 @@ const peopleById = new Map(people.map((person) => [person.id, person]));
 const eventsById = new Map(events.map((event) => [event.id, event]));
 const tracksById = new Map(tracks.map((track) => [track.id, track]));
 const threadsByEvent = new Map<string, string[]>();
+const threadsByPerson = new Map<string, string[]>();
 const eventsByPerson = new Map<string, any[]>();
 
 for (const thread of threads) {
@@ -44,6 +47,28 @@ for (const event of events) {
     list.push(event);
     eventsByPerson.set(referenceId(personReference), list);
   }
+}
+
+for (const thread of threads) {
+  const personIds = new Set<string>();
+  for (const node of thread.data.nodes) {
+    const event = eventsById.get(referenceId(node.event));
+    for (const personReference of event?.data.people || []) personIds.add(referenceId(personReference));
+  }
+  for (const personId of personIds) {
+    const list = threadsByPerson.get(personId) || [];
+    list.push(localId(thread.id));
+    threadsByPerson.set(personId, list);
+  }
+}
+
+for (const threadIds of threadsByPerson.values()) {
+  threadIds.sort((left, right) => {
+    const leftThread = threads.find((thread) => localId(thread.id) === left);
+    const rightThread = threads.find((thread) => localId(thread.id) === right);
+    return Number(rightThread?.data.featured) - Number(leftThread?.data.featured)
+      || leftThread?.data.title.localeCompare(rightThread?.data.title, 'zh-CN');
+  });
 }
 
 const threadViews = await Promise.all(threads.map(async (entry) => {
@@ -199,20 +224,38 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
 
       <section class="project-view people-view" data-view-panel="people" hidden>
         <div class="view-heading">
-          <span class="archive-kicker">ENTITY INDEX</span>
+          <span class="archive-kicker">PEOPLE / CAST</span>
           <h2>People</h2>
-          <p>人物页由 Event → Person 引用反向生成，不维护第二份事件清单。</p>
+          <p>先看《俺知》昼夜 Cast，再看制作、生日会和 X Space / Remote 参与关系。人物事件仍由 Event → Person 引用反向生成。</p>
         </div>
-        <div class="people-grid">
-          {orderedPeople.map((person) => (
-            <button type="button" class="person-card" data-open-person={localId(person.id)}>
-              <span>{person.data.reading}</span>
-              <h3>{person.data.displayName}</h3>
-              <p>{person.data.role}</p>
-              <strong>{(eventsByPerson.get(person.id) || []).length} 个相关节点 →</strong>
-            </button>
-          ))}
-        </div>
+        <section class="people-group">
+          <div class="people-group__heading"><span>01</span><h3>ORE-SHIRI CAST</h3></div>
+          <CastMatrix people={orderedPeople} />
+        </section>
+        <section class="people-group">
+          <div class="people-group__heading"><span>02</span><h3>PRODUCTION / ACTION</h3></div>
+          <div class="people-grid">
+            {orderedPeople.filter((person) => (person.data.participation || []).some((item: any) => ['production', 'ensemble'].includes(item.kind))).map((person) => (
+              <PersonCard person={person} eventCount={(eventsByPerson.get(person.id) || []).length} />
+            ))}
+          </div>
+        </section>
+        <section class="people-group">
+          <div class="people-group__heading"><span>03</span><h3>BIRTHDAY LIVE PARTICIPANTS</h3></div>
+          <div class="people-grid">
+            {orderedPeople.filter((person) => (person.data.participation || []).some((item: any) => item.kind === 'birthday-live')).map((person) => (
+              <PersonCard person={person} eventCount={(eventsByPerson.get(person.id) || []).length} />
+            ))}
+          </div>
+        </section>
+        <section class="people-group">
+          <div class="people-group__heading"><span>04</span><h3>X SPACE / REMOTE</h3></div>
+          <div class="people-grid">
+            {orderedPeople.filter((person) => (person.data.participation || []).some((item: any) => ['space-guest', 'remote-call', 'space-account'].includes(item.kind))).map((person) => (
+              <PersonCard person={person} eventCount={(eventsByPerson.get(person.id) || []).length} />
+            ))}
+          </div>
+        </section>
       </section>
 
       <section class="project-view transcript-view" data-view-panel="transcript" hidden>
@@ -241,6 +284,8 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     eventsByPerson={eventsByPerson}
     tracksById={tracksById}
     threadsByEvent={threadsByEvent}
+    threadsByPerson={threadsByPerson}
+    threadsById={new Map(orderedThreads.map((thread) => [localId(thread.id), thread]))}
     defaultTrackId={defaultTrack.id}
   />
   <script type="application/json" data-archive-controller-data set:html={serializedControllerData}></script>

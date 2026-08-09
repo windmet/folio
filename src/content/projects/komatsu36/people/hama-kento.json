@@ -4,5 +4,12 @@
   "reading": "はま けんと",
   "aliases": ["濱ちゃん", "ハマ"],
   "role": "坂本龍馬／土佐弁監修／现场来宾",
-  "note": "最早抽中并看到 wasabi，却因为「ひよって」把章鱼烧放了回去。"
+  "note": "最早抽中并看到 wasabi，却因为「ひよって」把章鱼烧放了回去。",
+  "projectContext": "《俺知》昼夜两场饰演坂本龍馬，并负责土佐弁监修；生日会中最早抽到俄罗斯章鱼烧。",
+  "participation": [
+    { "kind": "ore-shiri-cast", "character": "坂本龍馬", "sessions": ["day", "night"] },
+    { "kind": "production", "credit": "土佐弁監修" },
+    { "kind": "birthday-live" }
+  ],
+  "links": []
 }

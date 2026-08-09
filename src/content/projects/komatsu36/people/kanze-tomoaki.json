@@ -4,5 +4,8 @@
   "reading": "かんぜ ともあき",
   "aliases": ["観世君"],
   "role": "Space 来宾",
-  "note": "被从 listener 拉上麦，并成为“生日要记得还”与 ROM 规则的起点。"
+  "note": "被从 listener 拉上麦，并成为“生日要记得还”与 ROM 规则的起点。",
+  "projectContext": "从 Space listener 被邀请上麦，成为“生日要记得还”与 ROM 规则这条 Space 支线的起点。",
+  "participation": [{ "kind": "space-guest" }],
+  "links": []
 }

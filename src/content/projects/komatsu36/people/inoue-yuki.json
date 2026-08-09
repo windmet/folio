@@ -4,5 +4,11 @@
   "reading": "いのうえ ゆうき",
   "aliases": ["井上君"],
   "role": "昼场藤堂平助／现场来宾",
-  "note": "从北辰一刀流研究出发解释动作高低差，后在二次会与汐谷合唱。"
+  "note": "从北辰一刀流研究出发解释动作高低差，后在二次会与汐谷合唱。",
+  "projectContext": "《俺知》昼场饰演藤堂平助；他从北辰一刀流研究解释角色动作高低差，并在二次会与汐谷文康合唱。",
+  "participation": [
+    { "kind": "ore-shiri-cast", "character": "藤堂平助", "sessions": ["day"] },
+    { "kind": "birthday-live" }
+  ],
+  "links": []
 }

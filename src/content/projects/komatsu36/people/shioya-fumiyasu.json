@@ -4,5 +4,11 @@
   "reading": "しおや ふみやす",
   "aliases": ["ふーみん"],
   "role": "夜场藤堂平助／现场来宾",
-  "note": "提出血振り并推动双 cast 之间共享动作研究成果。"
+  "note": "提出血振り并推动双 cast 之间共享动作研究成果。",
+  "projectContext": "《俺知》夜场饰演藤堂平助；他从北辰一刀流研究提出血振り，并在二次会与井上雄貴组成昼夜平助组 duet。",
+  "participation": [
+    { "kind": "ore-shiri-cast", "character": "藤堂平助", "sessions": ["night"] },
+    { "kind": "birthday-live" }
+  ],
+  "links": []
 }

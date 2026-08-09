@@ -1,0 +1,34 @@
+---
+export interface Props {
+  person: any;
+  eventCount: number;
+}
+
+const { person, eventCount } = Astro.props;
+const participation = person.data.participation || [];
+const kindLabels: Record<string, string> = {
+  'ore-shiri-cast': 'CAST',
+  production: 'PRODUCTION',
+  ensemble: 'ENSEMBLE',
+  'birthday-live': 'LIVE',
+  'space-guest': 'SPACE GUEST',
+  'remote-call': 'REMOTE CALL',
+  'space-account': 'ACCOUNT APPEARANCE',
+  'submitted-comment': 'SUBMISSION',
+};
+const participationLabels = participation.map((item: any) => {
+  const label = kindLabels[item.kind] || item.kind;
+  const sessions = item.sessions?.map((session: string) => session === 'day' ? '昼' : '夜').join('／');
+  return [label, item.character, sessions, item.credit].filter(Boolean).join(' · ');
+});
+---
+
+<button type="button" class="person-card" data-open-person={person.id.split('/').at(-1)}>
+  <span>{person.data.reading || '人物资料'}</span>
+  <h3>{person.data.displayName}</h3>
+  <span class="person-card__chips" aria-label="本项目参与方式">
+    {participationLabels.map((label: string) => <span>{label}</span>)}
+  </span>
+  <p>{person.data.projectContext || person.data.note || person.data.role || '本项目相关人物'}</p>
+  <strong>{eventCount} 个相关节点 →</strong>
+</button>

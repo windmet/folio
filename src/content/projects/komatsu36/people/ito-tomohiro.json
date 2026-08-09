@@ -4,5 +4,11 @@
   "reading": "いとう ともひろ",
   "aliases": ["伊藤さん"],
   "role": "《俺知》沖田総司役／事前投稿者",
-  "note": "未到场但通过事前投稿选择名场面；小松把夜场与他分别退场视为此次共同舞台真正结束的瞬间。"
+  "note": "未到场但通过事前投稿选择名场面；小松把夜场与他分别退场视为此次共同舞台真正结束的瞬间。",
+  "projectContext": "《俺知》昼夜两场饰演沖田総司；虽然未到生日会现场，但通过事前投稿参与名场面复盘。",
+  "participation": [
+    { "kind": "ore-shiri-cast", "character": "沖田総司", "sessions": ["day", "night"] },
+    { "kind": "submitted-comment" }
+  ],
+  "links": []
 }

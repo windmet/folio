@@ -4,10 +4,12 @@ export interface Props {
   eventsByPerson: Map<string, any[]>;
   tracksById: Map<string, any>;
   threadsByEvent: Map<string, string[]>;
+  threadsByPerson: Map<string, string[]>;
+  threadsById: Map<string, any>;
   defaultTrackId: string;
 }
 
-const { people, eventsByPerson, tracksById, threadsByEvent, defaultTrackId } = Astro.props;
+const { people, eventsByPerson, tracksById, threadsByEvent, threadsByPerson, threadsById, defaultTrackId } = Astro.props;
 const referenceId = (reference: any) => reference.id;
 const formatTime = (milliseconds: number) => {
   const total = Math.floor(milliseconds / 1000);
@@ -27,11 +29,41 @@ const formatTime = (milliseconds: number) => {
         <span class="archive-kicker">PEOPLE INDEX</span>
         <h2>{person.data.displayName}</h2>
         {person.data.reading && <p class="person-reading">{person.data.reading}</p>}
-        <p class="person-role">{person.data.role}</p>
-        <p>{person.data.note}</p>
+        {person.data.role && <p class="person-role">{person.data.role}</p>}
+        {person.data.projectContext && <p class="person-context">{person.data.projectContext}</p>}
+        {!person.data.projectContext && person.data.note && <p>{person.data.note}</p>}
+        {(person.data.participation || []).length > 0 && (
+          <div class="person-participation" aria-label="本项目参与方式">
+            {person.data.participation.map((item: any) => (
+              <span>
+                {item.kind.replaceAll('-', ' ')}
+                {item.character ? ` · ${item.character}` : ''}
+                {item.sessions?.length ? ` · ${item.sessions.map((session: string) => session === 'day' ? '昼' : '夜').join('／')}` : ''}
+                {item.credit ? ` · ${item.credit}` : ''}
+              </span>
+            ))}
+          </div>
+        )}
+        {(person.data.links || []).length > 0 && (
+          <div class="person-links">
+            {person.data.links.map((link: any) => <a href={link.url} target="_blank" rel="noreferrer">{link.label} ↗</a>)}
+          </div>
+        )}
         {person.data.aliases.length > 0 && (
           <p class="person-aliases"><span>本场别名</span>{person.data.aliases.join(' · ')}</p>
         )}
+        <h3>相关事件线</h3>
+        <div class="person-storylines">
+          {(threadsByPerson.get(person.id) || []).map((threadId) => {
+            const thread = threadsById.get(threadId);
+            return thread ? (
+              <button type="button" data-open-thread={threadId}>
+                <span>{thread.data.category.replaceAll('-', ' ').toUpperCase()}</span>
+                <strong>{thread.data.title}</strong>
+              </button>
+            ) : null;
+          })}
+        </div>
         <h3>本切片相关节点</h3>
         <div class="person-events">
           {(eventsByPerson.get(person.id) || []).map((event) => (
