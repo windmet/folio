@@ -885,5 +885,7 @@ Media Pass 与交互小修已通过本地验证；当前真正剩余的 Release 
 | canonical Space 与 status Post 分工 | Track / Source 数据已分为 canonical `/i/spaces/...` 媒体记录与 `/i/status/...` provenance 记录；validator 关系已通过 | **Commit A 已完成**：不扩 Track schema，来源证明链接以轻量 provenance 区呈现 |
 | 手动 Source 状态冲突 | controller 已实现 `?track=`；手动选源清除 Event / target，Event selection 删除冗余 track，刷新时 Event 优先 | **Commit B 已完成并复测** |
 | Source Event 浏览范围 | 主 Timeline 是 YT canonical clock，不能承载 SP1 / SP2 的本地时钟 | **Commit D 合同**：使用轻量 per-track Source Event Index；不新增第六 View、route 或多轨 Timeline |
+| Final Editorial 抽样 | 124 个公开 Event 按 YT 104 / SP1 8 / SP2 12 分布；42 个 `qualified`、15 个 lane annotation、16 条 Thread、18 个 Person；抽查跨平台 LINE Thread、Space 技术 Thread、俄罗斯章鱼烧 payoff、qualified Event 与 Person 反向索引 | **本轮通过**：未发现结构关系、限定措辞或来源职责冲突；完整逐 Act / 逐 Thread 校样仍是发布前人工步骤 |
+| 浏览器 Release QA | 1280×720 与 390×844：三 Source 可见、无横向 overflow；console 0 error；Event / `?track=` / back-forward、Source Event Index、Thread / Person inert 与 focus trap 已实测 | **本轮通过**：仍需生成并保存八张固定截图，以及确认 preview / production 发布意图 |
 
 本表中的“已采纳”表示指导与仓库/媒体证据一致；“有条件采纳”表示方向可行但尚未满足发布前提。它不把本地持有媒体、文件后缀或可播放样本等同于公开托管授权与生产可用性。
