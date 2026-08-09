@@ -171,6 +171,8 @@ People 数据、分组、Lead Person、Person panel 与四类 participation 不�
 
 只有用户明确说“纳入当前 v1／本轮”才启动。Media Source Navigator、Source Event Index 或来源图标都不等于 Source-scoped Timeline。任何 agent 不得因为“已有来源浏览能力”将 E 标记完成，也不得因为 E 后置而删掉现有 SP1／SP2 入口。
 
+RC12-E 的只读范围、数据审计、URL／native-clock 合同和授权后实施批次见 `docs/editorial/komatsu36-rc12-e-source-scoped-timeline-proposal.md`。该提案状态仍为 `PROPOSAL — NOT IMPLEMENTED`，不会替代本节的启动条件。
+
 ## 8. 每批门禁与证据等级
 
 每个实现批次至少执行：
