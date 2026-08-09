@@ -16,7 +16,7 @@
 | URL/history | 无 Event 时 `track` 表示 scope；有 Event 时 Event id 权威推导 track；Back／Forward 恢复 scope 与 selected Event | Browser 直链、Back／Forward |
 | External boundary | SP1／SP2 不创建伪播放器或 iframe；现有单一 player mount 不因切换 scope 增加 | Browser mount/iframe 计数 |
 | Accessibility contract | scope 控件是 native `button`，带 `aria-pressed`、有效 `aria-controls` 和 `aria-label`；panel 同步 `aria-hidden`／`aria-labelledby`，scope 描述使用 `aria-live=polite`；focus-visible 保留可见焦点环 | `scripts/validate-publication.mjs`、CSS 计算样式 |
-| Source-local time | SP1／SP2 显示各自 `NATIVE CLOCK`、独立 duration 和本地事件时间，不换算到 YT 轴 | SourceTimeline header 与首项时间 |
+| Source-local time | SP1／SP2 显示各自 `NATIVE CLOCK`、独立 duration 和本地事件时间，不换算到 YT 轴；controller 静态门禁拒绝 offset 字段 | SourceTimeline header、首项时间、publication validator |
 
 ## 2. E5 Browser 回归记录
 

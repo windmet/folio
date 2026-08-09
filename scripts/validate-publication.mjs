@@ -242,6 +242,9 @@ if (!controllerMatch) {
 } else {
   try {
     const controller = JSON.parse(controllerMatch[1]);
+    if (/["'](?:offset|offsetMs|offsetSeconds|globalOffset|globalStartMs)["']\s*:/i.test(JSON.stringify(controller))) {
+      errors.push('RC12-E controller must not publish cross-source offset fields');
+    }
     const controllerTracks = controller.tracks || {};
     for (const trackId of expectedTimelineTrackIds) {
       const track = controllerTracks[trackId];
