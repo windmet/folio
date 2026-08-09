@@ -3,7 +3,7 @@
 > 状态：`SOURCE-VERIFIED` + `BROWSER-VERIFIED`；`PRODUCT-ACCEPTED` 待人工停点
 > 日期：2026-08-10
 > 项目：`komatsu36`
-> 本地路由：`http://127.0.0.1:4321/projects/komatsu36/?view=timeline`
+> 本地路由：`http://127.0.0.1:4322/projects/komatsu36/?view=timeline`
 > 权威实现入口：`docs/editorial/komatsu36-rc12-product-correction-runbook.md`
 
 本文件记录 RC12-E 第一版完成后的 E4/E5 工程与本地 Browser 回归，不把工程证据扩大为产品接受、真实媒体通过或 Release Gate 开启。E1–E3 的实现边界和历史矩阵仍见同目录 `README.md`。
@@ -20,7 +20,7 @@
 
 ## 2. E5 Browser 回归记录
 
-测试入口为本地 Astro background server `127.0.0.1:4321`；只验证静态本地页面，不代表 production origin。
+测试入口为本地 Astro build preview `127.0.0.1:4322`；只验证静态本地页面，不代表 production origin。4321 仅作为开发服务器备用入口。
 
 | 场景 | 结果 |
 |---|---|
@@ -50,7 +50,7 @@ git diff --check                         PASS
 node scripts/verify-rc12-e-browser.mjs   PASS
 ```
 
-Browser verifier 使用 `scripts/xhs-exporter` 的 Playwright 依赖；若该目录尚未安装依赖，先在 `scripts/xhs-exporter` 执行 `npm install`。可用 `RC12_E_BASE_URL` 覆盖默认的 `http://127.0.0.1:4321`。
+Browser verifier 使用 `scripts/xhs-exporter` 的 Playwright 依赖；若该目录尚未安装依赖，先在 `scripts/xhs-exporter` 执行 `npm install`。默认目标为 `http://127.0.0.1:4322`，可用 `RC12_E_BASE_URL` 覆盖。
 
 当前产物指标：raw HTML `291,492` bytes；Gzip `50,601`；Brotli `32,015`；350 KiB hard gate 余量 `66,908`；publication validator 通过 `3` 个 RC12-E scope、`124` 个 controller Event records 和三 track native-clock projection。
 

@@ -1,7 +1,7 @@
 # Komatsu36 RC 0.12 人工停点核对表
 
 > 当前状态：`RC12-E E1–E5 BROWSER VERIFIED — PRODUCT REVIEW PENDING`
-> 预览地址：`http://127.0.0.1:4321/projects/komatsu36/`
+> 预览地址：`http://127.0.0.1:4322/projects/komatsu36/`
 > 当前执行入口：`docs/editorial/komatsu36-rc12-product-correction-runbook.md`
 
 这份表保留 2026-08-09 第一版产品裁决，并追加当前状态；它不替代源码、构建或 Browser QA 证据。RC12-A2/C2/D2/B2 与 F2 已完成，RC12-E E1–E5 已完成工程与本地真实 Browser QA，覆盖 scope 键盘、390px、深链、history、播放器边界与无障碍语义；用户在本地简要复核后反馈“基本能接受”并允许继续收口。该反馈不等同于真实媒体通过、生产验收或 Release Gate 授权。后续边界见 `docs/editorial/komatsu36-rc12-product-correction-runbook.md`、`docs/editorial/komatsu36-rc12-f2-final-regression-handoff.md`、`docs/qa/komatsu36-rc12/e/README.md` 与 `docs/qa/komatsu36-rc12/e/E5-HANDOFF.md`。

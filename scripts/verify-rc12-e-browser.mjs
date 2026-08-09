@@ -6,7 +6,7 @@ if (!existsSync(playwrightModule)) {
 }
 
 const { chromium } = await import(playwrightModule.href);
-const baseUrl = process.env.RC12_E_BASE_URL || 'http://127.0.0.1:4321';
+const baseUrl = process.env.RC12_E_BASE_URL || 'http://127.0.0.1:4322';
 const projectUrl = `${baseUrl}/projects/komatsu36/`;
 const browser = await chromium.launch({ headless: true });
 const errors = [];
