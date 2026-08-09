@@ -40,6 +40,12 @@
 - `komatsu36_space(20260808-085743).md` — `486A070B370F97805D0BFE7C17324FE375515508CE5413F263815C131111B717`
 - `komatsu36_review_todo(10).md` — `6F9CC8138B22CE08D5409E6DCD379F2A26A1986F9099343122CFAF8690BEBD48`
 
+## 交互回归复测（2026-08-09）
+
+- 在保持 `127.0.0.1:4321` 不重启的条件下复测真实 `/projects/komatsu36/` 路由；页面提供 105 个主时间线 Event 定位控件。先选中 `yt-013840-great-payback`，播放器头部显示 `TARGET · 01:38:40` 及对应标题；再选中 `yt-014214-takoyaki-arrives`，文本更新为 `TARGET · 01:42:14` 及新标题，说明 Event selection 与右侧解释性文案保持联动；
+- 在 Storylines 视图点击底部 Thread 触发器，触发器自动定位到页面下方（关闭前记录 `scrollY=3608.2756`）；打开详情时 body 进入锁定态，关闭后恢复到 `scrollY=3608.2756`，没有从页面顶部重新滚动回当前位置；
+- YouTube iframe 本轮可载入（页面出现 1 个 iframe），但这只证明播放器壳/iframe 载入，不提升为真实音频连续播放、长时稳定性或 Release Gate 的 production media 证据。
+
 ## Release Gate
 
 截至 2026-08-09 的外部状态核对：
