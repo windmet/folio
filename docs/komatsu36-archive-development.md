@@ -868,7 +868,7 @@ package.json
 11. **RC 0.10-B（已完成）**：迁移 18 人、昼夜矩阵、四类分组、Person projectContext / links 与派生 Storylines；Search 已切换到新字段；
 12. **RC 0.10-C（已完成）**：按“全量裁决 → 五批修改 → 网站连续通读”处理 Reader Copy；停止渲染内部 qualification，完成 52/52 decisions 与 full reader pass；
 13. **RC 0.10-D（已完成）**：以仲村烧肉 X Post 完成首个 `social` related source 与 Folio SourcePost，插入指定 Event 后；不扩 Event、不加载 widget；
-14. **RC 0.10-E**：重跑完整验证和桌面／390px 编辑体验 QA；完成后再明确检查 `project.status`。当前为 `published`，首页又只筛选 `published` Project，因此合并到部署分支等价于正式发布，不得把 merge 当作无外部影响的代码整理。
+14. **RC 0.10-E（本地完成）**：已重跑完整验证和桌面／390px 编辑体验 QA；当前 `project.status` 仍为 `published`，首页又只筛选 `published` Project，因此合并到部署分支等价于正式发布，不得把 merge 当作无外部影响的代码整理。Release Gate 仍待明确的合并／部署授权。
 
 通用 validator 与 komatsu36 fixture 的分层不再列入本次 Release Blocker：通用层最终只校验 schema、关系、时间、隐私和确定性排序；`8 Acts`、manifest ARC 数与小松专属 publication assertions 留在项目 fixture，但该工作延后到第二个 Project 接入前完成。
 

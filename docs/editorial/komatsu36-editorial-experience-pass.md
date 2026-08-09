@@ -1,6 +1,6 @@
 # Komatsu36 RC 0.10 编辑体验实施规格
 
-> 状态：RC10-A / B / C / D COMPLETE；READY FOR RC10-E ACCEPTANCE
+> 状态：RC10-A / B / C / D / E LOCAL ACCEPTANCE COMPLETE；Release Gate 仍待外部发布决策
 > 阶段：RC 0.10 — Reader & Entity Editorial Pass
 > 前置结论：RC 0.9 完成的是 Structural Editorial Audit，不是读者文案终审。
 > 范围冻结：不新增 Event，不开放 Transcript / Evidence / Chat，不增加播放器能力，不重开 X Space 私有链路调查。
@@ -310,7 +310,7 @@ RC 0.10 不加载 `widgets.js`。X 官方文档确认 Embedded Posts 可通过 m
 3. `RC10-B people`（已完成）：迁移 18 人、Cast matrix、分组、Person panel Storylines 与 link audit；Search 切到新字段；旧 role / note 已删除；
 4. `RC10-C copy batches`（已完成）：按三遍法处理 52 个 decisions；停止渲染内部 qualification，完成脱离关键词的全量 reader pass；
 5. `RC10-D external context`（已完成）：只迁移仲村 X source 和插入正确节点间的 SourcePost；时序未核实时使用“同日”；
-6. `RC10-E acceptance`：build、validator、桌面/390px、console、overflow、键盘、深链、full reader pass 和发布 HTML 泄漏检查；
+6. `RC10-E acceptance`（本地完成）：build、validator、桌面/390px、console、overflow、键盘、深链、full reader pass 和发布 HTML 泄漏检查；
 7. 完成后再恢复 Release Gate，确认 `status: published`、production URL 与 merge/deploy 意图。
 
 每个提交只包含一个包；不得在 Reader Copy 批次顺手扩 Event、补逐字、接媒体或改普通文章组件。

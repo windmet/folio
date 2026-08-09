@@ -57,6 +57,7 @@ Structural Editorial Audit 已完成。当前没有发现 Event、Thread、Perso
 - 18 个 Person 的旧 `role` / `note` 字段已删除；最终 People 页面回归确认没有旧 `.person-role` 节点，People / Cast 仍可在桌面与 390px 正常渲染。
 - 浏览器应用层 error/warning 为 0；本地 Vite 注入的 `__SERVER_FORWARD_CONSOLE__` ReferenceError 仅属于开发服务器 instrumentation，不计为专题运行时错误。上述检查不提升为真实音频连续播放或 X Space 可用性证据。
 - RC10-D SourcePost 样本通过真实路由核验：打开 `shugo-yakiniku` 后，来源卡显示 `OUTSIDE THE STREAM · X`、仲村宗悟、`2026-04-14`、保守“同日”摘要和原帖直链；卡片紧跟 `sp1-002854-shugo-disappears`，不复制 Post 正文；390px（390×3000 测试视口）下卡片、Thread panel 与页面均无横向溢出，应用层 console error/warning 为 0。
+- 最终验收再次复测深链与键盘：`?track=space-2&event=sp2-000003-finally-vertical` 恢复 `TARGET · 00:00:03`，点击 YT Event 后 URL 与右侧文案同步到 `yt-013840-great-payback`；Thread 打开后焦点进入 panel，`Escape` 关闭并将焦点还给原 Storyline 触发器，页面没有回到顶部；应用层 console error/warning 为 0。
 
 ## Release Gate
 
