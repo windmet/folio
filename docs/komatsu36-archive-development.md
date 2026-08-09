@@ -16,7 +16,7 @@
 - Space 播放源决策已收口：用户提供的两条 X status 按创建时间与重开顺序映射为 SP1/SP2；页面只提供 canonical Space 外链，不重托管本地媒体，也不把 X 外链伪装成支持 timestamp seek；
 - 公开 Event / Thread / Person 的轻量站内检索已落地：索引只来自发布内容，结果顺序固定，Event 结果可恢复稳定深链并切换到正确 Track；不索引 Transcript 与 Chat；
 - `validate:publication` 已接入统一 `npm run validate`：当前构建核对 158 条公开检索项、350 KiB 单页预算，并阻止原始 ASR 文件标记、本机源档路径、`author_id`、SRT/VTT 文件名进入发布 HTML；同时要求 `published` Project 在首页拥有真实入口，并检查两条 canonical Space URL、三 Source 导航与 Source Event Index 的发布层结构仍存在；
-- `.github/workflows/validate.yml` 已接入 push / pull request 验证：固定 Node.js 22.12.0，执行 `npm ci`、`npm audit --omit=dev` 与完整 `npm run validate`；它只提供可审阅的 CI 证据，不触发部署；
+- `.github/workflows/validate.yml` 已接入 push / pull request 验证：固定 Node.js 22.12.0，执行 `npm ci`、`npm audit --omit=dev`、`npm exec -- tsc --noEmit` 与完整 `npm run validate`；它只提供可审阅的 CI 证据，不触发部署；
 - Cloudflare Pages 的首次 provision、构建设置、production 复测和证据追加步骤见 `docs/cloudflare-pages-release-checklist.md`；当前仓库没有部署 token 或 Wrangler 配置，不由本地自动执行；
 - 额外静态检查边界已实测：仓库自带 `tsc --noEmit` 通过；临时安装 `@astrojs/check` 后，`astro check` 会扫描生成的 `public/admin` bundle 并在约 4 GiB 堆上 OOM，因此未纳入 Release Gate，也不保留该临时依赖；
 - 依赖安全边界已收口：Astro `7.2.0`、MDX `7.0.5`、PostCSS `8.5.26` 等保留在构建依赖面；Tina CLI / runtime 只用于编辑器命令，已移入 `devDependencies`，`public/admin/` 继续忽略。2026-08-09 `npm audit --omit=dev` 为 0 vulnerabilities；完整 audit 的剩余项属于 Tina/GraphQL 等 dev-only 工具链，不执行无审查的 `audit fix --force`；
@@ -863,7 +863,7 @@ Media Pass、交互小修、Visual QA 与发布层 Final Editorial Pass 已通�
 | provider 文案与 external 行为 | **已完成并复测**；canonical CTA、TARGET / no-target、无伪 seek、无错误态 |
 | YouTube `origin` | **已完成代码修正**；使用 `window.location.origin`，仍需随最终 preview / production 做一次部署环境抽查 |
 | dialog focus containment | **已完成并复测**；背景不可 Tab、焦点循环、Esc 与 restore 均通过 |
-| 构建与生产依赖安全 | **本地与 CI 均有门禁**；`npm ci` 后执行 `npm audit --omit=dev`，当前为 0 vulnerabilities；`npm run validate` 与 `npx tsc --noEmit` 通过，完整 audit 的 dev-only 告警不作为生产站点漏洞接受 |
+| 构建与生产依赖安全 | **本地与 CI 均有门禁**；`npm ci` 后执行 `npm audit --omit=dev`（当前为 0 vulnerabilities）与 `npm exec -- tsc --noEmit`；`npm run validate` 通过，完整 audit 的 dev-only 告警不作为生产站点漏洞接受 |
 
 上述产品与 QA Blocker 已完成；现在只剩明确的 Release Gate，不再增加产品能力。
 
