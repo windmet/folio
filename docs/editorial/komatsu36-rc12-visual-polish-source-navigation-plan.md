@@ -1,10 +1,10 @@
 # Komatsu36 RC 0.12 Visual Polish & Source Navigation Plan
 
-> 状态：RC12-A/B/C IMPLEMENTED — 人工停点 1 待用户确认
+> 状态：RC12-D IMPLEMENTED — 人工停点 1/2 待用户确认
 > 基线分支：`codex/komatsu36-project-archive`
 > 基线提交：`db866b3`
 > 前置状态：RC 0.11 `REVIEW BRANCH ACCEPTANCE COMPLETE`
-> 当前批次：人工停点 1（A/B/C 已完成；D/F 待裁决）
+> 当前批次：人工停点 1/2（A/B/C/D 已完成；E/F 待裁决）
 > Release Gate：CLOSED；本文不授权 merge、deploy 或修改公开状态
 
 RC 0.11 已完成 Player Context Rail、Lead Person、lazy Source Event Index、lazy Search JSON、Desktop Timeline Navigator、移动端导航裁决与 R9 QA。本阶段不重写 RC 0.11 的 acceptance 文档，也不把已经验收的功能删减成 payload 优化；它只处理成熟页面在真实桌面阅读中暴露出的空间分配、文本可读性、People 投影与来源识别问题。
@@ -81,6 +81,8 @@ RC12-A → RC12-B → RC12-C → 人工停点 1
 
 RC12-E 只有在人工停点 2 明确提升优先级后，才插入 RC12-F 之前。
 ```
+
+RC12-D 的技术实现可以在 A/B/C 证据稳定后独立完成，因为它不改变播放器状态、来源能力或信息架构；这不跳过人工停点 1，也不提前产生产品接受结论。人工停点 2 仍负责判断图标是否足够以及 E 是否进入 v1。
 
 ## 3. 总体边界
 
@@ -298,6 +300,10 @@ RC12-A/B/C 后 publication audit 基线为 raw `261,812` bytes、Gzip `46,483`�
 
 ## 8. RC12-D — Media Source Iconography
 
+### 8.0 当前实现状态
+
+RC12-D 的技术实现已完成，但不替代人工停点 1，也不自动产生 `PRODUCT-ACCEPTED`。它是语义保持不变的 P1 批次：三来源文字、能力状态、时长、事件数、Source Event Index、canonical 外链与 `?track=` 合同均保留。独立证据见 `docs/qa/komatsu36-rc12/d/README.md`。
+
 ### 8.1 视觉合同
 
 增加站内自绘、monochrome、Folio 风格 SVG：
@@ -317,7 +323,7 @@ RC12-A/B/C 后 publication audit 基线为 raw `261,812` bytes、Gzip `46,483`�
 - `打开原来源 ↗` 与 `浏览事件 →` 继续保留；
 - 关闭 CSS / SVG 后，文字信息仍完整。
 
-完成 D 后人工判断首眼识别是否已足够；不得继续升级为官方彩色大 Logo。
+完成 D 后人工判断首眼识别是否已足够；不得继续升级为官方彩色大 Logo。若人工停点 2 认为文字与线稿已经足够，则将 E 记录为 `DEFERRED TO V1.1`，直接进入 RC12-F。
 
 ## 9. RC12-E — Source-scoped Timeline（默认延后）
 

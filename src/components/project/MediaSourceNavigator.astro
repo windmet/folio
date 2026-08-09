@@ -1,4 +1,6 @@
 ---
+import MediaPlatformIcon from './MediaPlatformIcon.astro';
+
 export interface Props {
   tracks: any[];
   events: any[];
@@ -39,6 +41,7 @@ const countEvents = (track: any) => events.filter((event) => referenceId(event.d
             aria-pressed="false"
             aria-label={`选择${track.data.label}`}
           >
+            <MediaPlatformIcon platform={isYouTube ? 'youtube' : 'x-space'} />
             <span class="media-source__code">{track.data.shortLabel}</span>
             <span class="media-source__body">
               <strong>{track.data.label}</strong>

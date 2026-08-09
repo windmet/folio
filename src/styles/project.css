@@ -193,6 +193,23 @@ project-archive-shell {
   cursor: pointer;
 }
 
+.media-platform-icon {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+  color: var(--archive-red);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.media-platform-icon__fill {
+  fill: currentColor;
+  stroke: none;
+}
+
 .media-source__select:focus-visible,
 .archive-player__sources button:focus-visible,
 .media-source__action:focus-visible,
@@ -1057,6 +1074,9 @@ project-archive-shell {
 }
 
 .archive-player__sources button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   padding: 4px 7px;
   border: 1px solid var(--archive-line);
   color: var(--archive-muted);
@@ -1292,6 +1312,11 @@ project-archive-shell {
   padding-top: 3px;
   padding-bottom: 3px;
   font-size: 10px;
+}
+
+.archive-player-frame[data-player-mode='compact'] .archive-player__sources .media-platform-icon {
+  width: 15px;
+  height: 15px;
 }
 
 .archive-player-frame[data-player-mode='compact'] .archive-player__current,

@@ -1,5 +1,6 @@
 ---
 import PlayerContextRail from './PlayerContextRail.astro';
+import MediaPlatformIcon from './MediaPlatformIcon.astro';
 
 export interface Props {
   trackId: string;
@@ -41,6 +42,7 @@ const orderedTracks = [...tracks].sort((left, right) =>
         const id = track.id.split('/').at(-1) || track.id;
         return (
           <button type="button" data-source-track={id} aria-pressed={id === trackId ? 'true' : 'false'}>
+            <MediaPlatformIcon platform={track.data.playback.provider === 'youtube' ? 'youtube' : 'x-space'} />
             {track.data.shortLabel}
           </button>
         );
