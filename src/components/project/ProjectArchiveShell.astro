@@ -5,6 +5,7 @@ import ActSection from './ActSection.astro';
 import ThreadPanel from './ThreadPanel.astro';
 import PersonPopover from './PersonPopover.astro';
 import ProjectSearch from './ProjectSearch.astro';
+import MediaSourceNavigator from './MediaSourceNavigator.astro';
 
 export interface Props {
   project: any;
@@ -13,9 +14,10 @@ export interface Props {
   events: any[];
   threads: any[];
   people: any[];
+  sources: any[];
 }
 
-const { project, tracks, acts, events, threads, people } = Astro.props;
+const { project, tracks, acts, events, threads, people, sources } = Astro.props;
 const localId = (id: string) => id.split('/').at(-1) || id;
 const referenceId = (reference: any) => reference.id;
 const peopleById = new Map(people.map((person) => [person.id, person]));
@@ -79,6 +81,8 @@ const controllerData = {
   tracks: Object.fromEntries(tracks.map((track) => [localId(track.id), {
     id: localId(track.id),
     label: track.data.label,
+    shortLabel: track.data.shortLabel,
+    kind: track.data.kind,
     durationMs: track.data.durationMs,
     playback: track.data.playback,
     fallbackUrl: track.data.fallbackUrl,
@@ -111,6 +115,8 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       <span>BIRTHDAY<br />SPECIAL</span>
     </div>
   </header>
+
+  <MediaSourceNavigator tracks={tracks} events={publishedEvents} sources={sources} />
 
   <nav class="project-nav" aria-label="专题视图">
     {[
@@ -224,6 +230,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         label={defaultTrack.data.label}
         videoId={defaultTrack.data.playback.provider === 'youtube' ? defaultTrack.data.playback.videoId : undefined}
         fallbackUrl={defaultTrack.data.fallbackUrl}
+        tracks={tracks}
       />
     </aside>
   </div>
@@ -244,6 +251,8 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
   type ArchiveTrack = {
     id: string;
     label: string;
+    shortLabel: string;
+    kind: 'video' | 'audio';
     durationMs: number;
     playback: { provider: 'youtube'; videoId: string } | { provider: 'external'; url: string } | { provider: 'unavailable' };
     fallbackUrl?: string;
@@ -297,6 +306,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     lockedScrollY = 0;
     lockedBodyPaddingRight = '';
     searchOpen = false;
+    sourceEventsOpen = false;
 
     connectedCallback() {
       if (this.dataset.ready === 'true') return;
@@ -319,6 +329,19 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       });
       this.querySelectorAll<HTMLElement>('[data-event-seek]').forEach((button) => {
         button.addEventListener('click', () => this.selectEvent(button.dataset.eventSeek || '', true, true));
+      });
+      this.querySelectorAll<HTMLElement>('[data-source-track]').forEach((button) => {
+        button.addEventListener('click', () => this.switchTrack(button.dataset.sourceTrack || '', true));
+      });
+      this.querySelectorAll<HTMLElement>('[data-source-browse]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const trackId = button.dataset.sourceBrowse || '';
+          this.switchTrack(trackId, true);
+          this.showSourceEventIndex(trackId);
+        });
+      });
+      this.querySelectorAll<HTMLElement>('[data-source-event]').forEach((button) => {
+        button.addEventListener('click', () => this.selectEvent(button.dataset.sourceEvent || '', true, true));
       });
       this.querySelectorAll<HTMLElement>('[data-thread-event-id]').forEach((button) => {
         button.addEventListener('click', () => this.selectEvent(button.dataset.threadEventId || '', true, true));
@@ -388,6 +411,10 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       });
       window.addEventListener('popstate', () => this.restoreFromUrl());
       document.addEventListener('keydown', (event) => {
+        if (event.key === 'Tab' && (this.selectedThreadId || this.selectedPersonId)) {
+          this.trapModalFocus(event);
+          return;
+        }
         if (event.key !== 'Escape') return;
         if (this.selectedPersonId) this.closePerson(true);
         else if (this.selectedThreadId) this.closeThread(true);
@@ -452,11 +479,50 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.updateTrack(event.trackId);
       this.querySelectorAll<HTMLElement>('[data-event-card]').forEach((card) => card.classList.toggle('is-active', card.dataset.eventCard === eventId));
       const current = this.querySelector<HTMLElement>('[data-player-current]');
-      if (current) current.textContent = event.title;
+      if (current) current.textContent = `TARGET · ${this.formatArchiveTime(event.startMs)}\n${event.title}`;
       this.updatePlayerTime(event.startMs);
       this.updateFallback(event);
       if (push) this.updateUrl();
       if (seek) this.seekTo(event.startMs);
+    }
+
+    switchTrack(trackId: string, push: boolean) {
+      const track = this.data.tracks[trackId];
+      if (!track) return;
+      this.selectedEventId = null;
+      this.pendingSeekMs = null;
+      this.classList.remove('has-active-event');
+      this.activeTrackId = trackId;
+      this.updateTrack(trackId);
+      this.updateSourceEventIndex(trackId);
+      this.querySelectorAll<HTMLElement>('[data-event-card]').forEach((card) => card.classList.remove('is-active'));
+      const current = this.querySelector<HTMLElement>('[data-player-current]');
+      if (current) current.textContent = track.playback.provider === 'external'
+        ? 'NO TARGET SELECTED\n选择一个此来源事件以获得定位时间'
+        : '选择时间节点开始定位';
+      this.updatePlayerTime(null);
+      this.updateFallback(null);
+      if (push) this.updateUrl();
+    }
+
+    showSourceEventIndex(trackId: string) {
+      if (!this.data.tracks[trackId]) return;
+      this.sourceEventsOpen = true;
+      this.updateSourceEventIndex(trackId);
+    }
+
+    updateSourceEventIndex(trackId: string) {
+      const index = this.querySelector<HTMLElement>('[data-source-event-index]');
+      if (!index) return;
+      index.hidden = !this.sourceEventsOpen;
+      this.querySelectorAll<HTMLElement>('[data-source-event-list]').forEach((list) => {
+        list.hidden = list.dataset.sourceEventList !== trackId || !this.sourceEventsOpen;
+      });
+      this.querySelectorAll<HTMLElement>('[data-source-browse]').forEach((button) => {
+        button.setAttribute('aria-expanded', String(this.sourceEventsOpen && button.dataset.sourceBrowse === trackId));
+      });
+      const heading = this.querySelector<HTMLElement>('[data-source-event-heading]');
+      if (heading) heading.textContent = `${this.data.tracks[trackId]?.label || '来源'} · 事件索引`;
     }
 
     openThread(threadId: string, trigger: HTMLElement | null, push: boolean) {
@@ -467,6 +533,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.querySelectorAll<HTMLElement>('[data-thread-detail]').forEach((item) => { item.hidden = item.dataset.threadDetail !== threadId; });
       const overlay = this.querySelector<HTMLElement>('[data-thread-overlay]');
       if (overlay) overlay.hidden = false;
+      this.updateModalBackgroundInert();
       this.lockPage();
       this.querySelector<HTMLElement>('[data-thread-panel]')?.focus();
       if (push) this.updateUrl();
@@ -477,6 +544,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.selectedThreadId = null;
       const overlay = this.querySelector<HTMLElement>('[data-thread-overlay]');
       if (overlay) overlay.hidden = true;
+      this.updateModalBackgroundInert();
       this.unlockPage();
       this.returnFocus?.focus({ preventScroll: true });
       if (update) this.replaceUrl();
@@ -490,6 +558,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.querySelectorAll<HTMLElement>('[data-person-detail]').forEach((item) => { item.hidden = item.dataset.personDetail !== personId; });
       const overlay = this.querySelector<HTMLElement>('[data-person-overlay]');
       if (overlay) overlay.hidden = false;
+      this.updateModalBackgroundInert();
       this.lockPage();
       this.querySelector<HTMLElement>('[data-person-panel]')?.focus();
       if (push) this.updateUrl();
@@ -500,9 +569,41 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.selectedPersonId = null;
       const overlay = this.querySelector<HTMLElement>('[data-person-overlay]');
       if (overlay) overlay.hidden = true;
+      this.updateModalBackgroundInert();
       this.unlockPage();
       this.returnFocus?.focus({ preventScroll: true });
       if (update) this.replaceUrl();
+    }
+
+    updateModalBackgroundInert() {
+      const modalOpen = Boolean(this.selectedThreadId || this.selectedPersonId);
+      this.querySelectorAll<HTMLElement>(':scope > *').forEach((child) => {
+        if (child.matches('[data-thread-overlay], [data-person-overlay], script')) return;
+        child.inert = modalOpen;
+      });
+    }
+
+    trapModalFocus(event: KeyboardEvent) {
+      const dialog = this.querySelector<HTMLElement>(this.selectedPersonId ? '[data-person-panel]' : '[data-thread-panel]');
+      if (!dialog) return;
+      const focusable = [...dialog.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      )].filter((element) => !element.hidden && element.getAttribute('aria-hidden') !== 'true');
+      if (focusable.length === 0) {
+        event.preventDefault();
+        dialog.focus();
+        return;
+      }
+      const first = focusable[0];
+      const last = focusable.at(-1);
+      const active = document.activeElement;
+      if (event.shiftKey && (active === first || !dialog.contains(active))) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && (active === last || !dialog.contains(active))) {
+        event.preventDefault();
+        first.focus();
+      }
     }
 
     lockPage() {
@@ -547,6 +648,8 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       url.searchParams.set('view', this.activeView);
       if (this.selectedEventId) url.searchParams.set('event', this.selectedEventId);
       else url.searchParams.delete('event');
+      if (!this.selectedEventId && this.activeTrackId !== this.data.defaultTrackId) url.searchParams.set('track', this.activeTrackId);
+      else url.searchParams.delete('track');
       if (this.selectedThreadId) url.searchParams.set('thread', this.selectedThreadId);
       else url.searchParams.delete('thread');
       if (this.selectedPersonId) url.searchParams.set('person', this.selectedPersonId);
@@ -560,7 +663,16 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       const view = params.get('view') || this.data.defaultView;
       this.showView(view, false);
       const eventId = params.get('event');
-      if (eventId) this.selectEvent(eventId, false, false);
+      if (eventId && this.data.events[eventId]) {
+        this.selectEvent(eventId, false, false);
+        this.replaceUrl();
+      }
+      else {
+        const trackId = params.get('track');
+        if (trackId && this.data.tracks[trackId]) this.switchTrack(trackId, false);
+        else this.updateTrack(this.data.defaultTrackId);
+        this.replaceUrl();
+      }
       if (this.selectedThreadId) this.closeThread(false);
       if (this.selectedPersonId) this.closePerson(false);
       const threadId = params.get('thread');
@@ -583,7 +695,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
           width: '100%',
           height: '100%',
           videoId: track.playback.videoId,
-          playerVars: { playsinline: 1, rel: 0 },
+          playerVars: { playsinline: 1, rel: 0, origin: window.location.origin },
           events: {
             onReady: () => {
               this.playerReady = true;
@@ -655,40 +767,62 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     updateTrack(trackId: string) {
       const track = this.data.tracks[trackId];
       if (!track) return;
+      this.activeTrackId = trackId;
       const label = this.querySelector<HTMLElement>('[data-player-track-label]');
       if (label) label.textContent = track.label;
+      this.querySelectorAll<HTMLElement>('[data-source-track]').forEach((button) => {
+        button.setAttribute('aria-pressed', String(button.dataset.sourceTrack === trackId));
+      });
       const viewport = this.querySelector<HTMLElement>('[data-player-viewport]');
       const unavailable = this.querySelector<HTMLElement>('[data-player-unavailable]');
+      const note = this.querySelector<HTMLElement>('[data-player-note]');
       const isPlayable = track.playback.provider === 'youtube';
+      this.classList.toggle('is-external-source', track.playback.provider === 'external');
+      this.classList.toggle('is-youtube-source', track.playback.provider === 'youtube');
+      this.updateSourceEventIndex(trackId);
       if (viewport) viewport.hidden = !isPlayable;
       if (unavailable) unavailable.hidden = isPlayable;
       if (unavailable && !isPlayable) {
         unavailable.textContent = track.playback.provider === 'external'
-          ? '此轨道通过 X Space 状态页提供；本站不重托管音频，也不伪造时间定位。'
+          ? 'X SPACE REPLAY · EXTERNAL SOURCE\n本站提供原来源入口，不重托管媒体，也不伪造时间定位。'
           : '此轨道目前没有公开播放源';
       }
+      if (note) note.textContent = track.playback.provider === 'youtube'
+        ? '使用 YouTube 原生 360°能力；移动设备的视角支持取决于 YouTube 与设备。'
+        : track.playback.provider === 'external'
+          ? 'EXTERNAL SOURCE · 站内不播放，不提供程序化 seek；点击上方链接打开 X 原始回放。'
+          : '当前未登记公开播放源。';
       if (!isPlayable && this.playerReady && this.player?.pauseVideo) this.player.pauseVideo();
     }
 
-    updatePlayerTime(milliseconds: number) {
+    formatArchiveTime(milliseconds: number) {
       const total = Math.floor(milliseconds / 1000);
       const parts = [Math.floor(total / 3600), Math.floor((total % 3600) / 60), total % 60];
-      const target = this.querySelector<HTMLElement>('[data-player-time]');
-      if (target) target.textContent = parts.map((part) => String(part).padStart(2, '0')).join(':');
+      return parts.map((part) => String(part).padStart(2, '0')).join(':');
     }
 
-    updateFallback(event: ArchiveEvent) {
-      const track = this.data.tracks[event.trackId];
+    updatePlayerTime(milliseconds: number | null) {
+      if (milliseconds === null) {
+        const target = this.querySelector<HTMLElement>('[data-player-time]');
+        if (target) target.textContent = '—';
+        return;
+      }
+      const target = this.querySelector<HTMLElement>('[data-player-time]');
+      if (target) target.textContent = this.formatArchiveTime(milliseconds);
+    }
+
+    updateFallback(event: ArchiveEvent | null) {
+      const track = this.data.tracks[event?.trackId || this.activeTrackId];
       const link = this.querySelector<HTMLAnchorElement>('[data-player-fallback]');
       if (!link) return;
       link.hidden = !track?.fallbackUrl;
       if (!track?.fallbackUrl) return;
       const url = new URL(track.fallbackUrl);
-      if (track.playback.provider === 'youtube') {
+      if (track.playback.provider === 'youtube' && event) {
         url.searchParams.set('t', `${Math.floor(event.startMs / 1000)}s`);
         link.textContent = '在 YouTube 打开当前时间 ↗';
       } else {
-        link.textContent = '在 X 打开此 Space ↗';
+        link.textContent = track.playback.provider === 'external' ? '打开 X 原始回放 ↗' : '在 YouTube 打开原来源 ↗';
       }
       link.href = url.toString();
     }

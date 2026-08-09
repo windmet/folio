@@ -1,6 +1,6 @@
 # 小松昌平 36 岁生日会 Project Archive 开发设计
 
-> 状态：Draft 0.3（2026-08-08，首个可运行档案切片与发布门禁）
+> 状态：RC 0.8（2026-08-09，Media Pass 实施完成与发布前 QA）
 > 目标：把一场多平台、多人物、长时、存在跨轨回收的活动做成可浏览、可追溯、可逐步发布的专题档案，而不是把工作稿直接塞进普通博客正文。
 > 当前源档根：`E:\AI_Subtitle_Studio\02_Projects\小松昌平生日会`（只通过 CLI 参数或 `KOMATSU36_SOURCE_ROOT` 提供）
 > 当前权威文档集：源档根下的 `复核md/` 带版本后缀文件；根目录同名无后缀文件是旧工作稿，不得自动选用。
@@ -13,11 +13,13 @@
 - Phase 2 已进入小批量补密：8 个 `editorialStatus: confirmed` Act、16 条 Thread、124 个代表性 Event、18 个 Person。K36-EVT-B01～B06 已覆盖 Bingo 主奖表、前后两批礼物、留守组副节目、换装回归、02:27–03:45《俺知》名场面复盘、04:14–04:55 卡拉 OK／Super Chat 并发与二次会散场，以及开场、360°形式、Space 往返、来宾批次和换场锚点；B04 同步补齐伊藤友紘与山本誠大的人物反向索引。16 条 Thread 是 canonical ARC 的首轮网页化，不表示每个源表行均已成为公开 Event；
 - `validate:projects` 现在要求 Thread 数与 manifest `arcCount` 一致、8 个主轨 Act 无缝覆盖完整时长、`threaded` Event 必须被至少一条 Thread 消费、`timeline-only` Event 不得伪装成 Thread 节点、Thread 不得泄露 `withheld` Event、人物不得成为孤儿引用、`qualified` Event 必须附限定说明；
 - `ConcurrentLanes` 已以局部注记形式落地，只显示经确认的并发关系，并明确禁止将其消费为跨平台 offset；
-- Space 播放源决策已收口：用户提供的两条 X status 按创建时间与重开顺序映射为 SP1/SP2；页面只提供外链，不重托管音频，也不把 X 外链伪装成支持 timestamp seek；
+- Space 播放源决策已收口：用户提供的两条 X status 按创建时间与重开顺序映射为 SP1/SP2；页面只提供 canonical Space 外链，不重托管本地媒体，也不把 X 外链伪装成支持 timestamp seek；
 - 公开 Event / Thread / Person 的轻量站内检索已落地：索引只来自发布内容，结果顺序固定，Event 结果可恢复稳定深链并切换到正确 Track；不索引 Transcript 与 Chat；
 - `validate:publication` 已接入统一 `npm run validate`：当前构建核对 158 条公开检索项、350 KiB 单页预算，并阻止原始 ASR 文件标记、本机源档路径、`author_id`、SRT/VTT 文件名进入发布 HTML，同时要求 `published` Project 在首页拥有真实入口；
 - 首页已增加独立“专题档案”书架，只消费 `status: published` 的 Project，并显示由 collection 实时派生的 Event／Thread／Track 数量；专题不混入四类普通文章筛选；
-- 当前仍未完成：主稿的高密度逐事件迁移、Transcript、Evidence，以及 Phase 2 完整视觉裁决；这些不得因 16 条 Thread 已出现而被误报为完成。
+- 当前实现已完成 RC Media Pass：Hero 下方有常驻三来源栏，播放器有 Source Switcher，SP1/SP2 是 `video + external`，支持 `?track=`、Event 优先、Source Event Index、canonical Space CTA 与 provenance 链接；尚未进入最终功能冻结，因为仍需 Final Editorial Pass、固定截图验收与发布意图确认；
+- 当前仍未完成：最终编辑校样、八张固定截图与 Release Gate。YouTube `origin`、dialog focus containment、external 来源文案和桌面/390px基础交互验收已完成。项目特例 validator 拆分延后到第二个 Project 接入前；Transcript 与 Evidence 是明确延后项，不阻塞 v1。不得因 16 条 Thread 已出现而误报为完整 Folio 愿景已经完成。
+- X Space inline replay 调查对本 RC 正式关闭：`STATUS: CLOSED FOR RC`，`RESULT: unavailable through verified public integration`，`FALLBACK: first-class external source`。除非 X 的公开产品能力发生变化并可对具体 URL 复测，否则不再调查 GraphQL 私有字段、内部 HLS、临时 token、Periscope 私有 endpoint 或 `media_key` 变换。
 
 上述数字是当前仓库快照，新增内容后必须以验证器和实际文件计数更新，不作为永久常量。
 
@@ -321,7 +323,9 @@ Project 不保存 `personIds`；人物集合由 Event 的 people 引用反向聚
 }
 ```
 
-`transcriptPolicy` 枚举为 `private | excerpted | public`，避免工程默认“已有 SRT 就公开五小时全文”。Space 的 `playback.provider` 在媒体托管方案确定前应为 `unavailable`，但仍可拥有受 policy 控制的 Transcript 和 Event。不要为了完成 UI 把本地文件路径写进公开 JSON。
+`transcriptPolicy` 枚举为 `private | excerpted | public`，避免工程默认“已有 SRT 就公开五小时全文”。Space 在 v1 中固定使用 `playback.provider: external`：媒体存在且拥有 canonical 原来源，但 Folio 不具备受支持的站内播放或 seek 能力；不得使用 `unavailable` 把合法外部来源伪装成资源缺失，也不得为了完成 UI 把本地文件路径写进公开 JSON。
+
+SP1 / SP2 的 `playback.url` 与 `fallbackUrl` 都指向 canonical `/i/spaces/{id}`，作为用户消费媒体的唯一主动作。对应 status Post 只作为发布上下文与来源证明保留在 `projectSources`，不在播放器并列显示第二个主按钮。现有 validator 要求 external URL 必须存在于 `projectSources`，因此数据迁移应保留两类职责清楚的 Source record；不为此向 Track 增加 `spaceUrl`、`statusUrl`、`embedUrl`、`mediaKey` 或 `broadcastCandidate`。
 
 ### 5.4 Act
 
@@ -454,6 +458,7 @@ Canonical 规则：Event 是内容定位的主要真值。`event=...` 被解析�
 | `ProjectArchiveShell` | 唯一共享状态控制器；协调 URL/history、track、seek、panel、焦点与滚动恢复 | 不渲染具体 Event 内容 |
 | `ProjectHero` | 标题、媒体规模、入口、精选事件 | 不展示全部证据 |
 | `ProjectNav` | 五视图切换、当前状态 | 不直接维护 URL/history |
+| `MediaSourceNavigator` | 位于 Hero 与五视图导航之间，以克制的 source strip 常驻展示全部 Track 的标签、时长、媒体类型、可播放性与来源动作 | 不属于任何 View，不做 Hero 级巨型卡片，不成为第六个顶栏 View，不伪装未具备的播放能力 |
 | `ArchivePlayer` | track 切换、seek、fallback | 不推断跨轨 offset |
 | `ActSection` | 章节边界、摘要、包含事件 | 不复述 Thread |
 | `TimelineEvent` | 时间、标题、摘要、人物、播放与 Thread 入口 | 不内嵌整条 ARC |
@@ -489,8 +494,28 @@ YouTube IFrame Player API 原生提供 `seekTo(seconds, allowSeekAhead)`，因�
 - timestamp 在 player ready 前被点击时记录 `pendingSeekMs`，在 `onReady` 后执行一次 seek；
 - API 未加载、视频不可嵌入或被下架时，根据当前 Event 动态生成带时间参数的 YouTube 外链，不能只使用 Track 的无时间 fallback；
 - 保留 360°视频由 YouTube 原生播放器处理，不用普通 HTML `<video>` 把等距柱状画面当平面视频播放；
-- Space 当前使用用户提供的 X status 作为原来源外链：允许切换 Track 与显示该 Track 的本地事件时钟，但不伪造站内播放、Range 能力或 timestamp seek；若以后获得权利明确且技术可用的媒体 URL，再单独升级播放能力；
+- Space 使用 canonical `/i/spaces/{id}` 作为原来源外链：允许切换 Track 与显示该 Track 的本地事件时钟，但不伪造站内播放、Range 能力或 timestamp seek；status Post 只进入 provenance，不与“打开 X 回放”争夺主动作；
+- Media Sources 必须先把三条 Track 作为一等信息展示出来：Hero 与五视图导航之间或紧邻其下方放常驻来源摘要，播放器内提供 Source Switcher。外链来源的动作名应为“打开原来源”，不能写成“播放此源”；“浏览事件”必须进入该 Track 的已发布 Event 列表或过滤结果，不得误导用户进入只含 YT 的主 Timeline；
+- Overview 的“生日会／《俺知》／Space 技术线”是内容结构；`YT / SP1 / SP2` 是媒体载体结构。两组概念必须分别标注，不能用三张内容卡代替来源导航；
+- X 官方说明 Recorded Spaces 一般可以嵌入网站，因此官方 X widget 曾是 Space 站内回放的首选探测方向；但本项目两条 canonical Space URL 的探测均未通过：oEmbed 返回 404，X Publish 的 Embedded Broadcast 返回 `Not found`。RC 不新增 `x-embed` provider，也不加载 `platform.x.com/widgets.js`；
+- 这应记录为 Space 产品与公开集成能力之间的断层，而不是用户 URL 操作错误：X Create / Business 仍声称 Recorded Spaces 可嵌入，当前 X for Websites 则只正式定义 Embedded Posts 与 Timelines，未定义 standalone Space replay widget；
+- **不得再把 Embedded Broadcast 描述成缺乏官方支撑或疑似陈旧入口。** X 当前 Media Studio Producer 帮助文档明确把 Broadcast 定义为由 RTMP / HLS source 创建的 live video 对象，并给出“Broadcast 发布成 Post 后，将 Post URL 粘贴到 publish.x.com 并选择 Embedded Video”的外部嵌入流程。这里真正未被证明的是 **Space → Broadcast** 的对象映射，而不是 Broadcast 本身能否嵌入；
+- 2026-08-09 对两条真实 Space 做只读元数据复核：当前 yt-dlp `twitter:spaces` 提取器分别取得 `media_key` `28_2043996135577268231` 与 `28_2044007602237964288`，通过 `AudioSpaceById` 和 `live_video_stream/status/{media_key}` 取回媒体信息，但结果没有 `broadcast_id`。同一代码库的 `twitter:broadcast` 是独立提取器，使用 `/i/broadcasts/{broadcast_id}` 与 `broadcasts/show.json`；两条 Space ID 及两个 `media_key` 作为 Broadcast 候选均返回 `Broadcast no longer exists`。因此 `media_key` 只能视为内部媒体管线标识，不能当作公开 Broadcast URL 或稳定嵌入合同；
+- 保留未来的渐进增强合同：若 X 后续重新允许这两条录制 Space 生成可播放 widget，才采用 click-to-load。Folio 只控制 Source、当前 Event 与目标时间提示；播放、暂停和拖动由 X 控件负责，不声明 `programmaticSeek` 或 `timeSync`；
+- provider 能力先由代码中的单一 capability registry 派生，例如 YouTube 为 embed + seek + time sync，X widget 为 embed-only。RC 不在每个 Track JSON 重复保存可互相矛盾的布尔值；只有出现同 provider 不同 Track 能力时才下沉为内容字段；
+- `external` 是受支持的一等能力等级，不代表播放器“尚未完成”。SP1 / SP2 的公开合同就是 metadata + native local clock + Event target + canonical source link；播放器使用正常的 `X SPACE REPLAY / EXTERNAL SOURCE` 状态、canonical CTA 与能力说明，不使用警告图标、“播放器出错”或空白 viewport。可以如实标注“站内播放：不支持”“程序化定位：不支持”，但不能把能力边界渲染成故障；
+- 若以后获得权利明确且技术可用的媒体 URL，再重新评估 `html5` provider。只有在第二种可编程 provider 真正公开可用后，才引入薄 `PlaybackAdapter`；不能为了尚不存在的生产 URL 提前重构控制器；
+- 禁止把 X 内部 HLS / m3u8、私有接口或临时 token 当正式 provider。它们不属于公开稳定的 Spaces 回放接口，并会把来源嵌入退化为脆弱的二次分发；
 - 不把三个多 GB MP4 放进 `public/` 或 Cloudflare Pages 构建产物。
+
+手动选源的状态与 URL 合同：
+
+- 用户点击 Event：设置 `selectedEventId`、从 Event 派生 `activeTrackId` 与 `targetMs`；URL 只写 `event`，不写冗余 `track`；
+- 用户主动切换 Source：先清空 `selectedEventId` 与旧 target，再设置 `activeTrackId`；URL 删除 `event` 并写入 `?track={trackId}`。不得保留互相冲突的 `event=yt-...&track=space-2`；
+- 刷新恢复时 Event 优先于 track；非法或不属于当前 Project 的 Event / track 分别忽略或回退到 `defaultTrack`，且不得触发 seek；
+- 手动选择 external Source 而尚无 Event 时，显示总时长与“尚未选择定位节点”，不显示伪造的 `00:00:00`、`TARGET 00:00:00` 或可 seek 状态；只有选中该 Track 的 Event 后才显示可信的 `TARGET hh:mm:ss`。
+
+“浏览事件”使用轻量 Source Event Index：按 Track 列出已发布 Event 的本地时间、标题与数量，点击后仍走标准 Event selection。桌面可在 `MediaSourceNavigator` 下方页内展开，窄屏可使用可访问的 bottom sheet 或页内展开；不新增 Source View、独立 source route，也不把只承载 YT canonical clock 的 Timeline 改成多轨混排。
 
 ### 6.4 响应式行为
 
@@ -637,10 +662,25 @@ Tina 集成作为后续独立任务，只管理 Project 摘要、精选顺序等
 
 退出条件：Event 无重复 ID，Thread 引用完整，主时间线可从头到尾浏览，普通文章构建无回归。
 
+### Phase 2.5：RC Media Pass（已实现，冻结前复测完成）
+
+- **Commit A 已完成**：将 SP1 / SP2 的 `kind` 从 `audio` 修正为经本地媒体探测确认的 `video`；`playback.provider` 固定为 `external`，`playback.url` 与 `fallbackUrl` 改用 canonical Space URL；status Post 作为独立 provenance Source record 保留，不扩 Track schema；
+- X Native Embed Probe 已完成并判定失败：`/i/spaces/1dKrPEwrAoQJX` 与 `/i/spaces/1OxwblPnkDDJB` 的 oEmbed 均为 404，X Publish Embedded Broadcast 均显示 `Not found`；两条 `/i/status/...` 虽返回 200，却只生成普通 Embedded Post markup，不能证明录音可播放；
+- canonical Post Probe 也已完成到 RC 所需边界：`https://x.com/shohei_k0414/status/2043996150802592097` 与 `.../2044007616284897782` 的 oEmbed 均为 200，但仍只返回 `twitter-tweet` + Space 的 `t.co` 链接，没有 Broadcast / Space 标记。Publish 会提供 Embedded Video / Embedded Post 选项，但未取得可复测的 Space replay player 输出；普通 Post 可嵌入不等于 Space 可站内播放；
+- Space → Broadcast Mapping Probe 已完成：SP1 / SP2 的 Space ID 与 yt-dlp 取得的两个 `media_key` 共四个候选，在独立 `twitter:broadcast` 接口中均返回 `Broadcast no longer exists`；Space JSON 也没有 `broadcast_id`。这只否定本项目两条来源的公开映射，不否定 Media Studio Broadcast 的官方嵌入能力；
+- SP1 / SP2 继续使用 `external`。主 UI 只提供指向 canonical Space URL 的“打开 X 回放”动作；status URL 作为发布帖/来源证明留在数据层，RC 播放器不并列两个主按钮；不新增 `x-embed`，该失败不得阻塞来源导航和 v1 发布；
+- **Commit B 已完成**：增加常驻 `MediaSourceNavigator` 与播放器 Source Switcher，完整显示 YT / SP1 / SP2、时长、媒体类型、active 状态与真实可用动作；不增加第六个顶栏 View；
+- **Commit B 已完成**：支持无 Event 的手动 `track` URL 状态，并保持“Event 优先于 track”的 canonical 规则；手动选源会清除当前 Event 与 target，避免刷新后跳回旧 Event 所属 Track；
+- **Commit C 已完成**：修正播放器的来源专属说明；YT 显示 360°说明，Space external 显示正常态外部来源、canonical CTA、TARGET / NO TARGET 与不可 seek 说明；
+- **Commit D 已完成**：实现可复测的轻量 Source Event Index；桌面页内展开、窄屏页内展开，保持 Timeline 只承载 YT canonical clock 的现有边界，不新增 View / route；
+- 不在本阶段上传本地 MP4，不接 R2、`html5` provider、内部 m3u8 或 PlaybackAdapter；R2 / HTML5 已退出活动中的 RC 计划，仅在官方 X Embed 对具体来源不可用且公开托管权另行确认后重新评估。
+
+退出条件已在本地通过：读者进入页面十秒内可理解档案由三份独立媒体组成，并可主动选择任一来源；任何按钮文案都不夸大当前 embed、播放与 seek 能力；external 呈现为正常能力而非错误；手动 source、Event 深链、刷新恢复和 back/forward 均满足上述状态合同；SP2 事件索引节点可定位；既有 Event / Thread 跨 Track 定位无回归。退出后立即冻结功能，不继续做 X 技术探测或新媒体 provider。
+
 ### Phase 3：跨平台与 Transcript
 
 - 已迁移首批 Space 1 / Space 2 Event；
-- 已实现跨 Track 切换；YouTube 使用原生时间 seek，X status 只外链且明确不支持 seek；
+- 已实现由 Event 驱动的跨 Track 切换；YouTube 使用原生时间 seek，X Space 只外链且明确不支持 seek；无 Event 的手动 Source 切换留在 Phase 2.5；
 - 完成 G-01/G-02 后再考虑 offset 映射；
 - SRT 转换、校验和分片；
 - Transcript 视图延迟加载；
@@ -693,10 +733,12 @@ Tina 集成作为后续独立任务，只管理 Project 摘要、精选顺序等
 - 横向 overflow 为 0；
 - 键盘可切换视图、打开/关闭 Thread、触发时间戳；
 - drawer / sheet 有焦点管理，Esc 可关闭，关闭后焦点回到触发器；
+- `aria-modal="true"` 的 Thread / Person 打开后，背景必须 `inert` 或等价地不可 Tab，Tab / Shift+Tab 在当前 dialog 内循环；只验证进入焦点、Esc 和 focus restore 不算完整通过；
 - 刷新深链仍能恢复视图与 Event；
 - YouTube API 成功、失败、不可嵌入三种状态都有可理解反馈；
 - sticky player 不遮挡正文和底部内容；
 - 切换 track 时清楚显示当前时钟域；
+- Overview 与播放器均有三 Track 显式入口；无 Event 的 `?track=` 可恢复，Event 深链仍覆盖冲突 track；external Track 不显示 YouTube 360°说明或伪造可 seek 时钟；
 - 关闭 Thread 后保留原来的 Timeline 滚动位置。
 
 ### 11.4 Visual Review Gate
@@ -737,7 +779,13 @@ Tina 集成作为后续独立任务，只管理 Project 摘要、精选顺序等
 | 风险 / 决策 | 当前判断 | 处理方式 |
 |---|---|---|
 | 主 YouTube 可嵌入性 | 已通过真实路由载入、seek、连续播放与跨 Event 说明联动 | 始终保留带当前 Event 时间参数的外链 fallback |
-| Space 媒体公开托管 | v1 决定不重托管 | 使用两条 X status 原来源外链；不把本地 MP4 发进站点，不伪装 seek 能力 |
+| Space 媒体类型与公开托管 | 本地 SP1 / SP2 都含 H.264 视频轨；Track 已修正为 `kind: video`，v1 仍未取得可公开自托管的书面边界 | Track 主动作使用 canonical Space URL，status Post 只作 provenance；不把本地媒体发进 Git / Pages，不伪装 seek 能力 |
+| SP2 浏览器兼容性 | 文件名虽为 `.mp4`，但 `ffprobe` 识别为 MPEG-TS，含 timed ID3、H.264 400×224 与 AAC | 未来 HTML5 发布前必须 remux/transcode 成真实浏览器兼容容器，并在目标浏览器做加载、拖动与续播验证；不能只改扩展名或 MIME |
+| R2 / HTML5 媒体发布 | Cloudflare Pages 单文件上限为 25 MiB，本地两份 Space 分别约 407 MiB、312 MiB | 只有发布权确认后才使用 R2 自定义域等外部媒体托管；验证 Content-Type、byte-range seek、缓存策略和 `preload="metadata"`，生产环境不用限速的 `r2.dev` 地址 |
+| X 官方 Embed | 官方文档允许 Recorded Spaces 一般性嵌入；本项目两条 status 的 oEmbed 只返回普通 `twitter-tweet`，两条 canonical Space URL 的 oEmbed 为 404，Publish Embedded Broadcast 均为 `Not found` | **RC Probe 已失败**：保持 external，不实现 `x-embed`；未来平台行为变化时才复测。不能把 oEmbed HTTP 200 等同于回放成功 |
+| Space → Broadcast 映射 | Media Studio Broadcast 的官方嵌入能力仍有效，但 Space 是另一类产品对象。SP1 / SP2 元数据有 `media_key`、无 `broadcast_id`；Space ID 和 `media_key` 共四种 `/i/broadcasts/` 候选均不存在 | 不把 `media_key`、内部 HLS 或推测 URL 写入站点；只有具体 Space 得到公开、稳定且可复测的 replay widget 时，才增加 provider |
+| X 文档 / 产品断层 | Recorded Spaces 产品页仍写“可嵌入网站”，X for Websites 未定义 standalone Space replay；Media Studio 文档则明确支持 RTMP / HLS Broadcast 经发布帖生成 Embedded Video | 精确记录为 **Space → 可嵌入 Broadcast / replay widget 的缺失映射**，不得笼统写成 Embedded Broadcast 没有官方文档 |
+| X 回放控制 | 公开 Spaces API用于 live / scheduled Space 的发现与元数据；官方文档明确结束后不可再由这些 endpoint 获取，未提供公开 replay media URL、seek 或 currentTime 接口 | Event 点击只切 Source 并显示 `TARGET 01:12:42` 等人工定位提示；不得伪造自动 seek / playback sync |
 | 360°播放 | 普通 `<video>` 不足；YouTube 移动端支持也有限 | 使用 YouTube 原生能力，Folio v1 不承诺自行控制视角 |
 | karaoke 版权 | 公开切片/自托管风险高于文字索引 | 首版只链接原来源时间，不另行分发歌曲媒体 |
 | Chat 隐私 | 含 author ID、昵称、付费信息 | 默认不公开原始记录 |
@@ -774,10 +822,68 @@ package.json
 
 - Astro Content Collections / loaders：<https://v6.docs.astro.build/en/guides/content-collections/>
 - YouTube IFrame Player API（`seekTo`、`origin`、播放器事件，以及移动端 360°限制）：<https://developers.google.com/youtube/iframe_api_reference>
+- Cloudflare Pages limits（单个静态资源 25 MiB；更大文件建议使用 R2）：<https://developers.cloudflare.com/pages/platform/limits/>
+- Cloudflare R2 public buckets（生产公开媒体使用自定义域；`r2.dev` 仅用于开发且限速）：<https://developers.cloudflare.com/r2/buckets/public-buckets/>
+- X Recorded Spaces（官方说明录制 Space 可回放、分享并嵌入网站）：<https://business.x.com/en/products/twitter-spaces/recorded-spaces>
+- X oEmbed API（无认证返回官方 widget markup；返回 markup 不等于其中媒体可播放）：<https://docs.x.com/x-for-websites/oembed-api>
+- X Embedded Posts（正式支持 Post、Post 媒体与 Card；未定义 standalone Space replay widget）：<https://docs.x.com/x-for-websites/embedded-posts/overview>
+- X Help：Embed Post（普通公开 Post 的官方嵌入流程）：<https://help.x.com/en/using-x/how-to-embed-a-post>
+- X Media Studio Producer（RTMP / HLS Broadcast、回放及通过发布帖生成 Embedded Video 的官方流程）：<https://help.x.com/en/using-x/how-to-use-live-producer>
+- X Spaces API（公开 endpoint 面向 live / scheduled Space，结束后不可再检索）：<https://docs.x.com/x-api/spaces/introduction>
+- yt-dlp Twitter extractor（用于核对当前 `TwitterSpacesIE` 与 `TwitterBroadcastIE` 的对象和接口边界，不作为网站运行时依赖）：<https://github.com/yt-dlp/yt-dlp/blob/master/yt_dlp/extractor/twitter.py>
 - TinaCMS JSON single-document collection（证明 JSON 可建模，但不代表适合本项目的大规模编辑）：<https://tina.io/docs/editing/single-document-collections>
 - Podlove Web Player（仅借鉴章节与 transcript 的分层理念）：<https://docs.podlove.org/podlove-web-player/>
 - TimelineJS 文档（仅借鉴时间线不应承担所有叙事）：<https://timeline.knightlab.com/docs/index.html>
 
 ## 15. 下一步
 
-端到端垂直切片、16 条 Thread 首轮网页化、跨 Track 外链、轻量检索与发布门禁已经可运行。下一批工作应转向主稿的高密度 Event 迁移：先定义可审阅的小批次与去重规则，再逐批补足 Timeline，复核 8 个 draft Act 的边界及 Phase 2 桌面/390px 视觉裁决。Transcript 和 Evidence 继续保持关闭，直到公开权、分片格式与隐私边界分别通过专项决策；不得用“已有 SRT”替代该决策。
+端到端档案、16 条 Thread、跨 Track 外链、轻量检索、Media Pass 与发布门禁已经可运行。RC 不再寻找新能力，按以下小批次和顺序收口：
+
+1. **Commit A — Media metadata（已完成）**：SP1 / SP2 `audio → video`；Track external URL 改为 canonical Space URL；`projectSources` 同时满足媒体 URL 的 validator 关系并保留 status Post provenance；
+2. **Commit B — Source selection（已完成）**：实现 Hero 与五视图导航之间的克制 `MediaSourceNavigator`、播放器 Source Switcher、无 Event 的 `?track=` 恢复、Event 优先规则，以及手动选源清除 Event / target；
+3. **Commit C — External source state（已完成）**：实现正常态 external panel、canonical CTA、Event TARGET、无 Event 时的“尚未选择定位节点”，并修复 Space 下仍显示 YouTube 360°说明的 P0 缺陷；
+4. **Commit D — Browse source events（已完成）**：实现 per-track Source Event Index，不新增 View / route；完成后已冻结新增媒体功能；
+5. **已完成**：修复 YouTube 动态 `origin` 与 Thread / Person focus containment；
+6. 面对最终交互形态执行 Final Editorial Pass：逐 Act 检查标题、summary、密度、入点和 qualification，逐 Thread 检查 setup / development / payoff、transition、跨平台标签及推断措辞，抽查 People 别名、reading、role 与回链；
+7. 执行桌面与 390px 的八张固定截图、console、overflow、键盘、深链及 back/forward 复测；
+8. 明确检查 `project.status`。当前为 `published`，首页又只筛选 `published` Project，因此合并到部署分支等价于正式发布，不得把 merge 当作无外部影响的代码整理。
+
+通用 validator 与 komatsu36 fixture 的分层不再列入本次 Release Blocker：通用层最终只校验 schema、关系、时间、隐私和确定性排序；`8 Acts`、manifest ARC 数与小松专属 publication assertions 留在项目 fixture，但该工作延后到第二个 Project 接入前完成。
+
+Media Pass 与交互小修已通过本地验证；当前真正剩余的 Release Blocker 只有 Editorial / Visual QA 与发布意图确认：
+
+| Blocker | 状态 / 完成标准 |
+|---|---|
+| Media Sources 主动可见、可选 | **已完成并复测**；三 Source 常驻可见、Source Switcher 与 Source Event Index 可用 |
+| provider 文案与 external 行为 | **已完成并复测**；canonical CTA、TARGET / no-target、无伪 seek、无错误态 |
+| YouTube `origin` | **已完成代码修正**；使用 `window.location.origin`，仍需随最终 preview / production 做一次部署环境抽查 |
+| dialog focus containment | **已完成并复测**；背景不可 Tab、焦点循环、Esc 与 restore 均通过 |
+
+四类 Blocker 完成后只剩 Editorial / Visual QA 与明确的 Release Gate，不再增加产品能力。
+
+除上述 Media Pass 外冻结新的基础 UI、Event 数量扩张、Tina Project 编辑器、Transcript、Evidence 与 Chat 浏览器。Transcript 和 Evidence 继续保持关闭，直到公开权、分片格式与隐私边界分别通过专项决策；不得用“已有 SRT”替代该决策。
+
+## 16. 2026-08-09 RC 指导复核记录
+
+| 指导项 | 本地证据 | 裁决 / 待办 |
+|---|---|---|
+| 显式媒体来源导航缺失 | 原 Overview 只显示 `YT + 2 Spaces`，无 Media Sources 区；现已加入常驻三 Source strip 与播放器 Source Switcher | **已完成并复测**：不新增第六 View；桌面与 390px 均无横向 overflow |
+| Space 只能经 Event 间接发现 | 原先只能从 `event=sp2-011242-uchida-connected` 间接切到 SP2；现已支持 Source 卡、Source Switcher、`?track=` 与 Source Event Index | **已完成并复测**：手动选源清除旧 Event / target；Event 深链优先于 track |
+| SP1 / SP2 是视频 | 本地 `ffprobe`：SP1 为 MP4/H.264 1280×720 + AAC，2618.260 秒，426,659,115 字节；SP2 含 H.264 400×224 + AAC，10571.251 秒，327,236,748 字节 | **元数据立即修正**：`kind: audio → video`；现有整数毫秒时长与探测值一致 |
+| 现在直接接 HTML5 / R2 | 没有生产媒体 URL 或公开再分发决策；SP2 实际容器为 MPEG-TS，而非浏览器意义上的 MP4 | **有条件采纳**：R2/html5/adapter 不是本次 RC blocker；通过权利、容器、range 与浏览器 gate 后再实施 |
+| YouTube `origin` | `playerVars` 已增加 `origin: window.location.origin` | **代码已修正**：最终 preview / production 抽查仍列入 Release Gate |
+| modal focus containment | Thread / Person 打开后背景 children 设置 `inert`；Tab / Shift+Tab 由 controller 循环；Esc 后返回触发器 | **已完成并复测**：Thread / Person 均通过焦点留在 dialog 内与 restore |
+| validator 通用性 | `validate-projects.mjs` 遍历所有项目，却硬编码 `acts.length !== 8` 并将 Thread 数绑定 manifest `arcCount`；`validate-publication.mjs` 固定 `projectId = 'komatsu36'` | **第二个 Project 前必须拆分**，不是当前 v1 blocker；拆分时保留小松 fixture 的严格度 |
+| merge 即发布 | `project.json` 为 `status: published`，首页 `index.astro` 只筛选 `published` | **Release Gate**：合并前必须确认内容公开、截图 QA 和部署意图 |
+| 播放器说明随来源变化 | 原 SP2 Event 下错误显示“使用 YouTube 原生 360°能力”；现按 provider 更新 external panel、note、CTA 与 target/no-target | **已完成并复测**：SP2 显示 `EXTERNAL SOURCE`，不再显示 YouTube 360°说明 |
+| X 原生回放指导 | X 官方一般性文档支持 Recorded Spaces 网站嵌入；2026-08-09 实测 SP1 `1dKrPEwrAoQJX` 与 SP2 `1OxwblPnkDDJB`：status oEmbed 只得到 `twitter-tweet` + `t.co`，canonical Space oEmbed 均为 404，X Publish Broadcast 均显示 `Not found` | **本项目 Probe 未通过**：RC 不实现 X widget；baseline 固定为 external + target time + canonical Space 链接，并保留 status 来源帖 |
+| canonical Post 最后探测 | 两条标准 `x.com/shohei_k0414/status/{id}` 均可由 oEmbed 生成普通 Post；Publish 识别为 Embedded Video / Embedded Post 候选，但没有得到可验证的 Space replay player | **不改变结论**：可嵌入来源帖是可选装饰，不是播放能力；RC 不加载 X widget，只保留轻量直链 |
+| Embedded Broadcast 文档修正 | X Media Studio Producer 当前官方文档明确支持 RTMP / HLS Broadcast，并说明发布后可通过 publish.x.com 生成 Embedded Video；它不是无文档的陈旧入口 | **修正文案**：承认 Broadcast 能力有效；把未决问题精确限定为本项目 Space 是否映射到公开 Broadcast |
+| Space → Broadcast 元数据核对 | yt-dlp 2026.06.16 对 SP1 / SP2 使用独立 `twitter:spaces` 提取器，得到两个 `media_key` 但没有 `broadcast_id`；Space ID 和 `media_key` 四个 Broadcast 候选均返回不存在 | **映射假设未成立**：不得以内部 `media_key` / HLS 绕过公开 widget；RC external 决策不变 |
+| 停止 X 私有链路调查 | oEmbed、Publish、canonical Post、Space / Broadcast 元数据和四种 ID 候选已覆盖 RC 的公开集成判断；继续研究内部 HLS / token 不会改善公开产品合同 | **CLOSED FOR RC**：未来只有公开产品行为变化且具体 URL 可复测时才重开 |
+| 5.3 `unavailable` 旧合同 | Track schema 与 validator 已支持 `external`，SP1 / SP2 也已使用该 provider；旧句与最终能力模型冲突 | **已修正**：v1 固定 `video + external`，合法外部来源不使用 `unavailable` |
+| canonical Space 与 status Post 分工 | Track / Source 数据已分为 canonical `/i/spaces/...` 媒体记录与 `/i/status/...` provenance 记录；validator 关系已通过 | **Commit A 已完成**：不扩 Track schema，来源证明链接以轻量 provenance 区呈现 |
+| 手动 Source 状态冲突 | controller 已实现 `?track=`；手动选源清除 Event / target，Event selection 删除冗余 track，刷新时 Event 优先 | **Commit B 已完成并复测** |
+| Source Event 浏览范围 | 主 Timeline 是 YT canonical clock，不能承载 SP1 / SP2 的本地时钟 | **Commit D 合同**：使用轻量 per-track Source Event Index；不新增第六 View、route 或多轨 Timeline |
+
+本表中的“已采纳”表示指导与仓库/媒体证据一致；“有条件采纳”表示方向可行但尚未满足发布前提。它不把本地持有媒体、文件后缀或可播放样本等同于公开托管授权与生产可用性。

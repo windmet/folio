@@ -1,6 +1,6 @@
 {
   "project": "komatsu36",
-  "kind": "audio",
+  "kind": "video",
   "label": "X Space ②",
   "shortLabel": "SP2",
   "durationMs": 10571000,
@@ -8,8 +8,8 @@
   "transcriptPolicy": "private",
   "playback": {
     "provider": "external",
-    "url": "https://x.com/i/status/2044007616284897782"
+    "url": "https://x.com/i/spaces/1OxwblPnkDDJB"
   },
-  "fallbackUrl": "https://x.com/i/status/2044007616284897782",
+  "fallbackUrl": "https://x.com/i/spaces/1OxwblPnkDDJB",
   "sourcePublishedAt": "2026-04-14T10:59:26.204Z"
 }

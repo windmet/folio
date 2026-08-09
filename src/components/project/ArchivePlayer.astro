@@ -4,9 +4,14 @@ export interface Props {
   label: string;
   videoId?: string;
   fallbackUrl?: string;
+  tracks: any[];
 }
 
-const { trackId, label, videoId, fallbackUrl } = Astro.props;
+const { trackId, label, videoId, fallbackUrl, tracks } = Astro.props;
+const order = new Map([['yt-main', 0], ['space-1', 1], ['space-2', 2]]);
+const orderedTracks = [...tracks].sort((left, right) =>
+  (order.get(left.id.split('/').at(-1) || '') ?? 99) - (order.get(right.id.split('/').at(-1) || '') ?? 99),
+);
 ---
 
 <section class="archive-player" data-player data-track-id={trackId} data-video-id={videoId || ''}>
@@ -15,8 +20,21 @@ const { trackId, label, videoId, fallbackUrl } = Astro.props;
       <span class="archive-kicker">CURRENT SOURCE</span>
       <strong data-player-track-label>{label}</strong>
     </div>
-    <span class="archive-clock" data-player-time>00:00:00</span>
+      <span class="archive-clock" data-player-time>00:00:00</span>
   </div>
+  <nav class="archive-player__sources" aria-label="播放器来源切换">
+    <span class="archive-kicker">SOURCE</span>
+    <div>
+      {orderedTracks.map((track) => {
+        const id = track.id.split('/').at(-1) || track.id;
+        return (
+          <button type="button" data-source-track={id} aria-pressed={id === trackId ? 'true' : 'false'}>
+            {track.data.shortLabel}
+          </button>
+        );
+      })}
+    </div>
+  </nav>
   <div class="archive-player__viewport" data-player-viewport>
     {videoId ? (
       <>
@@ -35,8 +53,8 @@ const { trackId, label, videoId, fallbackUrl } = Astro.props;
   <p class="archive-player__current" data-player-current>选择时间节点开始定位</p>
   {fallbackUrl && (
     <a class="archive-player__fallback" href={fallbackUrl} target="_blank" rel="noopener noreferrer" data-player-fallback>
-      在 YouTube 打开当前时间 ↗
+      在 YouTube 打开原来源 ↗
     </a>
   )}
-  <p class="archive-player__note">使用 YouTube 原生 360°能力；移动设备的视角支持取决于 YouTube 与设备。</p>
+  <p class="archive-player__note" data-player-note>使用 YouTube 原生 360°能力；移动设备的视角支持取决于 YouTube 与设备。</p>
 </section>

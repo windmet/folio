@@ -13,12 +13,13 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 const projectReference = (entry: any) => entry.data.project?.id === project.id;
-const [tracks, acts, events, threads, people] = await Promise.all([
+const [tracks, acts, events, threads, people, sources] = await Promise.all([
   getCollection('projectTracks', projectReference),
   getCollection('projectActs', projectReference),
   getCollection('projectEvents', projectReference),
   getCollection('projectThreads', projectReference),
   getCollection('projectPeople', projectReference),
+  getCollection('projectSources', projectReference),
 ]);
 ---
 
@@ -30,5 +31,6 @@ const [tracks, acts, events, threads, people] = await Promise.all([
     events={events}
     threads={threads}
     people={people}
+    sources={sources}
   />
 </ProjectLayout>

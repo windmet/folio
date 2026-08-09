@@ -1,0 +1,100 @@
+---
+export interface Props {
+  tracks: any[];
+  events: any[];
+  sources: any[];
+}
+
+const { tracks, events, sources } = Astro.props;
+const referenceId = (reference: any) => reference?.id || reference;
+const order = new Map([['yt-main', 0], ['space-1', 1], ['space-2', 2]]);
+const orderedTracks = [...tracks].sort((left, right) =>
+  (order.get(left.id.split('/').at(-1) || '') ?? 99) - (order.get(right.id.split('/').at(-1) || '') ?? 99),
+);
+const formatDuration = (milliseconds: number) => {
+  const total = Math.floor(milliseconds / 1000);
+  const hours = Math.floor(total / 3600);
+  const minutes = Math.floor((total % 3600) / 60);
+  const seconds = total % 60;
+  return [hours, minutes, seconds].map((part) => String(part).padStart(2, '0')).join(':');
+};
+const countEvents = (track: any) => events.filter((event) => referenceId(event.data.track) === track.id).length;
+const eventsForTrack = (track: any) => events
+  .filter((event) => referenceId(event.data.track) === track.id)
+  .sort((left, right) => left.data.startMs - right.data.startMs);
+---
+
+<section class="media-sources" aria-labelledby="media-sources-title">
+  <div class="media-sources__heading">
+    <span class="archive-kicker" id="media-sources-title">MEDIA SOURCES</span>
+    <p>三份独立媒体，各自使用本地时钟。</p>
+  </div>
+  <div class="media-sources__list">
+    {orderedTracks.map((track) => {
+      const trackId = track.id.split('/').at(-1) || track.id;
+      const isYouTube = track.data.playback.provider === 'youtube';
+      return (
+        <article class="media-source" data-source-card={trackId}>
+          <button
+            type="button"
+            class="media-source__select"
+            data-source-track={trackId}
+            aria-pressed="false"
+            aria-label={`选择${track.data.label}`}
+          >
+            <span class="media-source__code">{track.data.shortLabel}</span>
+            <span class="media-source__body">
+              <strong>{track.data.label}</strong>
+              <span>{formatDuration(track.data.durationMs)} · {track.data.kind.toUpperCase()}{isYouTube ? ' · 360°' : ''}</span>
+            </span>
+            <span class="media-source__state">{isYouTube ? 'INLINE PLAYBACK' : 'EXTERNAL SOURCE'}</span>
+          </button>
+          <span class="media-source__events">{countEvents(track)} EVENTS</span>
+          <span class="media-source__actions">
+            {isYouTube ? (
+              <span class="media-source__action">站内播放</span>
+            ) : (
+              <a class="media-source__action" href={track.data.playback.url} target="_blank" rel="noopener noreferrer">
+                打开原来源 ↗
+              </a>
+            )}
+            <button type="button" class="media-source__browse" data-source-browse={trackId} aria-expanded="false" aria-controls={`source-event-list-${trackId}`}>
+              浏览事件 →
+            </button>
+          </span>
+        </article>
+      );
+    })}
+  </div>
+  <div class="media-sources__provenance" aria-label="来源证明">
+    <span>来源证明</span>
+    {sources.filter((source) => source.data.kind === 'editorial' && source.data.publicUrl).map((source) => (
+      <a href={source.data.publicUrl} target="_blank" rel="noopener noreferrer">{source.data.label} ↗</a>
+    ))}
+  </div>
+  <section class="source-event-index" data-source-event-index hidden aria-live="polite">
+    <div class="source-event-index__head">
+      <span class="archive-kicker">SOURCE EVENT INDEX</span>
+      <strong data-source-event-heading>选择来源以浏览事件</strong>
+    </div>
+    {orderedTracks.map((track) => {
+      const trackId = track.id.split('/').at(-1) || track.id;
+      return (
+        <div id={`source-event-list-${trackId}`} class="source-event-index__list" data-source-event-list={trackId} hidden>
+          {eventsForTrack(track).map((event) => {
+            const eventId = event.id.split('/').at(-1) || event.id;
+            const total = Math.floor(event.data.startMs / 1000);
+            const time = [Math.floor(total / 3600), Math.floor((total % 3600) / 60), total % 60]
+              .map((part) => String(part).padStart(2, '0')).join(':');
+            return (
+              <button type="button" data-source-event={eventId} data-event-card={eventId}>
+                <time>{time}</time>
+                <span>{event.data.title}</span>
+              </button>
+            );
+          })}
+        </div>
+      );
+    })}
+  </section>
+</section>
