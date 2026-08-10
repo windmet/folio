@@ -2,7 +2,7 @@
 
 > 状态：`SOURCE-VERIFIED + BROWSER-VERIFIED — PRODUCT REVIEW PENDING`
 > 日期：2026-08-10
-> 基线：`94af287 fix(komatsu36): finalize interaction hierarchy`
+> 基线：`231ef3e docs(komatsu36): record p1 browser and b2 checks`
 > 目标：在不重开 RC12 大模块的情况下收口 P0 交互问题，并完成记录中的 P1 视觉降噪批次
 > QA 账本：`docs/qa/komatsu36-rc12/final-cleanup/README.md`
 
