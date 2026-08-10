@@ -204,6 +204,10 @@ decisions:
     copyAction: keep
     readerNoteAction: none
     note: "事件摘要已清楚表达漏问生日的笑点，逐字听辨限制留在内部资格说明。"
+  sp2-025404-public-offer:
+    copyAction: keep
+    readerNoteAction: none
+    note: "这里的“发布”是小松预告稍后公开续报的现场动作，不是档案编辑流程词；现有摘要保留公开邀约与未正式发表出演的边界。"
   bingo-payback:
     copyAction: rewrite
     newDeck: "小松想一次还清大家的生日礼物，规则越玩越多，奖品也不断和中奖者形成意外的角色梗。"

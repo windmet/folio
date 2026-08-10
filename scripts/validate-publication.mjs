@@ -151,6 +151,36 @@ if (accountHijackEvent?.readerNote !== '这段只能确认使用的是室元気�
 if ((semanticEventById.get('sp2-000509-hokkaido')?.personRelations || []).length !== 0) {
   errors.push('semantic P1 Hokkaido payoff must keep 室元気 as a person, not an account-context relation');
 }
+const publicOfferEvent = semanticEventById.get('sp2-025404-public-offer');
+if (!publicOfferEvent
+  || publicOfferEvent.startMs !== 10444000
+  || publicOfferEvent.endMs !== 10481000
+  || publicOfferEvent.title !== '续报还没公布，清典先收到“公开 offer”'
+  || JSON.stringify(publicOfferEvent.people) !== JSON.stringify(['komatsu36/komatsu-shohei', 'komatsu36/seiten'])) {
+  errors.push('semantic P1 public-offer Event must preserve the verified SP2 window, title, and people');
+}
+const makingOfThread = semanticThreadById.get('ore-shiri-making-of');
+const makingOfNodes = (makingOfThread?.data.nodes || []).map((node) => String(node.event));
+const reflectionIndex = makingOfNodes.indexOf('komatsu36/sp2-025254-seiten-reflection');
+const offerIndex = makingOfNodes.indexOf('komatsu36/sp2-025404-public-offer');
+const announcementIndex = makingOfNodes.indexOf('komatsu36/yt-042730-mini-event-announced');
+if (!(reflectionIndex >= 0 && offerIndex === reflectionIndex + 1 && announcementIndex === offerIndex + 1)) {
+  errors.push('semantic P1 making-of Thread must close 清典 reflection -> public offer -> YT announcement');
+}
+const announcementEvent = semanticEventById.get('yt-042730-mini-event-announced');
+if (!announcementEvent?.summary.includes('声优活动加约 10～15 分钟的 mini 朗读剧')
+  || !announcementEvent.summary.includes('面向来年启动制作')
+  || !announcementEvent.summary.includes('主题是“ヒーローショー”')) {
+  errors.push('semantic P1 announcement Event must explain the 11/15 mini event and formal fourth installment separately');
+}
+const bookSymbolismEvent = semanticEventById.get('yt-032708-book-symbolism');
+const scriptLanguageEvent = semanticEventById.get('yt-033944-script-language');
+if (!bookSymbolismEvent?.summary.includes('仍希望演员保持与台本的关系')
+  || bookSymbolismEvent.summary.includes('不是防忘词工具')
+  || !scriptLanguageEvent?.summary.includes('缩小版的 straight play')
+  || scriptLanguageEvent.summary.includes('不是防忘词工具')) {
+  errors.push('semantic P1 script-language Events must separate observed speech from the editorial interpretation');
+}
 if (project.status === 'published') {
   const expectedProjectHref = `/projects/${project.slug}/`;
   if (!homeHtml.includes(`href="${expectedProjectHref}"`)) {
@@ -268,6 +298,17 @@ const accountChipCount = (html.match(/>室元気账号<\/button>/g) || []).lengt
 if (accountChipCount !== expectedAccountContextEvents.size
   || !html.includes('这段只能确认使用的是室元気的账号，实际说话者未确认。')) {
   errors.push(`semantic P1 account identity projection is incomplete: ${accountChipCount} account chips`);
+}
+for (const requiredStoryCopy of [
+  '续报还没公布，清典先收到“公开 offer”',
+  '声优活动加约 10～15 分钟的 mini 朗读剧',
+  '面向来年启动制作',
+  '缩小版的 straight play',
+]) {
+  if (!html.includes(requiredStoryCopy)) errors.push(`semantic P1 story completion is missing: ${requiredStoryCopy}`);
+}
+if (html.includes('土岐隼一') || searchJsonText.includes('土岐隼一')) {
+  errors.push('semantic P1 published output must not restore the rejected 土岐隼一 reading');
 }
 
 const actualSourceEventButtons = (html.match(/data-source-event="/g) || []).length;

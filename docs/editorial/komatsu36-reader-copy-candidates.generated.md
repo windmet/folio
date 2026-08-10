@@ -1,12 +1,12 @@
 # Komatsu36 Reader Copy Candidates (Generated)
 
-内容快照：2026-08-10-semantic-p1-account
+内容快照：2026-08-10-semantic-p1-story
 
 > 本文件完全由脚本生成，禁止在这里填写人工决定。命中词只表示需要人工判断，不代表事实错误。所有决定只写入 `komatsu36-reader-copy-decisions.yml`。
 
 ## 使用合同
 
-- 范围：125 个 Event 与 16 条 Thread 的当前发布文案。
+- 范围：126 个 Event 与 16 条 Thread 的当前发布文案。
 - Event 只要存在 `qualification` 就进入候选，作为内部不确定性的人工复核队列；当前组件不会直接显示 qualification。其余项目按工程词、证据词和编辑元语言命中。
 - 不确定性不改变读者理解时，保留内部 `qualification`，读者侧不显示。
 - 不确定性改变人物归属、事件结果或叙事因果时，才新增自然语言 `readerNote`。
@@ -15,7 +15,7 @@
 
 ## 快照
 
-- Event candidates: 44
+- Event candidates: 45
 - Thread candidates: 10
 - Recorded decisions: 54
 - 扫描词组：`evidence-language`、`editorial-meta-language`、`technical-language`；完整词表以生成脚本为准。
@@ -1386,9 +1386,40 @@ Amazon 礼券后，“誠”扇子由井上中奖
 - New summary: —
 - Reader note: —
 
+### RCOPY-045 · sp2-025404-public-offer
+
+- Track / Time: SP2 02:54:04
+- Status: `verified`
+- Flags: `editorial-meta-language`
+- Source pointer: `src/content/projects/komatsu36/events/sp2-025404-public-offer.json`
+
+**CURRENT TITLE**
+
+续报还没公布，清典先收到“公开 offer”
+
+**CURRENT SUMMARY**
+
+Space 收尾时，小松预告 YouTube 稍后会发布《俺を知ってくれ！》续报，清典当场表示自己还没听说；小松随即让他把那天行程空出来，现场自己吐槽成“公开 offer”。
+
+**CURRENT QUALIFICATION**
+
+—
+
+**RECORDED DECISION**
+
+- Copy action: `pending`
+- Reader note action: `pending`
+- Editorial note: —
+
+**APPROVED REPLACEMENT**
+
+- New title: —
+- New summary: —
+- Reader note: —
+
 ## Thread candidates
 
-### RCOPY-045 · bingo-payback
+### RCOPY-046 · bingo-payback
 
 - Flags: `resolved-decision`
 - Source pointer: `src/content/projects/komatsu36/threads/bingo-payback.md`
@@ -1415,7 +1446,7 @@ Amazon 礼券后，“誠”扇子由井上中奖
 - New deck: 小松想一次还清大家的生日礼物，规则越玩越多，奖品也不断和中奖者形成意外的角色梗。
 - New body: 小松本来只是想把欠大家的生日回礼一次结清，结果规则越玩越多，奖品也不断和中奖者形成意外的角色梗；唯一最想拿东西的濱反而没中主奖，伸手去抢寺島的 Amazon 卡，最后只剩参加赏。
 
-### RCOPY-046 · birthday-payback
+### RCOPY-047 · birthday-payback
 
 - Flags: `resolved-decision`
 - Source pointer: `src/content/projects/komatsu36/threads/birthday-payback.md`
@@ -1442,7 +1473,7 @@ Amazon 礼券后，“誠”扇子由井上中奖
 - New deck: —
 - New body: 笑点不在于小松真的叫错観世生日，而在于他建立一条自己最不擅长执行的规则。内田的人名说法仍保留谨慎表述，不把它当作逐字记录。
 
-### RCOPY-047 · broken-sword
+### RCOPY-048 · broken-sword
 
 - Flags: `resolved-decision`
 - Source pointer: `src/content/projects/komatsu36/threads/broken-sword.md`
@@ -1469,7 +1500,7 @@ Amazon 礼券后，“誠”扇子由井上中奖
 - New deck: —
 - New body: 这里记录的是直播回顾的位置，不是舞台事故发生的当下；碎片方向、矢野侧只削损和无人受伤均按现场回顾保留。
 
-### RCOPY-048 · hama-paid-drinking
+### RCOPY-049 · hama-paid-drinking
 
 - Flags: `resolved-decision`
 - Source pointer: `src/content/projects/komatsu36/threads/hama-paid-drinking.md`
@@ -1496,7 +1527,7 @@ Amazon 礼券后，“誠”扇子由井上中奖
 - New deck: 没带礼物却一路吃喝到最后；Amazon 轮自己没中，还伸手去抢寺島的卡，最后只拿到 1000 円参加赏，于是现场真的变成了“ギャラ飲み”。
 - New body: 濱这晚的笑点不是“空手来却中了大奖”，而是始终没有中到主奖：从没带礼物、高价酒和“只关心自己出演作品”，一路发展到盯上 Amazon 礼券、抢寺島的卡。最后他和矢野作为仅剩的两名未中奖者拿到 1000 円参加赏，又亲口把它说成「ギャラ＋1000円」。这才是整条 running gag 的终点。
 
-### RCOPY-049 · kano-ojisan
+### RCOPY-050 · kano-ojisan
 
 - Flags: `resolved-decision`
 - Source pointer: `src/content/projects/komatsu36/threads/kano-ojisan.md`
@@ -1523,7 +1554,7 @@ dad joke、厕所离席和持续的おじさん吐槽，最终在卡拉 OK 的�
 - New deck: —
 - New body: 中间过程没有足够连续记录，所以这里只串起已确认的两个事件，不补写中间对话。
 
-### RCOPY-050 · muro-account
+### RCOPY-051 · muro-account
 
 - Flags: `resolved-decision`
 - Source pointer: `src/content/projects/komatsu36/threads/muro-account.md`
@@ -1550,7 +1581,7 @@ dad joke、厕所离席和持续的おじさん吐槽，最终在卡拉 OK 的�
 - New deck: —
 - New body: “乗っ取り”发言者只按账号上下文记录；身份尚未确认，因此本线不把这些话归给室元気本人。
 
-### RCOPY-051 · ore-shiri-making-of
+### RCOPY-052 · ore-shiri-making-of
 
 - Flags: `resolved-decision`
 - Source pointer: `src/content/projects/komatsu36/threads/ore-shiri-making-of.md`
@@ -1577,7 +1608,7 @@ dad joke、厕所离席和持续的おじさん吐槽，最终在卡拉 OK 的�
 - New deck: —
 - New body: 这条线把演员研究、动作监督和制作选择分开写；最终采用血振り，表示的是可实施范围，不是否定前面的研究。
 
-### RCOPY-052 · russian-takoyaki
+### RCOPY-053 · russian-takoyaki
 
 - Flags: `resolved-decision`
 - Source pointer: `src/content/projects/komatsu36/threads/russian-takoyaki.md`
@@ -1612,7 +1643,7 @@ dad joke、厕所离席和持续的おじさん吐槽，最终在卡拉 OK 的�
 
 最后由毫不知前情的堀金蒼平踩雷，现场原声也真的出现了「時限爆弾すぎるだろ！」。这条线因此同时有提议、被遗忘、延迟和最后踩雷的完整回收。
 
-### RCOPY-053 · shugo-yakiniku
+### RCOPY-054 · shugo-yakiniku
 
 - Flags: `resolved-decision`
 - Source pointer: `src/content/projects/komatsu36/threads/shugo-yakiniku.md`
@@ -1639,7 +1670,7 @@ dad joke、厕所离席和持续的おじさん吐槽，最终在卡拉 OK 的�
 - New deck: 连接不稳、说完烤肉就消失，重开后小松只好替这句简短留言补成庆生。
 - New body: 它几乎没有留下具体内容，却很有仲村的存在感；不必再替这句话添加复杂背景。
 
-### RCOPY-054 · terashima-big-dream
+### RCOPY-055 · terashima-big-dream
 
 - Flags: `resolved-decision`
 - Source pointer: `src/content/projects/komatsu36/threads/terashima-big-dream.md`

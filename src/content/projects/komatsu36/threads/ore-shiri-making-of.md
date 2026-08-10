@@ -29,6 +29,8 @@ nodes:
     transition: 主直播的制作复盘在 SP2 得到动作监督的专业总结——
   - event: komatsu36/sp2-025254-seiten-reflection
     role: development
+  - event: komatsu36/sp2-025404-public-offer
+    role: development
   - event: komatsu36/yt-042730-mini-event-announced
     role: payoff
 featured: true

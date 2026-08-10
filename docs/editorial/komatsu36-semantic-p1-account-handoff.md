@@ -76,6 +76,6 @@ Browser / Playwright 已验证：
 node scripts/verify-komatsu36-semantic-p1-account-browser.mjs <optional-screenshot-dir>
 ```
 
-## 5. 下一批
+## 5. 后续状态
 
-Semantic P1 Person 第 5–8 项现已完成。下一批从“补故事”开始，只实现清典公开 offer 独立 Event、11 月 15 日两项公告解释与台本形式原则降级；先核对源档原文、现有 Event 时间窗和 Thread 接法，再做独立提交。不得借本关系类型扩建通用社交账号系统，也不得混入 11 条 Thread／8 个 UI 组件的全量 reader-language pass。
+Semantic P1 Story 第 9–11 项随后已由 `komatsu36-semantic-p1-story-handoff.md` 独立完成：清典公开 offer、11 月 15 日两项公告解释与台本形式原则降级均先核对权威源档再落地。本文件仍只证明第 8 项；下一批进入 11 条 Thread／8 个 UI 组件与 Event 流程词的 reader-language pass。

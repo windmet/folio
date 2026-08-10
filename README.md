@@ -4,7 +4,7 @@
 
 ## 当前检查点
 
-- Komatsu36：RC 0.10 与 RC 0.11 review-branch acceptance 已完成。RC 0.12 的 A2/C2/D2/B2/F2、E1–E5 与 T1.1 inline correction 已完成工程／Browser 验证；RC12-Y1 外链 handoff 已完成工程／Browser 验证。2026-08-10 Semantic P0 已纠正 Amazon 中奖者、濱因果线与汐谷读音；Semantic P1 Person 第 5–8 项已完成称呼／搜索拆分、敬称清洗、`トシピ` 与室账号关系投影，并通过发布与真实页面验证。T1/Y1 产品停点、P1 故事／reader-language pass、真实媒体与 Release Gate 均未完成，Y2 managed external session 未授权。
+- Komatsu36：RC 0.10 与 RC 0.11 review-branch acceptance 已完成。RC 0.12 的 A2/C2/D2/B2/F2、E1–E5 与 T1.1 inline correction 已完成工程／Browser 验证；RC12-Y1 外链 handoff 已完成工程／Browser 验证。2026-08-10 Semantic P0、P1 Person 第 5–8 项与 Story 第 9–11 项均已完成来源／构建／真实页面验证：事实修正、称呼／账号边界、清典公开 offer、两项公告和台本解释已落地。T1/Y1 产品停点、P1 reader-language pass、真实媒体与 Release Gate 均未完成，Y2 managed external session 未授权。
 - 审阅分支：[codex/komatsu36-project-archive](https://github.com/windmet/folio/tree/codex/komatsu36-project-archive)
 - 专题路由：`/projects/komatsu36/`
 - Visual QA 与编辑审计：`docs/qa/komatsu36-rc08/`
@@ -15,7 +15,7 @@
 - RC 0.11 分批收尾 Runbook：`docs/editorial/komatsu36-rc11-closeout-runbook.md`
 - RC 0.12 当前修正总入口：`docs/editorial/komatsu36-rc12-product-correction-runbook.md`
 - RC12-T1 实施与产品复核指导：`docs/editorial/komatsu36-rc12-t1-timeline-navigator-polish-runbook.md`
-- Semantic 审计与分批交接：`docs/komatsu36_semantic_patch_20260810.md`、`docs/editorial/komatsu36-semantic-p0-handoff.md`、`docs/editorial/komatsu36-semantic-p1-person-handoff.md`、`docs/editorial/komatsu36-semantic-p1-account-handoff.md`
+- Semantic 审计与分批交接：`docs/komatsu36_semantic_patch_20260810.md`、`docs/editorial/komatsu36-semantic-p0-handoff.md`、`docs/editorial/komatsu36-semantic-p1-person-handoff.md`、`docs/editorial/komatsu36-semantic-p1-account-handoff.md`、`docs/editorial/komatsu36-semantic-p1-story-handoff.md`
 - RC12-Y1 外链 handoff QA：`docs/qa/komatsu36-rc12/y1/README.md`
 - RC12-Y2 managed external session 实验指导（未授权实现）：`docs/editorial/komatsu36-rc12-y2-managed-external-session-experiment.md`
 - RC12-Y2 隔离 WindowProxy 实验页（不进入生产路由）：`scripts/experiments/rc12-y2-windowproxy.html`

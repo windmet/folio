@@ -1,6 +1,6 @@
 # 小松昌平 36 岁生日会 Project Archive 开发设计
 
-> 状态：SEMANTIC P1 PERSON 5–8 + RC12-T1.1/Y1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING（2026-08-10；RC 0.11 REVIEW BRANCH ACCEPTANCE COMPLETE）
+> 状态：SEMANTIC P1 STORY 9–11 + PERSON 5–8 + RC12-T1.1/Y1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING（2026-08-10；RC 0.11 REVIEW BRANCH ACCEPTANCE COMPLETE）
 > 目标：把一场多平台、多人物、长时、存在跨轨回收的活动做成可浏览、可追溯、可逐步发布的专题档案，而不是把工作稿直接塞进普通博客正文。
 > 当前源档根：`E:\AI_Subtitle_Studio\02_Projects\小松昌平生日会`（只通过 CLI 参数或 `KOMATSU36_SOURCE_ROOT` 提供）
 > 当前权威文档集：源档根下的 `复核md/` 带版本后缀文件；根目录同名无后缀文件是旧工作稿，不得自动选用。
@@ -8,20 +8,20 @@
 > 当前站点：Astro 7 静态站点，TinaCMS 只管理普通 MDX 文章。
 
 > **CURRENT CHECKPOINT**
-> RC 0.10 已完成本地验收，RC 0.11 已完成 R9 与 review-branch handoff；其 acceptance 文档保持历史合同。RC12-A2/C2/D2/B2/F2、E1–E5 与 T1.1 已完成工程／Browser 验证。2026-08-10 Semantic P0 已以独立 override layer 纠正 Amazon winner、濱因果线与汐谷读音；随后 P1 Person 第 5–8 项完成称呼／搜索拆分、敬称清洗、`トシピ` 与室账号事件关系。旧分析 MD 与 RAW 保持不变。证据见 P0、P1 Person 与 P1 Account handoff。Release Gate 继续 CLOSED。
+> RC 0.10 已完成本地验收，RC 0.11 已完成 R9 与 review-branch handoff；其 acceptance 文档保持历史合同。RC12-A2/C2/D2/B2/F2、E1–E5 与 T1.1 已完成工程／Browser 验证。2026-08-10 Semantic P0、P1 Person 第 5–8 项与 Story 第 9–11 项已分批完成；公开 offer、两项公告与台本解释均经权威源档核对。旧分析 MD 与 RAW 保持不变。证据见 Semantic 各 handoff。Release Gate 继续 CLOSED。
 
 ## 当前实施状态（2026-08-10）
 
-> **当前状态覆盖**：Semantic P0 与 P1 Person 第 5–8 项已完成 SOURCE/BUILD/BROWSER 验证；Reader Copy 当前为 54/54 decisions。RC12-A2、C2、D2、B2、F2、E1–E5 与 T1.1 已通过工程／Browser 证据；T1/Y1 产品接受、P1 故事／reader-language pass、真实媒体与 Release Gate 继续独立关闭。Y2 managed external session 尚未授权。
+> **当前状态覆盖**：Semantic P0、P1 Person 第 5–8 项与 Story 第 9–11 项已完成 SOURCE/BUILD/BROWSER 验证；Reader Copy 当前为 55/55 decisions。RC12-A2、C2、D2、B2、F2、E1–E5 与 T1.1 已通过工程／Browser 证据；T1/Y1 产品接受、P1 reader-language pass、真实媒体与 Release Gate 继续独立关闭。Y2 managed external session 尚未授权。
 
 - Phase 0A 已落地：`data/source-sets/komatsu36-20260808-r1.json` 精确锁定 6 个 `复核md/` 带后缀输入，并由 `validate:sources` 校验路径、SHA-256、物理行数与 16 条 ARC；
 - Phase 1 垂直切片已落地：真实 `/projects/komatsu36/` 路由、集中状态控制器、YouTube 延迟加载与 pending seek、动态时间 fallback、Timeline、Thread、Person 和 URL 恢复均已实现；
-- Phase 2 当前为 8 个 `editorialStatus: confirmed` Act、16 条 Thread、125 个代表性 Event、18 个 Person。2026-08-10 Semantic P0 把 Amazon winner 与濱抢卡拆为两个节点；旧 Event ID 保持兼容。16 条 Thread 是 canonical ARC 的首轮网页化，不表示每个源表行均已成为公开 Event；
+- Phase 2 当前为 8 个 `editorialStatus: confirmed` Act、16 条 Thread、126 个代表性 Event、18 个 Person。2026-08-10 Semantic P0 把 Amazon winner 与濱抢卡拆为两个节点，P1 又补入清典公开 offer；旧 Event ID 保持兼容。16 条 Thread 是 canonical ARC 的首轮网页化，不表示每个源表行均已成为公开 Event；
 - `validate:projects` 现在要求 `defaultTrack` 有效且至少拥有一个 Act、Thread 数与 manifest `arcCount` 一致、8 个主轨 Act 无缝覆盖完整时长、`threaded` Event 必须被至少一条 Thread 消费、`timeline-only` Event 不得伪装成 Thread 节点、Thread 不得泄露 `withheld` Event、人物不得成为孤儿引用、`qualified` Event 必须附限定说明；
 - `ConcurrentLanes` 已以局部注记形式落地，只显示经确认的并发关系，并明确禁止将其消费为跨平台 offset；
 - Space 播放源决策已收口：用户提供的两条 X status 按创建时间与重开顺序映射为 SP1/SP2；页面只提供 canonical Space 外链，不重托管本地媒体，也不把 X 外链伪装成支持 timestamp seek；
 - 公开 Event / Thread / Person 的轻量站内检索已落地：索引只来自发布内容，结果顺序固定，Event 结果可恢复稳定深链并切换到正确 Track；Person 使用正式姓名、reading、`callNames` 与隐藏 `searchAliases`，查询端自动兼容末尾敬称，不再把 `さん／君` 人工塞进元数据；不索引 Transcript 与 Chat；
-- `validate:publication` 已接入统一 `npm run validate`：当前构建核对 159 条公开检索项、350 KiB 单页预算，并阻止原始 ASR 文件标记、本机源档路径、`author_id`、SRT/VTT 文件名进入发布 HTML；Semantic gate 同时禁止 P0 旧事实和 P1 legacy aliases／敬称字符串重新进入发布层，并固定 18 人 `callNames` ledger；
+- `validate:publication` 已接入统一 `npm run validate`：当前构建核对 160 条公开检索项、350 KiB 单页预算，并阻止原始 ASR 文件标记、本机源档路径、`author_id`、SRT/VTT 文件名进入发布 HTML；Semantic gate 同时固定 P0 事实、P1 Person／Account ledger、公开 offer 闭环、两项公告和台本事实／解释边界；
 - `.github/workflows/validate.yml` 已接入 push / pull request 验证：固定 Node.js 22.12.0，执行 `npm ci`、`npm audit --omit=dev`、完整 `npm run validate`，再执行 `npm exec -- tsc --noEmit`；TypeScript 检查特意放在 Astro build 之后，以便使用生成的 `astro:content` 类型；它只提供可审阅的 CI 证据，不触发部署；
 - Cloudflare Pages 的首次 provision、构建设置、production 复测和证据追加步骤见 `docs/cloudflare-pages-release-checklist.md`；当前仓库没有部署 token 或 Wrangler 配置，不由本地自动执行；
 - 额外静态检查边界已实测：仓库自带 `tsc --noEmit` 通过；临时安装 `@astrojs/check` 后，`astro check` 会扫描生成的 `public/admin` bundle 并在约 4 GiB 堆上 OOM，因此未纳入 Release Gate，也不保留该临时依赖；
@@ -554,7 +554,7 @@ YouTube IFrame Player API 原生提供 `seekTo(seconds, allowSeekAhead)`，因�
 
 v1 在构建时把公开 Event、Thread 与 Person 生成为独立 lazy static JSON，不安装 Pagefind，也不读取工作稿、SRT 或 Chat。Event 检索字段限于公开标题、摘要、标签及关联人物的正式姓名、`callNames`、`searchAliases`；内部 qualification 不进入公开索引。Person 同时索引 displayName、reading、`callNames` 与隐藏 `searchAliases`。索引与查询统一执行 NFKC、日语小写、末尾敬称清理和空格折叠；结果点击后由 Event 推导 Track 与本地时钟，并写回稳定 `event` 深链。索引顺序必须显式排序，不能依赖 Content Layer 的文件枚举顺序。
 
-当前快照为 125 个公开 Event + 16 条 Thread + 18 个 Person，共 159 条。`validate:publication` 在构建后从源 collection 推导应有数量，并同时执行体积、私有标记、P0 事实和 P1 Person ledger 门禁；这里的数字只是方便人工审阅的当前快照。
+当前快照为 126 个公开 Event + 16 条 Thread + 18 个 Person，共 160 条。`validate:publication` 在构建后从源 collection 推导应有数量，并同时执行体积、私有标记、P0 事实和 P1 Person／Story 门禁；这里的数字只是方便人工审阅的当前快照。
 
 ### 7.3 Transcript 分片
 
@@ -903,16 +903,16 @@ Media Pass、RC 0.9 Structural Editorial Audit、RC 0.10 Reader & Entity Editori
 | Cast / People 信息架构 | **RC12-C2 + F2 已完成源码与 Browser QA**：1366px People rows 全宽约 `1221px`；901px Cast medium 显示 6 条 role rows；390px mobile projection 与 Person dialog 保留，三档无横向溢出。证据见 `docs/qa/komatsu36-rc12/c2/README.md` 与 F2 handoff |
 | Media platform pictograms | **RC12-D2 + F2 已完成源码与 Browser QA**：X Space 圆形声场图标、Source card 平台／状态／动作三层；1366px／390px 无横向溢出，SP2 selection、`?track=`、Source Event Index 和 Event 深链已复测。证据见 `docs/qa/komatsu36-rc12/d2/README.md` 与 F2 handoff |
 | Expandable text | **RC12-B2 + F2 已完成源码与 Browser QA**：Target / Context 原机制保留；220px stress 已真实验证 Source title 展开／收起、ARIA、clamp、URL 与 overflow；Act title／Timeline current title 当前 fixture 未触发点击分支，仍保留 `TODO consumer-check`。证据见 `docs/qa/komatsu36-rc12/b2/README.md` 与 F2 handoff |
-| Source-scoped Timeline | **RC12-E E1–E5 已完成源码与本地真实 Browser QA**；Semantic P0 后当前为 YT 8 Act／105 Event、SP1 8、SP2 12，继续各用 native local clock 与 source-local Event projection。E5 的 104 Event 数字保留为当时历史快照；新增节点见 Semantic P0 handoff |
+| Source-scoped Timeline | **RC12-E E1–E5 已完成源码与本地真实 Browser QA**；Semantic P1 Story 后当前为 YT 8 Act／105 Event、SP1 8、SP2 13，继续各用 native local clock 与 source-local Event projection。E5 的 104 Event 数字保留为当时历史快照；新增节点见 Semantic 各 handoff |
 | Timeline Navigator polish | **RC12-T1.1 INLINE CORRECTION ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING**：shell-wide geometry 已否决；Expanded 使用左内容列，Docked 自然增宽；保留 duration ratio、窄 segment Axx-only 与完整 hover/focus 标签。红／蓝框仅为 QA 标注。证据见 `docs/qa/komatsu36-rc12/t1/README.md` |
 | YouTube external handoff | **RC12-Y1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING**：点击 YouTube 当前时间外链前清除 pending seek、暂停站内 Player；Y2 仍未实施。证据见 `docs/qa/komatsu36-rc12/y1/README.md` |
-| Initial HTML payload | **RC12-E 已复测**：raw `291,492`、Gzip `50,601`、Brotli `32,015`，350 KiB hard gate 余量 `66,908`；初始 Source / Search buttons 仍为 0，Search 项、124 controller Event records 和三 track projection 通过；本轮未以减重名义删除 Rail 或 reader-facing 数据 |
-| Reader-facing copy | **RC 0.10 历史基线 52/52；Semantic P0 当前 54/54**：Amazon／濱与汐谷硬事实已纠正，P1 aliases／Thread／UI language pass 仍待执行 |
+| Initial HTML payload | **Semantic P1 Story 已复测**：raw `297,999`、Gzip `51,916`、Brotli `32,854`，350 KiB hard gate 余量 `60,401`；初始 Source / Search buttons 仍为 0，160 Search 项、126 controller Event records 和三 track projection 通过；未以减重名义删除 Rail 或 reader-facing 数据 |
+| Reader-facing copy | **RC 0.10 历史基线 52/52；Semantic P1 Story 当前 55/55**：P0 事实、P1 Person／Account 与 Story 第 9–11 项已完成；11 条 Thread、8 个 UI 组件与 Event 流程词的 reader-language pass 仍待执行 |
 | External context 首样本 | **RC 0.10 已完成**：仲村烧肉 Post 已作为 related source 插入 Thread，不成为 Event 或静态 Post 镜像 |
 
 上述工程、媒体与 RC 0.10 编辑 Blocker 已完成，UX11-C 与 R1 视觉层级修正已在 review branch 完成；UX11-P0 / P1 / P2 Static Payload Pass、UX11-D Desktop Timeline Navigator、UX11-E 移动合同决策与 UX11-H Final QA 也已完成。R5 只新增左内容列的 proportional Act Map，R6 明确不新增移动代码，R8 不启动 playhead 或 Quick / Detail，不改变资料、Rail、媒体能力或 URL schema。RC 0.11 已关闭；RC 0.12 以完整 Rail 保留、view-sensitive Player、组件级 overflow 与 People 对齐为新边界。production preview、merge 与 deploy 仍未执行。
 
-除上述 Media Pass 外冻结新的基础 UI、Event 数量扩张、Tina Project 编辑器、Transcript、Evidence 与 Chat 浏览器。Transcript 和 Evidence 继续保持关闭，直到公开权、分片格式与隐私边界分别通过专项决策；不得用“已有 SRT”替代该决策。
+除 semantic patch 显式授权的独立内容批次外，继续冻结新的基础 UI、Event 数量扩张、Tina Project 编辑器、Transcript、Evidence 与 Chat 浏览器。Transcript 和 Evidence 继续保持关闭，直到公开权、分片格式与隐私边界分别通过专项决策；不得用“已有 SRT”替代该决策。
 
 ## 16. 2026-08-09 RC 指导复核记录
 
