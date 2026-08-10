@@ -557,6 +557,9 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         if (!this.selectedEventId) return;
         this.navigateToEventContext(this.selectedEventId, { origin: 'player' });
       });
+      this.querySelectorAll<HTMLAnchorElement>('[data-external-youtube-handoff]').forEach((link) => {
+        link.addEventListener('click', () => this.pauseEmbeddedForExternalHandoff());
+      });
       this.querySelector<HTMLElement>('[data-player-context-thread-list]')?.addEventListener('click', (event) => {
         const button = (event.target as HTMLElement).closest<HTMLElement>('[data-player-context-thread]');
         if (!button || !this.selectedEventId) return;
@@ -1570,6 +1573,21 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       if (this.playbackSyncTimer === null) return;
       window.clearInterval(this.playbackSyncTimer);
       this.playbackSyncTimer = null;
+    }
+
+    pauseEmbeddedForExternalHandoff() {
+      // A link click is a user-initiated handoff. Clear a queued seek first so
+      // a player that finishes loading after the new tab opens cannot resume
+      // the embedded video unexpectedly.
+      this.pendingSeekMs = null;
+      this.stopPlaybackSync();
+      if (!this.playerReady || !this.player?.pauseVideo) return;
+      try {
+        this.player.pauseVideo();
+      } catch {
+        // The external navigation remains valid even if the provider player
+        // has already been torn down or is between state transitions.
+      }
     }
 
     syncFromPlayer() {

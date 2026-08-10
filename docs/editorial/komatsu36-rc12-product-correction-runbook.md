@@ -56,7 +56,8 @@ RC12-E E1–E5 已完成工程与本地真实 Browser 批次；产品人工停�
   ↓ 新产品复核
 RC12-T1 Timeline Navigator geometry + narrow labels + hover/focus tooltip
   ↓ T1 人工停点
-RC12-Y1/Y2 YouTube handoff 仅为后续候选，当前未授权
+RC12-Y1 YouTube handoff 工程已完成，产品停点待确认
+RC12-Y2 managed external session 未授权
 ```
 
 不得把四批合成一次“大改一切”。每批独立：读取本节合同 → 改最小文件面 → 自动门禁 → 真实路由 Browser QA → 截止点记录 → scoped commit。上一批存在产品方向疑问时停止，不用下一批的 CSS 顺手掩盖。
@@ -226,7 +227,7 @@ Browser 必须检查真实 `/projects/komatsu36/` 构建预览，而不是只看
 
 1. 读取本文全文，再读目标批次对应的旧实现与 QA；
 2. 核对 `git branch --show-current`、`git rev-parse HEAD`、`git status --short`；
-3. 当前 F2 与 RC12-E E1–E5 工程／Browser 批次已落地；下一批只执行独立 RC12-T1，不得回头混改 A2/C2/D2/B2，也不得顺手启动 Y1/Y2；
+3. 当前 F2、RC12-E E1–E5 与 T1 工程／Browser 批次已落地；Y1 已作为独立 handoff 批次完成，不得回头混改 A2/C2/D2/B2，也不得启动 Y2；
 4. 在动代码前写下本批“不改变”的状态／数据／URL 合同；
 5. 完成后同时给出 source、browser、product 三种状态，不能用一个 `PASS` 混写；
 6. F2 之后不得自行宣布生产接受或打开 Release Gate；真实媒体、长时 soak 与生产授权仍需独立证据和用户授权。
@@ -257,4 +258,4 @@ E4 已修复 scope button 的可见焦点环，并补上 panel `aria-hidden`／`
 
 本轮命名为 `RC12-T1 — Timeline Navigator Geometry & Label Polish`。A2/C2/D2 保持冻结，B2 保持 PASS 并保留 natural consumer TODO，E 保持工程／Browser PASS 与产品停点；T1 不修改 duration ratio、Event、Track、scope、URL、current Act 或 Player playback。唯一详细入口为 `docs/editorial/komatsu36-rc12-t1-timeline-navigator-polish-runbook.md`。
 
-T1 完成前不得宣布 RC 0.12 review-branch acceptance complete。YouTube 外部 360° handoff 的 Y1/Y2 仅在 T1 runbook 登记为后续候选，本批不实施；普通网站不能扫描任意已有 YouTube 标签页，managed WindowProxy 也必须保留 `noopener`/COOP 失效与安全降级边界。
+T1 完成前不得宣布 RC 0.12 review-branch acceptance complete。按用户继续开发指令，Y1 已独立完成“点击 YouTube 当前时间外链前暂停站内播放器、清除 pending seek”的工程实现；Y1 产品停点与 T1 分开记录，证据见 `docs/qa/komatsu36-rc12/y1/README.md`。Y2 仍未实施；普通网站不能扫描任意 YouTube 标签页，managed WindowProxy 也必须保留 `noopener`/COOP 失效与安全降级边界。

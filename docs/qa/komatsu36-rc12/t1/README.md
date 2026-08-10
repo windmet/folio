@@ -73,11 +73,11 @@ npm exec -- tsc --noEmit
 
 `PRODUCT REVIEW PENDING`
 
-工程与 Browser 证据不能代替产品裁决。只有用户明确回复 `T1：ACCEPT` 才能标记 T1 `PRODUCT-ACCEPTED`。T1 接受不自动关闭 RC12-E 产品停点，不授权 Y1/Y2、真实媒体、merge、deploy 或 Release Gate。
+工程与 Browser 证据不能代替产品裁决。只有用户明确回复 `T1：ACCEPT` 才能标记 T1 `PRODUCT-ACCEPTED`。T1 接受不自动关闭 RC12-E 产品停点，不授权 Y2、真实媒体、merge、deploy 或 Release Gate；Y1 另有独立产品停点。
 
 ## 未执行边界
 
 - 真实 YouTube 媒体播放、长时 soak、360°视角和生产环境未执行；
-- Y1/Y2 外部 YouTube handoff 未实施；
+- Y1 已作为独立批次实现，证据见 `docs/qa/komatsu36-rc12/y1/README.md`；Y2 外部 managed session 未实施；
 - 未将审阅红/蓝框作为产品 CSS 或颜色 token；
 - 当前仍不标记 `RC 0.12 REVIEW BRANCH ACCEPTANCE COMPLETE`。

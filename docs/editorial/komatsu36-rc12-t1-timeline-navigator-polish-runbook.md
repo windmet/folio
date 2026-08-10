@@ -178,17 +178,19 @@ npm run validate
 
 静态检查至少保证：8 个唯一 segment、完整 aria-label、8 个 tooltip 文本、duration ratio 样式仍存在、SP1/SP2 panel 不输出 Act Navigator。静态断言不能替代 hover/focus、几何和 overflow Browser QA。
 
-## 9. 后续队列：RC12-Y1 / Y2（本批不实施）
+## 9. 后续队列：RC12-Y1 / Y2
 
-T1 产品停点之后才评估 YouTube 360° handoff。以下登记不构成实现授权。
+按用户继续开发指令，Y1 已作为独立低风险工程批次实现；T1 与 Y1 的产品接受仍分别等待人工停点。Y2 仍未授权、未实现。
 
-### Y1 — External handoff（P1 候选）
+### Y1 — External handoff（工程已实现，产品停点待确认）
 
 - 用户主动点击“在 YouTube 360°观看／打开当前时间”时，先清除会导致 onReady 后自动播放的 pending seek，并暂停站内 IFrame Player；
 - 暂停应使用 IFrame API 的 `pauseVideo()`，不是为临时 handoff 使用 `stopVideo()`；
 - 打开 canonical YouTube URL + 当前 YT Event 时间；
 - SP1/SP2 不伪造 timestamp；
 - 保留普通外链的 `noopener noreferrer` 安全默认，Y1 不需要 managed WindowProxy。
+
+Y1 源码与 Browser 证据见 `docs/qa/komatsu36-rc12/y1/README.md`。Browser 只核对真实本地路由的 timestamp href、安全属性和 handoff hook，不自动打开第三方 YouTube 页面；真实媒体与生产边界仍为 `NOT EXECUTED`。
 
 ### Y2 — Managed external session（实验候选）
 
@@ -207,6 +209,6 @@ T1 产品停点之后才评估 YouTube 360° handoff。以下登记不构成实�
 1. 全文读取本文，再读取 product correction runbook、PRODUCT-CHECKPOINT、E5 handoff 与当前三个预计实现文件；
 2. 先做 T1.0，只以当前 checkout 与真实 Browser rect 为准，不照抄审阅截图像素；
 3. 写下本批不改变的 Act/Event/Track/URL/current Act/playback 合同；
-4. T1.1、T1.2、T1.3 分批验证和 scoped commit，禁止顺手启动 Y1/Y2；
+4. T1.1、T1.2、T1.3 与 Y1 分批验证和 scoped commit；不得启动 Y2；
 5. 每批报告 source、browser、product 三种状态与 `NOT EXECUTED` 边界；
 6. 不以 payload 目标缩水功能，不把 QA 红/蓝框变成产品颜色，不打开 Release Gate。

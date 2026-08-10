@@ -331,6 +331,14 @@ if ((html.match(/data-timeline-navigator-tooltip[^>]*role="tooltip"/g) || []).le
   errors.push('RC12-T1 Navigator tooltips must expose role="tooltip"');
 }
 
+// RC12-Y1 static contract: both the visible player fallback and the player
+// context rail must use the managed pause-before-handoff hook. The hook is
+// intentionally independent from the external link's noopener default.
+const externalHandoffCount = (html.match(/data-external-youtube-handoff/g) || []).length;
+if (externalHandoffCount !== 2) {
+  errors.push(`RC12-Y1 external handoff hooks are ${externalHandoffCount}; expected player fallback + context rail`);
+}
+
 const forbiddenPublicationMarkers = [
   ['raw ASR file marker', /external_asr_raw/i],
   ['X author identifier', /author_id/i],

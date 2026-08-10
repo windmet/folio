@@ -90,7 +90,7 @@ E：REVISE — 390px scope tab 文字太小；其余 ACCEPT
 | T1 Navigator full-shell geometry | T1 已按 shell rect 扩展 Expanded/Docked，sticky Player offset 同步 | `ENGINEERING/BROWSER VERIFIED；PRODUCT REVIEW PENDING` |
 | T1 narrow segment | A03 等窄 segment 只显示 Axx，保留 duration ratio | `ENGINEERING/BROWSER VERIFIED；PRODUCT REVIEW PENDING` |
 | T1 hover/focus full label | A01–A08 已输出 hover/focus tooltip，原 aria-label 保留 | `ENGINEERING/BROWSER VERIFIED；PRODUCT REVIEW PENDING` |
-| YouTube external handoff | 尚未实现；网站不能扫描任意已有标签页 | `Y1/Y2 FUTURE — NOT AUTHORIZED` |
+| YouTube external handoff | Y1 已实现暂停站内 Player／清除 pending seek／保留安全外链；Y2 仍未实现，网站不能扫描任意已有标签页 | `Y1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING；Y2 NOT AUTHORIZED` |
 
 红框／蓝框只说明审阅中的几何范围，产品继续使用既有档案色彩与 focus/active 语义。T1 完成工程与 Browser QA 后，人工回复格式为：
 
@@ -104,4 +104,4 @@ T1：ACCEPT
 T1：REVISE — Expanded 宽度可以；A08 tooltip 仍越界
 ```
 
-T1 的工程／Browser 证据账本见 `docs/qa/komatsu36-rc12/t1/README.md`。T1 的产品接受也不自动关闭 E 产品停点，不授权 Y1/Y2、真实媒体、merge、deploy 或 Release Gate。
+T1 的工程／Browser 证据账本见 `docs/qa/komatsu36-rc12/t1/README.md`；Y1 证据见 `docs/qa/komatsu36-rc12/y1/README.md`。T1/Y1 的产品接受不自动关闭 E 产品停点，不授权 Y2、真实媒体、merge、deploy 或 Release Gate。

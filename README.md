@@ -15,6 +15,7 @@
 - RC 0.11 分批收尾 Runbook：`docs/editorial/komatsu36-rc11-closeout-runbook.md`
 - RC 0.12 当前修正总入口：`docs/editorial/komatsu36-rc12-product-correction-runbook.md`
 - RC12-T1 下一批实施指导：`docs/editorial/komatsu36-rc12-t1-timeline-navigator-polish-runbook.md`
+- RC12-Y1 外链 handoff QA：`docs/qa/komatsu36-rc12/y1/README.md`
 - RC 0.12 人工产品停点：`docs/qa/komatsu36-rc12/PRODUCT-CHECKPOINT.md`
 - Reader Copy 自动候选：`docs/editorial/komatsu36-reader-copy-candidates.generated.md`
 - Reader Copy 人工裁决：`docs/editorial/komatsu36-reader-copy-decisions.yml`
