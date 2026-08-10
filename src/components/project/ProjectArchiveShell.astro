@@ -376,6 +376,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     startMs?: number;
     preferredThreadId?: string;
   };
+  type PlayerPresentationMode = 'expanded' | 'docked' | 'bubble';
   type ArchiveTrack = {
     id: string;
     label: string;
@@ -429,7 +430,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
   class ProjectArchiveShellElement extends HTMLElement {
     data!: ControllerData;
     activeView = 'timeline';
-    playerPresentationMode: 'expanded' | 'docked' = 'expanded';
+    playerPresentationMode: PlayerPresentationMode = 'expanded';
     playerModePreferences: Record<string, 'expanded' | 'docked'> = {};
     activeTrackId = '';
     timelineScopeId = '';
@@ -439,6 +440,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     player: any = null;
     playerReady = false;
     pendingSeekMs: number | null = null;
+    mobileResumeMs: number | null = null;
     playbackSyncTimer: number | null = null;
     returnFocus: HTMLElement | null = null;
     lockedScrollY = 0;
@@ -524,10 +526,10 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.querySelector<HTMLElement>('[data-source-event-index]')?.addEventListener('click', (event) => {
         const target = event.target instanceof Element ? event.target : null;
         const button = target?.closest<HTMLElement>('[data-source-event]');
-        if (button) this.selectEvent(button.dataset.sourceEvent || '', true, true);
+        if (button) this.selectEvent(button.dataset.sourceEvent || '', true, false);
       });
       this.querySelectorAll<HTMLElement>('[data-thread-event-id]').forEach((button) => {
-        button.addEventListener('click', () => this.selectEvent(button.dataset.threadEventId || '', true, true));
+        button.addEventListener('click', () => this.selectEvent(button.dataset.threadEventId || '', true, false));
       });
       this.querySelectorAll<HTMLElement>('[data-person-event-id]').forEach((button) => {
         button.addEventListener('click', () => {
@@ -548,7 +550,13 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.querySelectorAll<HTMLElement>('[data-close-person]').forEach((button) => button.addEventListener('click', () => this.closePerson(true)));
       this.querySelector<HTMLElement>('[data-load-player]')?.addEventListener('click', () => this.ensurePlayer());
       this.querySelector<HTMLElement>('[data-player-mode-toggle]')?.addEventListener('click', () => {
-        this.setPlayerPresentationMode(this.playerPresentationMode === 'expanded' ? 'docked' : 'expanded');
+        const desktop = window.matchMedia('(min-width: 901px)').matches;
+        this.setPlayerPresentationMode(this.playerPresentationMode === 'expanded'
+          ? desktop ? 'docked' : 'bubble'
+          : 'expanded');
+      });
+      this.querySelector<HTMLElement>('[data-player-bubble]')?.addEventListener('click', () => {
+        this.setPlayerPresentationMode('expanded');
       });
       this.querySelectorAll<HTMLButtonElement>('[data-player-text-toggle]').forEach((button) => {
         button.addEventListener('click', () => this.togglePlayerText(button.dataset.playerTextToggle || ''));
@@ -870,7 +878,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       if (this.selectedThreadId) this.closeThread(false);
       if (this.selectedPersonId) this.closePerson(false);
 
-      this.selectEvent(eventId, false, options.origin !== 'player');
+      this.selectEvent(eventId, false, false, options.origin === 'player');
       const threadIds = this.getEventArchiveContext(eventId).threadIds;
       const preferredThreadId = options.preferredThreadId && threadIds.includes(options.preferredThreadId)
         ? options.preferredThreadId
@@ -941,13 +949,10 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       const target = this.querySelector<HTMLElement>(`[data-timeline-event="${CSS.escape(eventId)}"]`);
       if (!target) return false;
       const nav = this.querySelector<HTMLElement>('.project-nav');
-      const mobilePlayer = window.matchMedia('(max-width: 600px)').matches
-        ? this.querySelector<HTMLElement>('.project-player-column')
-        : null;
       const navigatorOffset = this.activeView === 'timeline' && this.timelineScopeId === this.data.defaultTrackId
         ? this.getTimelineScrollOffset()
         : (nav?.getBoundingClientRect().height || 0) + 16;
-      const offset = navigatorOffset + (mobilePlayer?.getBoundingClientRect().height || 0);
+      const offset = navigatorOffset;
       target.style.scrollMarginTop = `${Math.ceil(offset)}px`;
       target.scrollIntoView({ behavior: 'auto', block: 'start' });
       target.focus({ preventScroll: true });
@@ -1088,7 +1093,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.openThread(threadId, trigger, true);
     }
 
-    selectEvent(eventId: string, push: boolean, seek: boolean) {
+    selectEvent(eventId: string, push: boolean, seek: boolean, preservePresentation = false) {
       const event = this.data.events[eventId];
       if (!event) return;
       this.selectedEventId = eventId;
@@ -1102,8 +1107,16 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       if (current) current.textContent = `TARGET · ${this.formatArchiveTime(event.startMs)}\n${event.title}`;
       this.refreshPlayerText();
       this.updatePlayerTime(event.startMs);
+      if (!this.playerReady) this.mobileResumeMs = event.startMs;
       this.updateFallback(event);
       this.updatePlayerContext(event);
+      if (!preservePresentation && window.matchMedia('(max-width: 900px)').matches) {
+        this.setPlayerPresentationMode(seek ? 'expanded' : 'bubble');
+        if (!seek) {
+          this.mobileResumeMs = event.startMs;
+          this.updatePlayerTime(event.startMs);
+        }
+      }
       if (push) this.updateUrl();
       if (seek) this.seekTo(event.startMs);
     }
@@ -1113,6 +1126,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       if (!track) return;
       this.selectedEventId = null;
       this.pendingSeekMs = null;
+      this.mobileResumeMs = null;
       this.classList.remove('has-active-event');
       this.activeTrackId = trackId;
       this.timelineScopeId = trackId;
@@ -1128,6 +1142,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.updatePlayerTime(null);
       this.updateFallback(null);
       this.updatePlayerContext(null);
+      this.applyPlayerPresentationMode(this.activeView);
       if (push) this.updateUrl();
     }
 
@@ -1334,27 +1349,86 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       if (!frame) return;
       const desktop = window.matchMedia('(min-width: 901px)').matches;
       const requested = this.playerModePreferences[view] || this.defaultPlayerPresentationMode(view);
-      const mode = desktop ? requested : 'expanded';
+      const mode: PlayerPresentationMode = desktop
+        ? requested
+        : this.selectedEventId && this.playerPresentationMode === 'bubble'
+          ? 'bubble'
+          : 'expanded';
       this.playerPresentationMode = mode;
       frame.dataset.playerMode = mode;
       this.classList.toggle('is-player-docked', mode === 'docked');
+      this.classList.toggle('is-player-bubble', mode === 'bubble');
       document.body.classList.toggle('archive-player-docked', mode === 'docked');
+      const bubble = this.querySelector<HTMLButtonElement>('[data-player-bubble]');
+      if (bubble) {
+        bubble.hidden = desktop || !this.selectedEventId || mode !== 'bubble';
+        bubble.setAttribute('aria-expanded', String(mode === 'expanded'));
+      }
       if (!toggle) return;
-      toggle.hidden = !desktop;
+      toggle.hidden = !desktop && (!this.selectedEventId || mode !== 'expanded');
       const docked = mode === 'docked';
-      toggle.setAttribute('aria-pressed', String(docked));
-      toggle.setAttribute('aria-label', docked ? '展开完整播放器' : '切换为底部播放栏');
+      toggle.setAttribute('aria-pressed', String(desktop && docked));
+      toggle.setAttribute('aria-label', desktop
+        ? docked ? '展开完整播放器' : '切换为底部播放栏'
+        : '收起为浮动播放入口');
       const label = toggle.querySelector<HTMLElement>('[data-player-mode-toggle-label]');
-      if (label) label.textContent = docked ? '展开播放器' : '收起为底部播放栏';
+      if (label) label.textContent = desktop
+        ? docked ? '展开播放器' : '收起为底部播放栏'
+        : '最小化';
     }
 
-    setPlayerPresentationMode(mode: 'expanded' | 'docked') {
-      if (!window.matchMedia('(min-width: 901px)').matches) return;
-      this.playerModePreferences[this.activeView] = mode;
-      this.savePlayerModePreferences();
+    setPlayerPresentationMode(mode: PlayerPresentationMode) {
+      const desktop = window.matchMedia('(min-width: 901px)').matches;
+      if (desktop && mode === 'bubble') return;
+      if (!desktop && (mode === 'docked' || !this.selectedEventId)) return;
+      if (desktop) {
+        this.playerModePreferences[this.activeView] = mode as 'expanded' | 'docked';
+        this.savePlayerModePreferences();
+      } else if (mode === 'bubble') {
+        this.pauseForMobileBubble();
+      }
+      this.playerPresentationMode = mode;
       this.applyPlayerPresentationMode(this.activeView);
+      if (!desktop && mode === 'expanded') this.restoreMobileResumePosition();
       this.refreshPlayerText();
       this.scheduleTimelineNavigatorUpdate();
+    }
+
+    pauseForMobileBubble() {
+      this.pendingSeekMs = null;
+      this.stopPlaybackSync();
+      if (this.playerReady && this.player?.getCurrentTime) {
+        try {
+          this.mobileResumeMs = Math.max(0, Math.floor(this.player.getCurrentTime() * 1000));
+          this.updatePlayerTime(this.mobileResumeMs);
+        } catch {
+          // Preserve the selected Event time when the provider is between states.
+        }
+      }
+      if (!this.playerReady || !this.player?.pauseVideo) return;
+      try {
+        this.player.pauseVideo();
+      } catch {
+        // Presentation still collapses if the provider has already torn down.
+      }
+    }
+
+    restoreMobileResumePosition() {
+      if (!this.playerReady || this.mobileResumeMs === null || !this.player?.seekTo) return;
+      window.requestAnimationFrame(() => {
+        try {
+          const currentMs = this.player?.getCurrentTime
+            ? Math.max(0, Math.floor(this.player.getCurrentTime() * 1000))
+            : this.mobileResumeMs;
+          if (Math.abs(currentMs - this.mobileResumeMs!) > 1250) {
+            this.player.seekTo(this.mobileResumeMs! / 1000, true);
+          }
+          this.updatePlayerTime(this.mobileResumeMs);
+        } catch {
+          // The panel remains expanded and paused even if a mobile browser
+          // needs the user to reload the provider instance.
+        }
+      });
     }
 
     refreshPlayerText() {
@@ -1448,6 +1522,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.activeTrackId = this.data.defaultTrackId;
       this.timelineScopeId = this.data.defaultTrackId;
       this.pendingSeekMs = null;
+      this.mobileResumeMs = null;
       this.returnFocus = null;
       this.classList.remove('has-active-event');
       this.querySelectorAll<HTMLElement>('[data-event-card]').forEach((card) => card.classList.remove('is-active'));
@@ -1509,7 +1584,9 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
               }
             },
             onStateChange: (playerEvent: any) => {
-              if (playerEvent.data === YT.PlayerState.PLAYING) this.startPlaybackSync();
+              if (playerEvent.data === YT.PlayerState.PLAYING && this.playerPresentationMode === 'bubble') {
+                this.pauseForMobileBubble();
+              } else if (playerEvent.data === YT.PlayerState.PLAYING) this.startPlaybackSync();
               else {
                 this.syncFromPlayer();
                 this.stopPlaybackSync();
@@ -1529,6 +1606,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
 
     async seekTo(milliseconds: number) {
       this.pendingSeekMs = milliseconds;
+      this.mobileResumeMs = milliseconds;
       if (this.playerReady && this.player) {
         this.pendingSeekMs = null;
         this.player.seekTo(milliseconds / 1000, true);
@@ -1580,7 +1658,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       const urlHasEvent = currentUrl.searchParams.has('event');
       if (!urlHasEvent && this.activeView !== 'timeline') return;
 
-      this.selectEvent(eventAtTime[0], false, false);
+      this.selectEvent(eventAtTime[0], false, false, true);
       // selectEvent shows the anchor time. While playback is active the clock
       // should continue to reflect the player's actual position.
       this.updatePlayerTime(currentMs);
@@ -1600,6 +1678,12 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       const unavailable = this.querySelector<HTMLElement>('[data-player-unavailable]');
       const note = this.querySelector<HTMLElement>('[data-player-note]');
       const isPlayable = track.playback.provider === 'youtube';
+      const bubbleCode = this.querySelector<HTMLElement>('[data-player-bubble-code]');
+      const bubbleSymbol = this.querySelector<HTMLElement>('[data-player-bubble-symbol]');
+      const frame = this.querySelector<HTMLElement>('[data-player-frame]');
+      if (bubbleCode) bubbleCode.textContent = track.shortLabel;
+      if (bubbleSymbol) bubbleSymbol.textContent = isPlayable ? '▶' : '↗';
+      if (frame) frame.dataset.playerProvider = track.playback.provider;
       this.classList.toggle('is-external-source', track.playback.provider === 'external');
       this.classList.toggle('is-youtube-source', track.playback.provider === 'youtube');
       this.updateSourceEventIndex(trackId);

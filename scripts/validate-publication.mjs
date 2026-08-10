@@ -618,6 +618,63 @@ if (!/this\.player\.pauseVideo\(\)/.test(handoffSource)) {
   errors.push('RC12-Y1 handoff must call pauseVideo when the player is ready');
 }
 
+// RC12-M1 static contract: mobile uses an out-of-flow Bubble launcher and a
+// compliant floating panel. Bubble is presentation state, never a hidden
+// background-audio player, and desktop keeps its expanded/docked contract.
+const archivePlayerSource = await readFile(path.resolve('src/components/project/ArchivePlayer.astro'), 'utf8');
+const playerBubbleTags = [...html.matchAll(/<button[^>]*data-player-bubble[^>]*>/g)].map((match) => match[0]);
+if (playerBubbleTags.length !== 1) errors.push(`RC12-M1 has ${playerBubbleTags.length} Bubble launchers; expected 1`);
+else {
+  const bubbleTag = playerBubbleTags[0];
+  if (readAttribute(bubbleTag, 'aria-controls') !== 'archive-player-panel'
+    || readAttribute(bubbleTag, 'aria-expanded') !== 'false') {
+    errors.push('RC12-M1 Bubble launcher must control archive-player-panel and expose collapsed aria state');
+  }
+}
+if (!archivePlayerSource.includes('id="archive-player-panel"')) {
+  errors.push('RC12-M1 floating panel is missing its stable aria-controls target');
+}
+if ((html.match(/data-player-mount/g) || []).length !== 1) {
+  errors.push('RC12-M1 must retain exactly one player mount');
+}
+for (const [label, pattern] of [
+  ['rejected sticky mini-player top', /has-active-event\s+\.project-player-column\s*\{[\s\S]*?top:\s*59px/],
+  ['rejected 132px mini-player media width', /has-active-event[\s\S]{0,900}?width:\s*132px/],
+  ['rejected 84px mini-player media height', /has-active-event[\s\S]{0,900}?height:\s*84px/],
+]) {
+  if (pattern.test(timelineCssSource)) errors.push(`RC12-M1 CSS contains ${label}`);
+}
+for (const [label, pattern] of [
+  ['mobile Bubble fixed placement', /data-player-mode='bubble'[\s\S]*?width:\s*56px/],
+  ['mobile safe-area placement', /bottom:\s*calc\(18px \+ env\(safe-area-inset-bottom\)\)/],
+  ['mobile compliant viewport minimum', /data-player-mode='expanded'[\s\S]*?min-height:\s*200px/],
+  ['mobile floating panel viewport cap', /max-height:\s*calc\(100dvh - 32px - env\(safe-area-inset-top\) - env\(safe-area-inset-bottom\)\)/],
+]) {
+  if (!pattern.test(timelineCssSource)) errors.push(`RC12-M1 CSS is missing ${label}`);
+}
+const mobileCollapseStart = archiveShellSource.indexOf('\n    pauseForMobileBubble()');
+const mobileCollapseEnd = mobileCollapseStart >= 0
+  ? archiveShellSource.indexOf('\n    restoreMobileResumePosition()', mobileCollapseStart)
+  : -1;
+const mobileCollapseSource = mobileCollapseStart >= 0 && mobileCollapseEnd > mobileCollapseStart
+  ? archiveShellSource.slice(mobileCollapseStart, mobileCollapseEnd)
+  : '';
+if (!mobileCollapseSource) errors.push('RC12-M1 pauseForMobileBubble method is missing or cannot be scoped');
+for (const [label, pattern] of [
+  ['clear pending seek', /this\.pendingSeekMs\s*=\s*null/],
+  ['capture current time', /this\.player\.getCurrentTime\(\)/],
+  ['stop playback sync', /this\.stopPlaybackSync\(\)/],
+  ['pause embedded video', /this\.player\.pauseVideo\(\)/],
+]) {
+  if (mobileCollapseSource && !pattern.test(mobileCollapseSource)) errors.push(`RC12-M1 collapse must ${label}`);
+}
+if (!/PlayerPresentationMode\s*=\s*'expanded'\s*\|\s*'docked'\s*\|\s*'bubble'/.test(archiveShellSource)) {
+  errors.push('RC12-M1 controller must expose the three bounded presentation modes');
+}
+if (!/playerEvent\.data === YT\.PlayerState\.PLAYING && this\.playerPresentationMode === 'bubble'/.test(archiveShellSource)) {
+  errors.push('RC12-M1 must reject provider playback while collapsed to Bubble');
+}
+
 const forbiddenPublicationMarkers = [
   ['raw ASR file marker', /external_asr_raw/i],
   ['X author identifier', /author_id/i],

@@ -8,11 +8,11 @@
 > 当前站点：Astro 7 静态站点，TinaCMS 只管理普通 MDX 文章。
 
 > **CURRENT CHECKPOINT**
-> RC 0.10 已完成本地验收，RC 0.11 已完成 R9 与 review-branch handoff；其 acceptance 文档保持历史合同。RC12-A2/C2/D2/B2/F2、E1–E5 与 T1.1 已完成工程／Browser 验证。2026-08-10 Semantic P0、P1 Person／Story／Thread 与 UI Reader Language 已分批完成。下一批 RC12-M1 Mobile Player Bubble 仅锁定规格、尚未实施；Semantic P1 Event 流程词排在 M1 之后。旧分析 MD 与 RAW 保持不变。Release Gate 继续 CLOSED。
+> RC 0.10 已完成本地验收，RC 0.11 已完成 R9 与 review-branch handoff；其 acceptance 文档保持历史合同。RC12-A2/C2/D2/B2/F2、E1–E5、T1.1 与 M1 Mobile Player Bubble 已完成工程／Browser 验证；M1 真实设备为 `NOT EXECUTED`。2026-08-10 Semantic P0、P1 Person／Story／Thread 与 UI Reader Language 已分批完成；下一批继续 Semantic P1 Event 流程词。旧分析 MD 与 RAW 保持不变。Release Gate 继续 CLOSED。
 
 ## 当前实施状态（2026-08-10）
 
-> **当前状态覆盖**：Semantic P0、P1 Person 第 5–8 项、Story 第 9–11 项、Thread 与 UI Reader Language 已完成 SOURCE/BUILD/BROWSER 验证；Reader Copy 当前为 55/55 decisions，并强制 source↔ledger 一致。RC12-M1 是下一批 `SPEC LOCKED · NOT IMPLEMENTED`；P1 Event reader-language 仍待独立完成。T1/Y1 产品接受、真实媒体与 Release Gate 继续独立关闭。Y2 managed external session 尚未授权。
+> **当前状态覆盖**：Semantic P0、P1 Person 第 5–8 项、Story 第 9–11 项、Thread 与 UI Reader Language 已完成 SOURCE/BUILD/BROWSER 验证；Reader Copy 当前为 55/55 decisions，并强制 source↔ledger 一致。RC12-M1 已完成工程／Browser 验证但真实设备未执行；P1 Event reader-language 仍待独立完成。T1/Y1 产品接受、真实媒体与 Release Gate 继续独立关闭。Y2 managed external session 尚未授权。
 
 - Phase 0A 已落地：`data/source-sets/komatsu36-20260808-r1.json` 精确锁定 6 个 `复核md/` 带后缀输入，并由 `validate:sources` 校验路径、SHA-256、物理行数与 16 条 ARC；
 - Phase 1 垂直切片已落地：真实 `/projects/komatsu36/` 路由、集中状态控制器、YouTube 延迟加载与 pending seek、动态时间 fallback、Timeline、Thread、Person 和 URL 恢复均已实现；

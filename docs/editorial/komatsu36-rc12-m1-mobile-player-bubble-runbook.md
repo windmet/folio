@@ -1,10 +1,10 @@
 # Komatsu36 RC12-M1 — Mobile Player Bubble & Compliant Playback
 
-> 状态：`NEXT BATCH · SPEC LOCKED · NOT IMPLEMENTED`
+> 状态：`ENGINEERING + BROWSER VERIFIED · DEVICE NOT EXECUTED`
 > 日期：2026-08-10
 > 输入：移动端 sticky Player 产品审计
 > 前置：Semantic P1 UI Reader Language 已完成；开始 M1 前必须从其 clean commit 继续
-> 边界：本文件只定义下一批，不授权本次交接继续改代码
+> 边界：真实 Android Chrome／iOS Safari 尚未执行；不得据此宣称 release-accepted
 
 ## 1. 产品裁决
 
@@ -88,3 +88,14 @@ Selected Event
 ## 7. 完成条件
 
 M1 必须独立提交并提供 source/build/browser/device 分层证据。若只能完成自动化浏览器，不得把 YouTube iframe 隐藏行为写成已被真实移动设备接受。M1 完成后回到 Semantic P1 Event reader-copy 批次。
+
+## 8. 2026-08-10 实施结果
+
+M1.1–M1.4 的工程与 Browser 层已完成，证据入口为 `docs/qa/komatsu36-rc12/m1/README.md`：
+
+- mobile deep link／普通 Event 选择默认进入 `bubble`，明确点击 Timeline 播放时间才进入 expanded + seek/play；
+- expanded → bubble 会清除 pending seek、读取 `getCurrentTime()`、停止 sync 并调用 `pauseVideo()`；恢复只在位置漂移时 seek，绝不调用 `playVideo()`；
+- 旧 `<600px` sticky `132×84` 合同已删除，静态门禁拒绝回归；
+- mobile floating panel 不占 workspace，不锁 body；56px Bubble 使用 safe area，Thread／Person modal 打开时隐藏；
+- YT／SP1／SP2 共用单一 mount，External Source Bubble 使用 `↗`，不伪装播放；
+- 360×800、390×844、414×896、844×390 与 1440×900 已完成自动浏览器验证；真实设备仍为 `NOT EXECUTED`。

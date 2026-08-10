@@ -18,7 +18,19 @@ const orderedTracks = [...tracks].sort((left, right) =>
 ---
 
 <div class="archive-player-frame" data-player-frame data-player-mode="expanded">
-<section class="archive-player" data-player data-track-id={trackId} data-video-id={videoId || ''}>
+<button
+  type="button"
+  class="archive-player-bubble"
+  data-player-bubble
+  aria-label="展开移动播放器"
+  aria-controls="archive-player-panel"
+  aria-expanded="false"
+  hidden
+>
+  <span class="archive-player-bubble__symbol" data-player-bubble-symbol aria-hidden="true">▶</span>
+  <strong data-player-bubble-code>YT</strong>
+</button>
+<section id="archive-player-panel" class="archive-player" data-player data-track-id={trackId} data-video-id={videoId || ''}>
   <div class="archive-player__head">
     <div>
       <span class="archive-kicker">当前播放</span>
@@ -29,7 +41,7 @@ const orderedTracks = [...tracks].sort((left, right) =>
       class="archive-player__mode-toggle"
       data-player-mode-toggle
       aria-pressed="false"
-      aria-label="切换为底部播放栏"
+      aria-label="切换播放器显示方式"
     >
       <span data-player-mode-toggle-label>收起为底部播放栏</span>
     </button>
