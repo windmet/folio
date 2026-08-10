@@ -4,7 +4,7 @@
 
 ## 当前检查点
 
-- Komatsu36：RC 0.10 与 RC 0.11 review-branch acceptance 已完成。RC 0.12 的 A2/C2/D2/B2/F2、E1–E5、T1.1、Y1 与 M1 Mobile Player Bubble 已完成工程／Browser 验证；M1 真实 Android/iOS 设备为 `NOT EXECUTED`。2026-08-10 Semantic P0、P1 Person／Story／Thread 与 UI Reader Language 已完成，下一批继续 Semantic P1 Event 流程词。T1/Y1 产品停点、真实媒体与 Release Gate 均未完成，Y2 managed external session 未授权。
+- Komatsu36：RC 0.10 与 RC 0.11 review-branch acceptance 已完成。RC 0.12 的 A2/C2/D2/B2/F2、E1–E5、T1.1、Y1 与 M1 Mobile Player Bubble 已完成工程／Browser 验证；M1 真实 Android/iOS 设备为 `NOT EXECUTED`。2026-08-10 Semantic P0 与 P1 Person／Story／Thread／UI／Event Reader Language 已全部分批完成，当前进入逐项总审计。T1/Y1 产品停点、真实媒体与 Release Gate 均未完成，Y2 managed external session 未授权。
 - 审阅分支：[codex/komatsu36-project-archive](https://github.com/windmet/folio/tree/codex/komatsu36-project-archive)
 - 专题路由：`/projects/komatsu36/`
 - Visual QA 与编辑审计：`docs/qa/komatsu36-rc08/`
@@ -15,7 +15,7 @@
 - RC 0.11 分批收尾 Runbook：`docs/editorial/komatsu36-rc11-closeout-runbook.md`
 - RC 0.12 当前修正总入口：`docs/editorial/komatsu36-rc12-product-correction-runbook.md`
 - RC12-T1 实施与产品复核指导：`docs/editorial/komatsu36-rc12-t1-timeline-navigator-polish-runbook.md`
-- Semantic 审计与分批交接：`docs/komatsu36_semantic_patch_20260810.md`、`docs/editorial/komatsu36-semantic-p0-handoff.md`、`docs/editorial/komatsu36-semantic-p1-person-handoff.md`、`docs/editorial/komatsu36-semantic-p1-account-handoff.md`、`docs/editorial/komatsu36-semantic-p1-story-handoff.md`、`docs/editorial/komatsu36-semantic-p1-thread-language-handoff.md`、`docs/editorial/komatsu36-semantic-p1-ui-language-handoff.md`
+- Semantic 审计与分批交接：`docs/komatsu36_semantic_patch_20260810.md`、`docs/editorial/komatsu36-semantic-p0-handoff.md`、`docs/editorial/komatsu36-semantic-p1-person-handoff.md`、`docs/editorial/komatsu36-semantic-p1-account-handoff.md`、`docs/editorial/komatsu36-semantic-p1-story-handoff.md`、`docs/editorial/komatsu36-semantic-p1-thread-language-handoff.md`、`docs/editorial/komatsu36-semantic-p1-ui-language-handoff.md`、`docs/editorial/komatsu36-semantic-p1-event-language-handoff.md`
 - Mobile Bubble 实施规格与证据：`docs/editorial/komatsu36-rc12-m1-mobile-player-bubble-runbook.md`、`docs/qa/komatsu36-rc12/m1/README.md`
 - RC12-Y1 外链 handoff QA：`docs/qa/komatsu36-rc12/y1/README.md`
 - RC12-Y2 managed external session 实验指导（未授权实现）：`docs/editorial/komatsu36-rc12-y2-managed-external-session-experiment.md`

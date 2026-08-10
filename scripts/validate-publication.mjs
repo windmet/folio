@@ -714,6 +714,9 @@ for (const forbidden of [
   'ACCOUNT APPEARANCE',
   'REMOTE CALL',
   'SUBMISSION',
+  '规则边玩边修补，口令也现场改变',
+  '规则不断 patch',
+  '并不是早先误听成的“挂毯”',
 ]) {
   if (publishedReaderText.includes(forbidden)) {
     errors.push(`semantic P1 published UI contains superseded reader-facing label: ${forbidden}`);
@@ -732,6 +735,9 @@ for (const required of [
   '故事线 · 前后回收',
   '只搜索已经公开的事件、故事线和人物',
   '每个人物页都会汇总他在主直播、Space 与《俺知》复盘中出现的相关片段。',
+  'Bingo 规则越玩越多，口令也临时改掉',
+  '一开始每人一张卡，同一时刻多人 Bingo 的单份奖品会流局；玩到后面又临时加入“double Bingo 优先”。',
+  '第二轮 64 号由光富崇雄中奖，奖品是新選組／瀬戸焼き“誠”杯类物件。',
 ]) {
   if (!publishedReaderText.includes(required)) {
     errors.push(`semantic P1 published UI is missing reader-facing label: ${required}`);

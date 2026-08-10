@@ -13,9 +13,9 @@ const termGroups = {
     'A级', 'B级', 'A-', 'B+', '封板', '锁回', '裁决', '母本', '反向支持',
   ],
   'editorial-meta-language': [
-    '当前采用', '当前判断', '不强认', '短窗', '页面', '本文', '本条线', '资料', '发布',
+    '当前采用', '当前判断', '不强认', '短窗', '页面', '本文', '本条线', '资料', '发布', '误听',
   ],
-  'technical-language': ['定位', '逐句', '并发标注', '轨道', 'offset', 'canonical'],
+  'technical-language': ['定位', '逐句', '并发标注', '轨道', 'offset', 'canonical', 'patch'],
 };
 
 const trackOrder = new Map([

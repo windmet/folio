@@ -145,11 +145,17 @@ decisions:
     copyAction: keep
     readerNoteAction: none
     note: "现有文案清楚说明第二段 Space 收束、回到主区及 Bingo 的承接。"
+  yt-035520-bingo-rules-patched:
+    copyAction: rewrite
+    readerNoteAction: none
+    newTitle: "Bingo 规则越玩越多，口令也临时改掉"
+    newSummary: "一开始每人一张卡，同一时刻多人 Bingo 的单份奖品会流局；玩到后面又临时加入“double Bingo 优先”。连中奖口令也从普通“Bingo”改成了“俺を知ってくれ”。"
+    note: "把规则 patch 改成现场规则逐步增加的读者叙事，不改变 Bingo 规则事实。"
   yt-040000-tumbler-mitsutomi:
     copyAction: rewrite
     readerNoteAction: none
-    newSummary: "第二轮 64 号由光富崇雄中奖；奖品是新選組／瀬戸焼き“誠”杯类物件，并不是早先误听成的“挂毯”。"
-    note: "移除 ASR 与公开资料等内部流程词，只保留奖品识别及纠正结果。"
+    newSummary: "第二轮 64 号由光富崇雄中奖，奖品是新選組／瀬戸焼き“誠”杯类物件。"
+    note: "早先误听属于内部纠错历史；页面只保留中奖者和当前可确认的奖品品类。"
   yt-040405-amazon-hama:
     copyAction: keep
     readerNoteAction: add

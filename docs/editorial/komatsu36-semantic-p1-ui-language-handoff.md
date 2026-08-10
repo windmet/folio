@@ -58,5 +58,5 @@ Playwright 在 1440×900 与 390×844 验证：Overview、三来源 Timeline、T
 本批到此停止，不把移动端布局混入 Semantic UI commit。
 
 1. 2026-08-10 状态覆盖：`RC12-M1 — Mobile Player Bubble & Compliant Playback` 已完成工程／Browser 验证，真实设备仍 `NOT EXECUTED`；证据见 `docs/qa/komatsu36-rc12/m1/README.md`。
-2. Semantic P1 尚未遗忘：第 14–15 节杯类奖品与 Bingo “patch” reader copy 现在作为下一独立 Event 批次继续。
+2. 2026-08-10 状态覆盖：第 14–15 节杯类奖品与 Bingo “patch” reader copy 已完成，证据见 `komatsu36-semantic-p1-event-language-handoff.md`。
 3. P2 ID migration、真实媒体、Release Gate 与部署继续关闭。
