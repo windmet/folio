@@ -16,6 +16,7 @@
     "audit:payload": "node scripts/audit-payload.mjs",
     "verify:komatsu36:semantic": "node scripts/verify-komatsu36-semantic-closeout.mjs",
     "verify:rc12:y1": "node scripts/verify-rc12-y1-browser.mjs",
+    "verify:rc12:mt1": "node scripts/verify-rc12-mt1-browser.mjs",
     "editorial:reader-copy": "node scripts/generate-reader-copy-queue.mjs",
     "validate": "npm run validate:projects && npm run validate:reader-copy && npm run build && npm run validate:publication",
     "preview": "astro preview",

@@ -1,10 +1,10 @@
 # Komatsu36 RC 0.12 人工停点核对表
 
-> 当前状态：`SEMANTIC P1 THREAD LANGUAGE + STORY 9–11 + PERSON 5–8 + RC12-T1.1/Y1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING`
+> 当前状态：`SEMANTIC P0/P1 + RC12-T1.1/Y1/M1/MT1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING`
 > 预览地址：`http://127.0.0.1:4322/projects/komatsu36/`
 > 当前 T1/Y1 工程与产品复核入口：`docs/editorial/komatsu36-rc12-t1-timeline-navigator-polish-runbook.md`
 
-这份表保留 2026-08-09 第一版产品裁决，并追加当前状态；它不替代源码、构建或 Browser QA 证据。RC12-A2/C2/D2/B2/F2、E1–E5 与 T1.1 已完成工程／Browser QA。2026-08-10 Semantic P0、P1 Person 第 5–8 项、Story 第 9–11 项与 Thread Reader Language 已完成来源／构建／真实页面验证；12 条剩余 Thread 正文已故事化，reader-copy source↔ledger 已成为强门禁。P1 UI taxonomy 与 Event 流程词尚未完成；T1/Y1 产品停点仍待用户确认。用户截图中的红框／蓝框仅为几何说明标注，不是产品配色方向。
+这份表保留 2026-08-09 第一版产品裁决，并追加当前状态；它不替代源码、构建或 Browser QA 证据。RC12-A2/C2/D2/B2/F2、E1–E5、T1.1、Y1 与 M1 已完成工程／Browser QA。2026-08-10 Semantic P0/P1（含 UI taxonomy、Event reader language、Person、Story 与 Thread）已完成来源／构建／真实页面验证，reader-copy source↔ledger 已成为强门禁；此前“P1 UI taxonomy 与 Event 流程词尚未完成”的表述作废。当前新批次为 MT1 移动 Timeline 密度与章节层级。用户截图中的红框／蓝框仅为几何说明标注，不是产品配色方向。
 
 ## 第一版停点 1 裁决：Player / People
 
@@ -117,3 +117,21 @@ T1：REVISE — inline 宽度可以；A08 tooltip 仍越界
 ```
 
 T1 的工程／Browser 证据账本见 `docs/qa/komatsu36-rc12/t1/README.md`；Y1 证据见 `docs/qa/komatsu36-rc12/y1/README.md`。T1/Y1 的产品接受不自动关闭 E 产品停点，不授权 Y2、真实媒体、merge、deploy 或 Release Gate。
+
+## 2026-08-10 移动端新批次：RC12-MT1
+
+M1 Player Bubble 改变了 RC11 “完整播放器长期占据手机视口”的前提，因此允许为 YT Timeline 增加单行 Act Locator，并把普通 Event 改为 76px 时间轨＋正文的紧凑两栏。桌面 T1、M1 Player 与 SP1/SP2 无伪 Act 边界保持冻结。详细合同和待验矩阵见 `docs/editorial/komatsu36-rc12-mt1-mobile-timeline-runbook.md` 与 `docs/qa/komatsu36-rc12/mt1/README.md`。
+
+MT1 已完成工程／Browser QA。人工只需核对章节带是否清楚、390px 是否能自然扫读 3–5 条普通 Event、标题展开与时间播放是否不会混淆。MT1 产品接受不授权真实设备、真实媒体、merge、deploy 或 Release Gate。
+
+人工回复可直接使用：
+
+```text
+MT1：ACCEPT
+```
+
+或指出具体修正，例如：
+
+```text
+MT1：REVISE — 章节带摘要仍偏高；普通 Event 密度可以
+```

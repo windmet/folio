@@ -63,4 +63,41 @@ const totalDuration = acts.reduce((sum, act) => sum + Math.max(1, act.data.endMs
       );
     })}
   </ol>
+  <div class="timeline-navigator__mobile" aria-live="polite">
+    <button
+      type="button"
+      class="timeline-navigator__mobile-toggle"
+      data-mobile-act-toggle
+      aria-expanded="false"
+      aria-controls="timeline-navigator-mobile-menu"
+    >
+      <span class="archive-kicker" data-timeline-navigator-current-label>
+        ACT {String(firstAct?.data.order || 1).padStart(2, '0')} / {String(actTotal).padStart(2, '0')}
+      </span>
+      <strong data-timeline-navigator-current-title>{firstAct?.data.title || 'Timeline'}</strong>
+      <span data-timeline-navigator-current-time>
+        {firstAct ? `${formatTime(firstAct.data.startMs)}–${formatTime(firstAct.data.endMs)}` : '—'}
+      </span>
+      <span class="timeline-navigator__mobile-chevron" aria-hidden="true">⌄</span>
+    </button>
+    <ol id="timeline-navigator-mobile-menu" class="timeline-navigator__mobile-menu" data-mobile-act-menu hidden>
+      {acts.map((act) => {
+        const id = localActId(act);
+        const order = String(act.data.order).padStart(2, '0');
+        return (
+          <li>
+            <button
+              type="button"
+              data-mobile-act-option={id}
+              aria-current={act === firstAct ? 'step' : undefined}
+            >
+              <span>ACT {order}</span>
+              <strong>{act.data.title}</strong>
+              <small>{formatTime(act.data.startMs)}–{formatTime(act.data.endMs)}</small>
+            </button>
+          </li>
+        );
+      })}
+    </ol>
+  </div>
 </nav>

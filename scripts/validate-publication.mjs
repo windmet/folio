@@ -563,6 +563,28 @@ if ((html.match(/data-timeline-navigator-tooltip[^>]*role="tooltip"/g) || []).le
   errors.push('RC12-T1 Navigator tooltips must expose role="tooltip"');
 }
 
+// RC12-MT1 static contract: mobile keeps a single current-Act locator and an
+// eight-item directory, while every public Event receives a separate reading
+// trigger. The desktop T1 segments remain exactly eight and are not reused for
+// the mobile directory.
+const mobileActToggleCount = (html.match(/data-mobile-act-toggle/g) || []).length;
+const mobileActMenuCount = (html.match(/data-mobile-act-menu/g) || []).length;
+const mobileActOptionCount = (html.match(/data-mobile-act-option="[^"]+"/g) || []).length;
+const mobileEventDetailCount = (html.match(/data-event-detail="[^"]+"/g) || []).length;
+const mobileActEventCount = (html.match(/class="act-event-count"/g) || []).length;
+if (mobileActToggleCount !== 1 || mobileActMenuCount !== 1) {
+  errors.push(`RC12-MT1 mobile Act Locator has ${mobileActToggleCount} toggles and ${mobileActMenuCount} menus; expected 1 each`);
+}
+if (mobileActOptionCount !== 8) {
+  errors.push(`RC12-MT1 mobile Act directory has ${mobileActOptionCount} options; expected 8`);
+}
+if (mobileEventDetailCount !== publicEventEntries.length) {
+  errors.push(`RC12-MT1 has ${mobileEventDetailCount} Event reading triggers; expected ${publicEventEntries.length}`);
+}
+if (mobileActEventCount !== 8) {
+  errors.push(`RC12-MT1 has ${mobileActEventCount} Act Event counts; expected 8`);
+}
+
 // RC12-T1.1 product correction: Navigator remains an inline child of the
 // Timeline content column. Guard against reintroducing the rejected JS/CSS
 // shell breakout or coupling Player sticky geometry to Navigator height.
@@ -587,6 +609,16 @@ if (!/\.timeline-navigator\s*\{[\s\S]*?padding:\s*14px 14px 12px;/.test(timeline
 }
 if (!/\.project-player-column\s*\{[\s\S]*?top:\s*96px;/.test(timelineCssSource)) {
   errors.push('RC12-T1.1 expanded Player must keep its independent 96px sticky top');
+}
+if (!/\.timeline-navigator__mobile-toggle\s*\{[\s\S]*?min-height:\s*46px;/.test(timelineCssSource)) {
+  errors.push('RC12-MT1 mobile Act Locator must keep its 46px tap/readability target');
+}
+if (!/@media \(max-width:\s*600px\)[\s\S]*?\.timeline-event\s*\{[\s\S]*?grid-template-columns:\s*76px minmax\(0, 1fr\);/.test(timelineCssSource)) {
+  errors.push('RC12-MT1 mobile Event must keep the 76px time rail and content column');
+}
+if (!timelineShellSource.includes("closest<HTMLElement>('[data-mobile-act-option]')")
+  || !timelineShellSource.includes("else this.selectEvent(eventId, true, false)")) {
+  errors.push('RC12-MT1 controller must preserve Act-directory navigation and title-as-reading selection');
 }
 
 // RC12-Y1 static contract: both the visible player fallback and the player

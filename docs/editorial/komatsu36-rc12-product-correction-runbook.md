@@ -1,11 +1,11 @@
 # Komatsu36 RC 0.12 Product Correction Runbook
 
-> 状态：`RC12-T1.1 INLINE CORRECTION + RC12-Y1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING`
+> 状态：`RC12-T1.1/Y1/M1/MT1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING`
 > 裁决日期：2026-08-09
 > 基线分支：`codex/komatsu36-project-archive`
 > 前置状态：RC 0.11 `REVIEW BRANCH ACCEPTANCE COMPLETE`
-> 当前入口：`docs/editorial/komatsu36-rc12-t1-timeline-navigator-polish-runbook.md`；E5 QA 与 F2 handoff 保留为对应批次证据
-> 当前进度：RC12-A2/C2/D2/B2/F2、E1–E5、T1.1、Y1 与 M1 Mobile Player Bubble 已完成工程／Browser 验证；M1 真实设备为 `NOT EXECUTED`。Semantic P0/P1 已完成逐项总审计，P2 兼容 ID 迁移延后；统一证据见 `komatsu36-semantic-p1-closeout-audit.md`。下一批回到 T1/Y1 产品停点，Release Gate 仍待完成。
+> 当前入口：`docs/editorial/komatsu36-rc12-mt1-mobile-timeline-runbook.md`；T1/Y1、M1、E5 QA 与 F2 handoff 保留为对应批次证据
+> 当前进度：RC12-A2/C2/D2/B2/F2、E1–E5、T1.1、Y1、M1 与 MT1 已完成工程／Browser 验证；真实设备为 `NOT EXECUTED`。Semantic P0/P1 已完成逐项总审计，P2 兼容 ID 迁移延后；统一证据见 `komatsu36-semantic-p1-closeout-audit.md`。当前等待 MT1 等产品停点，Release Gate 仍待完成。
 > Release Gate：CLOSED；本文不授权 merge、deploy 或修改 `project.status`
 
 本文记录 RC12-A/B/C/D 第一版经过源码、构建和浏览器验证后，收到的产品层返工裁决，并继续作为 RC 0.12 的**总状态入口**。T1 与 Y1 的工程批次已经分别完成，当前下一步是 T1/Y1 产品复核；Y2 仍未授权。`komatsu36-rc12-t1-timeline-navigator-polish-runbook.md` 仍是 T1/Y1 合同与证据入口。原 `komatsu36-rc12-visual-polish-source-navigation-plan.md` 保存第一版规格与工程证据，不再代表下一批应直接收口；`komatsu36-rc12-release-readiness-handoff.md` 降级为被产品复核退回的本地 QA 快照。
@@ -18,6 +18,7 @@ RC12-A/B/C/D/F2                 SOURCE-VERIFIED + BROWSER-VERIFIED
 RC12-E E1–E5                    SOURCE-VERIFIED + BROWSER-VERIFIED
 RC12-T1.1 INLINE CORRECTION     ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING
 RC12-Y1                          ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING
+RC12-MT1                         ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING
 RC12 product acceptance          PRODUCT REVIEW PENDING
 RC12 release readiness           NOT REACHED
 Release Gate                     CLOSED
@@ -59,7 +60,10 @@ RC12-T1.1 inline geometry correction + retained narrow labels + hover/focus tool
   ↓ T1 人工停点
 RC12-Y1 YouTube handoff 工程已完成，产品停点待确认
 RC12-Y2 managed external session 仅有独立实验指导，未授权实现
+RC12-MT1 Mobile Timeline Density & Act Hierarchy 工程／Browser 已完成，产品停点待确认
 ```
+
+MT1 只在 YT mobile 引入单行 Act Locator，并将三来源 Event 统一投影为紧凑双栏；桌面 T1、M1 Player、native clock、URL 与数据模型保持冻结。详细合同与证据见 `docs/editorial/komatsu36-rc12-mt1-mobile-timeline-runbook.md`、`docs/qa/komatsu36-rc12/mt1/README.md`。
 
 不得把四批合成一次“大改一切”。每批独立：读取本节合同 → 改最小文件面 → 自动门禁 → 真实路由 Browser QA → 截止点记录 → scoped commit。上一批存在产品方向疑问时停止，不用下一批的 CSS 顺手掩盖。
 

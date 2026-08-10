@@ -1,6 +1,6 @@
 # 小松昌平 36 岁生日会 Project Archive 开发设计
 
-> 状态：SEMANTIC P1 THREAD LANGUAGE + STORY 9–11 + PERSON 5–8 + RC12-T1.1/Y1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING（2026-08-10；RC 0.11 REVIEW BRANCH ACCEPTANCE COMPLETE）
+> 状态：SEMANTIC P0/P1 + RC12-T1.1/Y1/M1/MT1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING（2026-08-10；RC 0.11 REVIEW BRANCH ACCEPTANCE COMPLETE）
 > 目标：把一场多平台、多人物、长时、存在跨轨回收的活动做成可浏览、可追溯、可逐步发布的专题档案，而不是把工作稿直接塞进普通博客正文。
 > 当前源档根：`E:\AI_Subtitle_Studio\02_Projects\小松昌平生日会`（只通过 CLI 参数或 `KOMATSU36_SOURCE_ROOT` 提供）
 > 当前权威文档集：源档根下的 `复核md/` 带版本后缀文件；根目录同名无后缀文件是旧工作稿，不得自动选用。
@@ -8,7 +8,7 @@
 > 当前站点：Astro 7 静态站点，TinaCMS 只管理普通 MDX 文章。
 
 > **CURRENT CHECKPOINT**
-> RC 0.10 已完成本地验收，RC 0.11 已完成 R9 与 review-branch handoff；其 acceptance 文档保持历史合同。RC12-A2/C2/D2/B2/F2、E1–E5、T1.1 与 M1 Mobile Player Bubble 已完成工程／Browser 验证；M1 真实设备为 `NOT EXECUTED`。2026-08-10 Semantic P0/P1 已完成逐项总审计，P2 兼容 ID 迁移延后；旧分析 MD 与 RAW 保持不变。下一批回到 T1/Y1 产品接受停点，Release Gate 继续 CLOSED。
+> RC 0.10 已完成本地验收，RC 0.11 已完成 R9 与 review-branch handoff；其 acceptance 文档保持历史合同。RC12-A2/C2/D2/B2/F2、E1–E5、T1.1、Y1、M1 与 MT1 已完成工程／Browser 验证；真实设备为 `NOT EXECUTED`。2026-08-10 Semantic P0/P1 已完成逐项总审计，P2 兼容 ID 迁移延后；旧分析 MD 与 RAW 保持不变。当前等待 MT1 移动视觉人工产品复核，Release Gate 继续 CLOSED。
 
 ## 当前实施状态（2026-08-10）
 
@@ -887,6 +887,7 @@ package.json
 17. **RC 0.12-E（前一批）**：Source-scoped Timeline 的 E1–E5 已完成工程与本地真实 Browser 验证，覆盖三 source-local scope、Event projection、URL/history、Enter／Space、focus restoration、390px、无障碍语义、single player mount 和 console/overflow；完整交接见 `docs/qa/komatsu36-rc12/e/E5-HANDOFF.md`。当前仍保留产品人工停点、真实媒体、生产和 Release Gate 边界，不把 Browser 证据升级为 `PRODUCT-ACCEPTED`。
 18. **RC12-T1.1（当前收尾）**：第一版 Project shell 级全局章节带已被产品否决并回退；YT 8-Act Navigator 在 Expanded 中保持 Timeline 左内容列，在 Docked 中随单列 workspace 自然增宽，并有 14px safe inset。真实 duration ratio、极窄 Axx-only 与 A01–A08 hover/focus 完整标签保留。不得恢复 JS breakout，不得修改 Event、Track、scope、URL、current Act 或 Player playback。
 19. **RC12-Y1（独立后续批次）**：YouTube 当前时间外链在导航前清除 pending seek、停止 playback sync，并在 Player ready 时调用 `pauseVideo()`；fallback 与 Player context rail 共用 handoff hook，保留 `_blank` + `noopener noreferrer`。证据见 `docs/qa/komatsu36-rc12/y1/README.md`。Y2 managed external session 未授权。
+20. **RC12-MT1（当前移动视觉批次）**：M1 Bubble 改变了 RC11 禁止手机章节导航的旧前提；YT mobile 增加单行 Act Locator／八章目录，Event 改为 76px 时间轨＋标题／摘要紧凑行，标题负责阅读展开、时间负责媒体 seek。Act header 成为章节带；桌面 T1、M1 Player、SP1/SP2 无伪 Act 与 URL/data schema 保持冻结。合同见 `docs/editorial/komatsu36-rc12-mt1-mobile-timeline-runbook.md`。
 
 通用 validator 与 komatsu36 fixture 的分层不再列入本次 Release Blocker：通用层最终只校验 schema、关系、时间、隐私和确定性排序；`8 Acts`、manifest ARC 数与小松专属 publication assertions 留在项目 fixture，但该工作延后到第二个 Project 接入前完成。
 

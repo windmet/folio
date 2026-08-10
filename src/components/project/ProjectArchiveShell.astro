@@ -250,7 +250,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         >
           <TimelineNavigator acts={orderedActs} />
           {orderedActs.map((act) => (
-            <ActSection act={act} events={eventsForAct(act.id)} peopleById={peopleById} threadsByEvent={threadsByEvent} />
+            <ActSection act={act} actTotal={orderedActs.length} events={eventsForAct(act.id)} peopleById={peopleById} threadsByEvent={threadsByEvent} />
           ))}
         </div>
         {orderedTimelineTracks.filter((track) => localId(track.id) !== defaultTimelineTrackId).map((track) => (
@@ -505,13 +505,25 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.querySelector<HTMLElement>('[data-timeline-navigator]')?.addEventListener('click', (event) => {
         const target = event.target instanceof Element ? event.target : null;
         const button = target?.closest<HTMLElement>('[data-timeline-navigator-segment]');
+        const mobileOption = target?.closest<HTMLElement>('[data-mobile-act-option]');
         if (button) this.navigateToAct(button.dataset.timelineNavigatorSegment || '');
+        else if (mobileOption) this.navigateToAct(mobileOption.dataset.mobileActOption || '');
       });
+      this.querySelector<HTMLElement>('[data-mobile-act-toggle]')?.addEventListener('click', () => this.toggleMobileActMenu());
       this.querySelectorAll<HTMLElement>('[data-timeline-scope-button]').forEach((button) => {
         button.addEventListener('click', () => this.switchTimelineScope(button.dataset.timelineScopeButton || '', true));
       });
       this.querySelectorAll<HTMLElement>('[data-event-seek]').forEach((button) => {
         button.addEventListener('click', () => this.selectEvent(button.dataset.eventSeek || '', true, true));
+      });
+      this.querySelectorAll<HTMLElement>('[data-event-detail]').forEach((button) => {
+        button.addEventListener('click', () => {
+          if (!window.matchMedia('(max-width: 900px)').matches) return;
+          const eventId = button.dataset.eventDetail || '';
+          const card = button.closest<HTMLElement>('[data-event-card]');
+          if (card?.classList.contains('is-active')) this.setActiveEventState(null);
+          else this.selectEvent(eventId, true, false);
+        });
       });
       this.querySelectorAll<HTMLElement>('[data-source-track]').forEach((button) => {
         button.addEventListener('click', () => this.switchTrack(button.dataset.sourceTrack || '', true));
@@ -611,6 +623,12 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         const slot = this.querySelector<HTMLElement>('.player-context-rail__thread-slot');
         if (slot && !slot.contains(event.target as Node)) this.closePlayerRailThreadMenu(false);
       });
+      document.addEventListener('click', (event) => {
+        const menu = this.querySelector<HTMLElement>('[data-mobile-act-menu]');
+        if (!menu || menu.hidden) return;
+        const mobileNavigator = this.querySelector<HTMLElement>('.timeline-navigator__mobile');
+        if (mobileNavigator && !mobileNavigator.contains(event.target as Node)) this.closeMobileActMenu(false);
+      });
       const searchInput = this.querySelector<HTMLInputElement>('[data-archive-search]');
       searchInput?.addEventListener('focus', () => { void this.ensureSearchIndex(); });
       searchInput?.addEventListener('input', () => { void this.filterSearch(searchInput.value); });
@@ -630,8 +648,10 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
           return;
         }
         if (event.key !== 'Escape') return;
+        const actMenu = this.querySelector<HTMLElement>('[data-mobile-act-menu]');
         const railMenu = this.querySelector<HTMLElement>('[data-player-rail-thread-menu]');
-        if (railMenu && !railMenu.hidden) this.closePlayerRailThreadMenu(true);
+        if (actMenu && !actMenu.hidden) this.closeMobileActMenu(true);
+        else if (railMenu && !railMenu.hidden) this.closePlayerRailThreadMenu(true);
         else if (this.selectedPersonId) this.closePerson(true);
         else if (this.selectedThreadId) this.closeThread(true);
         else if (this.searchOpen) this.closeSearch(true);
@@ -774,6 +794,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       }
       const navigator = this.querySelector<HTMLElement>('[data-timeline-navigator]');
       if (navigator) navigator.hidden = scope !== this.data.defaultTrackId;
+      if (scope !== this.data.defaultTrackId) this.closeMobileActMenu(false);
       this.refreshInlineText();
       this.scheduleTimelineNavigatorUpdate();
     }
@@ -820,23 +841,48 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       const startMs = Number(current.dataset.actStartMs || 0);
       const endMs = Number(current.dataset.actEndMs || 0);
       const title = current.querySelector<HTMLElement>('.act-header h2')?.textContent?.trim() || 'Timeline';
-      const label = navigator.querySelector<HTMLElement>('[data-timeline-navigator-current-label]');
-      const currentTitle = navigator.querySelector<HTMLElement>('[data-timeline-navigator-current-title]');
-      const currentTime = navigator.querySelector<HTMLElement>('[data-timeline-navigator-current-time]');
-      if (label) label.textContent = `ACT ${String(order).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
-      if (currentTitle) currentTitle.textContent = title;
-      if (currentTime) currentTime.textContent = `${this.formatArchiveTime(startMs)}–${this.formatArchiveTime(endMs)}`;
+      navigator.querySelectorAll<HTMLElement>('[data-timeline-navigator-current-label]').forEach((label) => {
+        label.textContent = `ACT ${String(order).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
+      });
+      navigator.querySelectorAll<HTMLElement>('[data-timeline-navigator-current-title]').forEach((currentTitle) => {
+        currentTitle.textContent = title;
+      });
+      navigator.querySelectorAll<HTMLElement>('[data-timeline-navigator-current-time]').forEach((currentTime) => {
+        currentTime.textContent = `${this.formatArchiveTime(startMs)}–${this.formatArchiveTime(endMs)}`;
+      });
       this.refreshInlineText();
       navigator.dataset.currentAct = current.dataset.act || '';
       navigator.querySelectorAll<HTMLElement>('[data-timeline-navigator-segment]').forEach((button) => {
         button.setAttribute('aria-current', button.dataset.timelineNavigatorSegment === current.dataset.act ? 'step' : 'false');
       });
+      navigator.querySelectorAll<HTMLElement>('[data-mobile-act-option]').forEach((button) => {
+        button.setAttribute('aria-current', button.dataset.mobileActOption === current.dataset.act ? 'step' : 'false');
+      });
+    }
+
+    toggleMobileActMenu() {
+      const menu = this.querySelector<HTMLElement>('[data-mobile-act-menu]');
+      const trigger = this.querySelector<HTMLElement>('[data-mobile-act-toggle]');
+      if (!menu || !trigger) return;
+      const opening = menu.hidden;
+      menu.hidden = !opening;
+      trigger.setAttribute('aria-expanded', String(opening));
+      if (opening) window.requestAnimationFrame(() => menu.querySelector<HTMLElement>('[aria-current="step"]')?.focus({ preventScroll: true }));
+    }
+
+    closeMobileActMenu(focus: boolean) {
+      const menu = this.querySelector<HTMLElement>('[data-mobile-act-menu]');
+      const trigger = this.querySelector<HTMLElement>('[data-mobile-act-toggle]');
+      if (menu) menu.hidden = true;
+      trigger?.setAttribute('aria-expanded', 'false');
+      if (focus) trigger?.focus({ preventScroll: true });
     }
 
     navigateToAct(actId: string) {
       const section = this.querySelector<HTMLElement>(`[data-view-panel="timeline"] [data-act="${CSS.escape(actId)}"]`);
       const header = section?.querySelector<HTMLElement>('[data-act-header]');
       if (!section || !header) return;
+      this.closeMobileActMenu(false);
       this.closeSearch(false);
       this.showView('timeline', false);
       header.style.scrollMarginTop = `${Math.ceil(this.getTimelineScrollOffset())}px`;
@@ -1093,6 +1139,18 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.openThread(threadId, trigger, true);
     }
 
+    setActiveEventState(eventId: string | null) {
+      this.querySelectorAll<HTMLElement>('[data-event-card]').forEach((card) => {
+        card.classList.toggle('is-active', Boolean(eventId) && card.dataset.eventCard === eventId);
+      });
+      this.querySelectorAll<HTMLElement>('[data-event-detail]').forEach((button) => {
+        const active = Boolean(eventId) && button.dataset.eventDetail === eventId;
+        button.setAttribute('aria-expanded', String(active));
+        const mark = button.querySelector<HTMLElement>('small');
+        if (mark) mark.textContent = active ? '−' : '＋';
+      });
+    }
+
     selectEvent(eventId: string, push: boolean, seek: boolean, preservePresentation = false) {
       const event = this.data.events[eventId];
       if (!event) return;
@@ -1102,7 +1160,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.classList.add('has-active-event');
       this.updateTrack(event.trackId);
       this.applyTimelineScope(event.trackId);
-      this.querySelectorAll<HTMLElement>('[data-event-card]').forEach((card) => card.classList.toggle('is-active', card.dataset.eventCard === eventId));
+      this.setActiveEventState(eventId);
       const current = this.querySelector<HTMLElement>('[data-player-current-text]');
       if (current) current.textContent = `TARGET · ${this.formatArchiveTime(event.startMs)}\n${event.title}`;
       this.refreshPlayerText();
@@ -1133,7 +1191,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.updateTrack(trackId);
       this.applyTimelineScope(trackId);
       this.updateSourceEventIndex(trackId);
-      this.querySelectorAll<HTMLElement>('[data-event-card]').forEach((card) => card.classList.remove('is-active'));
+      this.setActiveEventState(null);
       const current = this.querySelector<HTMLElement>('[data-player-current-text]');
       if (current) current.textContent = track.playback.provider === 'external'
         ? 'NO TARGET SELECTED\n选择一个此来源事件以获得定位时间'
@@ -1525,7 +1583,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.mobileResumeMs = null;
       this.returnFocus = null;
       this.classList.remove('has-active-event');
-      this.querySelectorAll<HTMLElement>('[data-event-card]').forEach((card) => card.classList.remove('is-active'));
+      this.setActiveEventState(null);
       this.updatePlayerTime(null);
       this.updatePlayerContext(null);
       this.updateFallback(null);

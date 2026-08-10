@@ -29,19 +29,31 @@ const formatTime = (totalSeconds: number) => {
   <div class="event-body">
     <div class="event-heading">
       <h3>{event.data.title}</h3>
+      <button
+        type="button"
+        class="event-detail-toggle"
+        data-event-detail={localId}
+        aria-expanded="false"
+        aria-controls={`event-detail-${localId}`}
+      >
+        <span>{event.data.title}</span>
+        <small aria-hidden="true">＋</small>
+      </button>
     </div>
-    <p>{event.data.summary}</p>
-    {event.data.readerNote && <p class="event-reader-note">{event.data.readerNote}</p>}
-    <ConcurrentLanes lanes={event.data.laneAnnotations} />
-    <div class="event-meta">
-      <div class="event-people" aria-label="相关人物">
-        {people.map((person) => (
-          <button type="button" data-open-person={person.id.split('/').at(-1)}>{personLabel(person)}</button>
+    <div class="event-detail" id={`event-detail-${localId}`}>
+      <p class="event-summary">{event.data.summary}</p>
+      {event.data.readerNote && <p class="event-reader-note">{event.data.readerNote}</p>}
+      <ConcurrentLanes lanes={event.data.laneAnnotations} />
+      <div class="event-meta">
+        <div class="event-people" aria-label="相关人物">
+          {people.map((person) => (
+            <button type="button" data-open-person={person.id.split('/').at(-1)}>{personLabel(person)}</button>
+          ))}
+        </div>
+        {threadIds.map((threadId) => (
+          <button type="button" class="event-thread" data-open-thread={threadId}>查看完整事件线 <span aria-hidden="true">↗</span></button>
         ))}
       </div>
-      {threadIds.map((threadId) => (
-        <button type="button" class="event-thread" data-open-thread={threadId}>查看完整事件线 <span aria-hidden="true">↗</span></button>
-      ))}
     </div>
   </div>
 </article>
