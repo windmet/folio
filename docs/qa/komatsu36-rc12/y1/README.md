@@ -39,7 +39,13 @@ Browser 读取到：
 - 页面 `scrollWidth=1351/clientWidth=1351`；
 - console error/warn：0。
 
-本轮没有实际点击外部链接，避免把第三方 YouTube 页面导航当作必要的自动化副作用；点击前的 href、时间参数、安全属性和 handoff hook 已由真实 DOM 核对。`pauseVideo()` 的调用路径由源码与 TypeScript/build 静态证据覆盖。
+追加 consumer verifier 已对 fallback 与 Player context rail 两个已挂载入口分别分发 DOM `click`，并在阻止第三方默认导航的测试边界内确认每次都执行：`pendingSeekMs → null`、`playbackSyncTimer → null`、`pauseVideo() → 1 call`。第二入口另外模拟 provider teardown 时 `pauseVideo()` 抛错，handoff 仍安全完成且 console/pageerror 为空。
+
+自动门禁不把打开第三方 YouTube 页面作为必要副作用；fallback 在正常 iframe 可用时按产品合同隐藏，因此自动化验证其挂载与 handler consumer，人工停点只需物理点击当前可见的 Player context rail 外链并判断新标签体验。可重复验证器：
+
+```text
+npm run verify:rc12:y1 -- <optional-screenshot-dir>
+```
 
 ## Validation
 
