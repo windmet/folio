@@ -80,7 +80,7 @@ try {
   await page.goto(`${projectUrl}?view=overview`, { waitUntil: 'networkidle' });
   const input = page.locator('[data-archive-search]');
   await input.fill('堀金');
-  await page.waitForFunction(() => document.querySelector('[data-search-status]')?.textContent?.includes('159'));
+  await page.locator('[data-search-item]').first().waitFor({ state: 'visible' });
   const horikaneSearch = await page.locator('[data-search-list]').evaluate((list) => [...list.querySelectorAll('[data-search-item]')].map((button) => ({
     id: button.dataset.searchEvent || button.dataset.searchThread || button.dataset.searchPerson,
     kind: button.dataset.searchKind,

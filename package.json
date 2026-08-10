@@ -14,6 +14,7 @@
     "validate:reader-copy": "node scripts/validate-reader-copy.mjs",
     "validate:publication": "node scripts/validate-publication.mjs",
     "audit:payload": "node scripts/audit-payload.mjs",
+    "verify:komatsu36:semantic": "node scripts/verify-komatsu36-semantic-closeout.mjs",
     "editorial:reader-copy": "node scripts/generate-reader-copy-queue.mjs",
     "validate": "npm run validate:projects && npm run validate:reader-copy && npm run build && npm run validate:publication",
     "preview": "astro preview",

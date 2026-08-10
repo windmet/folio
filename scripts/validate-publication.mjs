@@ -106,7 +106,7 @@ const expectedCallNames = new Map([
   ['inoue-yuki', []],
   ['yano-shogo', []],
   ['horikane-sohei', ['蒼平']],
-  ['mitsutomi-takao', []],
+  ['mitsutomi-takao', ['タカオ']],
   ['kumagai-toshiki', ['トシピ']],
   ['sato-yugo', ['祐吾']],
   ['ito-tomohiro', []],
@@ -335,8 +335,9 @@ for (const removedHonorific of ['狩野さん', '井上君', '矢野さん', '�
     errors.push(`semantic P1 published output contains removed honorific alias: ${removedHonorific}`);
   }
 }
-if (!html.includes('トシピ') || !searchJsonText.includes('トシピ') || html.includes('タカオ')) {
-  errors.push('semantic P1 must publish トシピ, keep it searchable, and leave タカオ pending');
+if (!html.includes('トシピ') || !searchJsonText.includes('トシピ')
+  || !html.includes('タカオ') || !searchJsonText.includes('タカオ')) {
+  errors.push('semantic P1 must publish and index the verified call names トシピ and タカオ');
 }
 const accountChipCount = (html.match(/>室元気账号<\/button>/g) || []).length;
 if (accountChipCount !== expectedAccountContextEvents.size

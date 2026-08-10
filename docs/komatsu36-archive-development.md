@@ -8,11 +8,11 @@
 > 当前站点：Astro 7 静态站点，TinaCMS 只管理普通 MDX 文章。
 
 > **CURRENT CHECKPOINT**
-> RC 0.10 已完成本地验收，RC 0.11 已完成 R9 与 review-branch handoff；其 acceptance 文档保持历史合同。RC12-A2/C2/D2/B2/F2、E1–E5、T1.1 与 M1 Mobile Player Bubble 已完成工程／Browser 验证；M1 真实设备为 `NOT EXECUTED`。2026-08-10 Semantic P0 与 P1 Person／Story／Thread／UI／Event Reader Language 已分批完成，当前进入逐项总审计。旧分析 MD 与 RAW 保持不变。Release Gate 继续 CLOSED。
+> RC 0.10 已完成本地验收，RC 0.11 已完成 R9 与 review-branch handoff；其 acceptance 文档保持历史合同。RC12-A2/C2/D2/B2/F2、E1–E5、T1.1 与 M1 Mobile Player Bubble 已完成工程／Browser 验证；M1 真实设备为 `NOT EXECUTED`。2026-08-10 Semantic P0/P1 已完成逐项总审计，P2 兼容 ID 迁移延后；旧分析 MD 与 RAW 保持不变。下一批回到 T1/Y1 产品接受停点，Release Gate 继续 CLOSED。
 
 ## 当前实施状态（2026-08-10）
 
-> **当前状态覆盖**：Semantic P0、P1 Person 第 5–8 项、Story 第 9–11 项、Thread、UI 与 Event Reader Language 已完成 SOURCE/BUILD/BROWSER 验证；Reader Copy 当前为 56/56 decisions，并强制 source↔ledger 一致。RC12-M1 已完成工程／Browser 验证但真实设备未执行。T1/Y1 产品接受、真实媒体与 Release Gate 继续独立关闭。Y2 managed external session 尚未授权。
+> **当前状态覆盖**：Semantic patch 第 1–16、18–19 节已完成 SOURCE/BUILD/BROWSER 验证，统一证据见 `docs/editorial/komatsu36-semantic-p1-closeout-audit.md`；第 17 节 stale ID 属 P2，未授权迁移。Reader Copy 当前为 56/56 decisions，并强制 source↔ledger 一致。RC12-M1 已完成工程／Browser 验证但真实设备未执行。T1/Y1 产品接受、真实媒体与 Release Gate 继续独立关闭。Y2 managed external session 尚未授权。
 
 - Phase 0A 已落地：`data/source-sets/komatsu36-20260808-r1.json` 精确锁定 6 个 `复核md/` 带后缀输入，并由 `validate:sources` 校验路径、SHA-256、物理行数与 16 条 ARC；
 - Phase 1 垂直切片已落地：真实 `/projects/komatsu36/` 路由、集中状态控制器、YouTube 延迟加载与 pending seek、动态时间 fallback、Timeline、Thread、Person 和 URL 恢复均已实现；
@@ -431,7 +431,7 @@ Person 只保存稳定身份、读者可见的本场常用称呼与隐藏搜索�
 }
 ```
 
-`callNames` 可以在 Person panel 显示；`searchAliases` 只能进入搜索索引。正式姓名与 reading 自动索引，`さん／くん／君／ちゃん` 由共享查询正规化处理，不作为人工 alias 保存。两数组必须在每个 Person JSON 中显式存在；当前 `タカオ`、`じゅんちゃん` 仍待核，不得猜测加入。
+`callNames` 可以在 Person panel 显示；`searchAliases` 只能进入搜索索引。正式姓名与 reading 自动索引，`さん／くん／君／ちゃん` 由共享查询正规化处理，不作为人工 alias 保存。两数组必须在每个 Person JSON 中显式存在。2026-08-10 证据覆盖后，`タカオ` 已封板为光富崇雄的名字 call name；`じゅんちゃん` 仍待核，不得猜测加入。
 
 Event 若只确认账号上下文而不能确认人物本人，可在保留 canonical `people` 引用的同时声明 `personRelations: [{ person, kind: "account-context" }]`。该关系只把当前 Event chip 投影为“{人物名}账号”，不会全局重命名 Person；点击仍进入 canonical Person panel。关系 target 必须同时存在于 Event `people` 且 Person 必须具有 `space-account` participation。室账号的三个节点使用该关系，北海道现实活动节点不使用。
 
@@ -799,7 +799,7 @@ Tina 集成作为后续独立任务，只管理 Project 摘要、精选顺序等
 - 一个 `qualified` Event；Phase 4 后再增加 claim 抽样；
 - 一个多人重叠 / lane annotation；
 - 一个没有可播放媒体、只有 Transcript 的节点；
-- 人物常用称呼 `トシピ → 熊谷俊輝` 已验证；`タカオ → 光富崇雄` 仍是待核项，不进入公开数据。
+- 人物常用称呼 `トシピ → 熊谷俊輝`、`タカオ → 光富崇雄` 均已验证并进入 `callNames`；`光富さん` 仍是应删除的敬称变体。
 
 ## 12. 风险与未决策项
 

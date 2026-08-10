@@ -54,12 +54,19 @@ try {
   const kano = await readPerson(desktop, 'kano-sho');
   assert(!kano.hidden && kano.callNameLabel === null, `敬称-only 狩野 unexpectedly renders a call-name row: ${JSON.stringify(kano)}`);
 
+  await desktop.goto(`${projectUrl}?view=people&person=mitsutomi-takao`, { waitUntil: 'networkidle' });
+  const mitsutomi = await readPerson(desktop, 'mitsutomi-takao');
+  assert(!mitsutomi.hidden && mitsutomi.name === '光富崇雄', '光富 deep link did not restore');
+  assert(mitsutomi.callNameLabel === '本场常用称呼' && mitsutomi.callNames === 'タカオ', `unexpected 光富 call names: ${JSON.stringify(mitsutomi)}`);
+  assert(!mitsutomi.text.includes('光富さん'), '光富 panel restored the removed honorific alias');
+
   const searchCases = new Map([
     ['熊谷君', 'kumagai-toshiki'],
     ['狩野さん', 'kano-sho'],
     ['伊藤さん', 'ito-tomohiro'],
     ['井上君', 'inoue-yuki'],
     ['トシピ', 'kumagai-toshiki'],
+    ['タカオ', 'mitsutomi-takao'],
     ['濱ちゃん', 'hama-kento'],
   ]);
   const searchEvidence = {};
@@ -81,20 +88,21 @@ try {
   const mobileLogs = [];
   const mobile = await browser.newPage({ viewport: { width: 390, height: 844 } });
   attachLogChecks(mobile, mobileLogs);
-  await mobile.goto(`${projectUrl}?view=people&person=kumagai-toshiki`, { waitUntil: 'networkidle' });
-  const mobileKumagai = await readPerson(mobile, 'kumagai-toshiki');
+  await mobile.goto(`${projectUrl}?view=people&person=mitsutomi-takao`, { waitUntil: 'networkidle' });
+  const mobileMitsutomi = await readPerson(mobile, 'mitsutomi-takao');
   const mobileOverflow = await mobile.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
-  assert(!mobileKumagai.hidden && mobileKumagai.callNames === 'トシピ', 'mobile did not restore the corrected 熊谷 panel');
+  assert(!mobileMitsutomi.hidden && mobileMitsutomi.callNames === 'タカオ', 'mobile did not restore the verified 光富 call name');
   assert(mobileOverflow === 0, `mobile overflow: ${mobileOverflow}`);
   assert(mobileLogs.length === 0, `mobile console errors: ${mobileLogs.join(' | ')}`);
-  if (outputDir) await mobile.screenshot({ path: path.join(outputDir, '390x844-person-toshipi.png'), fullPage: false });
+  if (outputDir) await mobile.screenshot({ path: path.join(outputDir, '390x844-person-takao.png'), fullPage: false });
 
   console.log(JSON.stringify({
     kumagai,
     kano,
+    mitsutomi,
     search: searchEvidence,
     desktop: { overflow: desktopOverflow, console: desktopLogs },
-    mobile: { person: mobileKumagai, overflow: mobileOverflow, console: mobileLogs },
+    mobile: { person: mobileMitsutomi, overflow: mobileOverflow, console: mobileLogs },
     outputDir,
   }, null, 2));
 } finally {

@@ -29,13 +29,16 @@ P0 的 Amazon／濱与汐谷读音合同继续有效；旧分析 MD、RAW、sour
 | 寺島惇太 | `惇太` |
 | 汐谷文康 | `ふーみん` |
 | 堀金蒼平 | `蒼平` |
+| 光富崇雄 | `タカオ` |
 | 熊谷俊輝 | `トシピ` |
 | 佐藤祐吾 | `祐吾` |
-| 中村宗悟 | `宗悟` |
+| 仲村宗悟 | `宗悟` |
 | 内田修一 | `修` |
-| 其余 9 人 | `[]` |
+| 其余 8 人 | `[]` |
 
-已删除的 10 条敬称型数据为：`狩野さん`、`井上君`、`矢野さん`、`光富さん`、`熊谷君`、`伊藤さん`、`観世君`、`むろさん`、`清典さん`、`山本さん`。`タカオ` 和 `じゅんちゃん` 仍是待核项，不进入公开数据。
+已删除的 10 条敬称型数据为：`狩野さん`、`井上君`、`矢野さん`、`光富さん`、`熊谷君`、`伊藤さん`、`観世君`、`むろさん`、`清典さん`、`山本さん`。
+
+2026-08-10 证据覆盖：`タカオ` 的待核状态已经关闭，并作为光富崇雄的 `callNames` 发布。它是直接用名字“崇雄（たかお）”称呼本人的 call name，不与 `ふーみん` 一类固定昵称混为一谈。闭环依据为 4/14 既有音形线索、4/25 独立高精度听写连续识别、同刻 Chat 的“光富さん”响应，以及本人姓名读音／公开账号。RAW 保持原样；`光富さん` 仍只是姓＋敬称，不进入人物数据。`じゅんちゃん` 继续待核。
 
 ## 3. 展示与搜索行为
 
@@ -44,6 +47,7 @@ P0 的 Amazon／濱与汐谷读音合同继续有效；旧分析 MD、RAW、sour
 - 查询与索引使用同一个 `normalizeProjectSearchText()`：NFKC、日语小写、去除查询词末尾敬称、合并空格；
 - 因此 `熊谷君`、`狩野さん`、`伊藤さん`、`井上君` 仍能搜索到正式 Person，但这些字符串不再作为人物别名发布；
 - `濱ちゃん` 仍显示为真实常用称呼，同时查询归一化后可命中濱健人；
+- `タカオ` 显示为光富崇雄的本场常用称呼，并可直接检索到其 Person；
 - 本批不改 Person slug；例如汐谷内部 ID 仍是 `shioya-fumiyasu`。
 
 ## 4. 防回归门禁
@@ -59,9 +63,8 @@ P0 的 Amazon／濱与汐谷读音合同继续有效；旧分析 MD、RAW、sour
 
 - 页面存在“本场常用称呼”、不存在“本场别名”；
 - 10 条已删除敬称不重新进入发布 HTML / Search JSON；
-- `トシピ` 同时进入展示与检索；
-- `タカオ` 保持不发布；
-- P0 事实与 159 项公开索引合同无回归。
+- `トシピ` 与 `タカオ` 同时进入展示与检索；
+- P0 事实与当前 160 项公开索引合同无回归。
 
 ## 5. 验证证据
 
@@ -69,7 +72,7 @@ P0 的 Amazon／濱与汐谷读音合同继续有效；旧分析 MD、RAW、sour
 
 ```text
 npm run validate:projects          PASS — 1 project
-npm run validate:reader-copy       PASS — 54 candidates / 54 decisions
+npm run validate:reader-copy       PASS — 56 candidates / 56 decisions
 npm run validate                   PASS — Astro build + publication
 npm exec -- tsc --noEmit           PASS
 npm run validate:sources -- --root <authoritative-root>
@@ -88,7 +91,7 @@ http://127.0.0.1:4322/projects/komatsu36/?view=people&person=kumagai-toshiki
 
 - 1440×900 与 390×844：熊谷 panel 正确，document overflow 均为 `0`，console error/warn 均为空；
 - 狩野 panel 不显示空的称呼行；
-- `熊谷君 / 狩野さん / 伊藤さん / 井上君 / トシピ / 濱ちゃん` 均能命中目标 Person；
+- `熊谷君 / 狩野さん / 伊藤さん / 井上君 / トシピ / タカオ / 濱ちゃん` 均能命中目标 Person；
 - 截图保存在仓库外的 Codex visualization 目录，不进入 Git。
 
 可重复验证器：
