@@ -28,6 +28,13 @@ for (const id of eventIds) {
   const data = JSON.parse(await readFile(path.join(projectRoot, 'events', `${id}.json`), 'utf8'));
   eventById.set(id, data);
 }
+const threadById = new Map();
+for (const id of threadIds) {
+  const source = await readFile(path.join(projectRoot, 'threads', `${id}.md`), 'utf8');
+  const frontmatter = source.match(/^---\r?\n([\s\S]*?)\r?\n---/)?.[1] || '';
+  const body = source.match(/^---\r?\n[\s\S]*?\r?\n---\r?\n([\s\S]*)$/)?.[1]?.trim() || '';
+  threadById.set(id, { data: YAML.parse(frontmatter), body });
+}
 const validCopyActions = new Set(['keep', 'rewrite', 'listen']);
 const validReaderNoteActions = new Set(['none', 'add']);
 const candidateSet = new Set(candidateIds);
@@ -63,6 +70,12 @@ for (const id of candidateIds) {
     if (decision.copyAction === 'rewrite' && !decision.newTitle?.trim() && !decision.newSummary?.trim()) {
       errors.push(`${id}: rewrite requires newTitle or newSummary`);
     }
+    if (decision.copyAction === 'rewrite' && decision.newTitle?.trim() && eventById.get(id)?.title !== decision.newTitle.trim()) {
+      errors.push(`${id}: source title does not match approved newTitle`);
+    }
+    if (decision.copyAction === 'rewrite' && decision.newSummary?.trim() && eventById.get(id)?.summary !== decision.newSummary.trim()) {
+      errors.push(`${id}: source summary does not match approved newSummary`);
+    }
   }
   if (isThread) {
     if (decision.readerNoteAction !== undefined) {
@@ -70,6 +83,12 @@ for (const id of candidateIds) {
     }
     if (decision.copyAction === 'rewrite' && !decision.newDeck?.trim() && !decision.newBody?.trim()) {
       errors.push(`${id}: rewrite requires newDeck or newBody`);
+    }
+    if (decision.copyAction === 'rewrite' && decision.newDeck?.trim() && threadById.get(id)?.data.deck !== decision.newDeck.trim()) {
+      errors.push(`${id}: source deck does not match approved newDeck`);
+    }
+    if (decision.copyAction === 'rewrite' && decision.newBody?.trim() && threadById.get(id)?.body !== decision.newBody.trim()) {
+      errors.push(`${id}: source body does not match approved newBody`);
     }
   }
 }

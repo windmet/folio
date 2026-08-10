@@ -1,6 +1,6 @@
 # 小松昌平 36 岁生日会 Project Archive 开发设计
 
-> 状态：SEMANTIC P1 STORY 9–11 + PERSON 5–8 + RC12-T1.1/Y1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING（2026-08-10；RC 0.11 REVIEW BRANCH ACCEPTANCE COMPLETE）
+> 状态：SEMANTIC P1 THREAD LANGUAGE + STORY 9–11 + PERSON 5–8 + RC12-T1.1/Y1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING（2026-08-10；RC 0.11 REVIEW BRANCH ACCEPTANCE COMPLETE）
 > 目标：把一场多平台、多人物、长时、存在跨轨回收的活动做成可浏览、可追溯、可逐步发布的专题档案，而不是把工作稿直接塞进普通博客正文。
 > 当前源档根：`E:\AI_Subtitle_Studio\02_Projects\小松昌平生日会`（只通过 CLI 参数或 `KOMATSU36_SOURCE_ROOT` 提供）
 > 当前权威文档集：源档根下的 `复核md/` 带版本后缀文件；根目录同名无后缀文件是旧工作稿，不得自动选用。
@@ -12,7 +12,7 @@
 
 ## 当前实施状态（2026-08-10）
 
-> **当前状态覆盖**：Semantic P0、P1 Person 第 5–8 项与 Story 第 9–11 项已完成 SOURCE/BUILD/BROWSER 验证；Reader Copy 当前为 55/55 decisions。RC12-A2、C2、D2、B2、F2、E1–E5 与 T1.1 已通过工程／Browser 证据；T1/Y1 产品接受、P1 reader-language pass、真实媒体与 Release Gate 继续独立关闭。Y2 managed external session 尚未授权。
+> **当前状态覆盖**：Semantic P0、P1 Person 第 5–8 项、Story 第 9–11 项与 Thread Reader Language 已完成 SOURCE/BUILD/BROWSER 验证；Reader Copy 当前为 55/55 decisions，并强制 source↔ledger 一致。RC12-A2、C2、D2、B2、F2、E1–E5 与 T1.1 已通过工程／Browser 证据；T1/Y1 产品接受、P1 UI／Event reader-language、真实媒体与 Release Gate 继续独立关闭。Y2 managed external session 尚未授权。
 
 - Phase 0A 已落地：`data/source-sets/komatsu36-20260808-r1.json` 精确锁定 6 个 `复核md/` 带后缀输入，并由 `validate:sources` 校验路径、SHA-256、物理行数与 16 条 ARC；
 - Phase 1 垂直切片已落地：真实 `/projects/komatsu36/` 路由、集中状态控制器、YouTube 延迟加载与 pending seek、动态时间 fallback、Timeline、Thread、Person 和 URL 恢复均已实现；
@@ -906,8 +906,8 @@ Media Pass、RC 0.9 Structural Editorial Audit、RC 0.10 Reader & Entity Editori
 | Source-scoped Timeline | **RC12-E E1–E5 已完成源码与本地真实 Browser QA**；Semantic P1 Story 后当前为 YT 8 Act／105 Event、SP1 8、SP2 13，继续各用 native local clock 与 source-local Event projection。E5 的 104 Event 数字保留为当时历史快照；新增节点见 Semantic 各 handoff |
 | Timeline Navigator polish | **RC12-T1.1 INLINE CORRECTION ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING**：shell-wide geometry 已否决；Expanded 使用左内容列，Docked 自然增宽；保留 duration ratio、窄 segment Axx-only 与完整 hover/focus 标签。红／蓝框仅为 QA 标注。证据见 `docs/qa/komatsu36-rc12/t1/README.md` |
 | YouTube external handoff | **RC12-Y1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING**：点击 YouTube 当前时间外链前清除 pending seek、暂停站内 Player；Y2 仍未实施。证据见 `docs/qa/komatsu36-rc12/y1/README.md` |
-| Initial HTML payload | **Semantic P1 Story 已复测**：raw `297,999`、Gzip `51,916`、Brotli `32,854`，350 KiB hard gate 余量 `60,401`；初始 Source / Search buttons 仍为 0，160 Search 项、126 controller Event records 和三 track projection 通过；未以减重名义删除 Rail 或 reader-facing 数据 |
-| Reader-facing copy | **RC 0.10 历史基线 52/52；Semantic P1 Story 当前 55/55**：P0 事实、P1 Person／Account 与 Story 第 9–11 项已完成；11 条 Thread、8 个 UI 组件与 Event 流程词的 reader-language pass 仍待执行 |
+| Initial HTML payload | **Semantic P1 Thread Language 已复测**：raw `299,328`、Gzip `52,608`、Brotli `33,307`，350 KiB hard gate 余量 `59,072`；初始 Source / Search buttons 仍为 0，160 Search 项、126 controller Event records 和三 track projection 通过；未以减重名义删除 reader-facing 数据 |
+| Reader-facing copy | **RC 0.10 历史基线 52/52；Semantic P1 当前 55/55**：P0 事实、P1 Person／Account、Story 第 9–11 项与 12 条 Thread prose 已完成；source↔ledger 现为强门禁。8 个 UI 组件与 Event 流程词仍待执行 |
 | External context 首样本 | **RC 0.10 已完成**：仲村烧肉 Post 已作为 related source 插入 Thread，不成为 Event 或静态 Post 镜像 |
 
 上述工程、媒体与 RC 0.10 编辑 Blocker 已完成，UX11-C 与 R1 视觉层级修正已在 review branch 完成；UX11-P0 / P1 / P2 Static Payload Pass、UX11-D Desktop Timeline Navigator、UX11-E 移动合同决策与 UX11-H Final QA 也已完成。R5 只新增左内容列的 proportional Act Map，R6 明确不新增移动代码，R8 不启动 playhead 或 Quick / Detail，不改变资料、Rail、媒体能力或 URL schema。RC 0.11 已关闭；RC 0.12 以完整 Rail 保留、view-sensitive Player、组件级 overflow 与 People 对齐为新边界。production preview、merge 与 deploy 仍未执行。

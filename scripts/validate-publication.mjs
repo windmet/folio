@@ -181,6 +181,43 @@ if (!bookSymbolismEvent?.summary.includes('仍希望演员保持与台本的关�
   || scriptLanguageEvent.summary.includes('不是防忘词工具')) {
   errors.push('semantic P1 script-language Events must separate observed speech from the editorial interpretation');
 }
+const expectedThreadStoryMarkers = new Map([
+  ['birthday-payback', '最早立规则的人，最后正好被自己的规则绊住'],
+  ['broken-sword', '自然得让不少观众以为本来就是演出'],
+  ['ending-wont-end', '节目反而进入最长的尾声'],
+  ['kano-ojisan', '这条不断累积的おじさん线才终于落到歌单上'],
+  ['muro-account', '连说话的人究竟是谁都不能完全确定'],
+  ['ore-shiri-making-of', '最后拼出了《俺知》动作与朗读形式是怎样一起被做出来的'],
+  ['russian-takoyaki', '这颗章鱼烧终于走完了整条回收线'],
+  ['shugo-yakiniku', '把一条信息极少的留言硬凑成完整祝福'],
+  ['space-technical-hell', '最后被 2026 年的手机方向和 Space UI 打败'],
+  ['terashima-big-dream', 'Big Dream 从八千万妄想一路回到零'],
+  ['uchida-line-call', '主直播、Space 和电话三条线在这一刻真的汇到一起'],
+  ['yano-sunglasses', '又顺势问能不能把它拿回来'],
+]);
+for (const [threadId, marker] of expectedThreadStoryMarkers) {
+  if (!semanticThreadById.get(threadId)?.body.includes(marker)) {
+    errors.push(`semantic P1 Thread reader-language marker is missing for ${threadId}`);
+  }
+}
+const allThreadBodies = threadEntries.map((thread) => thread.body).join('\n');
+for (const forbiddenThreadCopy of [
+  '人名说法仍保留谨慎表述',
+  '这里记录的是直播回顾的位置',
+  '中间过程没有足够连续记录',
+  '节点顺序是编辑因果顺序',
+  '这条 Thread 的顺序是编辑顺序',
+  '适合作为物品流转型 Thread',
+  '不必再替这句话添加复杂背景',
+  '事件线保留这个区别',
+  '现场原声也真的出现',
+  '这里不把它写成确定因果',
+  '这条线把演员研究',
+]) {
+  if (allThreadBodies.includes(forbiddenThreadCopy)) {
+    errors.push(`semantic P1 Thread prose contains editorial-desk copy: ${forbiddenThreadCopy}`);
+  }
+}
 if (project.status === 'published') {
   const expectedProjectHref = `/projects/${project.slug}/`;
   if (!homeHtml.includes(`href="${expectedProjectHref}"`)) {

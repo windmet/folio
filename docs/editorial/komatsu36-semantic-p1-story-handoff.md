@@ -84,6 +84,6 @@ Browser / Playwright 已验证：
 node scripts/verify-komatsu36-semantic-p1-story-browser.mjs <optional-screenshot-dir>
 ```
 
-## 5. 下一批
+## 5. 后续状态
 
-下一批进入 Semantic P1 Reader Language Pass：先按 semantic patch 清单逐条处理 11 条明确偏编辑台语言的 Thread，再处理 8 个 UI 组件和 Event 流程词。必须继续分成小提交并为每批更新 reader-copy decision；不得一次性机械替换 taxonomy，也不得迁移 P2 内部 ID。
+Thread Reader Language 随后已由 `komatsu36-semantic-p1-thread-language-handoff.md` 独立完成：P0 已修的 Bingo 加上本批 12 条 Thread 均已故事化，reader-copy source↔ledger 一致性也升级为门禁。下一批处理 8 个 UI 组件，再单独处理 Event 流程词；不得迁移 P2 内部 ID。
