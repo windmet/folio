@@ -93,6 +93,7 @@ SP1／SP2 仍只能打开各自 canonical X Space URL；不能因为存在 exter
 
 在获得实现授权前，只做独立实验页或手工浏览器验证：
 
+- 独立实验页：`scripts/experiments/rc12-y2-windowproxy.html`；静态门禁：`node scripts/verify-rc12-y2-experiment.mjs`；
 - Chromium 与 Edge，popup 允许与阻止各一轮；
 - `window.open()` 返回值、`closed`、`focus()`、`location.replace()` 的跨源实际结果；
 - YouTube 的 COOP／跨源导航是否切断 WindowProxy；
@@ -114,7 +115,14 @@ SP1／SP2 仍只能打开各自 canonical X Space URL；不能因为存在 exter
 
 不得在同一批修改 T1 Navigator、E Source-scoped Timeline、content schema、URL schema 或普通文章 YouTubeEmbed。
 
-## 9. 接受、回滚与证据
+## 9. 已执行的隔离 smoke（不等于 Y2 接受）
+
+- `node scripts/verify-rc12-y2-experiment.mjs`：通过；实验页包含 WindowProxy、`closed`、`focus()`、`location.replace()` 和 Y1 fallback 合同，且没有生产组件标记；
+- 临时 `python -m http.server` smoke：`GET /rc12-y2-windowproxy.html` 返回 HTTP `200`，标题为 `RC12-Y2 WindowProxy Lab`；
+- production `dist/` leak check：未发现 `RC12-Y2`、`WindowProxy Lab` 或实验页路径；
+- `NOT EXECUTED`：popup 允许／阻止、Chromium／Edge COOP、真实跨源导航、WindowProxy 关闭检测与生产 Project route；这些仍需用户明确授权后独立执行。
+
+## 10. 接受、回滚与证据
 
 Y2 只有同时满足以下条件才可进入产品复核：
 
@@ -126,7 +134,7 @@ Y2 只有同时满足以下条件才可进入产品复核：
 
 任何一项失败都回滚 managed path，保留 Y1 普通外链作为唯一行为。Release Gate、merge、deploy 与真实长时媒体播放仍需另外授权。
 
-## 10. 后续 agent 启动检查
+## 11. 后续 agent 启动检查
 
 1. 先读本文、RC12 总 runbook、T1/Y1 QA ledger 和当前 branch/HEAD/worktree；
 2. 没有用户明确授权时，不新增 Y2 runtime code；

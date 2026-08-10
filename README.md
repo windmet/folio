@@ -17,6 +17,7 @@
 - RC12-T1 实施与产品复核指导：`docs/editorial/komatsu36-rc12-t1-timeline-navigator-polish-runbook.md`
 - RC12-Y1 外链 handoff QA：`docs/qa/komatsu36-rc12/y1/README.md`
 - RC12-Y2 managed external session 实验指导（未授权实现）：`docs/editorial/komatsu36-rc12-y2-managed-external-session-experiment.md`
+- RC12-Y2 隔离 WindowProxy 实验页（不进入生产路由）：`scripts/experiments/rc12-y2-windowproxy.html`
 - RC 0.12 人工产品停点：`docs/qa/komatsu36-rc12/PRODUCT-CHECKPOINT.md`
 - Reader Copy 自动候选：`docs/editorial/komatsu36-reader-copy-candidates.generated.md`
 - Reader Copy 人工裁决：`docs/editorial/komatsu36-reader-copy-decisions.yml`

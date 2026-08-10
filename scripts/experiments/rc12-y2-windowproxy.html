@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>RC12-Y2 WindowProxy Lab</title>
+    <style>
+      :root { color-scheme: light; font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+      body { max-width: 760px; margin: 0 auto; padding: 32px 20px 64px; color: #29251f; background: #f5f1e8; line-height: 1.6; }
+      h1 { margin: 0 0 8px; font: 600 22px/1.25 Georgia, serif; }
+      .warning { padding: 12px 14px; border: 1px solid #a7957d; background: #fffaf0; }
+      label { display: grid; gap: 6px; margin: 20px 0 8px; }
+      input { width: 100%; box-sizing: border-box; padding: 9px 10px; border: 1px solid #a7957d; background: #fffdf8; font: inherit; }
+      .actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0; }
+      button, a { padding: 8px 11px; border: 1px solid #82715f; color: #29251f; background: #fffdf8; font: inherit; text-decoration: none; cursor: pointer; }
+      button:disabled { opacity: 0.45; cursor: not-allowed; }
+      .state { margin-top: 22px; padding: 14px; border-top: 1px solid #a7957d; border-bottom: 1px solid #a7957d; }
+      #log { min-height: 96px; margin: 12px 0 0; white-space: pre-wrap; font-size: 12px; }
+      .small { color: #675d50; font-size: 12px; }
+    </style>
+  </head>
+  <body>
+    <h1>RC12-Y2 Managed External Session 实验页</h1>
+    <p class="warning"><strong>DESIGN ONLY — NOT PRODUCTION</strong><br />
+      本页不属于 Astro 项目路由，不接入 ProjectArchiveShell。managed path 故意不使用 noopener，仅用于验证 WindowProxy 与 COOP/popup 边界；正式站点仍必须保留 Y1 普通外链 fallback。</p>
+
+    <label for="target">实验目标 URL（只在用户点击导航按钮后写入外部窗口）</label>
+    <input id="target" value="https://www.youtube.com/watch?v=jszQ4MQfRg8&amp;t=15772s" autocomplete="off" />
+
+    <div class="actions">
+      <button id="open" type="button">1. 打开 managed context</button>
+      <button id="detach" type="button" disabled>2. 测试 about:blank opener detach</button>
+      <button id="navigate" type="button" disabled>3. 导航到 timestamp URL</button>
+      <button id="refresh" type="button">刷新 WindowProxy 状态</button>
+      <a href="https://www.youtube.com/watch?v=jszQ4MQfRg8&amp;t=15772s" target="_blank" rel="noopener noreferrer">Y1 普通 fallback ↗</a>
+    </div>
+
+    <p class="small">只允许通过直接按钮手势打开窗口。页面不会扫描或接管用户已有标签页，也不会读取 YouTube DOM、URL 或播放状态。</p>
+    <section class="state" aria-live="polite">
+      <strong id="state">状态：embedded / 未创建 WindowProxy</strong>
+      <pre id="log"></pre>
+    </section>
+
+    <script>
+      (() => {
+        const target = document.querySelector('#target');
+        const openButton = document.querySelector('#open');
+        const detachButton = document.querySelector('#detach');
+        const navigateButton = document.querySelector('#navigate');
+        const refreshButton = document.querySelector('#refresh');
+        const state = document.querySelector('#state');
+        const logOutput = document.querySelector('#log');
+        const contextName = 'folio-komatsu36-youtube-lab';
+        let externalWindow = null;
+        let detached = false;
+
+        const write = (message) => {
+          const timestamp = new Date().toISOString().slice(11, 19);
+          logOutput.textContent = `${timestamp} ${message}\n${logOutput.textContent}`.trim();
+        };
+        const refresh = () => {
+          if (!externalWindow) {
+            state.textContent = '状态：embedded / 未创建 WindowProxy';
+            return;
+          }
+          let closed = false;
+          try { closed = externalWindow.closed; } catch (error) { write(`closed 读取异常：${error}`); }
+          state.textContent = closed
+            ? '状态：external-closed / WindowProxy 已关闭'
+            : `状态：${detached ? 'external-window-reference' : 'connecting'} / 仅持有跨源引用，未确认页面内部状态`;
+          detachButton.disabled = closed || detached;
+          navigateButton.disabled = closed;
+          write(`closed=${closed}; detached=${detached}; same-origin page state 未读取`);
+        };
+        const readTarget = () => {
+          try {
+            const url = new URL(target.value);
+            if (url.protocol !== 'https:' || url.hostname !== 'www.youtube.com') throw new Error('target must be https://www.youtube.com');
+            return url.toString();
+          } catch (error) {
+            write(`目标 URL 无效：${error.message}`);
+            return null;
+          }
+        };
+
+        openButton.addEventListener('click', () => {
+          // Deliberately no `noopener`: this is the isolated experiment that
+          // measures whether a managed WindowProxy survives navigation.
+          externalWindow = window.open('about:blank', contextName, 'popup,width=960,height=720');
+          detached = false;
+          if (!externalWindow) {
+            state.textContent = '状态：y1-fallback / popup 被阻止或返回 null';
+            write('window.open 返回 null；应降级到普通 noopener 外链');
+            detachButton.disabled = true;
+            navigateButton.disabled = true;
+            return;
+          }
+          write('WindowProxy 已返回；尚未导航，不能宣称 YouTube 已连接');
+          detachButton.disabled = false;
+          navigateButton.disabled = false;
+          refresh();
+        });
+
+        detachButton.addEventListener('click', () => {
+          if (!externalWindow || externalWindow.closed) return refresh();
+          try {
+            externalWindow.opener = null;
+            detached = true;
+            write('已尝试在 about:blank 阶段切断 opener；需要在 Chromium/Edge 实测结果');
+          } catch (error) {
+            write(`opener detach 异常：${error}`);
+          }
+          refresh();
+        });
+
+        navigateButton.addEventListener('click', () => {
+          const url = readTarget();
+          if (!url || !externalWindow || externalWindow.closed) return refresh();
+          try {
+            externalWindow.location.replace(url);
+            try { externalWindow.focus(); } catch (error) { write(`focus 异常：${error}`); }
+            write('已写入 location.replace(timestamp URL)；不读取跨源页面状态');
+            refresh();
+          } catch (error) {
+            write(`跨源 location.replace 异常：${error}`);
+            state.textContent = '状态：y1-fallback / managed path 失败';
+          }
+        });
+
+        refreshButton.addEventListener('click', refresh);
+        window.setInterval(refresh, 1000);
+      })();
+    </script>
+  </body>
+</html>
