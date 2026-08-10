@@ -194,6 +194,8 @@ Y1 源码与 Browser 证据见 `docs/qa/komatsu36-rc12/y1/README.md`。Browser �
 
 ### Y2 — Managed external session（实验候选）
 
+Y2 只保留为设计候选，完整实验门禁见 `docs/editorial/komatsu36-rc12-y2-managed-external-session-experiment.md`；该文件不授予实现授权。
+
 - 普通网页不能枚举或检测用户任意已有 YouTube 标签页；不得使用“检测到 YouTube”文案；
 - 只可在直接用户手势中由 Folio 创建/复用一个命名 browsing context，并持有它返回的 WindowProxy；
 - 可用能力只按跨源规则限定为 `closed`、`focus()` 及写入/replace location；不能读 YouTube DOM、当前 URL、播放状态或 360°视角，不能调用原生 YouTube 页面内部 `seekTo()`；
