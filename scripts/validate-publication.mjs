@@ -343,7 +343,7 @@ if (externalHandoffCount !== 2) {
 // while this source contract protects the runtime side of Y1 from being
 // reduced to a marker-only implementation during later refactors.
 const archiveShellSource = await readFile(path.resolve('src/components/project/ProjectArchiveShell.astro'), 'utf8');
-const handoffStart = archiveShellSource.indexOf('pauseEmbeddedForExternalHandoff()');
+const handoffStart = archiveShellSource.indexOf('\n    pauseEmbeddedForExternalHandoff()');
 const handoffEnd = handoffStart >= 0
   ? archiveShellSource.indexOf('\n    syncFromPlayer()', handoffStart)
   : -1;
