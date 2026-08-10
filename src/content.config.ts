@@ -112,6 +112,10 @@ const projectEvents = defineCollection({
     title: z.string(),
     summary: z.string(),
     people: z.array(reference('projectPeople')),
+    personRelations: z.array(z.object({
+      person: reference('projectPeople'),
+      kind: z.enum(['account-context']),
+    })).default([]),
     tags: z.array(z.string()),
     publicationStatus: z.enum(['verified', 'qualified', 'withheld']),
     qualification: z.string().optional(),

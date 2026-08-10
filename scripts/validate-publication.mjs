@@ -130,6 +130,27 @@ for (const [personId, expected] of expectedCallNames) {
 if (expectedCallNames.size !== peopleEntries.length) {
   errors.push(`semantic P1 callNames ledger covers ${expectedCallNames.size} people; expected ${peopleEntries.length}`);
 }
+const expectedAccountContextEvents = new Set([
+  'sp1-004324-space-restart',
+  'sp2-000131-muro-account',
+  'sp2-000311-account-hijack',
+]);
+for (const eventId of expectedAccountContextEvents) {
+  const event = semanticEventById.get(eventId);
+  const relations = event?.personRelations || [];
+  if (relations.length !== 1
+    || String(relations[0].person) !== 'komatsu36/muro-genki'
+    || relations[0].kind !== 'account-context') {
+    errors.push(`semantic P1 account-context relation mismatch for ${eventId}`);
+  }
+}
+const accountHijackEvent = semanticEventById.get('sp2-000311-account-hijack');
+if (accountHijackEvent?.readerNote !== '这段只能确认使用的是室元気的账号，实际说话者未确认。') {
+  errors.push('semantic P1 account speaker uncertainty requires the natural reader note');
+}
+if ((semanticEventById.get('sp2-000509-hokkaido')?.personRelations || []).length !== 0) {
+  errors.push('semantic P1 Hokkaido payoff must keep 室元気 as a person, not an account-context relation');
+}
 if (project.status === 'published') {
   const expectedProjectHref = `/projects/${project.slug}/`;
   if (!homeHtml.includes(`href="${expectedProjectHref}"`)) {
@@ -242,6 +263,11 @@ for (const removedHonorific of ['狩野さん', '井上君', '矢野さん', '�
 }
 if (!html.includes('トシピ') || !searchJsonText.includes('トシピ') || html.includes('タカオ')) {
   errors.push('semantic P1 must publish トシピ, keep it searchable, and leave タカオ pending');
+}
+const accountChipCount = (html.match(/>室元気账号<\/button>/g) || []).length;
+if (accountChipCount !== expectedAccountContextEvents.size
+  || !html.includes('这段只能确认使用的是室元気的账号，实际说话者未确认。')) {
+  errors.push(`semantic P1 account identity projection is incomplete: ${accountChipCount} account chips`);
 }
 
 const actualSourceEventButtons = (html.match(/data-source-event="/g) || []).length;

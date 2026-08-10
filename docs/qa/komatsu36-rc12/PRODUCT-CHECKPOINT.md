@@ -1,10 +1,10 @@
 # Komatsu36 RC 0.12 人工停点核对表
 
-> 当前状态：`SEMANTIC P1 PERSON 5–7 + RC12-T1.1/Y1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING`
+> 当前状态：`SEMANTIC P1 PERSON 5–8 + RC12-T1.1/Y1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING`
 > 预览地址：`http://127.0.0.1:4322/projects/komatsu36/`
 > 当前 T1/Y1 工程与产品复核入口：`docs/editorial/komatsu36-rc12-t1-timeline-navigator-polish-runbook.md`
 
-这份表保留 2026-08-09 第一版产品裁决，并追加当前状态；它不替代源码、构建或 Browser QA 证据。RC12-A2/C2/D2/B2/F2、E1–E5 与 T1.1 已完成工程／Browser QA。2026-08-10 Semantic P0 独立纠正 Amazon winner、濱因果线与汐谷读音；随后 P1 Person 第 5–7 项完成 `callNames / searchAliases` 拆分、敬称清洗、`トシピ` 与真实页面验证。P1 第 8 项、故事补全和 reader-language pass 尚未完成；T1/Y1 产品停点仍待用户确认。用户截图中的红框／蓝框仅为几何说明标注，不是产品配色方向。
+这份表保留 2026-08-09 第一版产品裁决，并追加当前状态；它不替代源码、构建或 Browser QA 证据。RC12-A2/C2/D2/B2/F2、E1–E5 与 T1.1 已完成工程／Browser QA。2026-08-10 Semantic P0 独立纠正 Amazon winner、濱因果线与汐谷读音；随后 P1 Person 第 5–8 项完成 `callNames / searchAliases` 拆分、敬称清洗、`トシピ` 与室账号关系投影，并通过真实页面验证。P1 故事补全和 reader-language pass 尚未完成；T1/Y1 产品停点仍待用户确认。用户截图中的红框／蓝框仅为几何说明标注，不是产品配色方向。
 
 ## 第一版停点 1 裁决：Player / People
 

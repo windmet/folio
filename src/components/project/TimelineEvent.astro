@@ -9,6 +9,10 @@ export interface Props {
 
 const { event, people, threadIds } = Astro.props;
 const localId = event.id.split('/').at(-1);
+const relationByPersonId = new Map((event.data.personRelations || []).map((relation: any) => [relation.person.id, relation.kind]));
+const personLabel = (person: any) => relationByPersonId.get(person.id) === 'account-context'
+  ? `${person.data.displayName}账号`
+  : person.data.displayName;
 const seconds = Math.floor(event.data.startMs / 1000);
 const formatTime = (totalSeconds: number) => {
   const hours = Math.floor(totalSeconds / 3600);
@@ -32,7 +36,7 @@ const formatTime = (totalSeconds: number) => {
     <div class="event-meta">
       <div class="event-people" aria-label="相关人物">
         {people.map((person) => (
-          <button type="button" data-open-person={person.id.split('/').at(-1)}>{person.data.displayName}</button>
+          <button type="button" data-open-person={person.id.split('/').at(-1)}>{personLabel(person)}</button>
         ))}
       </div>
       {threadIds.map((threadId) => (

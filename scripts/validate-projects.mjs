@@ -51,6 +51,7 @@ for (const projectDir of projectDirs) {
   const trackById = new Map(tracks.map((entry) => [entry.id, entry.data]));
   const actById = new Map(acts.map((entry) => [entry.id, entry.data]));
   const eventById = new Map(events.map((entry) => [entry.id, entry.data]));
+  const personById = new Map(people.map((entry) => [entry.id, entry.data]));
   const sourceById = new Map(sources.map((entry) => [entry.id, entry.data]));
   const referencedEventIds = new Set();
 
@@ -105,6 +106,20 @@ for (const projectDir of projectDirs) {
     }
     exists(trackIds, data.track, id);
     for (const person of data.people) exists(peopleIds, person, id);
+    const relatedPeople = new Set();
+    for (const relation of data.personRelations || []) {
+      exists(peopleIds, relation.person, id);
+      if (!data.people.includes(relation.person)) {
+        errors.push(`${id}: person relation must target a person already listed by the event`);
+      }
+      if (relatedPeople.has(relation.person)) errors.push(`${id}: duplicate person relation for ${relation.person}`);
+      relatedPeople.add(relation.person);
+      const relatedPerson = personById.get(relation.person);
+      if (relation.kind === 'account-context'
+        && !(relatedPerson?.participation || []).some((participation) => participation.kind === 'space-account')) {
+        errors.push(`${id}: account-context requires a person with space-account participation`);
+      }
+    }
     const track = trackById.get(data.track);
     if (!(data.startMs < data.endMs && data.endMs <= track.durationMs)) {
       errors.push(`${id}: event range is outside track duration`);

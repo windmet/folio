@@ -1,6 +1,6 @@
 # 小松昌平 36 岁生日会 Project Archive 开发设计
 
-> 状态：SEMANTIC P1 PERSON 5–7 + RC12-T1.1/Y1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING（2026-08-10；RC 0.11 REVIEW BRANCH ACCEPTANCE COMPLETE）
+> 状态：SEMANTIC P1 PERSON 5–8 + RC12-T1.1/Y1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING（2026-08-10；RC 0.11 REVIEW BRANCH ACCEPTANCE COMPLETE）
 > 目标：把一场多平台、多人物、长时、存在跨轨回收的活动做成可浏览、可追溯、可逐步发布的专题档案，而不是把工作稿直接塞进普通博客正文。
 > 当前源档根：`E:\AI_Subtitle_Studio\02_Projects\小松昌平生日会`（只通过 CLI 参数或 `KOMATSU36_SOURCE_ROOT` 提供）
 > 当前权威文档集：源档根下的 `复核md/` 带版本后缀文件；根目录同名无后缀文件是旧工作稿，不得自动选用。
@@ -8,11 +8,11 @@
 > 当前站点：Astro 7 静态站点，TinaCMS 只管理普通 MDX 文章。
 
 > **CURRENT CHECKPOINT**
-> RC 0.10 已完成本地验收，RC 0.11 已完成 R9 与 review-branch handoff；其 acceptance 文档保持历史合同。RC12-A2/C2/D2/B2/F2、E1–E5 与 T1.1 已完成工程／Browser 验证。2026-08-10 Semantic P0 已以独立 override layer 纠正 Amazon winner、濱因果线与汐谷读音；随后 P1 Person 第 5–7 项完成称呼层与搜索层拆分、敬称清洗和 `トシピ`。旧分析 MD 与 RAW 保持不变。证据见 `docs/editorial/komatsu36-semantic-p0-handoff.md` 与 `docs/editorial/komatsu36-semantic-p1-person-handoff.md`。Release Gate 继续 CLOSED。
+> RC 0.10 已完成本地验收，RC 0.11 已完成 R9 与 review-branch handoff；其 acceptance 文档保持历史合同。RC12-A2/C2/D2/B2/F2、E1–E5 与 T1.1 已完成工程／Browser 验证。2026-08-10 Semantic P0 已以独立 override layer 纠正 Amazon winner、濱因果线与汐谷读音；随后 P1 Person 第 5–8 项完成称呼／搜索拆分、敬称清洗、`トシピ` 与室账号事件关系。旧分析 MD 与 RAW 保持不变。证据见 P0、P1 Person 与 P1 Account handoff。Release Gate 继续 CLOSED。
 
 ## 当前实施状态（2026-08-10）
 
-> **当前状态覆盖**：Semantic P0 与 P1 Person 第 5–7 项已完成 SOURCE/BUILD/BROWSER 验证；Reader Copy 当前为 54/54 decisions。RC12-A2、C2、D2、B2、F2、E1–E5 与 T1.1 已通过工程／Browser 证据；T1/Y1 产品接受、P1 第 8 项及后续故事／reader-language pass、真实媒体与 Release Gate 继续独立关闭。Y2 managed external session 尚未授权。
+> **当前状态覆盖**：Semantic P0 与 P1 Person 第 5–8 项已完成 SOURCE/BUILD/BROWSER 验证；Reader Copy 当前为 54/54 decisions。RC12-A2、C2、D2、B2、F2、E1–E5 与 T1.1 已通过工程／Browser 证据；T1/Y1 产品接受、P1 故事／reader-language pass、真实媒体与 Release Gate 继续独立关闭。Y2 managed external session 尚未授权。
 
 - Phase 0A 已落地：`data/source-sets/komatsu36-20260808-r1.json` 精确锁定 6 个 `复核md/` 带后缀输入，并由 `validate:sources` 校验路径、SHA-256、物理行数与 16 条 ARC；
 - Phase 1 垂直切片已落地：真实 `/projects/komatsu36/` 路由、集中状态控制器、YouTube 延迟加载与 pending seek、动态时间 fallback、Timeline、Thread、Person 和 URL 恢复均已实现；
@@ -432,6 +432,8 @@ Person 只保存稳定身份、读者可见的本场常用称呼与隐藏搜索�
 ```
 
 `callNames` 可以在 Person panel 显示；`searchAliases` 只能进入搜索索引。正式姓名与 reading 自动索引，`さん／くん／君／ちゃん` 由共享查询正规化处理，不作为人工 alias 保存。两数组必须在每个 Person JSON 中显式存在；当前 `タカオ`、`じゅんちゃん` 仍待核，不得猜测加入。
+
+Event 若只确认账号上下文而不能确认人物本人，可在保留 canonical `people` 引用的同时声明 `personRelations: [{ person, kind: "account-context" }]`。该关系只把当前 Event chip 投影为“{人物名}账号”，不会全局重命名 Person；点击仍进入 canonical Person panel。关系 target 必须同时存在于 Event `people` 且 Person 必须具有 `space-account` participation。室账号的三个节点使用该关系，北海道现实活动节点不使用。
 
 Phase 1 不出现 `topicIds`、`claimIds`、`claims/` 或 `evidence/`。Claim / Evidence 到 Phase 4 根据真实公开边界一次性定义；在此之前，复核信息留在 editorial workbench。公开 Evidence 将来也只放来源类型、时间窗和裁决摘要；原始 ASR、聊天作者 ID、付费信息、复核音频默认不公开。
 

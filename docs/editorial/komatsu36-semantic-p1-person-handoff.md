@@ -97,6 +97,6 @@ http://127.0.0.1:4322/projects/komatsu36/?view=people&person=kumagai-toshiki
 node scripts/verify-komatsu36-semantic-p1-person-browser.mjs <optional-screenshot-dir>
 ```
 
-## 6. 下一批
+## 6. 后续状态
 
-下一批仍属于 P1，并从 semantic patch 第 19 节第 8 项继续：先核实并修正“室元気账号身份”显示边界，再以独立提交补清典公开 offer Event、11 月 15 日两项公告解释和台本形式原则降级。不得把本批的 `P1 STEPS 5–7` 写成整个 Semantic P1 已完成，也不得提前混入 11 条 Thread 与 8 个 UI 组件的全量 reader-language pass。
+Semantic P1 第 8 项随后已由 `komatsu36-semantic-p1-account-handoff.md` 独立完成：Event 使用 `account-context` 关系显示“室元気账号”，北海道人物节点继续显示“室元気”。本文件仍只证明第 5–7 项；下一批从清典公开 offer、11 月 15 日公告解释与台本形式原则降级开始，不得提前混入 11 条 Thread 与 8 个 UI 组件的全量 reader-language pass。
