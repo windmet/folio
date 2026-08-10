@@ -63,4 +63,4 @@ Browser verifier 使用 `scripts/xhs-exporter` 的 Playwright 依赖；若该目
 
 ## 5. 下一批次
 
-在产品人工停点明确接受前，只在用户明确提出 `E：REVISE` 后修正对应的视觉／可访问性细节并补证据；不得把本文件改写成产品接受，也不得回头混改 RC12-A2/C2/D2/B2/F2 已冻结合同。
+本节是 E5 截止点的历史交接，不是当前执行队列。随后已完成独立 RC12-T1 与 RC12-Y1 工程／Browser 批次；当前产品复核入口为 `docs/qa/komatsu36-rc12/PRODUCT-CHECKPOINT.md`，总约束见 `docs/editorial/komatsu36-rc12-product-correction-runbook.md`。在产品人工停点明确接受前，只在用户明确提出 `E：REVISE` 后修正对应的视觉／可访问性细节并补证据；不得把本文件改写成产品接受，也不得回头混改 RC12-A2/C2/D2/B2/F2 已冻结合同。Y2 仍未授权。

@@ -7,7 +7,7 @@
 
 本 handoff 记录 RC12-A/B/C/D 与 RC12-F 本地复核结果。它是 review branch 的交接草案，不把本地 preview、静态门禁或短时交互提升为生产接受。
 
-2026-08-09 产品复核已明确否决当前右栏 Compact、People 桌面单列投影与来源图标层级，并要求补齐文本展开覆盖。本文只保存第一版工程证据，不再是 release-ready 候选；后续唯一入口为 `docs/editorial/komatsu36-rc12-product-correction-runbook.md`。RC12-E 继续作为显式 backlog，未被本次返工自动纳入。
+2026-08-09 产品复核已明确否决当前右栏 Compact、People 桌面单列投影与来源图标层级，并要求补齐文本展开覆盖。本文只保存第一版工程证据，不再是 release-ready 候选；后续唯一入口为 `docs/editorial/komatsu36-rc12-product-correction-runbook.md`。其中 RC12-E 的 `DEFERRED / NOT IMPLEMENTED` 只是本快照时点，随后已由 E1–E5、T1 与 Y1 独立批次 supersede；当前产品停点、Y2 授权和 Release Gate 状态以总 runbook 与对应 QA ledger 为准。
 
 人工停点核对表见 `docs/qa/komatsu36-rc12/PRODUCT-CHECKPOINT.md`。
 
