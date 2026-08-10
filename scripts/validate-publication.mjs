@@ -25,7 +25,8 @@ const threadFiles = await listFiles('threads', '.md');
 const threadEntries = await Promise.all(threadFiles.map(async (name) => {
   const source = await readFile(path.join(projectRoot, 'threads', name), 'utf8');
   const frontmatter = source.match(/^---\r?\n([\s\S]*?)\r?\n---/)?.[1] || '';
-  return { id: name.replace(/\.md$/, ''), data: YAML.parse(frontmatter) };
+  const body = source.match(/^---\r?\n[\s\S]*?\r?\n---\r?\n([\s\S]*)$/)?.[1]?.trim() || '';
+  return { id: name.replace(/\.md$/, ''), data: YAML.parse(frontmatter), body };
 }));
 const peopleFiles = await listFiles('people', '.json');
 const peopleEntries = await Promise.all(peopleFiles.map(async (name) => ({
@@ -49,6 +50,53 @@ try {
 }
 
 const project = await readJson(path.join(projectRoot, 'project.json'));
+const semanticPatch = await readFile(path.resolve('docs/komatsu36_semantic_patch_20260810.md'), 'utf8');
+const semanticEventById = new Map(eventEntries.map((entry) => [entry.id, entry.data]));
+const semanticThreadById = new Map(threadEntries.map((entry) => [entry.id, entry]));
+const semanticPersonById = new Map(peopleEntries.map((entry) => [entry.id, entry.data]));
+const amazonEvent = semanticEventById.get('yt-040405-amazon-hama');
+const amazonGrabEvent = semanticEventById.get('yt-040524-hama-grabs-amazon-card');
+const amazonPeople = new Set(amazonEvent?.people || []);
+if (project.editorialRevision !== '2026-08-10-semantic-p0') {
+  errors.push(`semantic P0 requires editorialRevision 2026-08-10-semantic-p0; found ${project.editorialRevision}`);
+}
+if (!semanticPatch.includes('OVERRIDE：Amazonギフトカード 5000円分 × 2')
+  || !semanticPatch.includes('本文件第 1～2 节对 Amazon / 濱线的结论覆盖上述旧条目')) {
+  errors.push('semantic override authority is missing the Amazon/濱 precedence contract');
+}
+if (!amazonEvent
+  || amazonEvent.title !== 'Amazon 5000 円×2：寺島与堀金同时 Bingo'
+  || amazonEvent.publicationStatus !== 'qualified'
+  || !amazonEvent.readerNote
+  || amazonPeople.size !== 2
+  || !amazonPeople.has('komatsu36/terashima-junta')
+  || !amazonPeople.has('komatsu36/horikane-sohei')
+  || amazonPeople.has('komatsu36/hama-kento')) {
+  errors.push('semantic P0 Amazon Event must identify 寺島+堀金, exclude 濱 as winner, and preserve the reader-facing uncertainty note');
+}
+if (!amazonGrabEvent
+  || amazonGrabEvent.startMs !== 14724000
+  || amazonGrabEvent.endMs !== 14739000
+  || !amazonGrabEvent.people.includes('komatsu36/hama-kento')
+  || !amazonGrabEvent.people.includes('komatsu36/terashima-junta')) {
+  errors.push('semantic P0 must publish the separate 04:05:24 濱-grabs-寺島-card Event');
+}
+const bingoThread = semanticThreadById.get('bingo-payback');
+const hamaThread = semanticThreadById.get('hama-paid-drinking');
+const bingoNodeIds = new Set((bingoThread?.data.nodes || []).map((node) => String(node.event)));
+const hamaNodeIds = new Set((hamaThread?.data.nodes || []).map((node) => String(node.event)));
+if (!bingoNodeIds.has('komatsu36/yt-040405-amazon-hama')
+  || !bingoNodeIds.has('komatsu36/yt-040524-hama-grabs-amazon-card')) {
+  errors.push('semantic P0 Bingo thread must retain the winner Event and add the separate card-grab Event');
+}
+if (!hamaNodeIds.has('komatsu36/yt-040524-hama-grabs-amazon-card')
+  || hamaNodeIds.has('komatsu36/yt-040405-amazon-hama')
+  || !hamaThread?.body.includes('始终没有中到主奖')) {
+  errors.push('semantic P0 濱 thread must use the card-grab Event and must not present 濱 as an Amazon winner');
+}
+if (semanticPersonById.get('shioya-fumiyasu')?.reading !== 'しおや ふみよし') {
+  errors.push('semantic P0 requires 汐谷文康 reading しおや ふみよし');
+}
 if (project.status === 'published') {
   const expectedProjectHref = `/projects/${project.slug}/`;
   if (!homeHtml.includes(`href="${expectedProjectHref}"`)) {
@@ -122,6 +170,33 @@ if (!searchPayload || searchPayload.schemaVersion !== 1 || searchPayload.project
       errors.push(`search JSON Event item ${index} is missing trackId/startMs`);
     }
   }
+  const amazonSearchItem = searchItems.find((item) => item.kind === 'event' && item.id === 'yt-040405-amazon-hama');
+  const grabSearchItem = searchItems.find((item) => item.kind === 'event' && item.id === 'yt-040524-hama-grabs-amazon-card');
+  const shioyaSearchItem = searchItems.find((item) => item.kind === 'person' && item.id === 'shioya-fumiyasu');
+  if (!amazonSearchItem?.searchText.includes('堀金蒼平') || amazonSearchItem.searchText.includes('濱健人')) {
+    errors.push('semantic P0 search index must identify 堀金, not 濱, as the Amazon winner');
+  }
+  if (!grabSearchItem?.searchText.includes('濱健人') || !grabSearchItem.searchText.includes('寺島惇太')) {
+    errors.push('semantic P0 search index is missing the separate 濱/寺島 card-grab Event');
+  }
+  if (!shioyaSearchItem?.searchText.includes('しおや ふみよし') || shioyaSearchItem.searchText.includes('しおや ふみやす')) {
+    errors.push('semantic P0 search index contains the wrong 汐谷 reading');
+  }
+}
+
+for (const forbidden of [
+  '濱与寺島同时拿到 Amazon 5000 円',
+  '没带礼物的濱反而获得高价值返礼',
+  'しおや ふみやす',
+]) {
+  if (html.includes(forbidden)) errors.push(`semantic P0 published HTML contains superseded copy: ${forbidden}`);
+}
+for (const required of [
+  'Amazon 5000 円×2：寺島与堀金同时 Bingo',
+  '濱去抢寺島的 Amazon 卡',
+  'しおや ふみよし',
+]) {
+  if (!html.includes(required)) errors.push(`semantic P0 published HTML is missing corrected copy: ${required}`);
 }
 
 const actualSourceEventButtons = (html.match(/data-source-event="/g) || []).length;

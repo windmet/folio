@@ -1,10 +1,10 @@
 # Komatsu36 RC 0.12 人工停点核对表
 
-> 当前状态：`RC12-T1.1 INLINE CORRECTION + RC12-Y1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING`
+> 当前状态：`SEMANTIC P0 + RC12-T1.1/Y1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING`
 > 预览地址：`http://127.0.0.1:4322/projects/komatsu36/`
 > 当前 T1/Y1 工程与产品复核入口：`docs/editorial/komatsu36-rc12-t1-timeline-navigator-polish-runbook.md`
 
-这份表保留 2026-08-09 第一版产品裁决，并追加当前状态；它不替代源码、构建或 Browser QA 证据。RC12-A2/C2/D2/B2 与 F2 已完成，RC12-E E1–E5 已完成工程与本地真实 Browser QA。2026-08-10 第二次 T1 复核否决 shell-wide Navigator，并要求恢复左内容列 inline geometry；该修正与保留的窄 segment／完整 tooltip 已完成工程／Browser 验证，产品停点仍待用户确认。用户截图中的红框／蓝框仅为几何说明标注，不是产品配色方向。
+这份表保留 2026-08-09 第一版产品裁决，并追加当前状态；它不替代源码、构建或 Browser QA 证据。RC12-A2/C2/D2/B2/F2、E1–E5 与 T1.1 已完成工程／Browser QA。2026-08-10 Semantic P0 又独立纠正 Amazon winner、濱因果线与汐谷读音，并通过发布与真实页面验证；P1 semantic pass 尚未开始。T1/Y1 产品停点仍待用户确认。用户截图中的红框／蓝框仅为几何说明标注，不是产品配色方向。
 
 ## 第一版停点 1 裁决：Player / People
 

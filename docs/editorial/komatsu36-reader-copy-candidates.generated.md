@@ -1,13 +1,13 @@
 # Komatsu36 Reader Copy Candidates (Generated)
 
-内容快照：2026-08-08-r1
+内容快照：2026-08-10-semantic-p0
 
 > 本文件完全由脚本生成，禁止在这里填写人工决定。命中词只表示需要人工判断，不代表事实错误。所有决定只写入 `komatsu36-reader-copy-decisions.yml`。
 
 ## 使用合同
 
-- 范围：124 个 Event 与 16 条 Thread 的当前发布文案。
-- Event 只要存在 `qualification` 就进入候选，因为当前组件会把它直接显示给读者；其余项目按工程词、证据词和编辑元语言命中。
+- 范围：125 个 Event 与 16 条 Thread 的当前发布文案。
+- Event 只要存在 `qualification` 就进入候选，作为内部不确定性的人工复核队列；当前组件不会直接显示 qualification。其余项目按工程词、证据词和编辑元语言命中。
 - 不确定性不改变读者理解时，保留内部 `qualification`，读者侧不显示。
 - 不确定性改变人物归属、事件结果或叙事因果时，才新增自然语言 `readerNote`。
 - 本候选集不处理 Transcript、Evidence、Chat 原文，也不增加 Event。
@@ -15,9 +15,9 @@
 
 ## 快照
 
-- Event candidates: 43
-- Thread candidates: 9
-- Recorded decisions: 52
+- Event candidates: 44
+- Thread candidates: 10
+- Recorded decisions: 54
 - 扫描词组：`evidence-language`、`editorial-meta-language`、`technical-language`；完整词表以生成脚本为准。
 
 ## Event candidates
@@ -983,7 +983,38 @@ Space 收束后，小松回到 Bingo 前的主直播
 - New summary: 第二轮 64 号由光富崇雄中奖；奖品是新選組／瀬戸焼き“誠”杯类物件，并不是早先误听成的“挂毯”。
 - Reader note: —
 
-### RCOPY-032 · yt-040539-fan-inoue
+### RCOPY-032 · yt-040405-amazon-hama
+
+- Track / Time: YT ≈04:05:05
+- Status: `qualified`
+- Flags: `has-internal-qualification`, `evidence-language`
+- Source pointer: `src/content/projects/komatsu36/events/yt-040405-amazon-hama.json`
+
+**CURRENT TITLE**
+
+Amazon 5000 円×2：寺島与堀金同时 Bingo
+
+**CURRENT SUMMARY**
+
+23 番让两人同时完成 Bingo，正好对应两名份的 Amazon 5000 円礼券。寺島可以直接确认；第二位按此前中奖者与最后参加赏两人的排除关系指向堀金蒼平。
+
+**CURRENT QUALIFICATION**
+
+寺島可由现场反应直接确认。堀金并非当秒清晰点名，而是由佐藤已中奖退出、濱与矢野最终只领取参加赏，以及完整中奖者集合排除锁定；采用 B+/A-。semantic override：docs/komatsu36_semantic_patch_20260810.md 第 1～3 节。
+
+**RECORDED DECISION**
+
+- Copy action: `keep`
+- Reader note action: `add`
+- Editorial note: 2026-08-10 semantic override：寺島为直接确认；堀金由完整中奖者与最后参加赏两人排除锁定。濱未中主奖，抢卡另拆 Event。
+
+**APPROVED REPLACEMENT**
+
+- New title: —
+- New summary: —
+- Reader note: 第二位中奖者在当秒没有被清晰点名；按此前中奖者与最后两名参加赏的排除关系，指向堀金蒼平。
+
+### RCOPY-033 · yt-040539-fan-inoue
 
 - Track / Time: YT 04:05:39
 - Status: `qualified`
@@ -1014,7 +1045,7 @@ Amazon 礼券后，“誠”扇子由井上中奖
 - New summary: —
 - Reader note: —
 
-### RCOPY-033 · yt-041453-kano-tbolan
+### RCOPY-034 · yt-041453-kano-tbolan
 
 - Track / Time: YT ≈04:14:53
 - Status: `qualified`
@@ -1045,7 +1076,7 @@ Amazon 礼券后，“誠”扇子由井上中奖
 - New summary: —
 - Reader note: —
 
-### RCOPY-034 · yt-041810-snack-akemi
+### RCOPY-035 · yt-041810-snack-akemi
 
 - Track / Time: YT ≈04:18:10
 - Status: `qualified`
@@ -1076,7 +1107,7 @@ Amazon 礼券后，“誠”扇子由井上中奖
 - New summary: —
 - Reader note: —
 
-### RCOPY-035 · yt-042117-keserasera
+### RCOPY-036 · yt-042117-keserasera
 
 - Track / Time: YT ≈04:21:17
 - Status: `qualified`
@@ -1107,7 +1138,7 @@ Amazon 礼券后，“誠”扇子由井上中奖
 - New summary: —
 - Reader note: —
 
-### RCOPY-036 · yt-042252-seigura-superchat
+### RCOPY-037 · yt-042252-seigura-superchat
 
 - Track / Time: YT ≈04:22:52
 - Status: `qualified`
@@ -1138,7 +1169,7 @@ Amazon 礼券后，“誠”扇子由井上中奖
 - New summary: —
 - Reader note: —
 
-### RCOPY-037 · yt-042314-hama-self-intro
+### RCOPY-038 · yt-042314-hama-self-intro
 
 - Track / Time: YT ≈04:23:14
 - Status: `qualified`
@@ -1169,7 +1200,7 @@ Amazon 礼券后，“誠”扇子由井上中奖
 - New summary: —
 - Reader note: —
 
-### RCOPY-038 · yt-043520-ojamajo
+### RCOPY-039 · yt-043520-ojamajo
 
 - Track / Time: YT ≈04:35:20
 - Status: `qualified`
@@ -1200,7 +1231,7 @@ Amazon 礼券后，“誠”扇子由井上中奖
 - New summary: —
 - Reader note: —
 
-### RCOPY-039 · yt-044023-wheel-song
+### RCOPY-040 · yt-044023-wheel-song
 
 - Track / Time: YT ≈04:40:23
 - Status: `qualified`
@@ -1231,7 +1262,7 @@ Amazon 礼券后，“誠”扇子由井上中奖
 - New summary: —
 - Reader note: —
 
-### RCOPY-040 · yt-044513-fantastipo
+### RCOPY-041 · yt-044513-fantastipo
 
 - Track / Time: YT ≈04:45:13
 - Status: `qualified`
@@ -1262,7 +1293,7 @@ Amazon 礼券后，“誠”扇子由井上中奖
 - New summary: —
 - Reader note: —
 
-### RCOPY-041 · yt-045435-shuji-akira
+### RCOPY-042 · yt-045435-shuji-akira
 
 - Track / Time: YT ≈04:54:35
 - Status: `qualified`
@@ -1293,7 +1324,7 @@ Amazon 礼券后，“誠”扇子由井上中奖
 - New summary: —
 - Reader note: —
 
-### RCOPY-042 · sp2-000311-account-hijack
+### RCOPY-043 · sp2-000311-account-hijack
 
 - Track / Time: SP2 00:03:11
 - Status: `qualified`
@@ -1324,7 +1355,7 @@ Amazon 礼券后，“誠”扇子由井上中奖
 - New summary: 这段发言只与室账号有关；对方自称“乗っ取り”，不能据此认作室元気本人。
 - Reader note: —
 
-### RCOPY-043 · sp2-025344-uchida-forgotten
+### RCOPY-044 · sp2-025344-uchida-forgotten
 
 - Track / Time: SP2 ≈02:53:44
 - Status: `qualified`
@@ -1357,18 +1388,18 @@ Amazon 礼券后，“誠”扇子由井上中奖
 
 ## Thread candidates
 
-### RCOPY-044 · bingo-payback
+### RCOPY-045 · bingo-payback
 
 - Flags: `resolved-decision`
 - Source pointer: `src/content/projects/komatsu36/threads/bingo-payback.md`
 
 **CURRENT DECK**
 
-小松想一次还清大家的生日礼物，规则边玩边补，奖品却不断落到最有故事的人手里。
+小松想一次还清大家的生日礼物，规则越玩越多，奖品也不断和中奖者形成意外的角色梗。
 
 **CURRENT BODY**
 
-这条线同时回收生日返礼、太阳镜和濱的“ギャラ飲み”。这里以最能解释因果的节点为主，不展开完整号码与奖品表。
+小松本来只是想把欠大家的生日回礼一次结清，结果规则越玩越多，奖品也不断和中奖者形成意外的角色梗；唯一最想拿东西的濱反而没中主奖，伸手去抢寺島的 Amazon 卡，最后只剩参加赏。
 
 **CURRENT TRANSITIONS**
 
@@ -1377,14 +1408,14 @@ Amazon 礼券后，“誠”扇子由井上中奖
 **RECORDED DECISION**
 
 - Copy action: `rewrite`
-- Editorial note: 移除权威修正版、首版等流程词，保留这条线的阅读范围。
+- Editorial note: 2026-08-10 semantic override：移除濱中奖判断，并把抢寺島卡作为独立节点接入。
 
 **APPROVED REPLACEMENT**
 
-- New deck: —
-- New body: 这条线同时回收生日返礼、太阳镜和濱的“ギャラ飲み”。这里以最能解释因果的节点为主，不展开完整号码与奖品表。
+- New deck: 小松想一次还清大家的生日礼物，规则越玩越多，奖品也不断和中奖者形成意外的角色梗。
+- New body: 小松本来只是想把欠大家的生日回礼一次结清，结果规则越玩越多，奖品也不断和中奖者形成意外的角色梗；唯一最想拿东西的濱反而没中主奖，伸手去抢寺島的 Amazon 卡，最后只剩参加赏。
 
-### RCOPY-045 · birthday-payback
+### RCOPY-046 · birthday-payback
 
 - Flags: `resolved-decision`
 - Source pointer: `src/content/projects/komatsu36/threads/birthday-payback.md`
@@ -1411,7 +1442,7 @@ Amazon 礼券后，“誠”扇子由井上中奖
 - New deck: —
 - New body: 笑点不在于小松真的叫错観世生日，而在于他建立一条自己最不擅长执行的规则。内田的人名说法仍保留谨慎表述，不把它当作逐字记录。
 
-### RCOPY-046 · broken-sword
+### RCOPY-047 · broken-sword
 
 - Flags: `resolved-decision`
 - Source pointer: `src/content/projects/komatsu36/threads/broken-sword.md`
@@ -1438,7 +1469,34 @@ Amazon 礼券后，“誠”扇子由井上中奖
 - New deck: —
 - New body: 这里记录的是直播回顾的位置，不是舞台事故发生的当下；碎片方向、矢野侧只削损和无人受伤均按现场回顾保留。
 
-### RCOPY-047 · kano-ojisan
+### RCOPY-048 · hama-paid-drinking
+
+- Flags: `resolved-decision`
+- Source pointer: `src/content/projects/komatsu36/threads/hama-paid-drinking.md`
+
+**CURRENT DECK**
+
+没带礼物却一路吃喝到最后；Amazon 轮自己没中，还伸手去抢寺島的卡，最后只拿到 1000 円参加赏，于是现场真的变成了“ギャラ飲み”。
+
+**CURRENT BODY**
+
+濱这晚的笑点不是“空手来却中了大奖”，而是始终没有中到主奖：从没带礼物、高价酒和“只关心自己出演作品”，一路发展到盯上 Amazon 礼券、抢寺島的卡。最后他和矢野作为仅剩的两名未中奖者拿到 1000 円参加赏，又亲口把它说成「ギャラ＋1000円」。这才是整条 running gag 的终点。
+
+**CURRENT TRANSITIONS**
+
+—
+
+**RECORDED DECISION**
+
+- Copy action: `rewrite`
+- Editorial note: 2026-08-10 semantic override：濱没有中 Amazon 主奖，人物线终点改为抢卡与 1000 円参加赏。
+
+**APPROVED REPLACEMENT**
+
+- New deck: 没带礼物却一路吃喝到最后；Amazon 轮自己没中，还伸手去抢寺島的卡，最后只拿到 1000 円参加赏，于是现场真的变成了“ギャラ飲み”。
+- New body: 濱这晚的笑点不是“空手来却中了大奖”，而是始终没有中到主奖：从没带礼物、高价酒和“只关心自己出演作品”，一路发展到盯上 Amazon 礼券、抢寺島的卡。最后他和矢野作为仅剩的两名未中奖者拿到 1000 円参加赏，又亲口把它说成「ギャラ＋1000円」。这才是整条 running gag 的终点。
+
+### RCOPY-049 · kano-ojisan
 
 - Flags: `resolved-decision`
 - Source pointer: `src/content/projects/komatsu36/threads/kano-ojisan.md`
@@ -1465,7 +1523,7 @@ dad joke、厕所离席和持续的おじさん吐槽，最终在卡拉 OK 的�
 - New deck: —
 - New body: 中间过程没有足够连续记录，所以这里只串起已确认的两个事件，不补写中间对话。
 
-### RCOPY-048 · muro-account
+### RCOPY-050 · muro-account
 
 - Flags: `resolved-decision`
 - Source pointer: `src/content/projects/komatsu36/threads/muro-account.md`
@@ -1492,7 +1550,7 @@ dad joke、厕所离席和持续的おじさん吐槽，最终在卡拉 OK 的�
 - New deck: —
 - New body: “乗っ取り”发言者只按账号上下文记录；身份尚未确认，因此本线不把这些话归给室元気本人。
 
-### RCOPY-049 · ore-shiri-making-of
+### RCOPY-051 · ore-shiri-making-of
 
 - Flags: `resolved-decision`
 - Source pointer: `src/content/projects/komatsu36/threads/ore-shiri-making-of.md`
@@ -1519,7 +1577,7 @@ dad joke、厕所离席和持续的おじさん吐槽，最终在卡拉 OK 的�
 - New deck: —
 - New body: 这条线把演员研究、动作监督和制作选择分开写；最终采用血振り，表示的是可实施范围，不是否定前面的研究。
 
-### RCOPY-050 · russian-takoyaki
+### RCOPY-052 · russian-takoyaki
 
 - Flags: `resolved-decision`
 - Source pointer: `src/content/projects/komatsu36/threads/russian-takoyaki.md`
@@ -1554,7 +1612,7 @@ dad joke、厕所离席和持续的おじさん吐槽，最终在卡拉 OK 的�
 
 最后由毫不知前情的堀金蒼平踩雷，现场原声也真的出现了「時限爆弾すぎるだろ！」。这条线因此同时有提议、被遗忘、延迟和最后踩雷的完整回收。
 
-### RCOPY-051 · shugo-yakiniku
+### RCOPY-053 · shugo-yakiniku
 
 - Flags: `resolved-decision`
 - Source pointer: `src/content/projects/komatsu36/threads/shugo-yakiniku.md`
@@ -1581,7 +1639,7 @@ dad joke、厕所离席和持续的おじさん吐槽，最终在卡拉 OK 的�
 - New deck: 连接不稳、说完烤肉就消失，重开后小松只好替这句简短留言补成庆生。
 - New body: 它几乎没有留下具体内容，却很有仲村的存在感；不必再替这句话添加复杂背景。
 
-### RCOPY-052 · terashima-big-dream
+### RCOPY-054 · terashima-big-dream
 
 - Flags: `resolved-decision`
 - Source pointer: `src/content/projects/komatsu36/threads/terashima-big-dream.md`

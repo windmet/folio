@@ -150,6 +150,11 @@ decisions:
     readerNoteAction: none
     newSummary: "第二轮 64 号由光富崇雄中奖；奖品是新選組／瀬戸焼き“誠”杯类物件，并不是早先误听成的“挂毯”。"
     note: "移除 ASR 与公开资料等内部流程词，只保留奖品识别及纠正结果。"
+  yt-040405-amazon-hama:
+    copyAction: keep
+    readerNoteAction: add
+    readerNote: "第二位中奖者在当秒没有被清晰点名；按此前中奖者与最后两名参加赏的排除关系，指向堀金蒼平。"
+    note: "2026-08-10 semantic override：寺島为直接确认；堀金由完整中奖者与最后参加赏两人排除锁定。濱未中主奖，抢卡另拆 Event。"
   yt-040539-fan-inoue:
     copyAction: keep
     readerNoteAction: none
@@ -201,12 +206,18 @@ decisions:
     note: "事件摘要已清楚表达漏问生日的笑点，逐字听辨限制留在内部资格说明。"
   bingo-payback:
     copyAction: rewrite
-    newBody: "这条线同时回收生日返礼、太阳镜和濱的“ギャラ飲み”。这里以最能解释因果的节点为主，不展开完整号码与奖品表。"
-    note: "移除权威修正版、首版等流程词，保留这条线的阅读范围。"
+    newDeck: "小松想一次还清大家的生日礼物，规则越玩越多，奖品也不断和中奖者形成意外的角色梗。"
+    newBody: "小松本来只是想把欠大家的生日回礼一次结清，结果规则越玩越多，奖品也不断和中奖者形成意外的角色梗；唯一最想拿东西的濱反而没中主奖，伸手去抢寺島的 Amazon 卡，最后只剩参加赏。"
+    note: "2026-08-10 semantic override：移除濱中奖判断，并把抢寺島卡作为独立节点接入。"
   birthday-payback:
     copyAction: rewrite
     newBody: "笑点不在于小松真的叫错観世生日，而在于他建立一条自己最不擅长执行的规则。内田的人名说法仍保留谨慎表述，不把它当作逐字记录。"
     note: "把封板逐字稿等内部判断换成读者能理解的谨慎表述。"
+  hama-paid-drinking:
+    copyAction: rewrite
+    newDeck: "没带礼物却一路吃喝到最后；Amazon 轮自己没中，还伸手去抢寺島的卡，最后只拿到 1000 円参加赏，于是现场真的变成了“ギャラ飲み”。"
+    newBody: "濱这晚的笑点不是“空手来却中了大奖”，而是始终没有中到主奖：从没带礼物、高价酒和“只关心自己出演作品”，一路发展到盯上 Amazon 礼券、抢寺島的卡。最后他和矢野作为仅剩的两名未中奖者拿到 1000 円参加赏，又亲口把它说成「ギャラ＋1000円」。这才是整条 running gag 的终点。"
+    note: "2026-08-10 semantic override：濱没有中 Amazon 主奖，人物线终点改为抢卡与 1000 円参加赏。"
   broken-sword:
     copyAction: rewrite
     newBody: "这里记录的是直播回顾的位置，不是舞台事故发生的当下；碎片方向、矢野侧只削损和无人受伤均按现场回顾保留。"

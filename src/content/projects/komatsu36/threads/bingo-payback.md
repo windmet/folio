@@ -1,8 +1,8 @@
 ---
 project: komatsu36
-title: "Bingo 集中返礼：规则 patch 与奖品回收"
+title: "Bingo 集中返礼：奖品与人物梗一路回收"
 category: perfect-callback
-deck: 小松想一次还清大家的生日礼物，规则边玩边补，奖品却不断落到最有故事的人手里。
+deck: 小松想一次还清大家的生日礼物，规则越玩越多，奖品也不断和中奖者形成意外的角色梗。
 nodes:
   - event: komatsu36/yt-035350-bingo-purpose
     role: setup
@@ -15,6 +15,8 @@ nodes:
   - event: komatsu36/yt-040351-protein-sato
     role: development
   - event: komatsu36/yt-040405-amazon-hama
+    role: development
+  - event: komatsu36/yt-040524-hama-grabs-amazon-card
     role: development
   - event: komatsu36/yt-040539-fan-inoue
     role: development
@@ -29,4 +31,4 @@ nodes:
 featured: false
 ---
 
-这条线同时回收生日返礼、太阳镜和濱的“ギャラ飲み”。这里以最能解释因果的节点为主，不展开完整号码与奖品表。
+小松本来只是想把欠大家的生日回礼一次结清，结果规则越玩越多，奖品也不断和中奖者形成意外的角色梗；唯一最想拿东西的濱反而没中主奖，伸手去抢寺島的 Amazon 卡，最后只剩参加赏。

@@ -1,6 +1,6 @@
 # 小松昌平生日会 Event 迁移台账
 
-> 作用：记录从 canonical 工作稿进入公开 Project Archive 的可审阅小批次。它不是第二份内容真值；事件事实仍以 source-set manifest 指向的带后缀文件为准。
+> 作用：记录从 canonical 工作稿进入公开 Project Archive 的可审阅小批次。它不是第二份内容真值；事件事实默认以 source-set manifest 指向的带后缀文件为准。若后续 semantic patch 明确登记 `OVERRIDE`，则只在该事项上由 patch 覆盖旧分析结论，RAW 与原 MD 仍保持不可变。
 
 ## 批次规则
 
@@ -22,6 +22,14 @@
 - 消费关系：全部加入既有 `bingo-payback` Thread，保持 YouTube 原生时间升序
 - 保留边界：杯与扇子的品牌、材质、正式 SKU 仍是 VIS-07；页面仅发布已锁定的品类、号码语境与中奖者
 - 去重结果：没有与既有 56 个 Event 发生 `track + startMs` 冲突；Amazon 与虎徹节点保持原 ID，不重复生成
+
+### 2026-08-10 Semantic override
+
+- semantic patch 覆盖旧分析 MD 中“寺島＋濱中奖”的判断：Amazon 5000 円×2 的 winners 采用寺島惇太＋堀金蒼平；
+- 旧 `yt-040405-amazon-hama` ID 为兼容深链保留，people 已改为寺島／堀金，并以 reader note 保留第二位中奖者的排除证据；
+- 濱没有中主奖；`04:05:24` 抢寺島 Amazon 卡另拆为 `yt-040524-hama-grabs-amazon-card`；
+- 原始 source-set 与 RAW 不回写；当前 derived authority 为 `docs/komatsu36_semantic_patch_20260810.md` 第 1～3 节；
+- 本次新增 1 个 Event，当前公开总数为 125。
 
 ## 后续候选批次
 
@@ -53,7 +61,7 @@
 
 ### 当前覆盖结论
 
-- 124 个公开 Event 已覆盖 canonical 主时间轴的全部结构换场、三条原生 Track 的代表性节点、16 条 ARC 的首轮网页化，以及 review 中所有标为“事件级解决”且对公开阅读有独立价值的项目。
+- 125 个公开 Event 已覆盖 canonical 主时间轴的全部结构换场、三条原生 Track 的代表性节点、16 条 ARC 的首轮网页化，以及 review 中所有标为“事件级解决”且对公开阅读有独立价值的项目；其中新增的抢卡节点来自 2026-08-10 semantic override。
 - 未进入 Event 的剩余项都落入上表的明确边界；当前没有“事件级已解决、会改变人物或因果解释、但既未发布也未说明省略理由”的已知条目。
 - 该结论是 **source-audited** 的编辑覆盖结论，不等同于逐字字幕完成、跨轨同步完成或商品视觉法证完成。
 

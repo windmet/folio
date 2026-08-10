@@ -129,7 +129,7 @@ const lines = [
   '## 使用合同',
   '',
   `- 范围：${eventItems.length} 个 Event 与 ${threadItems.length} 条 Thread 的当前发布文案。`,
-  '- Event 只要存在 `qualification` 就进入候选，因为当前组件会把它直接显示给读者；其余项目按工程词、证据词和编辑元语言命中。',
+  '- Event 只要存在 `qualification` 就进入候选，作为内部不确定性的人工复核队列；当前组件不会直接显示 qualification。其余项目按工程词、证据词和编辑元语言命中。',
   '- 不确定性不改变读者理解时，保留内部 `qualification`，读者侧不显示。',
   '- 不确定性改变人物归属、事件结果或叙事因果时，才新增自然语言 `readerNote`。',
   '- 本候选集不处理 Transcript、Evidence、Chat 原文，也不增加 Event。',
