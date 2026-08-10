@@ -1,10 +1,10 @@
 # Komatsu36 RC 0.12 人工停点核对表
 
-> 当前状态：`RC12-T1 REQUIRED — READY FOR IMPLEMENTATION`
+> 当前状态：`RC12-T1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING`
 > 预览地址：`http://127.0.0.1:4322/projects/komatsu36/`
 > 当前执行入口：`docs/editorial/komatsu36-rc12-t1-timeline-navigator-polish-runbook.md`
 
-这份表保留 2026-08-09 第一版产品裁决，并追加当前状态；它不替代源码、构建或 Browser QA 证据。RC12-A2/C2/D2/B2 与 F2 已完成，RC12-E E1–E5 已完成工程与本地真实 Browser QA。2026-08-10 的新产品复核确认 E 不应回滚，但发现桌面 8-Act Navigator 的横向几何、极窄 segment 和可见完整标签仍需修正，因此独立新增 RC12-T1。用户截图中的红框／蓝框仅为几何说明标注，不是产品配色方向。该复核不等同于真实媒体通过、生产验收或 Release Gate 授权。当前下一批入口为 `docs/editorial/komatsu36-rc12-t1-timeline-navigator-polish-runbook.md`；总边界仍见 product correction runbook、F2 handoff 与 E5 handoff。
+这份表保留 2026-08-09 第一版产品裁决，并追加当前状态；它不替代源码、构建或 Browser QA 证据。RC12-A2/C2/D2/B2 与 F2 已完成，RC12-E E1–E5 已完成工程与本地真实 Browser QA。2026-08-10 的新产品复核确认 E 不应回滚，并独立新增 RC12-T1；T1 的 shell-width geometry、窄 segment 投影和可见完整标签现已完成工程／Browser 验证，产品停点仍待用户确认。用户截图中的红框／蓝框仅为几何说明标注，不是产品配色方向。该复核不等同于真实媒体通过、生产验收或 Release Gate 授权。当前证据见 `docs/qa/komatsu36-rc12/t1/README.md`；总边界仍见 product correction runbook、F2 handoff 与 E5 handoff。
 
 ## 第一版停点 1 裁决：Player / People
 
@@ -87,9 +87,9 @@ E：REVISE — 390px scope tab 文字太小；其余 ACCEPT
 | D2 Source hierarchy / icon | 三层信息层级与 X Space radiowave 已完成 | `PASS / FREEZE` |
 | B2 expandable正文 | 机制与 Source consumer 已完成；Act／Timeline natural fixture 仍 TODO | `PASS；TODO consumer-check 保留` |
 | E Source-scoped Timeline | 三 scope、native clock、Event projection 已工程／Browser 验证 | `PRODUCT REVIEW PENDING；不回滚` |
-| T1 Navigator full-shell geometry | Expanded 仍受正文列限制；Docked 仍保留 workspace 内缩 | `NEW — REQUIRED` |
-| T1 narrow segment | A03 等真实短 Act 会露出半截标题 | `NEW — REQUIRED` |
-| T1 hover/focus full label | segment 只有 aria-label，没有鼠标／键盘可见完整标签 | `NEW — REQUIRED` |
+| T1 Navigator full-shell geometry | T1 已按 shell rect 扩展 Expanded/Docked，sticky Player offset 同步 | `ENGINEERING/BROWSER VERIFIED；PRODUCT REVIEW PENDING` |
+| T1 narrow segment | A03 等窄 segment 只显示 Axx，保留 duration ratio | `ENGINEERING/BROWSER VERIFIED；PRODUCT REVIEW PENDING` |
+| T1 hover/focus full label | A01–A08 已输出 hover/focus tooltip，原 aria-label 保留 | `ENGINEERING/BROWSER VERIFIED；PRODUCT REVIEW PENDING` |
 | YouTube external handoff | 尚未实现；网站不能扫描任意已有标签页 | `Y1/Y2 FUTURE — NOT AUTHORIZED` |
 
 红框／蓝框只说明审阅中的几何范围，产品继续使用既有档案色彩与 focus/active 语义。T1 完成工程与 Browser QA 后，人工回复格式为：
@@ -104,4 +104,4 @@ T1：ACCEPT
 T1：REVISE — Expanded 宽度可以；A08 tooltip 仍越界
 ```
 
-T1 的产品接受也不自动关闭 E 产品停点，不授权 Y1/Y2、真实媒体、merge、deploy 或 Release Gate。
+T1 的工程／Browser 证据账本见 `docs/qa/komatsu36-rc12/t1/README.md`。T1 的产品接受也不自动关闭 E 产品停点，不授权 Y1/Y2、真实媒体、merge、deploy 或 Release Gate。

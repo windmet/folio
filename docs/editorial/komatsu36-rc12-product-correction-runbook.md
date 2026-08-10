@@ -1,11 +1,11 @@
 # Komatsu36 RC 0.12 Product Correction Runbook
 
-> 状态：`RC12-T1 REQUIRED — READY FOR IMPLEMENTATION`
+> 状态：`RC12-T1 T1.1/T1.2 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING`
 > 裁决日期：2026-08-09
 > 基线分支：`codex/komatsu36-project-archive`
 > 前置状态：RC 0.11 `REVIEW BRANCH ACCEPTANCE COMPLETE`
 > 当前入口：`docs/editorial/komatsu36-rc12-t1-timeline-navigator-polish-runbook.md`；E5 QA 与 F2 handoff 保留为对应批次证据
-> 当前进度：RC12-A2/C2/D2/B2/F2 已完成；RC12-E E1–E5 已完成工程与本地真实 Browser 验证（YT 8 Act／104 Event；SP1 8 Event；SP2 12 Event）；新产品复核独立新增 RC12-T1，修正桌面 Navigator 的 shell-width geometry、窄 segment 投影与 hover/focus 完整标签；B2 Act／Timeline title 分支仍标记 `TODO consumer-check`
+> 当前进度：RC12-A2/C2/D2/B2/F2 已完成；RC12-E E1–E5 已完成工程与本地真实 Browser 验证（YT 8 Act／104 Event；SP1 8 Event；SP2 12 Event）；RC12-T1 T1.0–T1.2 已完成工程与 Browser 验证，产品停点仍待确认；B2 Act／Timeline title 分支仍标记 `TODO consumer-check`
 > Release Gate：CLOSED；本文不授权 merge、deploy 或修改 `project.status`
 
 本文记录 RC12-A/B/C/D 第一版经过源码、构建和浏览器验证后，收到的产品层返工裁决，并继续作为 RC 0.12 的**总状态入口**。当前下一批的唯一详细实施入口是 `komatsu36-rc12-t1-timeline-navigator-polish-runbook.md`。原 `komatsu36-rc12-visual-polish-source-navigation-plan.md` 保存第一版规格与工程证据，不再代表下一批应直接收口；`komatsu36-rc12-release-readiness-handoff.md` 降级为被产品复核退回的本地 QA 快照。
@@ -16,7 +16,7 @@
 RC 0.11                         REVIEW BRANCH ACCEPTANCE COMPLETE
 RC12-A/B/C/D/F2                 SOURCE-VERIFIED + BROWSER-VERIFIED
 RC12-E E1–E5                    SOURCE-VERIFIED + BROWSER-VERIFIED
-RC12-T1                          REQUIRED — READY FOR IMPLEMENTATION
+RC12-T1                          ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING
 RC12 product acceptance          PRODUCT REVIEW PENDING
 RC12 release readiness           NOT REACHED
 Release Gate                     CLOSED
@@ -35,7 +35,7 @@ Release Gate                     CLOSED
 | Cast projection | 已有 table 与窄投影，工程压力测试无 overflow | `REVISE` | RC12-C2：明确 wide / medium / mobile 三档，不以横滚完成 |
 | Source pictograms | RC12-D2 已重做 X Space 声场图标与 Source card 三层信息层级，并完成桌面／移动 Browser QA | `F2 VERIFIED, USER REVIEW ACKNOWLEDGED` | 保留文字、外链、`?track=` 与 Source Event Index 合同 |
 | Source-scoped Timeline | E1–E5 已实现并完成工程／本地真实 Browser 回归：三 scope、source-local Event projection、native clock、URL/history、键盘、focus restore、390px、external no-iframe | `SOURCE-VERIFIED + BROWSER-VERIFIED` | 产品人工停点仍待完成，不得提前标记整体接受 |
-| Timeline Navigator geometry / labels | 当前 8-Act Navigator 在 Expanded 受正文列限制，Docked 仍保留 workspace 内缩；极窄 segment 会显示半截标题；segment 仅有 aria-label | `REQUIRED — RC12-T1` | 按独立 T1 runbook 修正，不回写 B2 或 E 为失败 |
+| Timeline Navigator geometry / labels | T1 已让 Expanded/Docked Navigator 使用 Project shell 宽度；窄 segment 只显示 Axx；A01–A08 有 hover/focus 完整标签 | `ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING` | 用户确认 T1 后才可关闭此停点 |
 
 2026-08-10 审阅截图中的红框／蓝框只表达当前范围与目标可用范围，是 QA 标注，不是产品配色方向。任何实现不得据此新增红／蓝边框或改变既有档案色板。
 

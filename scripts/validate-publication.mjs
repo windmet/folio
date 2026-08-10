@@ -309,6 +309,28 @@ if (!timelineScopeDescriptionTag || readAttribute(timelineScopeDescriptionTag, '
   errors.push('RC12-E scope description must expose aria-live=polite');
 }
 
+// RC12-T1 static contract: the YT 8-Act Navigator keeps one duration-ratio
+// segment per Act and exposes a complete visible tooltip payload for each
+// segment. Geometry, hover/focus visibility and narrow-container projection
+// remain rendered Browser checks.
+const timelineSegmentTags = [...html.matchAll(/<button[^>]*data-timeline-navigator-segment="[^"]+"[^>]*>/g)]
+  .map((match) => match[0]);
+const timelineTooltipCount = (html.match(/data-timeline-navigator-tooltip/g) || []).length;
+if (timelineSegmentTags.length !== 8) {
+  errors.push(`RC12-T1 Navigator has ${timelineSegmentTags.length} segment buttons; expected 8`);
+}
+if (timelineTooltipCount !== 8) {
+  errors.push(`RC12-T1 Navigator has ${timelineTooltipCount} tooltip markers; expected 8`);
+}
+for (const tag of timelineSegmentTags) {
+  if (!readAttribute(tag, 'aria-label')?.startsWith('跳转到 ACT ')) {
+    errors.push('RC12-T1 Navigator segment is missing its complete accessible label');
+  }
+}
+if ((html.match(/data-timeline-navigator-tooltip[^>]*role="tooltip"/g) || []).length !== 8) {
+  errors.push('RC12-T1 Navigator tooltips must expose role="tooltip"');
+}
+
 const forbiddenPublicationMarkers = [
   ['raw ASR file marker', /external_asr_raw/i],
   ['X author identifier', /author_id/i],

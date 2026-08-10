@@ -655,7 +655,7 @@ project-archive-shell {
 
 .project-player-column {
   position: sticky;
-  top: 96px;
+  top: var(--timeline-player-sticky-top, 96px);
   container: player-column / inline-size;
 }
 
@@ -693,6 +693,11 @@ project-archive-shell {
   backdrop-filter: blur(14px);
 }
 
+.timeline-navigator[data-timeline-geometry='shell'] {
+  margin-inline-start: var(--timeline-navigator-margin-start, 0px);
+  margin-inline-end: var(--timeline-navigator-margin-end, 0px);
+}
+
 .timeline-navigator__current {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto auto;
@@ -726,8 +731,10 @@ project-archive-shell {
 }
 
 .timeline-navigator__segments > li {
+  position: relative;
   min-width: 0;
   flex: var(--timeline-act-ratio) 1 0;
+  container-type: inline-size;
 }
 
 .timeline-navigator__segments button {
@@ -766,6 +773,59 @@ project-archive-shell {
   line-height: 1.2;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.timeline-navigator__tooltip {
+  position: absolute;
+  z-index: 2;
+  top: calc(100% + 7px);
+  left: 50%;
+  width: max-content;
+  max-width: min(280px, 32vw);
+  padding: 7px 9px;
+  border: 1px solid var(--archive-line);
+  color: var(--archive-ink);
+  background: var(--archive-paper);
+  box-shadow: 0 10px 22px rgba(55, 47, 37, 0.16);
+  font-size: 11px;
+  line-height: 1.35;
+  white-space: normal;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%, 4px);
+  transition: opacity 120ms ease, transform 120ms ease, visibility 120ms ease;
+}
+
+.timeline-navigator__segment:first-child .timeline-navigator__tooltip {
+  left: 0;
+  transform: translate(0, 4px);
+}
+
+.timeline-navigator__segment:last-child .timeline-navigator__tooltip {
+  right: 0;
+  left: auto;
+  transform: translate(0, 4px);
+}
+
+.timeline-navigator__segment:hover > .timeline-navigator__tooltip,
+.timeline-navigator__segment:focus-within > .timeline-navigator__tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+.timeline-navigator__segment:first-child:hover > .timeline-navigator__tooltip,
+.timeline-navigator__segment:first-child:focus-within > .timeline-navigator__tooltip,
+.timeline-navigator__segment:last-child:hover > .timeline-navigator__tooltip,
+.timeline-navigator__segment:last-child:focus-within > .timeline-navigator__tooltip {
+  transform: translate(0, 0);
+}
+
+@container (max-width: 58px) {
+  .timeline-navigator__segments button > strong {
+    display: none;
+  }
 }
 
 .timeline-scope {

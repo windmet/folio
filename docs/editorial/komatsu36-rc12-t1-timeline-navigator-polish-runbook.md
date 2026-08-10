@@ -1,14 +1,14 @@
 # Komatsu36 RC12-T1 Timeline Navigator Geometry & Label Polish Runbook
 
-> 状态：`READY FOR IMPLEMENTATION — REQUIRED BEFORE RC12 PRODUCT CLOSEOUT`
+> 状态：`T1.1/T1.2 ENGINEERING + BROWSER VERIFIED — PRODUCT REVIEW PENDING`
 > 建立日期：2026-08-10
 > 基线分支：`codex/komatsu36-project-archive`
 > 基线提交：`8f4a3b3`
 > 前置事实：RC12-A2/C2/D2/B2/F2 已完成；RC12-E E1–E5 已完成工程与本地 Browser 验证，产品停点未关闭
-> 本批入口：本文
+> 本批入口：本文；T1 QA：`docs/qa/komatsu36-rc12/t1/README.md`
 > Release Gate：CLOSED；本文不授权 merge、deploy、真实媒体验收或 `project.status` 变更
 
-本文把 2026-08-10 产品复核中确认的 Timeline Navigator 几何与标签问题整理为独立的 RC12-T1。它不否定 RC11 的 8-Act Navigator，也不把 B2 的正文展开合同改判为失败；T1 只修正桌面 Navigator 的可用横向范围、极窄 segment 投影和 hover／keyboard-focus 完整标签。
+本文把 2026-08-10 产品复核中确认的 Timeline Navigator 几何与标签问题整理为独立的 RC12-T1。T1.0 基线、T1.1 几何与 T1.2 segment projection/tooltip 已完成工程和本地 Browser 验证，T1.3 产品停点仍待用户确认。它不否定 RC11 的 8-Act Navigator，也不把 B2 的正文展开合同改判为失败；T1 只修正桌面 Navigator 的可用横向范围、极窄 segment 投影和 hover／keyboard-focus 完整标签。
 
 ## 0. 审阅标注解释
 

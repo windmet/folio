@@ -15,7 +15,7 @@ const actTotal = acts.length;
 const totalDuration = acts.reduce((sum, act) => sum + Math.max(1, act.data.endMs - act.data.startMs), 0);
 ---
 
-<nav class="timeline-navigator" aria-label="Timeline Acts" data-timeline-navigator>
+<nav class="timeline-navigator" aria-label="Timeline Acts" data-timeline-navigator data-timeline-geometry="inline">
   <div class="timeline-navigator__current" aria-live="polite">
     <span class="archive-kicker" data-timeline-navigator-current-label>
       ACT {String(firstAct?.data.order || 1).padStart(2, '0')} / {String(actTotal).padStart(2, '0')}
@@ -43,7 +43,7 @@ const totalDuration = acts.reduce((sum, act) => sum + Math.max(1, act.data.endMs
       const duration = Math.max(1, act.data.endMs - act.data.startMs);
       const order = String(act.data.order).padStart(2, '0');
       return (
-        <li style={`--timeline-act-ratio: ${duration / totalDuration};`}>
+        <li class="timeline-navigator__segment" style={`--timeline-act-ratio: ${duration / totalDuration};`}>
           <button
             type="button"
             data-timeline-navigator-segment={id}
@@ -53,6 +53,12 @@ const totalDuration = acts.reduce((sum, act) => sum + Math.max(1, act.data.endMs
             <span>A{order}</span>
             <strong>{act.data.title}</strong>
           </button>
+          <span
+            class="timeline-navigator__tooltip"
+            data-timeline-navigator-tooltip
+            role="tooltip"
+            aria-hidden="true"
+          >ACT {order} · {act.data.title}</span>
         </li>
       );
     })}
