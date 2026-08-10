@@ -99,7 +99,18 @@ const defaultTrack = tracks.find((track) => track.id === referenceId(project.dat
 const defaultTimelineTrackId = localId(defaultTrack.id);
 const orderedActs = [...acts].sort((a, b) => a.data.order - b.data.order);
 const orderedThreads = [...threads].sort((a, b) => Number(b.data.featured) - Number(a.data.featured) || a.data.title.localeCompare(b.data.title, 'zh-CN'));
+const threadsById = new Map(orderedThreads.map((thread) => [localId(thread.id), thread]));
 const orderedPeople = [...people].sort((a, b) => a.data.displayName.localeCompare(b.data.displayName, 'zh-CN'));
+const formatDuration = (milliseconds: number) => {
+  const total = Math.max(0, Math.floor(milliseconds / 1000));
+  const parts = [Math.floor(total / 3600), Math.floor((total % 3600) / 60), total % 60];
+  return parts.map((part) => String(part).padStart(2, '0')).join(':');
+};
+const archiveStats = [
+  [formatDuration(defaultTrack.data.durationMs), '主直播时长'],
+  [String(tracks.length), '独立媒体'],
+  [String(orderedThreads.length), '故事线'],
+];
 const leadPersonId = 'komatsu-shohei';
 const leadPerson = orderedPeople.find((person) => localId(person.id) === leadPersonId);
 const publishedEvents = events.filter((event) => event.data.publicationStatus !== 'withheld');
@@ -154,11 +165,13 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         {project.data.summary}
         <span class="project-hero__source-note">本档案整理自 YouTube 主直播与两段 X Space；三份媒体保留各自原视频时间，不强行换算为统一时钟。</span>
       </p>
-      <div class="project-facts" aria-label="项目摘要">
-        <span>04:57:26</span>
-        <span>360° YouTube</span>
-        <span>YT + 2 Spaces</span>
-        <span>16 Story Threads</span>
+      <div class="project-facts" aria-label="档案统计">
+        {archiveStats.map(([value, label]) => (
+          <div class="project-fact">
+            <strong>{value}</strong>
+            <span>{label}</span>
+          </div>
+        ))}
       </div>
     </div>
     <div class="project-hero__stamp" aria-hidden="true">
@@ -215,13 +228,13 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
 
       <section class="project-view timeline-view" data-view-panel="timeline" hidden>
         <div class="view-heading">
-          <span class="archive-label-zh">按原视频时间浏览</span>
+          <span class="archive-kicker">CHRONOLOGICAL CANON · SOURCE-LOCAL CLOCKS</span>
           <h2 id="timeline-view-title">Timeline</h2>
           <p>选择一个来源查看其独立本地时钟。YouTube 保留八个 Act 主线，X Space 使用各自的事件列表，不把现场时钟硬拼在一起。</p>
         </div>
         <div class="timeline-scope" data-timeline-scope>
           <div class="timeline-scope__heading">
-            <span class="archive-label-zh">选择时间线来源</span>
+            <span class="archive-kicker">TIMELINE SCOPE</span>
             <p data-timeline-scope-description aria-live="polite">按来源切换；所有时间均使用各自原视频的时间。</p>
           </div>
           <div class="timeline-scope__buttons" role="group" aria-label="Timeline 来源范围">
@@ -253,7 +266,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         >
           <TimelineNavigator acts={orderedActs} />
           {orderedActs.map((act) => (
-            <ActSection act={act} actTotal={orderedActs.length} events={eventsForAct(act.id)} peopleById={peopleById} threadsByEvent={threadsByEvent} />
+            <ActSection act={act} actTotal={orderedActs.length} events={eventsForAct(act.id)} peopleById={peopleById} threadsByEvent={threadsByEvent} threadsById={threadsById} />
           ))}
         </div>
         {orderedTimelineTracks.filter((track) => localId(track.id) !== defaultTimelineTrackId).map((track) => (
@@ -262,20 +275,21 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
             events={eventsByTrack.get(localId(track.id)) || []}
             peopleById={peopleById}
             threadsByEvent={threadsByEvent}
+            threadsById={threadsById}
           />
         ))}
       </section>
 
       <section class="project-view storylines-view" data-view-panel="storylines" hidden>
         <div class="view-heading">
-          <span class="archive-label-zh">按故事线浏览</span>
+          <span class="archive-kicker">CONTEXT RECONSTRUCTION</span>
           <h2>Storylines</h2>
           <p>事件线按故事发展顺序排列；跨平台段落保留各自时间，不强行合并成一个时钟。</p>
         </div>
         <div class="storyline-list">
           {orderedThreads.map((thread) => (
             <button type="button" class="storyline-card" data-open-thread={localId(thread.id)}>
-              <span class="archive-label-zh">{readerLabel(threadCategoryLabels, thread.data.category)}</span>
+              <span class="archive-taxonomy">{readerLabel(threadCategoryLabels, thread.data.category)}</span>
               <h3>{thread.data.title}</h3>
               <p>{thread.data.deck}</p>
               <strong>{thread.data.nodes.length} 个节点 · 查看完整事件线 →</strong>
@@ -353,7 +367,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     tracksById={tracksById}
     threadsByEvent={threadsByEvent}
     threadsByPerson={threadsByPerson}
-    threadsById={new Map(orderedThreads.map((thread) => [localId(thread.id), thread]))}
+    threadsById={threadsById}
     defaultTrackId={defaultTrack.id}
   />
   <script type="application/json" data-archive-controller-data set:html={serializedControllerData}></script>
@@ -544,7 +558,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         if (button) this.selectEvent(button.dataset.sourceEvent || '', true, false);
       });
       this.querySelectorAll<HTMLElement>('[data-thread-event-id]').forEach((button) => {
-        button.addEventListener('click', () => this.selectEvent(button.dataset.threadEventId || '', true, false));
+        button.addEventListener('click', () => this.navigateThreadEventToTimeline(button.dataset.threadEventId || ''));
       });
       this.querySelectorAll<HTMLElement>('[data-person-event-id]').forEach((button) => {
         button.addEventListener('click', () => {
@@ -967,6 +981,20 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
           this.querySelector<HTMLElement>('[data-player-context-thread]')?.focus({ preventScroll: true });
         });
       }
+    }
+
+    navigateThreadEventToTimeline(eventId: string) {
+      const event = this.data.events[eventId];
+      if (!event) return;
+      this.closeSearch(false);
+      this.returnFocus = null;
+      if (this.selectedThreadId) this.closeThread(false);
+      if (this.selectedPersonId) this.closePerson(false);
+      this.selectEvent(eventId, false, false);
+      this.showView('timeline', false);
+      this.applyTimelineScope(event.trackId);
+      this.writeUrl('push');
+      window.requestAnimationFrame(() => this.focusTimelineEvent(eventId));
     }
 
     scheduleTimelineContextFocus(eventId: string) {

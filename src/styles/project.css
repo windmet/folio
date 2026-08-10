@@ -68,14 +68,14 @@ project-archive-shell {
   text-transform: uppercase;
 }
 
-.archive-label-zh {
-  display: block;
+.archive-taxonomy {
+  display: inline-block;
   color: var(--archive-red);
-  font-family: ui-sans-serif, "Noto Sans SC", "Noto Sans JP", sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  line-height: 1.35;
+  font-family: inherit;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
 }
 
 .project-hero {
@@ -120,16 +120,30 @@ project-archive-shell {
 .project-facts {
   margin-top: 28px;
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  align-items: stretch;
 }
 
-.project-facts span {
-  padding: 7px 10px;
-  border: 1px solid var(--archive-line);
-  background: rgba(255,255,255,0.38);
+.project-fact {
+  min-width: 120px;
+  display: grid;
+  gap: 5px;
+  padding: 0 20px;
+  border-left: 1px solid var(--archive-line);
+}
+
+.project-fact:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.project-fact strong {
+  color: var(--archive-ink);
+  font: 400 22px/1 ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: 0.02em;
+}
+
+.project-fact span {
   color: var(--archive-muted);
-  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
   font-size: 10px;
   letter-spacing: 0.06em;
 }
@@ -1321,6 +1335,62 @@ project-archive-shell {
   font-size: 10px;
 }
 
+.event-thread-chooser {
+  min-width: 0;
+  color: var(--archive-red);
+  font-size: 10px;
+}
+
+.event-thread-chooser summary {
+  width: fit-content;
+  cursor: pointer;
+  list-style: none;
+}
+
+.event-thread-chooser summary::-webkit-details-marker {
+  display: none;
+}
+
+.event-thread-chooser summary::after {
+  content: ' ▾';
+  font-size: 9px;
+}
+
+.event-thread-chooser[open] summary::after {
+  content: ' ▴';
+}
+
+.event-thread-chooser summary:focus-visible,
+.event-thread-chooser .event-thread:focus-visible {
+  outline: 2px solid var(--archive-red);
+  outline-offset: 2px;
+}
+
+.event-thread-chooser__list {
+  min-width: 0;
+  display: grid;
+  gap: 7px;
+  margin-top: 8px;
+}
+
+.event-thread-chooser__list .event-thread {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 6px;
+  text-align: left;
+}
+
+.event-thread-chooser__list .event-thread > span:nth-child(2) {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.event-thread__category {
+  white-space: nowrap;
+}
+
 .archive-player-frame {
   --player-context-rail-width: 48px;
   --player-context-rail-offset: 110px;
@@ -2035,9 +2105,9 @@ project-archive-shell {
   letter-spacing: 0.08em;
 }
 
-.storyline-card > .archive-label-zh,
-.person-index-row__chips .archive-label-zh {
-  font-family: ui-sans-serif, "Noto Sans SC", "Noto Sans JP", sans-serif;
+.storyline-card > .archive-taxonomy,
+.person-index-row__chips .archive-taxonomy {
+  font-family: inherit;
   font-size: 10px;
   letter-spacing: 0.04em;
 }
@@ -2433,7 +2503,7 @@ project-archive-shell {
   line-height: 1.4;
 }
 
-.person-participation .archive-label-zh {
+.person-participation .archive-taxonomy {
   display: inline;
   color: var(--archive-muted);
   font-size: 9px;
@@ -2467,7 +2537,7 @@ project-archive-shell {
   color: var(--archive-red);
 }
 
-.person-storylines .archive-label-zh {
+.person-storylines .archive-taxonomy {
   font-size: 10px;
   letter-spacing: 0.06em;
 }
@@ -3065,6 +3135,10 @@ project-archive-shell {
     font-size: 11px;
   }
 
+  .project-facts {
+    display: none;
+  }
+
   .project-hero__stamp {
     display: none;
   }
@@ -3389,6 +3463,10 @@ project-archive-shell {
     display: none;
   }
 
+  .event-thread-chooser {
+    display: none;
+  }
+
   .timeline-event.is-active .event-detail-toggle > span,
   .timeline-event.is-active .event-summary {
     display: block;
@@ -3398,6 +3476,10 @@ project-archive-shell {
   .timeline-event.is-active .event-reader-note,
   .timeline-event.is-active .event-detail > .concurrent-lanes,
   .timeline-event.is-active .event-thread {
+    display: block;
+  }
+
+  .timeline-event.is-active .event-thread-chooser {
     display: block;
   }
 

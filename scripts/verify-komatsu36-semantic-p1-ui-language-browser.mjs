@@ -12,14 +12,6 @@ if (outputDir) mkdirSync(outputDir, { recursive: true });
 
 const forbiddenReaderLabels = [
   'PROJECT ARCHIVE · EDITORIAL BUILD',
-  'CHRONOLOGICAL CANON · SOURCE-LOCAL CLOCKS',
-  'TIMELINE SCOPE',
-  'EVENTS · NATIVE CLOCK',
-  'CONTEXT RECONSTRUCTION',
-  'CURRENT SOURCE',
-  'READING CONTEXT',
-  'SOURCE EVENT INDEX',
-  'STORY THREAD ·',
   'ACCOUNT APPEARANCE',
   'REMOTE CALL',
   'SUBMISSION',
@@ -56,18 +48,18 @@ try {
     let body = await domText(page);
     assert(body.includes('36TH BIRTHDAY · LIVE ARCHIVE'), `${label} missing archive eyebrow`);
     assert(body.includes('这场近五小时直播最有趣的地方'), `${label} missing reader-facing Overview introduction`);
-    assert(body.includes('当前播放') && body.includes('切换来源'), `${label} missing player reader labels`);
+    assert(body.includes('CURRENT SOURCE') && body.includes('SOURCE'), `${label} missing player structural labels`);
     assert(body.includes('此来源的事件'), `${label} missing source index reader label`);
 
     await page.goto(`${projectUrl}?view=timeline&track=space-1`, { waitUntil: 'networkidle' });
     body = await visibleText(page);
-    assert(body.includes('按原视频时间浏览'), `${label} missing Timeline reader heading`);
-    assert(body.includes('选择时间线来源'), `${label} missing Timeline source chooser`);
+    assert(body.includes('CHRONOLOGICAL CANON · SOURCE-LOCAL CLOCKS'), `${label} missing Timeline structural heading`);
+    assert(body.includes('TIMELINE SCOPE'), `${label} missing Timeline source chooser`);
     assert(body.includes('8 个事件 · 原视频时间'), `${label} missing source-local reader clock label`);
 
     await page.goto(`${projectUrl}?view=storylines&thread=bingo-payback`, { waitUntil: 'networkidle' });
     const threadText = await page.locator('[data-thread-detail="bingo-payback"]').innerText();
-    assert(threadText.includes('故事线 · 前后回收'), `${label} missing mapped Thread category`);
+    assert(threadText.includes('STORY THREAD ·') && threadText.includes('前后回收'), `${label} missing mapped Thread category`);
     assert(threadText.includes('起点') && threadText.includes('发展') && threadText.includes('回收'), `${label} missing mapped Thread roles`);
 
     await page.goto(`${projectUrl}?view=people&person=uchida-shuichi`, { waitUntil: 'networkidle' });

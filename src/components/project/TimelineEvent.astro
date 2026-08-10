@@ -1,13 +1,16 @@
 ---
 import ConcurrentLanes from './ConcurrentLanes.astro';
+import { readerLabel, threadCategoryLabels } from '../../lib/projectReaderLabels';
 
 export interface Props {
   event: any;
   people: any[];
   threadIds: string[];
+  threadsById: Map<string, any>;
 }
 
-const { event, people, threadIds } = Astro.props;
+const { event, people, threadIds, threadsById } = Astro.props;
+const threadViews = threadIds.map((threadId) => threadsById.get(threadId)).filter(Boolean);
 const localId = event.id.split('/').at(-1);
 const relationByPersonId = new Map((event.data.personRelations || []).map((relation: any) => [relation.person.id, relation.kind]));
 const personLabel = (person: any) => relationByPersonId.get(person.id) === 'account-context'
@@ -50,9 +53,25 @@ const formatTime = (totalSeconds: number) => {
             <button type="button" data-open-person={person.id.split('/').at(-1)}>{personLabel(person)}</button>
           ))}
         </div>
-        {threadIds.map((threadId) => (
-          <button type="button" class="event-thread" data-open-thread={threadId}>查看完整事件线 <span aria-hidden="true">↗</span></button>
-        ))}
+        {threadViews.length === 1 && (
+          <button type="button" class="event-thread" data-open-thread={threadViews[0].id.split('/').at(-1)}>
+            查看「{threadViews[0].data.title}」 <span aria-hidden="true">↗</span>
+          </button>
+        )}
+        {threadViews.length > 1 && (
+          <details class="event-thread-chooser">
+            <summary>{threadViews.length} 条相关事件线</summary>
+            <div class="event-thread-chooser__list">
+              {threadViews.map((thread: any) => (
+                <button type="button" class="event-thread" data-open-thread={thread.id.split('/').at(-1)}>
+                  <span class="event-thread__category archive-taxonomy">{readerLabel(threadCategoryLabels, thread.data.category)}</span>
+                  <span>{thread.data.title}</span>
+                  <span aria-hidden="true">↗</span>
+                </button>
+              ))}
+            </div>
+          </details>
+        )}
       </div>
     </div>
   </div>

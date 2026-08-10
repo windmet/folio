@@ -6,9 +6,10 @@ export interface Props {
   events: any[];
   peopleById: Map<string, any>;
   threadsByEvent: Map<string, string[]>;
+  threadsById: Map<string, any>;
 }
 
-const { track, events, peopleById, threadsByEvent } = Astro.props;
+const { track, events, peopleById, threadsByEvent, threadsById } = Astro.props;
 const localTrackId = track.id.split('/').at(-1) || track.id;
 const formatDuration = (milliseconds: number) => {
   const total = Math.max(0, Math.floor(milliseconds / 1000));
@@ -27,7 +28,7 @@ const formatDuration = (milliseconds: number) => {
 >
   <header class="source-timeline__header">
     <div>
-      <span class="archive-kicker">{track.data.shortLabel} · 原视频时间</span>
+      <span class="archive-kicker">{track.data.shortLabel} · NATIVE CLOCK</span>
       <h3 id={`timeline-scope-title-${localTrackId}`}>{track.data.label}</h3>
     </div>
     <div class="source-timeline__facts" aria-label="来源时间线摘要">
@@ -42,6 +43,7 @@ const formatDuration = (milliseconds: number) => {
         event={event}
         people={event.data.people.map((reference: any) => peopleById.get(reference.id)).filter(Boolean)}
         threadIds={threadsByEvent.get(event.id) || []}
+        threadsById={threadsById}
       />
     ))}
   </div>

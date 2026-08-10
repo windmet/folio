@@ -35,7 +35,7 @@ const formatTime = (milliseconds: number) => {
         {(person.data.participation || []).length > 0 && (
           <div class="person-participation" aria-label="本项目参与方式">
             {person.data.participation.map((item: any) => (
-              <span class="archive-label-zh">
+              <span class="archive-taxonomy">
                 {readerLabel(participationKindLabels, item.kind)}
                 {item.character ? ` · ${item.character}` : ''}
                 {item.sessions?.length ? ` · ${item.sessions.map((session: string) => session === 'day' ? '昼' : '夜').join('／')}` : ''}
@@ -58,7 +58,7 @@ const formatTime = (milliseconds: number) => {
             const thread = threadsById.get(threadId);
             return thread ? (
               <button type="button" data-open-thread={threadId}>
-                <span class="archive-label-zh">{readerLabel(threadCategoryLabels, thread.data.category)}</span>
+                <span class="archive-taxonomy">{readerLabel(threadCategoryLabels, thread.data.category)}</span>
                 <strong>{thread.data.title}</strong>
               </button>
             ) : null;

@@ -10,7 +10,7 @@
 |---|---|---|
 | P0-A | Person/Thread overlay XOR、transition、focus trap、Back restore | `PASS` |
 | P0-B | YT Act Context removal；非 Timeline CTA；SP relational context | `PASS` |
-| P1-C | Chinese UI label token `.archive-label-zh` | `PASS — BROWSER VERIFIED` |
+| P1-C | Chinese UI taxonomy token `.archive-taxonomy` | `SUPERSEDED BY FINAL VISUAL CLOSEOUT` |
 | P1-D | Media Sources native disclosure | `PASS — BROWSER VERIFIED` |
 
 ## 已验证证据
@@ -23,7 +23,7 @@
 
 ## P1 实施记录
 
-- P1-C：已将播放器、Timeline scope、Storyline／Thread、Person participation／Storyline 与来源事件标签迁移到 `.archive-label-zh`；时间、代码、平台短码与 Event count 保持 mono。
+- P1-C：旧批次曾将中文标签集中到 `.archive-label-zh`；最终视觉批次改为 `.archive-taxonomy` 小号衬线 token，并恢复结构级英文 mono kicker。具体合同见 `docs/editorial/komatsu36-rc12-final-visual-closeout-batch.md`。
 - P1-D：Media Sources 现在以常驻摘要呈现，三张 source card、来源证明与 Source Event Index 放在默认收起的原生 `<details>` 中；所有 `data-source-track`、`data-source-browse` 与 `?track=` 逻辑保持不变。
 - Browser 补验：真实 `/projects/komatsu36/` 路由在 240×780 压力视口下 disclosure 默认收起、展开后三张 source card 与三个 browse 入口仍存在；`space-1` browse 仍收敛到 `?view=timeline&track=space-1`，Source Event Index 可见，overflow 为 `0`，console 为 `[]`。此前 390×844 的摘要、展开与 overflow 证据继续有效。
 - Native disclosure 的 `summary` 保持原生 `SUMMARY`、`tabIndex=0`，Enter／Space 的最终产品手感仍保留给人工停点确认，不用脚本替代 native 行为。

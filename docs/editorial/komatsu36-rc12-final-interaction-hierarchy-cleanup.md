@@ -70,9 +70,9 @@ SP1/SP2：
 
 ## 4. P1 视觉降噪（本批已实施）
 
-### P1-C 中文 UI label token
+### P1-C 中文 UI label token（旧方案，已被最终视觉批次替代）
 
-新增 `.archive-label-zh`，只迁移中文 taxonomy／动作标签：`当前播放`、`切换来源`、`选择时间线来源`、`相关故事线`、`故事线`、`相关上下文`、参与方式与来源事件标签。时间、代码、平台短码和 Event count 继续 mono；正文与 Event title 继续 serif。未全局改 `.archive-kicker`。
+旧版曾新增 `.archive-label-zh`，只迁移中文 taxonomy／动作标签。该 token 不再是当前实现合同；最终视觉批次改用 `.archive-taxonomy` 小号衬线语义 token，并将结构级 kicker 恢复为英文 mono。详见 `docs/editorial/komatsu36-rc12-final-visual-closeout-batch.md`。
 
 ### P1-D Media Sources disclosure
 
@@ -84,6 +84,6 @@ Hero 下常驻摘要：`YouTube 主直播 + X Space ① / ②`、`三路媒体 �
 
 P0-A/P0-B 已完成源码、构建、静态门禁与真实路由 Browser QA。Person → Thread 已确认单一可见 overlay、`selectedPersonId` 清空、URL 只保留 `thread`、Thread 焦点循环有效；异常双参数 URL 也以 Thread 为优先。YT Timeline 在桌面／390px 均不再显示重复 Act Context；Overview 等非 Timeline 视图只保留轻量 Timeline CTA；SP1 的 Player 显示 `关联上下文` 与 `1 条相关事件线`。390px Expanded YT Player 的 `scrollHeight - clientHeight` 为 `0`。
 
-P1-C/P1-D 已完成源码、构建与真实路由 Browser QA：中文 taxonomy 使用 `.archive-label-zh` sans-serif token；Media Sources 以常驻摘要 + 默认收起的 native disclosure 呈现，展开后仍包含三张 source card、来源证明与 Source Event Index。390px 与 240px 压力视口均无横向 overflow；`space-1` browse、`?track=`、Source Event Index 与 console 均已复测。`summary` 保持 native focus semantics；键盘手感仍属于人工产品停点，不用脚本替代 native 行为。
+P1-C/P1-D 已完成源码、构建与真实路由 Browser QA；当前中文 taxonomy 使用 `.archive-taxonomy` 小号衬线 token，结构级 kicker 使用英文 mono；Media Sources 以常驻摘要 + 默认收起的 native disclosure 呈现，展开后仍包含三张 source card、来源证明与 Source Event Index。此前 390px 与 240px 压力视口证据继续有效；`space-1` browse、`?track=`、Source Event Index 与 console 均已复测。`summary` 保持 native focus semantics；键盘手感仍属于人工产品停点，不用脚本替代 native 行为。Thread 节点 → Timeline 与多 Thread chooser 的新增验收记录在最终视觉批次文档中。
 
 工程完成后执行了 `npm run validate`、`npx tsc --noEmit`、`git diff --check`、`npm run audit:payload -- komatsu36`，并完成真实路由 Browser QA、console／overflow／focus／URL 检查。工程／Browser 证据不等于 `PRODUCT-ACCEPTED`；真实 Android/iOS、真实媒体长时播放、merge、deploy 与 Release Gate 继续 `NOT EXECUTED / CLOSED`。

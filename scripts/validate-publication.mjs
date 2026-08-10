@@ -626,7 +626,7 @@ if (!timelineShellSource.includes("closest<HTMLElement>('[data-mobile-act-option
 if (html.includes('这一段在讲什么')) {
   errors.push('RC12 final cleanup found obsolete YouTube Player Act Context copy');
 }
-if (!html.includes('data-player-context-label') || !html.includes('关联上下文')) {
+if (!html.includes('data-player-context-label') || !html.includes('READING CONTEXT')) {
   errors.push('RC12 final cleanup is missing the relational Space context label');
 }
 if (!timelineShellSource.includes('dismissPersonForTransition()')
@@ -636,13 +636,23 @@ if (!timelineShellSource.includes('dismissPersonForTransition()')
 }
 
 // RC12-P1-C/D final polish: reader-facing Chinese taxonomy labels use the
-// sans-serif label token, while source detail remains a native disclosure.
-const archiveLabelCount = (html.match(/archive-label-zh/g) || []).length;
+// small serif taxonomy token, while source detail remains a native disclosure.
+const archiveLabelCount = (html.match(/archive-taxonomy/g) || []).length;
 if (archiveLabelCount < 8) {
   errors.push(`RC12-P1-C has ${archiveLabelCount} Chinese label tokens; expected at least 8`);
 }
-if (!timelineCssSource.includes('.archive-label-zh')) {
-  errors.push('RC12-P1-C CSS is missing the archive-label-zh typography token');
+if (!timelineCssSource.includes('.archive-taxonomy')) {
+  errors.push('RC12-P1-C CSS is missing the archive-taxonomy typography token');
+}
+if (html.includes('archive-label-zh') || timelineCssSource.includes('.archive-label-zh')) {
+  errors.push('RC12-P1-C obsolete archive-label-zh token is still published');
+}
+if (!timelineShellSource.includes('navigateThreadEventToTimeline(')
+  || !timelineShellSource.includes("button.addEventListener('click', () => this.navigateThreadEventToTimeline")) {
+  errors.push('RC12-P0 Thread nodes must use the dedicated Timeline navigation path');
+}
+if (!html.includes('event-thread-chooser')) {
+  errors.push('RC12-P0 multi-thread Event CTA chooser is missing');
 }
 const mediaDisclosureTags = [...html.matchAll(/<details[^>]*class="media-sources__disclosure"[^>]*>/g)];
 if (mediaDisclosureTags.length !== 1) {
@@ -769,14 +779,7 @@ const publishedReaderText = html
 
 for (const forbidden of [
   'PROJECT ARCHIVE · EDITORIAL BUILD',
-  'CHRONOLOGICAL CANON · SOURCE-LOCAL CLOCKS',
-  'TIMELINE SCOPE',
   'EVENTS · NATIVE CLOCK',
-  'CONTEXT RECONSTRUCTION',
-  'CURRENT SOURCE',
-  'READING CONTEXT',
-  'SOURCE EVENT INDEX',
-  'STORY THREAD ·',
   '仅索引已公开的 Event、Thread 与 Person',
   'ACCOUNT APPEARANCE',
   'REMOTE CALL',
@@ -792,14 +795,17 @@ for (const forbidden of [
 
 for (const required of [
   '36TH BIRTHDAY · LIVE ARCHIVE',
-  '按原视频时间浏览',
-  '选择时间线来源',
-  '按故事线浏览',
-  '当前播放',
-  '切换来源',
-  '关联上下文',
+  'CHRONOLOGICAL CANON · SOURCE-LOCAL CLOCKS',
+  'TIMELINE SCOPE',
+  'CONTEXT RECONSTRUCTION',
+  'CURRENT SOURCE',
+  'SOURCE',
+  'READING CONTEXT',
   '此来源的事件',
-  '故事线 · 前后回收',
+  'STORY THREAD ·',
+  '主直播时长',
+  '独立媒体',
+  '故事线',
   '只搜索已经公开的事件、故事线和人物',
   '每个人物页都会汇总他在主直播、Space 与《俺知》复盘中出现的相关片段。',
   'Bingo 规则越玩越多，口令也临时改掉',

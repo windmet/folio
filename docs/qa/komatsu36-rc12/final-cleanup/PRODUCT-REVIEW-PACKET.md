@@ -35,7 +35,7 @@ FINAL-CLEANUP：ACCEPT
 
 ### B1. 中文 taxonomy label token
 
-确认 `当前播放`、`切换来源`、`选择时间线来源`、`相关故事线`、`故事线`、`关联上下文` 和参与方式标签使用易读的无衬线中文；时间、平台短码、Event count 和正文标题保持原有层级。
+旧版产品包中的中文结构级 kicker 与 `.archive-label-zh` 方案已被最终视觉收口批次 supersede：结构级 kicker 恢复英文 mono，读者语义 taxonomy 使用 `.archive-taxonomy` 小号衬线 token。参与方式、Thread category 与来源事件标签仍保持中文；时间、平台短码、Event count 和正文标题保持原有层级。
 
 ### B2. Media Sources disclosure
 
