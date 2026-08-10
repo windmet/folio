@@ -18,6 +18,8 @@ Y1 是 T1 之后的独立低风险 handoff 批次：用户点击 YouTube 当前�
 - `target="_blank"` 与 `rel="noopener noreferrer"` 保持不变；
 - Y1 不修改 content schema、URL schema 或 Source-scoped native clock。
 
+`scripts/validate-publication.mjs` 同时检查两个 handoff hook，并从 `ProjectArchiveShell.astro` 的独立方法片段断言 `pendingSeekMs = null`、`stopPlaybackSync()` 与 ready-player `pauseVideo()`；不会把只有 data marker 的空实现当作通过。
+
 ## Browser evidence
 
 `BROWSER-VERIFIED`

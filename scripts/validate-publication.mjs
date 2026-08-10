@@ -339,6 +339,28 @@ if (externalHandoffCount !== 2) {
   errors.push(`RC12-Y1 external handoff hooks are ${externalHandoffCount}; expected player fallback + context rail`);
 }
 
+// The built HTML proves that both reader-facing links carry the handoff hook,
+// while this source contract protects the runtime side of Y1 from being
+// reduced to a marker-only implementation during later refactors.
+const archiveShellSource = await readFile(path.resolve('src/components/project/ProjectArchiveShell.astro'), 'utf8');
+const handoffStart = archiveShellSource.indexOf('pauseEmbeddedForExternalHandoff()');
+const handoffEnd = handoffStart >= 0
+  ? archiveShellSource.indexOf('\n    syncFromPlayer()', handoffStart)
+  : -1;
+const handoffSource = handoffStart >= 0 && handoffEnd > handoffStart
+  ? archiveShellSource.slice(handoffStart, handoffEnd)
+  : '';
+if (!handoffSource) errors.push('RC12-Y1 pause-before-handoff method is missing or cannot be scoped');
+if (!/this\.pendingSeekMs\s*=\s*null/.test(handoffSource)) {
+  errors.push('RC12-Y1 handoff must clear pendingSeekMs before external navigation');
+}
+if (!/this\.stopPlaybackSync\(\)/.test(handoffSource)) {
+  errors.push('RC12-Y1 handoff must stop playback sync before external navigation');
+}
+if (!/this\.player\.pauseVideo\(\)/.test(handoffSource)) {
+  errors.push('RC12-Y1 handoff must call pauseVideo when the player is ready');
+}
+
 const forbiddenPublicationMarkers = [
   ['raw ASR file marker', /external_asr_raw/i],
   ['X author identifier', /author_id/i],
