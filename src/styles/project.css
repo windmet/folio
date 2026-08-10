@@ -655,7 +655,7 @@ project-archive-shell {
 
 .project-player-column {
   position: sticky;
-  top: var(--timeline-player-sticky-top, 96px);
+  top: 96px;
   container: player-column / inline-size;
 }
 
@@ -685,17 +685,12 @@ project-archive-shell {
   top: var(--project-nav-height, 68px);
   z-index: 12;
   margin: -8px 0 44px;
-  padding: 14px 0 12px;
+  padding: 14px 14px 12px;
   border-top: 1px solid var(--archive-line);
   border-bottom: 1px solid var(--archive-line);
   background: rgba(247, 244, 237, 0.97);
   box-shadow: 0 8px 18px rgba(55, 47, 37, 0.06);
   backdrop-filter: blur(14px);
-}
-
-.timeline-navigator[data-timeline-geometry='shell'] {
-  margin-inline-start: var(--timeline-navigator-margin-start, 0px);
-  margin-inline-end: var(--timeline-navigator-margin-end, 0px);
 }
 
 .timeline-navigator__current {
@@ -823,6 +818,12 @@ project-archive-shell {
 }
 
 @container (max-width: 58px) {
+  .timeline-navigator__segments button {
+    justify-items: center;
+    padding-inline: 4px;
+    text-align: center;
+  }
+
   .timeline-navigator__segments button > strong {
     display: none;
   }

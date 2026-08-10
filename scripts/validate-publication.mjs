@@ -331,6 +331,32 @@ if ((html.match(/data-timeline-navigator-tooltip[^>]*role="tooltip"/g) || []).le
   errors.push('RC12-T1 Navigator tooltips must expose role="tooltip"');
 }
 
+// RC12-T1.1 product correction: Navigator remains an inline child of the
+// Timeline content column. Guard against reintroducing the rejected JS/CSS
+// shell breakout or coupling Player sticky geometry to Navigator height.
+const timelineShellSource = await readFile(path.resolve('src/components/project/ProjectArchiveShell.astro'), 'utf8');
+const timelineNavigatorSource = await readFile(path.resolve('src/components/project/TimelineNavigator.astro'), 'utf8');
+const timelineCssSource = await readFile(path.resolve('src/styles/project.css'), 'utf8');
+const rejectedTimelineGeometryTokens = [
+  'applyTimelineNavigatorGeometry',
+  '--timeline-navigator-margin-start',
+  '--timeline-navigator-margin-end',
+  '--timeline-player-sticky-top',
+  'data-timeline-geometry',
+];
+const timelineGeometrySources = `${timelineShellSource}\n${timelineNavigatorSource}\n${timelineCssSource}`;
+for (const token of rejectedTimelineGeometryTokens) {
+  if (timelineGeometrySources.includes(token)) {
+    errors.push(`RC12-T1.1 rejected shell-breakout token is present: ${token}`);
+  }
+}
+if (!/\.timeline-navigator\s*\{[\s\S]*?padding:\s*14px 14px 12px;/.test(timelineCssSource)) {
+  errors.push('RC12-T1.1 Navigator must keep the 14px horizontal safe inset');
+}
+if (!/\.project-player-column\s*\{[\s\S]*?top:\s*96px;/.test(timelineCssSource)) {
+  errors.push('RC12-T1.1 expanded Player must keep its independent 96px sticky top');
+}
+
 // RC12-Y1 static contract: both the visible player fallback and the player
 // context rail must use the managed pause-before-handoff hook. The hook is
 // intentionally independent from the external link's noopener default.

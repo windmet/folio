@@ -1,17 +1,17 @@
 # 小松昌平 36 岁生日会 Project Archive 开发设计
 
-> 状态：RC12-T1 + RC12-Y1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING（2026-08-10；RC 0.11 REVIEW BRANCH ACCEPTANCE COMPLETE）
+> 状态：RC12-T1.1 INLINE CORRECTION + RC12-Y1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING（2026-08-10；RC 0.11 REVIEW BRANCH ACCEPTANCE COMPLETE）
 > 目标：把一场多平台、多人物、长时、存在跨轨回收的活动做成可浏览、可追溯、可逐步发布的专题档案，而不是把工作稿直接塞进普通博客正文。
 > 当前源档根：`E:\AI_Subtitle_Studio\02_Projects\小松昌平生日会`（只通过 CLI 参数或 `KOMATSU36_SOURCE_ROOT` 提供）
 > 当前权威文档集：源档根下的 `复核md/` 带版本后缀文件；根目录同名无后缀文件是旧工作稿，不得自动选用。
 > 当前站点：Astro 7 静态站点，TinaCMS 只管理普通 MDX 文章。
 
 > **CURRENT CHECKPOINT**
-> RC 0.10 已完成本地验收，RC 0.11 已完成 R9 与 review-branch handoff；其 acceptance 文档保持历史合同，不因新一轮视觉问题回写。RC12-A2/C2/D2/B2 与 F2 已完成工程与 Browser 验证，RC12-E E1–E5 已完成工程与本地真实 Browser 验证。2026-08-10 新产品复核新增 RC12-T1，现已完成 shell-width geometry、极窄 segment 投影和 hover／keyboard-focus 完整标签的工程／Browser 验证；审阅红框／蓝框只是几何标注，不是产品配色方向。当前产品停点证据见 `docs/qa/komatsu36-rc12/t1/README.md`，总状态仍由 product correction runbook 与 PRODUCT-CHECKPOINT 汇总；E5、F2 文档保留对应证据。Release Gate 继续 CLOSED。
+> RC 0.10 已完成本地验收，RC 0.11 已完成 R9 与 review-branch handoff；其 acceptance 文档保持历史合同，不因新一轮视觉问题回写。RC12-A2/C2/D2/B2 与 F2 已完成工程与 Browser 验证，RC12-E E1–E5 已完成工程与本地真实 Browser 验证。2026-08-10 第二次 T1 产品复核否决 shell-width geometry；T1.1 已恢复左栏 inline geometry，并保留极窄 segment 与 hover／keyboard-focus 完整标签。审阅红框／蓝框只是几何标注，不是产品配色方向。当前产品停点证据见 `docs/qa/komatsu36-rc12/t1/README.md`。Release Gate 继续 CLOSED。
 
 ## 当前实施状态（2026-08-10）
 
-> **RC 0.12 状态覆盖**：RC 0.11 required 功能批次已全部完成，R6 为 `NO ADDITIONAL MOBILE NAV FOR V1`，R8 的 F/G 为 `DEFERRED BY DEFAULT` / `NOT NEEDED FOR V1`。RC12-A2、C2、D2、B2 与 F2 已通过 SOURCE/BROWSER 证据；RC12-E E1–E5 已完成三 scope、native local clock、source-local Event projection、URL/history、390px、Enter／Space、无障碍语义和播放器边界 Browser 回归；RC12-T1 已完成几何、窄 segment、tooltip 的工程／Browser 验证，产品接受仍待停点；RC12-Y1 已完成暂停站内 Player／清除 pending seek 的工程／Browser 验证，Y1 产品停点仍待确认。Y2 managed external session 尚未授权。真实媒体与 Release Gate 继续独立关闭。
+> **RC 0.12 状态覆盖**：RC 0.11 required 功能批次已全部完成，R6 为 `NO ADDITIONAL MOBILE NAV FOR V1`，R8 的 F/G 为 `DEFERRED BY DEFAULT` / `NOT NEEDED FOR V1`。RC12-A2、C2、D2、B2 与 F2 已通过 SOURCE/BROWSER 证据；RC12-E E1–E5 已完成三 scope、native local clock、source-local Event projection、URL/history、390px、Enter／Space、无障碍语义和播放器边界 Browser 回归；RC12-T1.1 inline correction、窄 segment、tooltip 已完成工程／Browser 验证，产品接受仍待停点；RC12-Y1 已完成暂停站内 Player／清除 pending seek 的工程／Browser 验证，Y1 产品停点仍待确认。Y2 managed external session 尚未授权。真实媒体与 Release Gate 继续独立关闭。
 
 - Phase 0A 已落地：`data/source-sets/komatsu36-20260808-r1.json` 精确锁定 6 个 `复核md/` 带后缀输入，并由 `validate:sources` 校验路径、SHA-256、物理行数与 16 条 ARC；
 - Phase 1 垂直切片已落地：真实 `/projects/komatsu36/` 路由、集中状态控制器、YouTube 延迟加载与 pending seek、动态时间 fallback、Timeline、Thread、Person 和 URL 恢复均已实现；
@@ -879,7 +879,7 @@ package.json
 15. **RC 0.11（review branch acceptance complete）**：UX11-A / B 已提交为 `effa314`；UX11-C Desktop Player Context Rail、R1 opaque Player / `00 HOST / BIRTHDAY`、R2 UX11-P0 audit、R3 UX11-P1 Source Index、R4 UX11-P2 Search JSON、R5 UX11-D proportional 8-Act Timeline Navigator、R6 Mobile 决策与 R9 UX11-H Final QA 已完成。R8 Playhead 保持默认延后，Quick / Detail 已裁决 `NOT NEEDED FOR V1`；该阶段在收口时只等待 Release Gate。完整逐批流程见 `docs/editorial/komatsu36-rc11-closeout-runbook.md`。
 16. **RC 0.12 第一版（历史记录）**：Adaptive Player、Target / Context 按需展开、People / Cast layout normalization、Media platform pictograms 已完成第一版工程验证；A/B/C 证据见 `docs/qa/komatsu36-rc12/abc/README.md`，D 证据见 `docs/qa/komatsu36-rc12/d/README.md`，旧交接草案见 `docs/editorial/komatsu36-rc12-release-readiness-handoff.md`。2026-08-09 产品复核曾将其退回 A2/C2/D2/B2，并在当时把 Source-scoped Timeline 保留为 P1 backlog；这是历史裁决，已被后续 A2/C2/D2/B2/F2 完成与 E1–E5 实现状态覆盖。不得回写 RC 0.11 acceptance 合同。
 17. **RC 0.12-E（前一批）**：Source-scoped Timeline 的 E1–E5 已完成工程与本地真实 Browser 验证，覆盖三 source-local scope、Event projection、URL/history、Enter／Space、focus restoration、390px、无障碍语义、single player mount 和 console/overflow；完整交接见 `docs/qa/komatsu36-rc12/e/E5-HANDOFF.md`。当前仍保留产品人工停点、真实媒体、生产和 Release Gate 边界，不把 Browser 证据升级为 `PRODUCT-ACCEPTED`。
-18. **RC12-T1（当前收尾）**：YT 8-Act Navigator 已按 Project shell 级全局章节带实现，保留真实 duration ratio，极窄 segment 只显示 Axx，A01–A08 提供 hover/focus 完整标签。不得修改 Event、Track、scope、URL、current Act 或 Player playback；工程／Browser 证据见 `docs/qa/komatsu36-rc12/t1/README.md`，合同见 `docs/editorial/komatsu36-rc12-t1-timeline-navigator-polish-runbook.md`。
+18. **RC12-T1.1（当前收尾）**：第一版 Project shell 级全局章节带已被产品否决并回退；YT 8-Act Navigator 在 Expanded 中保持 Timeline 左内容列，在 Docked 中随单列 workspace 自然增宽，并有 14px safe inset。真实 duration ratio、极窄 Axx-only 与 A01–A08 hover/focus 完整标签保留。不得恢复 JS breakout，不得修改 Event、Track、scope、URL、current Act 或 Player playback。
 19. **RC12-Y1（独立后续批次）**：YouTube 当前时间外链在导航前清除 pending seek、停止 playback sync，并在 Player ready 时调用 `pauseVideo()`；fallback 与 Player context rail 共用 handoff hook，保留 `_blank` + `noopener noreferrer`。证据见 `docs/qa/komatsu36-rc12/y1/README.md`。Y2 managed external session 未授权。
 
 通用 validator 与 komatsu36 fixture 的分层不再列入本次 Release Blocker：通用层最终只校验 schema、关系、时间、隐私和确定性排序；`8 Acts`、manifest ARC 数与小松专属 publication assertions 留在项目 fixture，但该工作延后到第二个 Project 接入前完成。
@@ -898,7 +898,7 @@ Media Pass、RC 0.9 Structural Editorial Audit、RC 0.10 Reader & Entity Editori
 | Media platform pictograms | **RC12-D2 + F2 已完成源码与 Browser QA**：X Space 圆形声场图标、Source card 平台／状态／动作三层；1366px／390px 无横向溢出，SP2 selection、`?track=`、Source Event Index 和 Event 深链已复测。证据见 `docs/qa/komatsu36-rc12/d2/README.md` 与 F2 handoff |
 | Expandable text | **RC12-B2 + F2 已完成源码与 Browser QA**：Target / Context 原机制保留；220px stress 已真实验证 Source title 展开／收起、ARIA、clamp、URL 与 overflow；Act title／Timeline current title 当前 fixture 未触发点击分支，仍保留 `TODO consumer-check`。证据见 `docs/qa/komatsu36-rc12/b2/README.md` 与 F2 handoff |
 | Source-scoped Timeline | **RC12-E E1–E5 已完成源码与本地真实 Browser QA**：YT 8 Act／104 Event 保留；SP1 8、SP2 12 各自使用 native local clock 与 source-local Event projection；scope URL、YT／SP1 Event 深链、Back／Forward、SP2 直链刷新、external no-iframe、single mount、focus indicator、Enter／Space、无障碍语义、901px 和 390px overflow 已复测。产品停点仍待继续。证据见 `docs/qa/komatsu36-rc12/e/README.md` 与 `docs/qa/komatsu36-rc12/e/E5-HANDOFF.md` |
-| Timeline Navigator polish | **RC12-T1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING**：Expanded/Docked 使用 Project shell 可用宽度；保留 duration ratio；窄 segment 只显示 Axx；A01–A08 hover/focus 显示完整标签。红／蓝框仅为 QA 几何标注，不进入产品色板。证据见 `docs/qa/komatsu36-rc12/t1/README.md`，合同见 `docs/editorial/komatsu36-rc12-t1-timeline-navigator-polish-runbook.md` |
+| Timeline Navigator polish | **RC12-T1.1 INLINE CORRECTION ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING**：shell-wide geometry 已否决；Expanded 使用左内容列，Docked 自然增宽；保留 duration ratio、窄 segment Axx-only 与完整 hover/focus 标签。红／蓝框仅为 QA 标注。证据见 `docs/qa/komatsu36-rc12/t1/README.md` |
 | YouTube external handoff | **RC12-Y1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING**：点击 YouTube 当前时间外链前清除 pending seek、暂停站内 Player；Y2 仍未实施。证据见 `docs/qa/komatsu36-rc12/y1/README.md` |
 | Initial HTML payload | **RC12-E 已复测**：raw `291,492`、Gzip `50,601`、Brotli `32,015`，350 KiB hard gate 余量 `66,908`；初始 Source / Search buttons 仍为 0，Search 项、124 controller Event records 和三 track projection 通过；本轮未以减重名义删除 Rail 或 reader-facing 数据 |
 | Reader-facing copy | **RC 0.10 已完成**：52/52 decisions、full reader pass 与 publication leakage gate 已通过 |

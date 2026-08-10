@@ -15,7 +15,7 @@ const actTotal = acts.length;
 const totalDuration = acts.reduce((sum, act) => sum + Math.max(1, act.data.endMs - act.data.startMs), 0);
 ---
 
-<nav class="timeline-navigator" aria-label="Timeline Acts" data-timeline-navigator data-timeline-geometry="inline">
+<nav class="timeline-navigator" aria-label="Timeline Acts" data-timeline-navigator>
   <div class="timeline-navigator__current" aria-live="polite">
     <span class="archive-kicker" data-timeline-navigator-current-label>
       ACT {String(firstAct?.data.order || 1).padStart(2, '0')} / {String(actTotal).padStart(2, '0')}

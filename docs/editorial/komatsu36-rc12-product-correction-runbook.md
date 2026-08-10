@@ -1,11 +1,11 @@
 # Komatsu36 RC 0.12 Product Correction Runbook
 
-> 状态：`RC12-T1 + RC12-Y1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING`
+> 状态：`RC12-T1.1 INLINE CORRECTION + RC12-Y1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING`
 > 裁决日期：2026-08-09
 > 基线分支：`codex/komatsu36-project-archive`
 > 前置状态：RC 0.11 `REVIEW BRANCH ACCEPTANCE COMPLETE`
 > 当前入口：`docs/editorial/komatsu36-rc12-t1-timeline-navigator-polish-runbook.md`；E5 QA 与 F2 handoff 保留为对应批次证据
-> 当前进度：RC12-A2/C2/D2/B2/F2 已完成；RC12-E E1–E5 已完成工程与本地真实 Browser 验证（YT 8 Act／104 Event；SP1 8 Event；SP2 12 Event）；RC12-T1 T1.0–T1.2 与 RC12-Y1 已完成工程与 Browser 验证，T1/Y1 产品停点仍待确认；B2 Act／Timeline title 分支仍标记 `TODO consumer-check`；Y1 证据见 `docs/qa/komatsu36-rc12/y1/README.md`
+> 当前进度：RC12-A2/C2/D2/B2/F2 已完成；RC12-E E1–E5 已完成工程与本地真实 Browser 验证（YT 8 Act／104 Event；SP1 8 Event；SP2 12 Event）；RC12-T1 第一版 shell-wide geometry 已被产品否决，T1.1 inline correction 与保留的窄 segment／tooltip 已完成工程与 Browser 验证；RC12-Y1 已完成工程与 Browser 验证。T1/Y1 产品停点仍待确认；B2 Act／Timeline title 分支仍标记 `TODO consumer-check`。
 > Release Gate：CLOSED；本文不授权 merge、deploy 或修改 `project.status`
 
 本文记录 RC12-A/B/C/D 第一版经过源码、构建和浏览器验证后，收到的产品层返工裁决，并继续作为 RC 0.12 的**总状态入口**。T1 与 Y1 的工程批次已经分别完成，当前下一步是 T1/Y1 产品复核；Y2 仍未授权。`komatsu36-rc12-t1-timeline-navigator-polish-runbook.md` 仍是 T1/Y1 合同与证据入口。原 `komatsu36-rc12-visual-polish-source-navigation-plan.md` 保存第一版规格与工程证据，不再代表下一批应直接收口；`komatsu36-rc12-release-readiness-handoff.md` 降级为被产品复核退回的本地 QA 快照。
@@ -16,7 +16,7 @@
 RC 0.11                         REVIEW BRANCH ACCEPTANCE COMPLETE
 RC12-A/B/C/D/F2                 SOURCE-VERIFIED + BROWSER-VERIFIED
 RC12-E E1–E5                    SOURCE-VERIFIED + BROWSER-VERIFIED
-RC12-T1                          ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING
+RC12-T1.1 INLINE CORRECTION     ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING
 RC12-Y1                          ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING
 RC12 product acceptance          PRODUCT REVIEW PENDING
 RC12 release readiness           NOT REACHED
@@ -36,7 +36,7 @@ Release Gate                     CLOSED
 | Cast projection | 已有 table 与窄投影，工程压力测试无 overflow | `REVISE` | RC12-C2：明确 wide / medium / mobile 三档，不以横滚完成 |
 | Source pictograms | RC12-D2 已重做 X Space 声场图标与 Source card 三层信息层级，并完成桌面／移动 Browser QA | `F2 VERIFIED, USER REVIEW ACKNOWLEDGED` | 保留文字、外链、`?track=` 与 Source Event Index 合同 |
 | Source-scoped Timeline | E1–E5 已实现并完成工程／本地真实 Browser 回归：三 scope、source-local Event projection、native clock、URL/history、键盘、focus restore、390px、external no-iframe | `SOURCE-VERIFIED + BROWSER-VERIFIED` | 产品人工停点仍待完成，不得提前标记整体接受 |
-| Timeline Navigator geometry / labels | T1 已让 Expanded/Docked Navigator 使用 Project shell 宽度；窄 segment 只显示 Axx；A01–A08 有 hover/focus 完整标签 | `ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING` | 用户确认 T1 后才可关闭此停点 |
+| Timeline Navigator geometry / labels | shell-wide 方案已否决；T1.1 恢复 Expanded 左栏 inline、Docked 自然增宽；窄 segment 只显示 Axx；A01–A08 有 hover/focus 完整标签 | `ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING` | 用户确认 T1 后才可关闭此停点 |
 
 2026-08-10 审阅截图中的红框／蓝框只表达当前范围与目标可用范围，是 QA 标注，不是产品配色方向。任何实现不得据此新增红／蓝边框或改变既有档案色板。
 
@@ -55,7 +55,7 @@ RC12-F2  Full regression and corrected handoff
 
 RC12-E E1–E5 已完成工程与本地真实 Browser 批次；产品人工停点仍独立保留，不能回头混改 A2/C2/D2/B2。
   ↓ 新产品复核
-RC12-T1 Timeline Navigator geometry + narrow labels + hover/focus tooltip
+RC12-T1.1 inline geometry correction + retained narrow labels + hover/focus tooltip
   ↓ T1 人工停点
 RC12-Y1 YouTube handoff 工程已完成，产品停点待确认
 RC12-Y2 managed external session 仅有独立实验指导，未授权实现
@@ -255,8 +255,8 @@ E4 已修复 scope button 的可见焦点环，并补上 panel `aria-hidden`／`
 
 ## 15. RC12-T1 新产品修正入口
 
-2026-08-10 新复核确认 Source-scoped Timeline 已真实落地，同时要求继续收掉桌面 8-Act Navigator 的三项产品问题：Expanded／Docked 横向几何没有使用 Project shell 可用宽度、A03 等真实短 Act 显示半截标题、A01–A08 缺少 hover／keyboard-focus 可见完整标签。
+2026-08-10 第一轮复核要求扩大桌面 Navigator；同日第二次真实页面复核否决该 shell-wide geometry，确认真正问题是 Navigator 横向 padding 为 0。当前有效要求是 Expanded 保持 Timeline 左内容列、Docked 随单列 workspace 自然增宽，并增加 14px safe inset；A03 等短 Act 的 Axx-only 与 A01–A08 hover／keyboard-focus 完整标签继续保留。
 
-本轮命名为 `RC12-T1 — Timeline Navigator Geometry & Label Polish`。A2/C2/D2 保持冻结，B2 保持 PASS 并保留 natural consumer TODO，E 保持工程／Browser PASS 与产品停点；T1 不修改 duration ratio、Event、Track、scope、URL、current Act 或 Player playback。唯一详细入口为 `docs/editorial/komatsu36-rc12-t1-timeline-navigator-polish-runbook.md`。
+本轮修正命名为 `RC12-T1.1 — Timeline Navigator Inline Geometry Correction`。A2/C2/D2 保持冻结，B2 保持 PASS 并保留 natural consumer TODO，E 保持工程／Browser PASS 与产品停点；T1.1 不修改 duration ratio、Event、Track、scope、URL、current Act、Player playback、Y1 或 Y2。唯一详细入口为 `docs/editorial/komatsu36-rc12-t1-timeline-navigator-polish-runbook.md`。
 
 T1 完成前不得宣布 RC 0.12 review-branch acceptance complete。按用户继续开发指令，Y1 已独立完成“点击 YouTube 当前时间外链前暂停站内播放器、清除 pending seek”的工程实现；Y1 产品停点与 T1 分开记录，证据见 `docs/qa/komatsu36-rc12/y1/README.md`。Y2 仍未实施；普通网站不能扫描任意 YouTube 标签页，managed WindowProxy 也必须保留 `noopener`/COOP 失效与安全降级边界。

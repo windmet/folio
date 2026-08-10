@@ -789,36 +789,8 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         this.timelineScrollScheduled = false;
         const nav = this.querySelector<HTMLElement>('.project-nav');
         this.style.setProperty('--project-nav-height', `${Math.ceil(nav?.getBoundingClientRect().height || 68)}px`);
-        this.applyTimelineNavigatorGeometry();
         this.updateTimelineNavigator();
       });
-    }
-
-    applyTimelineNavigatorGeometry() {
-      const navigator = this.querySelector<HTMLElement>('[data-timeline-navigator]');
-      const content = this.querySelector<HTMLElement>('.project-content');
-      const desktop = window.matchMedia('(min-width: 901px)').matches;
-      const visible = Boolean(navigator && content && this.activeView === 'timeline'
-        && this.timelineScopeId === this.data.defaultTrackId && !navigator.hidden);
-      if (!navigator || !content || !desktop || !visible) {
-        this.style.removeProperty('--timeline-navigator-margin-start');
-        this.style.removeProperty('--timeline-navigator-margin-end');
-        this.style.removeProperty('--timeline-player-sticky-top');
-        navigator?.setAttribute('data-timeline-geometry', 'inline');
-        return;
-      }
-
-      const shellRect = this.getBoundingClientRect();
-      const contentRect = content.getBoundingClientRect();
-      const shellStart = Math.ceil(shellRect.left - contentRect.left);
-      const shellEnd = Math.ceil(contentRect.right - shellRect.right);
-      const navigatorHeight = Math.ceil(navigator.getBoundingClientRect().height);
-      const projectNavHeight = Math.ceil(this.querySelector<HTMLElement>('.project-nav')?.getBoundingClientRect().height || 68);
-
-      this.style.setProperty('--timeline-navigator-margin-start', `${shellStart}px`);
-      this.style.setProperty('--timeline-navigator-margin-end', `${shellEnd}px`);
-      this.style.setProperty('--timeline-player-sticky-top', `${projectNavHeight + navigatorHeight + 8}px`);
-      navigator.setAttribute('data-timeline-geometry', 'shell');
     }
 
     updateTimelineNavigator() {

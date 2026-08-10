@@ -1,10 +1,10 @@
 # Komatsu36 RC12-T1 QA Ledger
 
-> 状态：`T1.1/T1.2 ENGINEERING + BROWSER VERIFIED — PRODUCT REVIEW PENDING`
+> 状态：`T1.1 INLINE CORRECTION ENGINEERING + BROWSER VERIFIED — PRODUCT REVIEW PENDING`
 > 实施入口：`docs/editorial/komatsu36-rc12-t1-timeline-navigator-polish-runbook.md`
 > Release Gate：CLOSED
 
-本文是 RC12-T1 的追加式证据账本。T1.1 几何与 T1.2 segment projection/tooltip 已完成工程和真实本地 Browser 验证；T1.3 完整回归已执行，产品接受仍待用户停点。后续 agent 不得用 RC12-E 或旧 R5 Navigator 截图替代本批证据。
+本文是 RC12-T1 的追加式证据账本。第一版 shell-wide T1.1 已被二次产品复核否决；其记录作为历史失败证据保留。当前有效结果是 T1.1 inline correction；T1.2 segment projection/tooltip 保留并重新完成真实本地 Browser 验证，产品接受仍待用户停点。
 
 ## T1.0 Baseline
 
@@ -28,9 +28,9 @@
 - 1366×768：Project shell `left=24.00/right=1327.26/width=1303.26`；正文 Navigator `width=808.29px`；A03 segment `33.79px`，仍显示标题；
 - 390×844：桌面 Navigator 由既有移动合同隐藏，页面 `scrollWidth=clientWidth=375`。
 
-## T1.1 Geometry
+## T1.1 第一版 Shell-wide Geometry（历史，REJECTED）
 
-`SOURCE-VERIFIED + BROWSER-VERIFIED`
+`ENGINEERING/BROWSER VERIFIED AT THE TIME — PRODUCT REJECTED / ROLLED BACK`
 
 实现：`TimelineNavigator.astro` 输出单一 shell geometry hook；`ProjectArchiveShell.astro` 测量 shell/content rect 并在 resize、mode、scope、view 生命周期重算；`project.css` 用测量的负 margin 扩展到 shell，Player sticky top 由 Project Nav + Navigator 高度派生。
 
@@ -42,7 +42,7 @@ Browser 证据：
 - SP1 scope：Navigator `hidden=true`、rect 为 0，geometry 回到 `inline`，shell 上的 T1 margin/sticky variables 清空；
 - Overview/People：T1 variables 清空，页面横向宽度保持无溢出。
 
-## T1.2 Segment projection and tooltip
+## T1.2 Segment projection and tooltip（实现保留；下列尺寸为第一版历史证据）
 
 `SOURCE-VERIFIED + BROWSER-VERIFIED`
 
@@ -56,7 +56,7 @@ Browser 证据：
 - 真实发布 HTML 输出 8 个 segment、8 个 tooltip、8 个 duration-ratio style，静态合同通过；
 - Enter/Space 仍使用原 button 导航语义，current Act 更新与事件深链未改变。
 
-## T1.3 Regression
+## T1.3 第一版 Regression（历史证据）
 
 `SOURCE-VERIFIED + BROWSER-VERIFIED`
 
@@ -68,6 +68,26 @@ npm exec -- tsc --noEmit
 ```
 
 结果：项目、Reader Copy、Astro build、publication、TypeScript 全部通过；publication raw HTML `293,095 bytes`、158 search items、3 Timeline scopes、12 B2 expandable contracts、8 T1 segments/tooltips；Browser 真实路由为 `http://127.0.0.1:4322/projects/komatsu36/`，固定 1440×900、1366×768、901×700、390×844 已复核，console error/warn 为空，document overflow 为 0，事件深链 `?view=timeline&event=yt-042252-seigura-superchat` 恢复正确。
+
+## T1.1 二次裁决与 Inline Correction（当前有效）
+
+`SOURCE-VERIFIED + BROWSER-VERIFIED — PRODUCT REVIEW PENDING`
+
+二次产品复核裁决：shell-wide breakout `REJECTED`；窄 segment `ACCEPT / PASS`；现有 tooltip 保留并做 consumer check。实现已删除 `applyTimelineNavigatorGeometry()`、动态 margin custom properties、`data-timeline-geometry` 和由 Navigator 高度派生的 Player sticky top；Expanded Player 恢复独立 `top: 96px`，Navigator 增加左右 `14px` safe inset。
+
+真实路由 `http://127.0.0.1:4322/projects/komatsu36/?view=timeline` 的自动交互验证：
+
+- 1366×768 Expanded：content/Navigator `left=64.97/right=888.06/width=823.09`，Player `left=929.03`，safe inset `14/14px`；A03 `33.22px`、title hidden、Axx centered；
+- 1440×900 Expanded：content/Navigator `left=103.19/right=922.81/width=819.63`，Player `left=964.81`，safe inset `14/14px`；A03 `33.08px`；
+- 1920×1080 Expanded：content/Navigator `left=396/right=1058/width=662`，Player `left=1134`，safe inset `14/14px`；A03 `26.31px`；
+- Docked 三档 Navigator 均随单列 content 自然增宽为 `1236.06 / 1233.63 / 1128px`，Player frame 均为 `72px` 固定底栏，无 shell breakout attribute；
+- 三档 Expanded/Docked 的 document overflow 均为 0，console error/warn 均为空；
+- A01/A03/A08 的 mouse hover 与 keyboard focus 均得到 `visibility=visible/opacity=1` 的完整 `ACT xx · title`；首尾 tooltip 均未越出 viewport；
+- 页面截图输出到 Codex visualizations 的 `rc12-t1-inline/`，截图无红／蓝产品标注。
+
+验证器：`node scripts/verify-rc12-t1-inline-browser.mjs <screenshot-output-dir>`。应用内 Browser 首次调用因宿主目录 `EPERM` 无法建立控制连接，故按前端测试 fallback 使用仓库 Playwright；这不是页面失败。
+
+本轮门禁：`npm run validate`、`npm exec -- tsc --noEmit`、`npm run audit:payload -- komatsu36`、`git diff --check` 均通过；publication raw HTML `293,123 bytes`，350 KiB 余量 `65,277 bytes`。
 
 ## Product checkpoint
 

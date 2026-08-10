@@ -1,6 +1,6 @@
-# Komatsu36 RC12-T1 Timeline Navigator Geometry & Label Polish Runbook
+# Komatsu36 RC12-T1 / T1.1 Timeline Navigator Inline Geometry Correction Runbook
 
-> 状态：`T1.1/T1.2 ENGINEERING + BROWSER VERIFIED — PRODUCT REVIEW PENDING`
+> 状态：`T1.1 INLINE CORRECTION ENGINEERING + BROWSER VERIFIED — PRODUCT REVIEW PENDING`
 > 建立日期：2026-08-10
 > 基线分支：`codex/komatsu36-project-archive`
 > 基线提交：`8f4a3b3`
@@ -8,7 +8,9 @@
 > 本批入口：本文；T1 QA：`docs/qa/komatsu36-rc12/t1/README.md`
 > Release Gate：CLOSED；本文不授权 merge、deploy、真实媒体验收或 `project.status` 变更
 
-本文把 2026-08-10 产品复核中确认的 Timeline Navigator 几何与标签问题整理为独立的 RC12-T1。T1.0 基线、T1.1 几何与 T1.2 segment projection/tooltip 已完成工程和本地 Browser 验证，T1.3 产品停点仍待用户确认。它不否定 RC11 的 8-Act Navigator，也不把 B2 的正文展开合同改判为失败；T1 只修正桌面 Navigator 的可用横向范围、极窄 segment 投影和 hover／keyboard-focus 完整标签。
+本文保留 2026-08-10 第一轮 RC12-T1 的历史规格，并记录同日第二次产品裁决。第一轮把 Navigator 扩成 Project shell 的 geometry 已被真实页面复核否决，不能再作为实现目标；T1.1 已恢复 Navigator 为 Timeline `.project-content` 左栏内的 sticky component。窄 segment 与 hover／keyboard-focus tooltip 两项裁决继续有效并已通过工程和本地 Browser 验证。
+
+> **优先级最高的覆盖规则**：下文凡写有 `full-shell`、`workspace-global band`、负 margin breakout、由 Navigator 高度派生 Player sticky top 的旧内容，均仅是被否决方案的历史记录，由本轮 T1.1 inline correction 覆盖，不得继续实现或恢复。
 
 ## 0. 审阅标注解释
 
@@ -42,45 +44,32 @@
 | D2 Source hierarchy / icon | `PASS / FREEZE` | 不触碰 |
 | B2 expandable text | `PASS`，Act／Timeline natural fixture 仍 `TODO consumer-check` | 不接管现有展开/收起机制，不把 segment tooltip 记为 B2 返工 |
 | E Source-scoped Timeline | `SOURCE/BROWSER VERIFIED — PRODUCT REVIEW PENDING` | 保留三 scope、native clock 与 source-local projection |
-| T1 Navigator geometry | `REQUIRED` | Docked 扩到 Project shell；Expanded 建立 workspace-global band |
+| T1 Navigator shell-wide geometry | `REJECTED / ROLLED BACK` | 不得跨越右侧 Player，不得恢复 JS margin breakout |
+| T1.1 Navigator inline geometry | `REQUIRED / VERIFIED` | Expanded 保持左内容列；Docked 依靠单列 workspace 自然增宽；左右 14px safe inset |
 | T1 narrow segment | `REQUIRED` | 保留 duration ratio，窄 segment 只显示 Axx |
 | T1 visible full label | `REQUIRED` | 所有 A01–A08 hover/focus 显示完整 `ACT xx · title` |
 
 T1 不得修改 Act duration、Act/Event 数量或顺序、Track、source scope、URL schema、current Act 判定、Event selection、history、Player seek/playback、内容真值或移动导航裁决。
 
-## 3. 目标布局合同
+## 3. T1.1 最终布局合同（覆盖旧 shell-wide 方案）
 
-### 3.1 Docked
+### 3.1 Expanded
 
-在 `min-width: 901px` 且 Player 为 Docked 时，YT Timeline Navigator 应从当前正文内缩范围扩展到 Project shell 的实际左右边界。它可以保留与正文一致的内部 padding，但背景、上下分隔线和 sticky band 必须使用 shell 可用宽度。
+- Navigator 保持 `.project-content` 的普通子组件，左右边界等于左内容列，不跨越 Player；
+- `.project-player-column` 继续独立 `position: sticky; top: 96px`，不消费 Navigator 高度；
+- Navigator 继续以 `top: var(--project-nav-height)` sticky，二者互不派生；
+- `.timeline-navigator` 使用 `padding: 14px 14px 12px`，解决首尾文字贴边；
+- 禁止 `applyTimelineNavigatorGeometry()`、`data-timeline-geometry`、`--timeline-navigator-margin-start/end`、`--timeline-player-sticky-top` 回归。
 
-- 目标是 Project shell，不是 viewport；
-- 禁止 `width: 100vw`；
-- 禁止硬编码当前截图像素或以任意 `120%/130%` 宽度猜测；
-- 不得制造 document-level 横向滚动；
-- Docked bottom player、页面 bottom inset 与 Navigator sticky 互不覆盖。
+### 3.2 Docked
 
-### 3.2 Expanded
-
-Expanded + Timeline + YT scope 时，Navigator 被定义为 workspace-level global chapter band，而不是左侧正文中的普通卡片。它在视觉上横贯 workspace 的实际可用宽度；正文与右侧 Player 从 band 下方继续各自布局。
-
-推荐实现边界：
-
-1. Navigator 仍只渲染一次，禁止复制 desktop/docked 两份 DOM；
-2. 由 Project shell 负责几何，不让 `TimelineNavigator.astro` 猜测 viewport；
-3. 使用 shell 与 Navigator 所在内容列的 `getBoundingClientRect()` 计算 breakout left/width，写入 shell-owned CSS custom properties；
-4. 初次连接、窗口 resize、Player mode 切换、Timeline view/scope 切换后重新测量；如使用 `ResizeObserver`，只观察 shell／workspace／Navigator 这些必要节点并在 disconnect 时清理；
-5. sticky band 高度变化后，`.project-player-column` 的 sticky top 必须位于 Project Nav + Navigator 之后，并由实测高度或同一组 custom properties派生；
-6. SP1／SP2 或非 Timeline view 隐藏 Navigator 时，Player offset 恢复既有值；
-7. 几何测量失败时降级为当前正文列宽，不允许覆盖 Player 或产生横滚。
-
-允许 agent 在实现前比较“DOM 提升到 workspace 级”与“单 DOM + shell-owned breakout measurement”两种小方案；但不得为了少改文件使用负 z-index、`100vw` 或未经测量的百分比覆盖 Player。若 DOM 提升会破坏 scope panel 的 `aria-labelledby`、hidden 状态或 current Act 查询，则选择 measurement 方案。
+Docked 继续使用现有单列 workspace 与固定底部 Player。右侧列释放后 `.project-content` 自然获得更宽空间，Navigator 随父列增宽，不增加 shell breakout、viewport width 或 JS 几何测量。
 
 ### 3.3 层叠与 sticky
 
 - Project Nav 继续是最高的页面导航基准；
 - Timeline Navigator 紧随其后；
-- Expanded Player sticky top 位于两者之后，不能藏到 Navigator 下方；
+- Expanded Player 与 Navigator 分属左右列，Player 固定以 `96px` 为 sticky top；
 - Docked Player 仍在视口底部，不因 Navigator z-index 丢失交互；
 - dialog、Search 和现有 overlay 层级不得回归；
 - `navigateToAct()` 与 `getTimelineScrollOffset()` 必须用真实 band 高度，Act 标题不能被双 sticky 遮住。
@@ -122,11 +111,13 @@ Expanded + Timeline + YT scope 时，Navigator 被定义为 workspace-level glob
 - 抽查 A03 的当前窄投影和 A01/A08 边缘；
 - 不改代码，先把证据写入 `docs/qa/komatsu36-rc12/t1/README.md`。
 
-### T1.1 — Geometry
+### T1.1 — Inline geometry correction
 
-- 只做 shell breakout、sticky offset、resize/mode/scope 响应；
-- 验证 Expanded 与 Docked 后提交独立 scoped commit；
-- 未通过中间宽度与 Player 不覆盖检查前，不进入 tooltip。
+- 删除 shell breakout、动态 Player sticky offset 与 geometry attribute；
+- 恢复 Expanded 左栏 inline 几何，Docked 只依赖现有单列布局；
+- 增加 14px horizontal safe inset；
+- 保留 T1.2 窄格与 tooltip，不重写交互；
+- 验证 1366×768、1440×900、1920×1080 的 Expanded／Docked。
 
 ### T1.2 — Narrow projection and tooltip
 
@@ -147,9 +138,10 @@ Expanded + Timeline + YT scope 时，Navigator 被定义为 workspace-level glob
 
 | 视口／状态 | 必查项 |
 |---|---|
-| 1440×900 Expanded + YT | Navigator 左右边界等于 shell；Player 从 band 下方 sticky；A01/A08 tooltip 不越界 |
-| 1366×768 Expanded + YT | band 不覆盖 Player；Act 点击后的 header 不被 sticky 遮挡；document overflow 为 0 |
-| 1440×900 Docked + YT | band 使用 shell 宽度；底部 Player 与页面末项安全区不回归 |
+| 1440×900 Expanded + YT | Navigator 左右边界等于 `.project-content`；右边界小于 Player 左边界；A01/A08 tooltip 不越界 |
+| 1366×768 Expanded + YT | 左栏 Navigator 不覆盖 Player；左右 safe inset 为 14px；document overflow 为 0 |
+| 1440×900 Docked + YT | Navigator 随单列 `.project-content` 自然增宽；底部 Player 与页面末项安全区不回归 |
+| 1920×1080 Expanded / Docked | 不因 shell max-width 恢复 breakout；两种模式均无横滚 |
 | 901px 与 1024/1200px 压力点 | A03 等窄 segment 只显示 Axx；tooltip 完整；无半截标题或横滚 |
 | SP1 / SP2 | 不显示 8-Act Navigator；scope/Event/native clock 与 Player offset 保持正常 |
 | 390×844 | 继续执行既有无 desktop Act Navigator 合同；scope tabs、Player、Event 无回归 |
@@ -163,8 +155,9 @@ Browser 记录至少包含：viewport、route、Player mode、scope、Navigator/
 预计实现文件：
 
 - `src/components/project/TimelineNavigator.astro`：tooltip DOM 与 segment hooks；
-- `src/components/project/ProjectArchiveShell.astro`：shell-owned breakout/sticky geometry lifecycle；
-- `src/styles/project.css`：global band、container projection、tooltip 和层叠；
+- `src/components/project/ProjectArchiveShell.astro`：移除被否决的 shell-owned breakout lifecycle；
+- `src/styles/project.css`：inline safe inset、container projection、tooltip 和独立 sticky；
+- `scripts/verify-rc12-t1-inline-browser.mjs`：三种桌面视口的 Expanded／Docked 几何与 tooltip 回归；
 - `scripts/validate-publication.mjs`：只在能稳定表达发布合同的情况下增加 T1 静态断言；
 - `docs/qa/komatsu36-rc12/t1/README.md`：baseline、source/browser evidence、未执行边界。
 
@@ -211,6 +204,6 @@ Y2 只保留为设计候选，完整实验门禁见 `docs/editorial/komatsu36-rc
 1. 全文读取本文，再读取 product correction runbook、PRODUCT-CHECKPOINT、E5 handoff 与当前三个预计实现文件；
 2. 先做 T1.0，只以当前 checkout 与真实 Browser rect 为准，不照抄审阅截图像素；
 3. 写下本批不改变的 Act/Event/Track/URL/current Act/playback 合同；
-4. T1.1、T1.2、T1.3 与 Y1 分批验证和 scoped commit；不得启动 Y2；
+4. 将 shell-wide T1.1 视为已否决历史，只执行本文 inline correction；不得启动 Y2；
 5. 每批报告 source、browser、product 三种状态与 `NOT EXECUTED` 边界；
 6. 不以 payload 目标缩水功能，不把 QA 红/蓝框变成产品颜色，不打开 Release Gate。
