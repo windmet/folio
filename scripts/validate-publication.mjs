@@ -635,6 +635,26 @@ if (!timelineShellSource.includes('dismissPersonForTransition()')
   errors.push('RC12 final cleanup overlay transition invariant is missing');
 }
 
+// RC12-P1-C/D final polish: reader-facing Chinese taxonomy labels use the
+// sans-serif label token, while source detail remains a native disclosure.
+const archiveLabelCount = (html.match(/archive-label-zh/g) || []).length;
+if (archiveLabelCount < 8) {
+  errors.push(`RC12-P1-C has ${archiveLabelCount} Chinese label tokens; expected at least 8`);
+}
+if (!timelineCssSource.includes('.archive-label-zh')) {
+  errors.push('RC12-P1-C CSS is missing the archive-label-zh typography token');
+}
+const mediaDisclosureTags = [...html.matchAll(/<details[^>]*class="media-sources__disclosure"[^>]*>/g)];
+if (mediaDisclosureTags.length !== 1) {
+  errors.push(`RC12-P1-D has ${mediaDisclosureTags.length} Media Sources disclosures; expected 1`);
+}
+if (!html.includes('查看 3 个媒体来源、时长与来源证明')) {
+  errors.push('RC12-P1-D disclosure summary is missing the reader-facing source scope');
+}
+if (!html.includes('data-source-event-index')) {
+  errors.push('RC12-P1-D must retain the Source Event Index hook inside the disclosure');
+}
+
 // RC12-Y1 static contract: both the visible player fallback and the player
 // context rail must use the managed pause-before-handoff hook. The hook is
 // intentionally independent from the external link's noopener default.
@@ -805,7 +825,8 @@ for (const required of [
   'https://x.com/i/status/2044007616284897782',
   'https://x.com/i/spaces/1dKrPEwrAoQJX',
   'https://x.com/i/spaces/1OxwblPnkDDJB',
-  'MEDIA SOURCES',
+  '媒体来源',
+  '查看 3 个媒体来源、时长与来源证明',
   'data-source-track="yt-main"',
   'data-source-track="space-1"',
   'data-source-track="space-2"',

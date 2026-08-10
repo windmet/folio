@@ -27,7 +27,7 @@ const formatTime = (milliseconds: number) => {
     <button type="button" class="panel-close" data-close-thread aria-label="关闭事件线">×</button>
     {threads.map(({ entry, Content, nodes, relatedSources }) => (
       <article class="thread-detail" data-thread-detail={entry.id.split('/').at(-1)} hidden>
-        <span class="archive-kicker">故事线 · {readerLabel(threadCategoryLabels, entry.data.category)}</span>
+        <span class="archive-label-zh">故事线 · {readerLabel(threadCategoryLabels, entry.data.category)}</span>
         <h2>{entry.data.title}</h2>
         <p class="thread-deck">{entry.data.deck}</p>
         <ol class="thread-nodes">

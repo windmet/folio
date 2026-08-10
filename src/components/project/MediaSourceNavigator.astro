@@ -24,11 +24,16 @@ const countEvents = (track: any) => events.filter((event) => referenceId(event.d
 ---
 
 <section class="media-sources" aria-labelledby="media-sources-title">
-  <div class="media-sources__heading">
-    <span class="archive-kicker" id="media-sources-title">MEDIA SOURCES</span>
-    <p>三份独立媒体，各自使用本地时钟。</p>
-  </div>
-  <div class="media-sources__list">
+  <div class="media-sources__summary">
+    <div class="media-sources__summary-copy">
+      <span class="archive-label-zh" id="media-sources-title">媒体来源</span>
+      <strong>YouTube 主直播 + X Space ① / ②</strong>
+      <p>三路媒体 · 各自原视频时间</p>
+    </div>
+    <details class="media-sources__disclosure">
+      <summary>查看 3 个媒体来源、时长与来源证明</summary>
+      <div class="media-sources__details">
+        <div class="media-sources__list">
     {orderedTracks.map((track) => {
       const trackId = track.id.split('/').at(-1) || track.id;
       const isYouTube = track.data.playback.provider === 'youtube';
@@ -78,23 +83,26 @@ const countEvents = (track: any) => events.filter((event) => referenceId(event.d
         </article>
       );
     })}
-  </div>
-  <div class="media-sources__provenance" aria-label="来源证明">
+        </div>
+        <div class="media-sources__provenance" aria-label="来源证明">
     <span>来源证明</span>
     {sources.filter((source) => source.data.kind === 'editorial' && source.data.publicUrl).map((source) => (
       <a href={source.data.publicUrl} target="_blank" rel="noopener noreferrer">{source.data.label} ↗</a>
     ))}
-  </div>
-  <section class="source-event-index" data-source-event-index hidden aria-live="polite">
-    <div class="source-event-index__head">
-      <span class="archive-kicker">此来源的事件</span>
-      <strong data-source-event-heading>选择来源以浏览事件</strong>
-    </div>
+        </div>
+        <section class="source-event-index" data-source-event-index hidden aria-live="polite">
+          <div class="source-event-index__head">
+            <span class="archive-label-zh">此来源的事件</span>
+            <strong data-source-event-heading>选择来源以浏览事件</strong>
+          </div>
     {orderedTracks.map((track) => {
       const trackId = track.id.split('/').at(-1) || track.id;
       return (
         <div id={`source-event-list-${trackId}`} class="source-event-index__list" data-source-event-list={trackId} hidden></div>
       );
     })}
-  </section>
+        </section>
+      </div>
+    </details>
+  </div>
 </section>

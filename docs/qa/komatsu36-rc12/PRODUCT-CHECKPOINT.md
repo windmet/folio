@@ -138,9 +138,29 @@ MT1：REVISE — 章节带摘要仍偏高；普通 Event 密度可以
 
 ## 2026-08-10 RC12 Final Interaction & Hierarchy Cleanup
 
-最新审阅确认下一批不再开新 RC，而是先收口两个 P0：`Person → Thread overlay exclusivity` 与 `YT Player Act Context removal`。中文 UI label token 与 Media Sources disclosure 已登记为下一批 P1，不在本轮混改。详细合同与 QA 矩阵见 `docs/editorial/komatsu36-rc12-final-interaction-hierarchy-cleanup.md`、`docs/qa/komatsu36-rc12/final-cleanup/README.md`。
+最新审阅确认下一批不再开新 RC，而是先收口两个 P0：`Person → Thread overlay exclusivity` 与 `YT Player Act Context removal`。P0 已完成后，本批继续落实已登记的 P1-C 中文 UI label token 与 P1-D Media Sources native disclosure；详细合同与 QA 矩阵见 `docs/editorial/komatsu36-rc12-final-interaction-hierarchy-cleanup.md`、`docs/qa/komatsu36-rc12/final-cleanup/README.md`。
 
 本批人工停点将在 P0-A/P0-B Browser 验证后更新；不得把工程通过提前写成整体 `PRODUCT-ACCEPTED`。
+
+## 2026-08-10 Final Cleanup P1 工程结果
+
+P1-C/P1-D 已完成源码实现，待重新执行构建与真实路由 Browser QA。产品复核重点为：
+
+- 390px 下 Media Sources 摘要是否足够清楚，展开后是否仍能顺畅选择来源、查看时长／来源证明与浏览事件；
+- 键盘 Enter／Space 是否能打开 native disclosure，展开前后不出现横向 overflow；
+- 中文分类标签的 sans-serif token 是否比旧 mono taxonomy 更易读，同时没有改变时间、短码、Event title 的层级。
+
+人工回复可直接使用：
+
+```text
+FINAL-CLEANUP-P1：ACCEPT
+```
+
+或指出具体修正，例如：
+
+```text
+FINAL-CLEANUP-P1：REVISE — 390px 摘要清楚；展开后的来源证明间距仍需收紧
+```
 
 ## 2026-08-10 Final Cleanup 工程结果
 
