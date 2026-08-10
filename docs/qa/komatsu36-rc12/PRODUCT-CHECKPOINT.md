@@ -2,7 +2,7 @@
 
 > 当前状态：`RC12-T1 + RC12-Y1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING`
 > 预览地址：`http://127.0.0.1:4322/projects/komatsu36/`
-> 当前执行入口：`docs/editorial/komatsu36-rc12-t1-timeline-navigator-polish-runbook.md`
+> 当前 T1/Y1 工程与产品复核入口：`docs/editorial/komatsu36-rc12-t1-timeline-navigator-polish-runbook.md`
 
 这份表保留 2026-08-09 第一版产品裁决，并追加当前状态；它不替代源码、构建或 Browser QA 证据。RC12-A2/C2/D2/B2 与 F2 已完成，RC12-E E1–E5 已完成工程与本地真实 Browser QA。2026-08-10 的新产品复核确认 E 不应回滚，并独立新增 RC12-T1；T1 的 shell-width geometry、窄 segment 投影、可见完整标签与 RC12-Y1 外链 handoff 现已完成工程／Browser 验证，T1/Y1 产品停点仍待用户确认。用户截图中的红框／蓝框仅为几何说明标注，不是产品配色方向。该复核不等同于真实媒体通过、生产验收或 Release Gate 授权。当前证据见 `docs/qa/komatsu36-rc12/t1/README.md` 与 `docs/qa/komatsu36-rc12/y1/README.md`；总边界仍见 product correction runbook、F2 handoff 与 E5 handoff。
 
