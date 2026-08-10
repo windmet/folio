@@ -159,7 +159,8 @@ const projectPeople = defineCollection({
     project: reference('projects'),
     displayName: z.string(),
     reading: z.string().optional(),
-    aliases: z.array(z.string()),
+    callNames: z.array(z.string()).default([]),
+    searchAliases: z.array(z.string()).default([]),
     projectContext: z.string().optional(),
     participation: z.array(z.object({
       kind: z.enum([

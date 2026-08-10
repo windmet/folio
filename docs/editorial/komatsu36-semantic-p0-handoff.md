@@ -10,7 +10,7 @@
 
 本批只落实 semantic patch 的 P0 硬事实。`komatsu36_main.md`、`komatsu36_arcs.md`、`komatsu36_review_todo.md`、`komatsu36_space.md` 与 RAW 均未回写；Amazon／濱事项由 semantic patch 第 1～3 节作为 derived override layer。既有内部 ID `yt-040405-amazon-hama` 与 `shioya-fumiyasu` 暂时保留，避免破坏旧 Event URL、Thread 引用和人物深链。
 
-本批未实施 aliases schema、敬称搜索正规化、清典公开 offer、11 条 Thread 全量故事化或 UI taxonomy 替换；它们仍按 semantic patch 的 P1/P2 顺序排队。
+本批截止时未实施 aliases schema、敬称搜索正规化、清典公开 offer、11 条 Thread 全量故事化或 UI taxonomy 替换。随后 aliases / 敬称搜索已由独立 P1 Person 第 5–7 项完成，证据见 `komatsu36-semantic-p1-person-handoff.md`；其余事项仍按 semantic patch 的 P1/P2 顺序排队。
 
 ## 2. 已实施事实
 
@@ -63,6 +63,6 @@ npm exec -- tsc --noEmit           PASS
 node scripts/verify-komatsu36-semantic-p0-browser.mjs <optional-screenshot-dir>
 ```
 
-## 5. 下一批
+## 5. 后续状态
 
-下一批是 P1 Person semantics：拆开读者可见常用称呼与隐藏搜索 alias，删除 10 条纯敬称，新增 `トシピ`，把“本场别名”改为“本场常用称呼”，并为敬称查询建立搜索正规化。不得在该批顺手迁移人物 slug 或混入 Thread/UI 全量改写。
+P1 Person 第 5–7 项现已由 `komatsu36-semantic-p1-person-handoff.md` 独立完成：拆开读者可见常用称呼与隐藏搜索 alias，删除 10 条纯敬称，新增 `トシピ`，把“本场别名”改为“本场常用称呼”，并为敬称查询建立搜索正规化。本文件继续保留 P0 截止点，不据此宣称整个 Semantic P1 已完成。

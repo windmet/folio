@@ -356,6 +356,8 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
 </project-archive-shell>
 
 <script>
+  import { normalizeProjectSearchText } from '../../lib/projectSearchNormalization';
+
   type ArchiveEvent = {
     id: string;
     trackId: string;
@@ -710,7 +712,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     }
 
     async filterSearch(query: string) {
-      const normalized = query.trim().toLocaleLowerCase('ja-JP');
+      const normalized = normalizeProjectSearchText(query);
       const panel = this.querySelector<HTMLElement>('[data-search-results]');
       const input = this.querySelector<HTMLInputElement>('[data-archive-search]');
       const clear = this.querySelector<HTMLElement>('[data-search-clear]');
@@ -723,7 +725,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         return;
       }
       const items = await this.ensureSearchIndex();
-      if (!items || input.value.trim().toLocaleLowerCase('ja-JP') !== normalized) return;
+      if (!items || normalizeProjectSearchText(input.value) !== normalized) return;
       const matches = items.filter((item) => item.searchText.includes(normalized));
       list?.replaceChildren(...matches.map((item) => this.createSearchResultButton(item)));
       this.searchOpen = true;

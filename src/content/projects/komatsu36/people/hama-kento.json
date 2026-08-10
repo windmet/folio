@@ -2,7 +2,8 @@
   "project": "komatsu36",
   "displayName": "濱健人",
   "reading": "はま けんと",
-  "aliases": ["濱ちゃん", "ハマ"],
+  "callNames": ["濱ちゃん", "ハマ"],
+  "searchAliases": [],
   "projectContext": "《俺知》昼夜两场饰演坂本龍馬，并负责土佐弁监修；生日会中最早抽到俄罗斯章鱼烧。",
   "participation": [
     { "kind": "ore-shiri-cast", "character": "坂本龍馬", "sessions": ["day", "night"] },

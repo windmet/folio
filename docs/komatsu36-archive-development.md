@@ -1,6 +1,6 @@
 # 小松昌平 36 岁生日会 Project Archive 开发设计
 
-> 状态：SEMANTIC P0 + RC12-T1.1/Y1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING（2026-08-10；RC 0.11 REVIEW BRANCH ACCEPTANCE COMPLETE）
+> 状态：SEMANTIC P1 PERSON 5–7 + RC12-T1.1/Y1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING（2026-08-10；RC 0.11 REVIEW BRANCH ACCEPTANCE COMPLETE）
 > 目标：把一场多平台、多人物、长时、存在跨轨回收的活动做成可浏览、可追溯、可逐步发布的专题档案，而不是把工作稿直接塞进普通博客正文。
 > 当前源档根：`E:\AI_Subtitle_Studio\02_Projects\小松昌平生日会`（只通过 CLI 参数或 `KOMATSU36_SOURCE_ROOT` 提供）
 > 当前权威文档集：源档根下的 `复核md/` 带版本后缀文件；根目录同名无后缀文件是旧工作稿，不得自动选用。
@@ -8,11 +8,11 @@
 > 当前站点：Astro 7 静态站点，TinaCMS 只管理普通 MDX 文章。
 
 > **CURRENT CHECKPOINT**
-> RC 0.10 已完成本地验收，RC 0.11 已完成 R9 与 review-branch handoff；其 acceptance 文档保持历史合同。RC12-A2/C2/D2/B2/F2、E1–E5 与 T1.1 已完成工程／Browser 验证。2026-08-10 Semantic P0 已以独立 override layer 纠正 Amazon winner、濱因果线与汐谷读音；旧分析 MD 与 RAW 保持不变。证据见 `docs/editorial/komatsu36-semantic-p0-handoff.md`。Release Gate 继续 CLOSED。
+> RC 0.10 已完成本地验收，RC 0.11 已完成 R9 与 review-branch handoff；其 acceptance 文档保持历史合同。RC12-A2/C2/D2/B2/F2、E1–E5 与 T1.1 已完成工程／Browser 验证。2026-08-10 Semantic P0 已以独立 override layer 纠正 Amazon winner、濱因果线与汐谷读音；随后 P1 Person 第 5–7 项完成称呼层与搜索层拆分、敬称清洗和 `トシピ`。旧分析 MD 与 RAW 保持不变。证据见 `docs/editorial/komatsu36-semantic-p0-handoff.md` 与 `docs/editorial/komatsu36-semantic-p1-person-handoff.md`。Release Gate 继续 CLOSED。
 
 ## 当前实施状态（2026-08-10）
 
-> **当前状态覆盖**：Semantic P0 已完成 SOURCE/BUILD/BROWSER 验证；Reader Copy 当前为 54/54 decisions。RC12-A2、C2、D2、B2、F2、E1–E5 与 T1.1 已通过工程／Browser 证据；T1/Y1 产品接受、Semantic P1、真实媒体与 Release Gate 继续独立关闭。Y2 managed external session 尚未授权。
+> **当前状态覆盖**：Semantic P0 与 P1 Person 第 5–7 项已完成 SOURCE/BUILD/BROWSER 验证；Reader Copy 当前为 54/54 decisions。RC12-A2、C2、D2、B2、F2、E1–E5 与 T1.1 已通过工程／Browser 证据；T1/Y1 产品接受、P1 第 8 项及后续故事／reader-language pass、真实媒体与 Release Gate 继续独立关闭。Y2 managed external session 尚未授权。
 
 - Phase 0A 已落地：`data/source-sets/komatsu36-20260808-r1.json` 精确锁定 6 个 `复核md/` 带后缀输入，并由 `validate:sources` 校验路径、SHA-256、物理行数与 16 条 ARC；
 - Phase 1 垂直切片已落地：真实 `/projects/komatsu36/` 路由、集中状态控制器、YouTube 延迟加载与 pending seek、动态时间 fallback、Timeline、Thread、Person 和 URL 恢复均已实现；
@@ -20,8 +20,8 @@
 - `validate:projects` 现在要求 `defaultTrack` 有效且至少拥有一个 Act、Thread 数与 manifest `arcCount` 一致、8 个主轨 Act 无缝覆盖完整时长、`threaded` Event 必须被至少一条 Thread 消费、`timeline-only` Event 不得伪装成 Thread 节点、Thread 不得泄露 `withheld` Event、人物不得成为孤儿引用、`qualified` Event 必须附限定说明；
 - `ConcurrentLanes` 已以局部注记形式落地，只显示经确认的并发关系，并明确禁止将其消费为跨平台 offset；
 - Space 播放源决策已收口：用户提供的两条 X status 按创建时间与重开顺序映射为 SP1/SP2；页面只提供 canonical Space 外链，不重托管本地媒体，也不把 X 外链伪装成支持 timestamp seek；
-- 公开 Event / Thread / Person 的轻量站内检索已落地：索引只来自发布内容，结果顺序固定，Event 结果可恢复稳定深链并切换到正确 Track；不索引 Transcript 与 Chat；
-- `validate:publication` 已接入统一 `npm run validate`：当前构建核对 159 条公开检索项、350 KiB 单页预算，并阻止原始 ASR 文件标记、本机源档路径、`author_id`、SRT/VTT 文件名进入发布 HTML；Semantic P0 gate 另禁止旧 Amazon winner、濱高价值返礼与汐谷错误读音重新进入发布层；
+- 公开 Event / Thread / Person 的轻量站内检索已落地：索引只来自发布内容，结果顺序固定，Event 结果可恢复稳定深链并切换到正确 Track；Person 使用正式姓名、reading、`callNames` 与隐藏 `searchAliases`，查询端自动兼容末尾敬称，不再把 `さん／君` 人工塞进元数据；不索引 Transcript 与 Chat；
+- `validate:publication` 已接入统一 `npm run validate`：当前构建核对 159 条公开检索项、350 KiB 单页预算，并阻止原始 ASR 文件标记、本机源档路径、`author_id`、SRT/VTT 文件名进入发布 HTML；Semantic gate 同时禁止 P0 旧事实和 P1 legacy aliases／敬称字符串重新进入发布层，并固定 18 人 `callNames` ledger；
 - `.github/workflows/validate.yml` 已接入 push / pull request 验证：固定 Node.js 22.12.0，执行 `npm ci`、`npm audit --omit=dev`、完整 `npm run validate`，再执行 `npm exec -- tsc --noEmit`；TypeScript 检查特意放在 Astro build 之后，以便使用生成的 `astro:content` 类型；它只提供可审阅的 CI 证据，不触发部署；
 - Cloudflare Pages 的首次 provision、构建设置、production 复测和证据追加步骤见 `docs/cloudflare-pages-release-checklist.md`；当前仓库没有部署 token 或 Wrangler 配置，不由本地自动执行；
 - 额外静态检查边界已实测：仓库自带 `tsc --noEmit` 通过；临时安装 `@astrojs/check` 后，`astro check` 会扫描生成的 `public/admin` bundle 并在约 4 GiB 堆上 OOM，因此未纳入 Release Gate，也不保留该临时依赖；
@@ -42,7 +42,7 @@ Project 页面以五个视图组织内容：
 1. `Overview`：五分钟理解活动、参与者、三条主轴和精选事件；
 2. `Timeline`：默认阅读入口，按主直播的 8 个候选 Act 建立方向感；
 3. `Storylines`：把跨几十分钟、跨平台的 setup / development / payoff 组织为 Thread；
-4. `People`：从人物及其别名进入相关事件；
+4. `People`：从人物及其本场常用称呼进入相关事件；
 5. `Transcript`：面向检索与考据，延迟加载，不进入首屏。
 
 核心关系是：
@@ -419,16 +419,19 @@ ARC 编号保留在迁移映射中，不作为用户必须遵守的阅读顺序�
 
 ### 5.7 Person；Claim / Evidence 延后
 
-Person 只保存稳定身份与本项目别名：
+Person 只保存稳定身份、读者可见的本场常用称呼与隐藏搜索兼容词：
 
 ```json
 {
   "project": "komatsu36",
   "displayName": "熊谷俊輝",
-  "aliases": ["トシピ"],
-  "role": "现场来宾"
+  "callNames": ["トシピ"],
+  "searchAliases": [],
+  "projectContext": "作为生日会现场来宾参与名场面复盘。"
 }
 ```
+
+`callNames` 可以在 Person panel 显示；`searchAliases` 只能进入搜索索引。正式姓名与 reading 自动索引，`さん／くん／君／ちゃん` 由共享查询正规化处理，不作为人工 alias 保存。两数组必须在每个 Person JSON 中显式存在；当前 `タカオ`、`じゅんちゃん` 仍待核，不得猜测加入。
 
 Phase 1 不出现 `topicIds`、`claimIds`、`claims/` 或 `evidence/`。Claim / Evidence 到 Phase 4 根据真实公开边界一次性定义；在此之前，复核信息留在 editorial workbench。公开 Evidence 将来也只放来源类型、时间窗和裁决摘要；原始 ASR、聊天作者 ID、付费信息、复核音频默认不公开。
 
@@ -547,9 +550,9 @@ YouTube IFrame Player API 原生提供 `seekTo(seconds, allowSeekAhead)`，因�
 
 ### 7.2 轻量公开索引
 
-v1 在构建时把公开 Event、Thread 与 Person 生成为页面内轻量索引，不安装 Pagefind，也不读取工作稿、SRT 或 Chat。Event 检索字段限于公开标题、摘要、标签、限定说明及关联人物公开名称/别名；结果点击后由 Event 推导 Track 与本地时钟，并写回稳定 `event` 深链。索引顺序必须显式排序，不能依赖 Content Layer 的文件枚举顺序。
+v1 在构建时把公开 Event、Thread 与 Person 生成为独立 lazy static JSON，不安装 Pagefind，也不读取工作稿、SRT 或 Chat。Event 检索字段限于公开标题、摘要、标签及关联人物的正式姓名、`callNames`、`searchAliases`；内部 qualification 不进入公开索引。Person 同时索引 displayName、reading、`callNames` 与隐藏 `searchAliases`。索引与查询统一执行 NFKC、日语小写、末尾敬称清理和空格折叠；结果点击后由 Event 推导 Track 与本地时钟，并写回稳定 `event` 深链。索引顺序必须显式排序，不能依赖 Content Layer 的文件枚举顺序。
 
-当前快照为 124 个公开 Event + 16 条 Thread + 18 个 Person，共 158 条。`validate:publication` 在构建后从源 collection 推导应有数量，并同时执行体积和私有标记门禁；这里的数字只是方便人工审阅的当前快照。
+当前快照为 125 个公开 Event + 16 条 Thread + 18 个 Person，共 159 条。`validate:publication` 在构建后从源 collection 推导应有数量，并同时执行体积、私有标记、P0 事实和 P1 Person ledger 门禁；这里的数字只是方便人工审阅的当前快照。
 
 ### 7.3 Transcript 分片
 
@@ -794,7 +797,7 @@ Tina 集成作为后续独立任务，只管理 Project 摘要、精选顺序等
 - 一个 `qualified` Event；Phase 4 后再增加 claim 抽样；
 - 一个多人重叠 / lane annotation；
 - 一个没有可播放媒体、只有 Transcript 的节点；
-- 人物别名 `トシピ → 熊谷俊輝`、`タカオ → 光富崇雄` 的聚合结果。
+- 人物常用称呼 `トシピ → 熊谷俊輝` 已验证；`タカオ → 光富崇雄` 仍是待核项，不进入公开数据。
 
 ## 12. 风险与未决策项
 

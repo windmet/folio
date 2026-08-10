@@ -177,6 +177,17 @@ for (const projectDir of projectDirs) {
   for (const { id, data } of people) {
     const used = events.some(({ data }) => data.people.includes(id));
     if (!used) errors.push(`${id}: person is not referenced by any event`);
+    if ('aliases' in data) errors.push(`${id}: legacy aliases field is forbidden; use callNames/searchAliases`);
+    if (!Array.isArray(data.callNames)) errors.push(`${id}: callNames must be an explicit array`);
+    if (!Array.isArray(data.searchAliases)) errors.push(`${id}: searchAliases must be an explicit array`);
+    const callNames = data.callNames || [];
+    const searchAliases = data.searchAliases || [];
+    if ([...callNames, ...searchAliases].some((value) => /(?:さん|くん|君)$/.test(value))) {
+      errors.push(`${id}: honorific variants belong in search normalization, not callNames/searchAliases`);
+    }
+    if (new Set([...callNames, ...searchAliases]).size !== callNames.length + searchAliases.length) {
+      errors.push(`${id}: callNames/searchAliases contain duplicate values`);
+    }
     for (const participation of data.participation || []) {
       if (participation.kind === 'ore-shiri-cast' && (!participation.character || !participation.sessions?.length)) {
         errors.push(`${id}: ore-shiri-cast participation requires character and at least one session`);

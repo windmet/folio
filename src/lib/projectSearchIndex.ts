@@ -1,3 +1,5 @@
+import { normalizeProjectSearchText } from './projectSearchNormalization';
+
 type CollectionEntry = {
   id: string;
   data: any;
@@ -35,8 +37,7 @@ const formatTime = (milliseconds: number) => {
 const searchText = (...values: unknown[]) => values
   .flat(Infinity)
   .filter(Boolean)
-  .join(' ')
-  .toLocaleLowerCase('ja-JP');
+  .join(' ');
 
 const participationText = (person: CollectionEntry) => (person.data.participation || []).map((item: any) => [
   item.kind,
@@ -93,11 +94,11 @@ export const buildProjectSearchIndex = ({
       id: localId(event.id),
       label: `EVENT · ${track?.data.shortLabel || '—'} ${formatTime(event.data.startMs)}`,
       title: event.data.title,
-      searchText: searchText(
+      searchText: normalizeProjectSearchText(searchText(
         event.data.title,
         event.data.summary,
-        relatedPeople.map((person: any) => [person.data.displayName, person.data.aliases]),
-      ),
+        relatedPeople.map((person: any) => [person.data.displayName, person.data.callNames, person.data.searchAliases]),
+      )),
       trackId: localId(referenceId(event.data.track)),
       startMs: event.data.startMs,
     };
@@ -111,7 +112,7 @@ export const buildProjectSearchIndex = ({
       id: localId(thread.id),
       label: `THREAD · ${thread.data.nodes.length} NODES`,
       title: thread.data.title,
-      searchText: searchText(thread.data.title, thread.data.deck, thread.data.category),
+      searchText: normalizeProjectSearchText(searchText(thread.data.title, thread.data.deck, thread.data.category)),
     });
   }
 
@@ -121,14 +122,15 @@ export const buildProjectSearchIndex = ({
       id: localId(person.id),
       label: `PERSON · ${person.data.reading || '人物索引'}`,
       title: person.data.displayName,
-      searchText: searchText(
+      searchText: normalizeProjectSearchText(searchText(
         person.data.displayName,
         person.data.reading,
-        person.data.aliases,
+        person.data.callNames,
+        person.data.searchAliases,
         person.data.projectContext,
         participationText(person),
         (person.data.links || []).map((link: any) => [link.label, link.platform]),
-      ),
+      )),
     });
   }
 

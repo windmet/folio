@@ -2,7 +2,8 @@
   "project": "komatsu36",
   "displayName": "山本誠大",
   "reading": "やまもと まさひろ",
-  "aliases": ["山本さん"],
+  "callNames": [],
+  "searchAliases": [],
   "projectContext": "《俺知》ensemble；小松在自己的名场面复盘中特别肯定他的关西式吐槽、间与现场应对能力。",
   "participation": [{ "kind": "ensemble" }],
   "links": []

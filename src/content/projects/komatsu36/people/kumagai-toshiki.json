@@ -2,7 +2,8 @@
   "project": "komatsu36",
   "displayName": "熊谷俊輝",
   "reading": "くまがい としき",
-  "aliases": ["熊谷君"],
+  "callNames": ["トシピ"],
+  "searchAliases": [],
   "projectContext": "作为生日会现场来宾参与名场面复盘；一句“我也想试”把现场带进生日俳句大会。",
   "participation": [{ "kind": "birthday-live" }],
   "links": []

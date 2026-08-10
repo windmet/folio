@@ -2,7 +2,8 @@
   "project": "komatsu36",
   "displayName": "室元気",
   "reading": "むろ げんき",
-  "aliases": ["むろさん"],
+  "callNames": [],
+  "searchAliases": [],
   "projectContext": "本档案只记录 Space 中与室账号相关的出现，不把自称使用账号的未知发言者归给室元気本人。",
   "participation": [{ "kind": "space-account" }],
   "links": []

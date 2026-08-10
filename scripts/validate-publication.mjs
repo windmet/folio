@@ -57,8 +57,8 @@ const semanticPersonById = new Map(peopleEntries.map((entry) => [entry.id, entry
 const amazonEvent = semanticEventById.get('yt-040405-amazon-hama');
 const amazonGrabEvent = semanticEventById.get('yt-040524-hama-grabs-amazon-card');
 const amazonPeople = new Set(amazonEvent?.people || []);
-if (project.editorialRevision !== '2026-08-10-semantic-p0') {
-  errors.push(`semantic P0 requires editorialRevision 2026-08-10-semantic-p0; found ${project.editorialRevision}`);
+if (!project.editorialRevision.startsWith('2026-08-10-semantic-')) {
+  errors.push(`semantic passes require a 2026-08-10-semantic-* editorialRevision; found ${project.editorialRevision}`);
 }
 if (!semanticPatch.includes('OVERRIDE：Amazonギフトカード 5000円分 × 2')
   || !semanticPatch.includes('本文件第 1～2 节对 Amazon / 濱线的结论覆盖上述旧条目')) {
@@ -97,6 +97,39 @@ if (!hamaNodeIds.has('komatsu36/yt-040524-hama-grabs-amazon-card')
 if (semanticPersonById.get('shioya-fumiyasu')?.reading !== 'しおや ふみよし') {
   errors.push('semantic P0 requires 汐谷文康 reading しおや ふみよし');
 }
+const expectedCallNames = new Map([
+  ['komatsu-shohei', ['コマッチ']],
+  ['hama-kento', ['濱ちゃん', 'ハマ']],
+  ['kano-sho', []],
+  ['terashima-junta', ['惇太']],
+  ['shioya-fumiyasu', ['ふーみん']],
+  ['inoue-yuki', []],
+  ['yano-shogo', []],
+  ['horikane-sohei', ['蒼平']],
+  ['mitsutomi-takao', []],
+  ['kumagai-toshiki', ['トシピ']],
+  ['sato-yugo', ['祐吾']],
+  ['ito-tomohiro', []],
+  ['kanze-tomoaki', []],
+  ['muro-genki', []],
+  ['nakamura-shugo', ['宗悟']],
+  ['seiten', []],
+  ['yamamoto-masahiro', []],
+  ['uchida-shuichi', ['修']],
+]);
+for (const [personId, expected] of expectedCallNames) {
+  const person = semanticPersonById.get(personId);
+  if (!person
+    || JSON.stringify(person.callNames || []) !== JSON.stringify(expected)
+    || !Array.isArray(person.searchAliases)
+    || person.searchAliases.length !== 0
+    || 'aliases' in person) {
+    errors.push(`semantic P1 callNames mismatch for ${personId}`);
+  }
+}
+if (expectedCallNames.size !== peopleEntries.length) {
+  errors.push(`semantic P1 callNames ledger covers ${expectedCallNames.size} people; expected ${peopleEntries.length}`);
+}
 if (project.status === 'published') {
   const expectedProjectHref = `/projects/${project.slug}/`;
   if (!homeHtml.includes(`href="${expectedProjectHref}"`)) {
@@ -124,6 +157,7 @@ try {
 } catch (error) {
   errors.push(`search JSON is missing or invalid: ${searchOutputFile} (${error.message})`);
 }
+const searchJsonText = searchPayload ? JSON.stringify(searchPayload) : '';
 
 const expectedSearchOrder = [
   ...publicEventEntries
@@ -197,6 +231,17 @@ for (const required of [
   'しおや ふみよし',
 ]) {
   if (!html.includes(required)) errors.push(`semantic P0 published HTML is missing corrected copy: ${required}`);
+}
+if (!html.includes('本场常用称呼') || html.includes('本场别名')) {
+  errors.push('semantic P1 Person UI must label visible callNames as 本场常用称呼');
+}
+for (const removedHonorific of ['狩野さん', '井上君', '矢野さん', '光富さん', '熊谷君', '伊藤さん', '観世君', 'むろさん', '清典さん', '山本さん']) {
+  if (html.includes(removedHonorific) || searchJsonText.includes(removedHonorific)) {
+    errors.push(`semantic P1 published output contains removed honorific alias: ${removedHonorific}`);
+  }
+}
+if (!html.includes('トシピ') || !searchJsonText.includes('トシピ') || html.includes('タカオ')) {
+  errors.push('semantic P1 must publish トシピ, keep it searchable, and leave タカオ pending');
 }
 
 const actualSourceEventButtons = (html.match(/data-source-event="/g) || []).length;
@@ -477,7 +522,6 @@ for (const [label, pattern] of forbiddenPublicationMarkers) {
   if (pattern.test(html)) errors.push(`published HTML contains ${label}`);
 }
 
-const searchJsonText = searchPayload ? JSON.stringify(searchPayload) : '';
 for (const [label, pattern] of forbiddenPublicationMarkers) {
   if (pattern.test(searchJsonText)) errors.push(`search JSON contains ${label}`);
 }

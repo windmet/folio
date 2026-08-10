@@ -1,6 +1,6 @@
 # Komatsu36 Reader Copy Candidates (Generated)
 
-内容快照：2026-08-10-semantic-p0
+内容快照：2026-08-10-semantic-p1-person
 
 > 本文件完全由脚本生成，禁止在这里填写人工决定。命中词只表示需要人工判断，不代表事实错误。所有决定只写入 `komatsu36-reader-copy-decisions.yml`。
 
