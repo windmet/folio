@@ -26,7 +26,7 @@
 ### 2026-08-10 Semantic override
 
 - semantic patch 覆盖旧分析 MD 中“寺島＋濱中奖”的判断：Amazon 5000 円×2 的 winners 采用寺島惇太＋堀金蒼平；
-- 旧 `yt-040405-amazon-hama` ID 为兼容深链保留，people 已改为寺島／堀金，并以 reader note 保留第二位中奖者的排除证据；
+- 旧 `yt-040405-amazon-hama` ID 为兼容深链保留，people 已改为寺島／堀金；读者层只发布“两人同时 Bingo”，第二位中奖者的排除证据保留在内部 `qualification`；
 - 濱没有中主奖；`04:05:24` 抢寺島 Amazon 卡另拆为 `yt-040524-hama-grabs-amazon-card`；
 - 原始 source-set 与 RAW 不回写；当前 derived authority 为 `docs/komatsu36_semantic_patch_20260810.md` 第 1～3 节；
 - 本次新增 1 个 Event，当前公开总数为 125。

@@ -28,7 +28,7 @@ const attachLogChecks = (page, logs) => {
 const readEvent = async (page, eventId) => page.locator(`[data-event-card="${eventId}"]`).evaluate((card) => ({
   active: card.classList.contains('is-active'),
   title: card.querySelector('h3')?.textContent?.trim(),
-  summary: card.querySelector('.event-body > p')?.textContent?.trim(),
+  summary: card.querySelector('.event-summary')?.textContent?.trim(),
   readerNote: card.querySelector('.event-reader-note')?.textContent?.trim() || null,
   people: [...card.querySelectorAll('[data-open-person]')].map((button) => button.textContent.trim()),
   threads: [...card.querySelectorAll('[data-open-thread]')].map((button) => button.dataset.openThread),
@@ -44,7 +44,8 @@ try {
   assert(amazon.active, 'legacy Amazon Event deep link did not restore');
   assert(amazon.title === 'Amazon 5000 円×2：寺島与堀金同时 Bingo', `unexpected Amazon title: ${amazon.title}`);
   assert(JSON.stringify(amazon.people) === JSON.stringify(['寺島惇太', '堀金蒼平']), `unexpected Amazon people: ${JSON.stringify(amazon.people)}`);
-  assert(amazon.readerNote?.includes('指向堀金蒼平'), 'Amazon reader note is missing the second-winner evidence boundary');
+  assert(amazon.summary === '23 番让两人同时完成 Bingo，正好对应两名份的 Amazon 5000 円礼券。', `unexpected Amazon summary: ${amazon.summary}`);
+  assert(amazon.readerNote === null, 'Amazon reader layer must not expose the second-winner inference note');
   assert(!amazon.summary.includes('濱'), 'Amazon winner summary still presents 濱 in the winner Event');
   if (outputDir) {
     await page.locator('[data-event-card="yt-040405-amazon-hama"]').screenshot({ path: path.join(outputDir, '1440-amazon-event.png') });
@@ -60,7 +61,9 @@ try {
     await page.locator('[data-event-card="yt-040524-hama-grabs-amazon-card"]').screenshot({ path: path.join(outputDir, '1440-card-grab-event.png') });
   }
 
-  await page.locator('[data-event-card="yt-040524-hama-grabs-amazon-card"] [data-open-thread="hama-paid-drinking"]').click();
+  const grabThreadChooser = page.locator('[data-event-card="yt-040524-hama-grabs-amazon-card"] .event-thread-chooser');
+  await grabThreadChooser.locator('summary').click();
+  await grabThreadChooser.locator('[data-open-thread="hama-paid-drinking"]').click();
   const hamaThread = await page.locator('[data-thread-detail="hama-paid-drinking"]').evaluate((detail) => ({
     hidden: detail.hidden,
     text: detail.textContent.replace(/\s+/g, ' ').trim(),
@@ -109,7 +112,7 @@ try {
   await mobile.goto(`${projectUrl}?view=timeline&event=yt-040405-amazon-hama`, { waitUntil: 'networkidle' });
   const mobileAmazon = await readEvent(mobile, 'yt-040405-amazon-hama');
   const mobileOverflow = await mobile.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
-  assert(mobileAmazon.active && mobileAmazon.readerNote?.includes('指向堀金蒼平'), 'mobile did not render the corrected Amazon Event and reader note');
+  assert(mobileAmazon.active && mobileAmazon.summary === '23 番让两人同时完成 Bingo，正好对应两名份的 Amazon 5000 円礼券。' && mobileAmazon.readerNote === null, 'mobile did not render the simplified Amazon Event copy');
   assert(mobileOverflow === 0, `mobile overflow: ${mobileOverflow}`);
   assert(mobileLogs.length === 0, `mobile console errors: ${mobileLogs.join(' | ')}`);
   if (outputDir) await mobile.screenshot({ path: path.join(outputDir, '390x844-semantic-p0.png'), fullPage: false });

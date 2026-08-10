@@ -157,10 +157,10 @@ decisions:
     newSummary: "第二轮 64 号由光富崇雄中奖，奖品是新選組／瀬戸焼き“誠”杯类物件。"
     note: "早先误听属于内部纠错历史；页面只保留中奖者和当前可确认的奖品品类。"
   yt-040405-amazon-hama:
-    copyAction: keep
-    readerNoteAction: add
-    readerNote: "第二位中奖者在当秒没有被清晰点名；按此前中奖者与最后两名参加赏的排除关系，指向堀金蒼平。"
-    note: "2026-08-10 semantic override：寺島为直接确认；堀金由完整中奖者与最后参加赏两人排除锁定。濱未中主奖，抢卡另拆 Event。"
+    copyAction: rewrite
+    newSummary: "23 番让两人同时完成 Bingo，正好对应两名份的 Amazon 5000 円礼券。"
+    readerNoteAction: none
+    note: "2026-08-10 semantic override：读者层只保留寺島与堀金同时 Bingo 的事件事实；堀金的排除链保留在内部 qualification，濱未中主奖，抢卡另拆 Event。"
   yt-040539-fan-inoue:
     copyAction: keep
     readerNoteAction: none

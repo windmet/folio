@@ -66,8 +66,9 @@ if (!semanticPatch.includes('OVERRIDE：Amazonギフトカード 5000円分 × 2
 }
 if (!amazonEvent
   || amazonEvent.title !== 'Amazon 5000 円×2：寺島与堀金同时 Bingo'
+  || amazonEvent.summary !== '23 番让两人同时完成 Bingo，正好对应两名份的 Amazon 5000 円礼券。'
   || amazonEvent.publicationStatus !== 'qualified'
-  || !amazonEvent.readerNote
+  || amazonEvent.readerNote
   || amazonPeople.size !== 2
   || !amazonPeople.has('komatsu36/terashima-junta')
   || !amazonPeople.has('komatsu36/horikane-sohei')
@@ -316,12 +317,15 @@ if (!searchPayload || searchPayload.schemaVersion !== 1 || searchPayload.project
 for (const forbidden of [
   '濱与寺島同时拿到 Amazon 5000 円',
   '没带礼物的濱反而获得高价值返礼',
+  '第二位中奖者在当秒没有被清晰点名',
+  '此前中奖者与最后两名参加赏的排除关系',
   'しおや ふみやす',
 ]) {
   if (html.includes(forbidden)) errors.push(`semantic P0 published HTML contains superseded copy: ${forbidden}`);
 }
 for (const required of [
   'Amazon 5000 円×2：寺島与堀金同时 Bingo',
+  '23 番让两人同时完成 Bingo，正好对应两名份的 Amazon 5000 円礼券。',
   '濱去抢寺島的 Amazon 卡',
   'しおや ふみよし',
 ]) {

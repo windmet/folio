@@ -1027,7 +1027,7 @@ Amazon 5000 円×2：寺島与堀金同时 Bingo
 
 **CURRENT SUMMARY**
 
-23 番让两人同时完成 Bingo，正好对应两名份的 Amazon 5000 円礼券。寺島可以直接确认；第二位按此前中奖者与最后参加赏两人的排除关系指向堀金蒼平。
+23 番让两人同时完成 Bingo，正好对应两名份的 Amazon 5000 円礼券。
 
 **CURRENT QUALIFICATION**
 
@@ -1035,15 +1035,15 @@ Amazon 5000 円×2：寺島与堀金同时 Bingo
 
 **RECORDED DECISION**
 
-- Copy action: `keep`
-- Reader note action: `add`
-- Editorial note: 2026-08-10 semantic override：寺島为直接确认；堀金由完整中奖者与最后参加赏两人排除锁定。濱未中主奖，抢卡另拆 Event。
+- Copy action: `rewrite`
+- Reader note action: `none`
+- Editorial note: 2026-08-10 semantic override：读者层只保留寺島与堀金同时 Bingo 的事件事实；堀金的排除链保留在内部 qualification，濱未中主奖，抢卡另拆 Event。
 
 **APPROVED REPLACEMENT**
 
 - New title: —
-- New summary: —
-- Reader note: 第二位中奖者在当秒没有被清晰点名；按此前中奖者与最后两名参加赏的排除关系，指向堀金蒼平。
+- New summary: 23 番让两人同时完成 Bingo，正好对应两名份的 Amazon 5000 円礼券。
+- Reader note: —
 
 ### RCOPY-034 · yt-040539-fan-inoue
 
