@@ -144,7 +144,7 @@ MT1：REVISE — 章节带摘要仍偏高；普通 Event 密度可以
 
 ## 2026-08-10 Final Cleanup P1 工程结果
 
-P1-C/P1-D 已完成源码、构建与真实路由 Browser QA（390px 与 240px 压力视口）。产品复核重点为：
+P1-C/P1-D 已完成源码、构建与真实路由 Browser QA（390px 与 240px 压力视口）。人工路径、预期状态与签名格式集中在 `docs/qa/komatsu36-rc12/final-cleanup/PRODUCT-REVIEW-PACKET.md`。产品复核重点为：
 
 - 390px 下 Media Sources 摘要是否足够清楚，展开后是否仍能顺畅选择来源、查看时长／来源证明与浏览事件；
 - 键盘 Enter／Space 是否能打开 native disclosure，展开前后不出现横向 overflow；

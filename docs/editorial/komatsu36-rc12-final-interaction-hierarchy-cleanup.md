@@ -5,6 +5,7 @@
 > 基线：`231ef3e docs(komatsu36): record p1 browser and b2 checks`
 > 目标：在不重开 RC12 大模块的情况下收口 P0 交互问题，并完成记录中的 P1 视觉降噪批次
 > QA 账本：`docs/qa/komatsu36-rc12/final-cleanup/README.md`
+> 人工复核包：`docs/qa/komatsu36-rc12/final-cleanup/PRODUCT-REVIEW-PACKET.md`
 
 ## 1. 范围裁决
 

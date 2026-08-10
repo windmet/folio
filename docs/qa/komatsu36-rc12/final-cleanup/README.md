@@ -2,6 +2,7 @@
 
 > 当前状态：`SOURCE + BUILD + BROWSER VERIFIED — PRODUCT REVIEW PENDING`
 > 实施入口：`docs/editorial/komatsu36-rc12-final-interaction-hierarchy-cleanup.md`
+> 人工复核包：`docs/qa/komatsu36-rc12/final-cleanup/PRODUCT-REVIEW-PACKET.md`
 
 ## 目标矩阵
 
