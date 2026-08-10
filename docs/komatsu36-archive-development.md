@@ -1,6 +1,6 @@
 # 小松昌平 36 岁生日会 Project Archive 开发设计
 
-> 状态：RC12-T1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING（2026-08-10；RC 0.11 REVIEW BRANCH ACCEPTANCE COMPLETE）
+> 状态：RC12-T1 + RC12-Y1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING（2026-08-10；RC 0.11 REVIEW BRANCH ACCEPTANCE COMPLETE）
 > 目标：把一场多平台、多人物、长时、存在跨轨回收的活动做成可浏览、可追溯、可逐步发布的专题档案，而不是把工作稿直接塞进普通博客正文。
 > 当前源档根：`E:\AI_Subtitle_Studio\02_Projects\小松昌平生日会`（只通过 CLI 参数或 `KOMATSU36_SOURCE_ROOT` 提供）
 > 当前权威文档集：源档根下的 `复核md/` 带版本后缀文件；根目录同名无后缀文件是旧工作稿，不得自动选用。
@@ -860,7 +860,7 @@ package.json
 
 端到端档案、16 条 Thread、跨 Track 外链、轻量检索、Media Pass 与发布门禁已经可运行。RC 0.11 已按以下历史批次收口；当前新增工作只按独立 RC 0.12 Plan 分批执行：
 
-> **当前结论（RC 0.12 correction in progress）**：下方 1–16 项是历史实施顺序；17 记录已完成工程／Browser 验证的 E 批次，18 是当前 T1 下一批。RC 0.11 的最终状态仍以 RC11 closeout runbook 与 release-readiness handoff 为准；A2/C2/D2/B2/F2 已完成，E1–E5 已工程／Browser verified，最新产品复核要求独立完成 T1。RC 0.12 总状态入口为 product correction runbook，下一批唯一详细入口为 `docs/editorial/komatsu36-rc12-t1-timeline-navigator-polish-runbook.md`。不得把工程 QA 或“基本能接受”误作 RC 0.12 产品关闭。Release Gate 继续等待独立授权。
+> **当前结论（RC 0.12 correction in progress）**：下方 1–16 项是历史实施顺序；17 记录 E 批次，18 记录 T1 Navigator，19 记录 Y1 外链 handoff。RC 0.11 的最终状态仍以 RC11 closeout runbook 与 release-readiness handoff 为准；A2/C2/D2/B2/F2 已完成，E1–E5、T1 与 Y1 已工程／Browser verified，T1/Y1 产品停点仍待用户确认。RC 0.12 总状态入口为 product correction runbook，当前下一步是独立产品复核；Y2 managed external session 尚未授权。不得把工程 QA 或“基本能接受”误作 RC 0.12 产品关闭。Release Gate 继续等待独立授权。
 
 1. **Commit A — Media metadata（已完成）**：SP1 / SP2 `audio → video`；Track external URL 改为 canonical Space URL；`projectSources` 同时满足媒体 URL 的 validator 关系并保留 status Post provenance；
 2. **Commit B — Source selection（已完成）**：实现 Hero 与五视图导航之间的克制 `MediaSourceNavigator`、播放器 Source Switcher、无 Event 的 `?track=` 恢复、Event 优先规则，以及手动选源清除 Event / target；

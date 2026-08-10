@@ -4,7 +4,7 @@
 
 ## 当前检查点
 
-- Komatsu36：RC 0.10 与 RC 0.11 review-branch acceptance 已完成。RC 0.12 的 A2/C2/D2/B2/F2 已完成，E1–E5 已完成工程与本地 Browser 验证；RC12-T1 的 shell-width geometry、极窄 segment 投影、hover／keyboard-focus 完整标签已完成工程／Browser 验证，当前产品停点待确认。RC 0.12 产品验收、真实媒体与 Release Gate 均未完成。
+- Komatsu36：RC 0.10 与 RC 0.11 review-branch acceptance 已完成。RC 0.12 的 A2/C2/D2/B2/F2 已完成，E1–E5 已完成工程与本地 Browser 验证；RC12-T1 的 shell-width geometry、极窄 segment 投影、hover／keyboard-focus 完整标签，以及 RC12-Y1 的 YouTube 外链 handoff 已完成工程／Browser 验证，T1/Y1 产品停点仍待确认。RC 0.12 产品验收、真实媒体与 Release Gate 均未完成；Y2 managed external session 未授权。
 - 审阅分支：[codex/komatsu36-project-archive](https://github.com/windmet/folio/tree/codex/komatsu36-project-archive)
 - 专题路由：`/projects/komatsu36/`
 - Visual QA 与编辑审计：`docs/qa/komatsu36-rc08/`

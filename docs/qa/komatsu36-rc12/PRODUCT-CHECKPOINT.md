@@ -1,6 +1,6 @@
 # Komatsu36 RC 0.12 人工停点核对表
 
-> 当前状态：`RC12-T1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING`
+> 当前状态：`RC12-T1 + RC12-Y1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING`
 > 预览地址：`http://127.0.0.1:4322/projects/komatsu36/`
 > 当前执行入口：`docs/editorial/komatsu36-rc12-t1-timeline-navigator-polish-runbook.md`
 
