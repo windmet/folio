@@ -621,6 +621,20 @@ if (!timelineShellSource.includes("closest<HTMLElement>('[data-mobile-act-option
   errors.push('RC12-MT1 controller must preserve Act-directory navigation and title-as-reading selection');
 }
 
+// RC12 final interaction cleanup: the Player must not publish the obsolete
+// YouTube Act duplicate, while Space context remains explicitly relational.
+if (html.includes('这一段在讲什么')) {
+  errors.push('RC12 final cleanup found obsolete YouTube Player Act Context copy');
+}
+if (!html.includes('data-player-context-label') || !html.includes('关联上下文')) {
+  errors.push('RC12 final cleanup is missing the relational Space context label');
+}
+if (!timelineShellSource.includes('dismissPersonForTransition()')
+  || !timelineShellSource.includes('dismissThreadForTransition()')
+  || !timelineShellSource.includes("else if (personId) this.openPerson(personId, null, false)")) {
+  errors.push('RC12 final cleanup overlay transition invariant is missing');
+}
+
 // RC12-Y1 static contract: both the visible player fallback and the player
 // context rail must use the managed pause-before-handoff hook. The hook is
 // intentionally independent from the external link's noopener default.
@@ -763,7 +777,7 @@ for (const required of [
   '按故事线浏览',
   '当前播放',
   '切换来源',
-  '这一段在讲什么',
+  '关联上下文',
   '此来源的事件',
   '故事线 · 前后回收',
   '只搜索已经公开的事件、故事线和人物',

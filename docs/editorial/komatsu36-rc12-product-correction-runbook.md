@@ -1,11 +1,11 @@
 # Komatsu36 RC 0.12 Product Correction Runbook
 
-> 状态：`RC12-T1.1/Y1/M1/MT1 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING`
+> 状态：`RC12-T1.1/Y1/M1/MT1 + FINAL CLEANUP P0-A/P0-B ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING`
 > 裁决日期：2026-08-09
 > 基线分支：`codex/komatsu36-project-archive`
 > 前置状态：RC 0.11 `REVIEW BRANCH ACCEPTANCE COMPLETE`
-> 当前入口：`docs/editorial/komatsu36-rc12-mt1-mobile-timeline-runbook.md`；T1/Y1、M1、E5 QA 与 F2 handoff 保留为对应批次证据
-> 当前进度：RC12-A2/C2/D2/B2/F2、E1–E5、T1.1、Y1、M1 与 MT1 已完成工程／Browser 验证；真实设备为 `NOT EXECUTED`。Semantic P0/P1 已完成逐项总审计，P2 兼容 ID 迁移延后；统一证据见 `komatsu36-semantic-p1-closeout-audit.md`。当前等待 MT1 等产品停点，Release Gate 仍待完成。
+> 当前入口：`docs/editorial/komatsu36-rc12-final-interaction-hierarchy-cleanup.md`；MT1、T1/Y1、M1、E5 QA 与 F2 handoff 保留为对应批次证据
+> 当前进度：RC12-A2/C2/D2/B2/F2、E1–E5、T1.1、Y1、M1、MT1 与 Final Cleanup P0-A/P0-B 已完成工程／Browser 验证；真实设备为 `NOT EXECUTED`。Semantic P0/P1 已完成逐项总审计，P2 兼容 ID 迁移延后；统一证据见 `komatsu36-semantic-p1-closeout-audit.md`。当前等待 Final Cleanup / MT1 等产品停点，Release Gate 仍待完成。
 > Release Gate：CLOSED；本文不授权 merge、deploy 或修改 `project.status`
 
 本文记录 RC12-A/B/C/D 第一版经过源码、构建和浏览器验证后，收到的产品层返工裁决，并继续作为 RC 0.12 的**总状态入口**。T1 与 Y1 的工程批次已经分别完成，当前下一步是 T1/Y1 产品复核；Y2 仍未授权。`komatsu36-rc12-t1-timeline-navigator-polish-runbook.md` 仍是 T1/Y1 合同与证据入口。原 `komatsu36-rc12-visual-polish-source-navigation-plan.md` 保存第一版规格与工程证据，不再代表下一批应直接收口；`komatsu36-rc12-release-readiness-handoff.md` 降级为被产品复核退回的本地 QA 快照。
@@ -19,6 +19,7 @@ RC12-E E1–E5                    SOURCE-VERIFIED + BROWSER-VERIFIED
 RC12-T1.1 INLINE CORRECTION     ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING
 RC12-Y1                          ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING
 RC12-MT1                         ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING
+RC12 Final Cleanup P0-A/P0-B     ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING
 RC12 product acceptance          PRODUCT REVIEW PENDING
 RC12 release readiness           NOT REACHED
 Release Gate                     CLOSED

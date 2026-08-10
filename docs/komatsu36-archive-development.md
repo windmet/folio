@@ -888,6 +888,7 @@ package.json
 18. **RC12-T1.1（当前收尾）**：第一版 Project shell 级全局章节带已被产品否决并回退；YT 8-Act Navigator 在 Expanded 中保持 Timeline 左内容列，在 Docked 中随单列 workspace 自然增宽，并有 14px safe inset。真实 duration ratio、极窄 Axx-only 与 A01–A08 hover/focus 完整标签保留。不得恢复 JS breakout，不得修改 Event、Track、scope、URL、current Act 或 Player playback。
 19. **RC12-Y1（独立后续批次）**：YouTube 当前时间外链在导航前清除 pending seek、停止 playback sync，并在 Player ready 时调用 `pauseVideo()`；fallback 与 Player context rail 共用 handoff hook，保留 `_blank` + `noopener noreferrer`。证据见 `docs/qa/komatsu36-rc12/y1/README.md`。Y2 managed external session 未授权。
 20. **RC12-MT1（当前移动视觉批次）**：M1 Bubble 改变了 RC11 禁止手机章节导航的旧前提；YT mobile 增加单行 Act Locator／八章目录，Event 改为 76px 时间轨＋标题／摘要紧凑行，标题负责阅读展开、时间负责媒体 seek。Act header 成为章节带；桌面 T1、M1 Player、SP1/SP2 无伪 Act 与 URL/data schema 保持冻结。合同见 `docs/editorial/komatsu36-rc12-mt1-mobile-timeline-runbook.md`。
+21. **RC12 Final Interaction & Hierarchy Cleanup（当前 P0 收尾）**：最新审阅明确 Person/Thread overlay 必须 XOR 互斥；Person → 相关事件线改为同层替换，Back 通过 history 恢复 Person。YT Player 删除重复 Act Context，非 Timeline 仅保留 Timeline CTA，SP1/SP2 改为“关联上下文”。中文 UI token 与 Media Sources disclosure 列为下一批 P1，不在本批实施。合同见 `docs/editorial/komatsu36-rc12-final-interaction-hierarchy-cleanup.md`。
 
 通用 validator 与 komatsu36 fixture 的分层不再列入本次 Release Blocker：通用层最终只校验 schema、关系、时间、隐私和确定性排序；`8 Acts`、manifest ARC 数与小松专属 publication assertions 留在项目 fixture，但该工作延后到第二个 Project 接入前完成。
 

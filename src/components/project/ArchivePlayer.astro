@@ -88,19 +88,11 @@ const orderedTracks = [...tracks].sort((left, right) =>
     >展开</button>
   </p>
   <section class="archive-player__context" data-player-context hidden aria-label="当前节点上下文">
-    <span class="archive-kicker">这一段在讲什么</span>
-    <p id="player-context-text" data-player-context-summary data-player-expandable="context"></p>
-    <button
-      type="button"
-      class="archive-player__text-toggle"
-      data-player-text-toggle="context"
-      aria-expanded="false"
-      aria-controls="player-context-text"
-      hidden
-    >展开</button>
+    <span class="archive-kicker" data-player-context-label>关联上下文</span>
+    <p id="player-context-text" data-player-context-summary></p>
     <button type="button" class="archive-player__context-cta" data-player-context-cta>在 Timeline 查看此节点 →</button>
     <div class="archive-player__context-threads" data-player-context-threads hidden>
-      <span>选择一条 Storyline</span>
+      <span data-player-context-thread-heading>选择一条相关事件线</span>
       <div data-player-context-thread-list></div>
     </div>
   </section>

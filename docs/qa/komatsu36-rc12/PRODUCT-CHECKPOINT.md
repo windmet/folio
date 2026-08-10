@@ -135,3 +135,28 @@ MT1：ACCEPT
 ```text
 MT1：REVISE — 章节带摘要仍偏高；普通 Event 密度可以
 ```
+
+## 2026-08-10 RC12 Final Interaction & Hierarchy Cleanup
+
+最新审阅确认下一批不再开新 RC，而是先收口两个 P0：`Person → Thread overlay exclusivity` 与 `YT Player Act Context removal`。中文 UI label token 与 Media Sources disclosure 已登记为下一批 P1，不在本轮混改。详细合同与 QA 矩阵见 `docs/editorial/komatsu36-rc12-final-interaction-hierarchy-cleanup.md`、`docs/qa/komatsu36-rc12/final-cleanup/README.md`。
+
+本批人工停点将在 P0-A/P0-B Browser 验证后更新；不得把工程通过提前写成整体 `PRODUCT-ACCEPTED`。
+
+## 2026-08-10 Final Cleanup 工程结果
+
+P0-A/P0-B 已完成工程与真实路由 Browser 验证，人工只需确认两件事：
+
+- 从 People 打开人物后进入“相关事件线”，是否自然地由 Person panel 替换为 Thread panel；Back 是否恢复人物页状态；
+- YT Player 是否不再重复解释 Act，390px Expanded 是否更轻；SP1/SP2 的“关联上下文”是否仍足够清楚。
+
+人工回复可直接使用：
+
+```text
+FINAL-CLEANUP：ACCEPT
+```
+
+或指出具体修正，例如：
+
+```text
+FINAL-CLEANUP：REVISE — Thread 替换自然；SP1 关联上下文仍需更明确
+```

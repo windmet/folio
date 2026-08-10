@@ -904,6 +904,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       });
       this.applyTimelineScope(this.timelineScopeId || this.data.defaultTrackId);
       this.applyPlayerPresentationMode(view);
+      this.updatePlayerContext(this.selectedEventId ? this.data.events[this.selectedEventId] : null);
       this.refreshPlayerText();
       this.refreshInlineText();
       this.updatePlayerRailActiveState();
@@ -1255,7 +1256,9 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     openThread(threadId: string, trigger: HTMLElement | null, push: boolean) {
       const detail = this.querySelector(`[data-thread-detail="${CSS.escape(threadId)}"]`);
       if (!detail) return;
-      this.returnFocus = trigger;
+      const transitioningFromPerson = Boolean(this.selectedPersonId);
+      if (transitioningFromPerson) this.dismissPersonForTransition();
+      this.returnFocus = transitioningFromPerson ? null : trigger;
       this.selectedThreadId = threadId;
       this.querySelectorAll<HTMLElement>('[data-thread-detail]').forEach((item) => { item.hidden = item.dataset.threadDetail !== threadId; });
       const overlay = this.querySelector<HTMLElement>('[data-thread-overlay]');
@@ -1269,12 +1272,14 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
 
     closeThread(update: boolean) {
       if (!this.selectedThreadId) return;
+      const focusTarget = this.returnFocus && !this.returnFocus.closest('[hidden]') ? this.returnFocus : null;
       this.selectedThreadId = null;
+      this.returnFocus = null;
       const overlay = this.querySelector<HTMLElement>('[data-thread-overlay]');
       if (overlay) overlay.hidden = true;
       this.updateModalBackgroundInert();
       this.unlockPage();
-      this.returnFocus?.focus({ preventScroll: true });
+      focusTarget?.focus({ preventScroll: true });
       this.updatePlayerRailActiveState();
       if (update) this.replaceUrl();
     }
@@ -1282,7 +1287,9 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     openPerson(personId: string, trigger: HTMLElement | null, push: boolean) {
       const detail = this.querySelector(`[data-person-detail="${CSS.escape(personId)}"]`);
       if (!detail) return;
-      this.returnFocus = trigger;
+      const transitioningFromThread = Boolean(this.selectedThreadId);
+      if (transitioningFromThread) this.dismissThreadForTransition();
+      this.returnFocus = transitioningFromThread ? null : trigger;
       this.selectedPersonId = personId;
       this.querySelectorAll<HTMLElement>('[data-person-detail]').forEach((item) => { item.hidden = item.dataset.personDetail !== personId; });
       const overlay = this.querySelector<HTMLElement>('[data-person-overlay]');
@@ -1295,13 +1302,30 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
 
     closePerson(update: boolean) {
       if (!this.selectedPersonId) return;
+      const focusTarget = this.returnFocus && !this.returnFocus.closest('[hidden]') ? this.returnFocus : null;
       this.selectedPersonId = null;
+      this.returnFocus = null;
       const overlay = this.querySelector<HTMLElement>('[data-person-overlay]');
       if (overlay) overlay.hidden = true;
       this.updateModalBackgroundInert();
       this.unlockPage();
-      this.returnFocus?.focus({ preventScroll: true });
+      focusTarget?.focus({ preventScroll: true });
       if (update) this.replaceUrl();
+    }
+
+    dismissThreadForTransition() {
+      if (!this.selectedThreadId) return;
+      this.selectedThreadId = null;
+      this.querySelector<HTMLElement>('[data-thread-overlay]')?.setAttribute('hidden', '');
+      this.updateModalBackgroundInert();
+      this.updatePlayerRailActiveState();
+    }
+
+    dismissPersonForTransition() {
+      if (!this.selectedPersonId) return;
+      this.selectedPersonId = null;
+      this.querySelector<HTMLElement>('[data-person-overlay]')?.setAttribute('hidden', '');
+      this.updateModalBackgroundInert();
     }
 
     updateModalBackgroundInert() {
@@ -1606,7 +1630,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       const threadId = params.get('thread');
       const personId = params.get('person');
       if (threadId) this.openThread(threadId, null, false);
-      if (personId) this.openPerson(personId, null, false);
+      else if (personId) this.openPerson(personId, null, false);
       this.replaceUrl();
       if (restoreTimelineScopeFocus && this.activeView === 'timeline') {
         window.requestAnimationFrame(() => {
@@ -1794,6 +1818,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
 
     updatePlayerContext(event: ArchiveEvent | null) {
       const context = this.querySelector<HTMLElement>('[data-player-context]');
+      const label = this.querySelector<HTMLElement>('[data-player-context-label]');
       const summary = this.querySelector<HTMLElement>('[data-player-context-summary]');
       const cta = this.querySelector<HTMLButtonElement>('[data-player-context-cta]');
       const threads = this.querySelector<HTMLElement>('[data-player-context-threads]');
@@ -1803,26 +1828,36 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         context.hidden = true;
         threads.hidden = true;
         list?.replaceChildren();
-        summary.dataset.expanded = 'false';
-        this.querySelector<HTMLButtonElement>('[data-player-text-toggle="context"]')?.setAttribute('hidden', '');
+        if (label) label.hidden = false;
+        summary.hidden = false;
+        cta.hidden = false;
         this.updatePlayerRail(null);
         return;
       }
 
-      const track = this.data.tracks[event.trackId];
       const archiveContext = this.getEventArchiveContext(event.id);
-      context.hidden = false;
+      const isYouTube = event.trackId === this.data.defaultTrackId;
+      const showYouTubeNavigation = isYouTube && this.activeView !== 'timeline';
+      context.hidden = isYouTube ? !showYouTubeNavigation : false;
       threads.hidden = true;
       list?.replaceChildren();
-      summary.dataset.expanded = 'false';
-      if (event.trackId === this.data.defaultTrackId) {
-        summary.textContent = archiveContext.actLabel && archiveContext.actTitle
-          ? `${archiveContext.actLabel} · ${archiveContext.actTitle}`
-          : 'Timeline · YouTube 主直播';
+      if (isYouTube) {
+        context.dataset.contextKind = 'navigation';
+        if (label) label.hidden = true;
+        summary.hidden = true;
+        summary.textContent = '';
+        cta.hidden = !showYouTubeNavigation;
         cta.textContent = '在 Timeline 查看此节点 →';
       } else {
+        context.dataset.contextKind = 'related';
+        if (label) {
+          label.hidden = false;
+          label.textContent = '关联上下文';
+        }
+        summary.hidden = false;
         const threadCount = archiveContext.threadIds.length;
-        summary.textContent = `${track?.shortLabel || 'External Source'} · ${threadCount ? `${threadCount} 条 Storyline 上下文` : '暂无 Storyline 上下文'}`;
+        summary.textContent = threadCount ? `${threadCount} 条相关事件线` : '暂无相关事件线';
+        cta.hidden = false;
         cta.textContent = threadCount === 0
           ? '在来源事件索引中查看 →'
           : threadCount > 1

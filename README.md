@@ -4,7 +4,7 @@
 
 ## 当前检查点
 
-- Komatsu36：RC 0.10 与 RC 0.11 review-branch acceptance 已完成。RC 0.12 的 A2/C2/D2/B2/F2、E1–E5、T1.1、Y1、M1 与 `RC12-MT1` 移动 Timeline 密度／章节层级均已完成工程／Browser 验证，产品复核仍待人工。2026-08-10 Semantic P0/P1 已完成逐项总审计，P2 兼容 ID 迁移继续延后。真实设备、真实媒体与 Release Gate 均未完成，Y2 managed external session 未授权。
+- Komatsu36：RC 0.10 与 RC 0.11 review-branch acceptance 已完成。RC 0.12 的 A2/C2/D2/B2/F2、E1–E5、T1.1、Y1、M1、MT1 与 Final Cleanup P0-A/P0-B 均已完成工程／Browser 验证，产品复核仍待人工。2026-08-10 Semantic P0/P1 已完成逐项总审计，P2 兼容 ID 迁移继续延后。真实设备、真实媒体与 Release Gate 均未完成，Y2 managed external session 未授权。
 - 审阅分支：[codex/komatsu36-project-archive](https://github.com/windmet/folio/tree/codex/komatsu36-project-archive)
 - 专题路由：`/projects/komatsu36/`
 - Visual QA 与编辑审计：`docs/qa/komatsu36-rc08/`
@@ -18,6 +18,7 @@
 - Semantic 审计与分批交接：`docs/komatsu36_semantic_patch_20260810.md`、`docs/editorial/komatsu36-semantic-p1-closeout-audit.md`，以及 `docs/editorial/komatsu36-semantic-p0-handoff.md`、`docs/editorial/komatsu36-semantic-p1-person-handoff.md`、`docs/editorial/komatsu36-semantic-p1-account-handoff.md`、`docs/editorial/komatsu36-semantic-p1-story-handoff.md`、`docs/editorial/komatsu36-semantic-p1-thread-language-handoff.md`、`docs/editorial/komatsu36-semantic-p1-ui-language-handoff.md`、`docs/editorial/komatsu36-semantic-p1-event-language-handoff.md`
 - Mobile Bubble 实施规格与证据：`docs/editorial/komatsu36-rc12-m1-mobile-player-bubble-runbook.md`、`docs/qa/komatsu36-rc12/m1/README.md`
 - Mobile Timeline 密度与章节层级：`docs/editorial/komatsu36-rc12-mt1-mobile-timeline-runbook.md`、`docs/qa/komatsu36-rc12/mt1/README.md`
+- RC12 Final Interaction & Hierarchy Cleanup：`docs/editorial/komatsu36-rc12-final-interaction-hierarchy-cleanup.md`、`docs/qa/komatsu36-rc12/final-cleanup/README.md`
 - RC12-Y1 外链 handoff QA：`docs/qa/komatsu36-rc12/y1/README.md`
 - RC12-Y2 managed external session 实验指导（未授权实现）：`docs/editorial/komatsu36-rc12-y2-managed-external-session-experiment.md`
 - RC12-Y2 隔离 WindowProxy 实验页（不进入生产路由）：`scripts/experiments/rc12-y2-windowproxy.html`
