@@ -1,14 +1,14 @@
 # Komatsu36 RC 0.12 Product Correction Runbook
 
-> 状态：`RC12-E E1–E5 ENGINEERING/BROWSER VERIFIED — PRODUCT REVIEW PENDING`
+> 状态：`RC12-T1 REQUIRED — READY FOR IMPLEMENTATION`
 > 裁决日期：2026-08-09
 > 基线分支：`codex/komatsu36-project-archive`
 > 前置状态：RC 0.11 `REVIEW BRANCH ACCEPTANCE COMPLETE`
-> 当前入口：RC12-E E5 handoff；E1–E3 QA 与 F2 handoff 保留为对应批次证据
-> 当前进度：RC12-A2/C2/D2/B2/F2 已完成；RC12-E E1–E5 已完成工程与本地真实 Browser 验证（YT 8 Act／104 Event；SP1 8 Event；SP2 12 Event；Enter／Space、390px、深链和播放器边界均有证据）；产品人工停点仍待完成；B2 Act／Timeline title 分支仍标记 `TODO consumer-check`
+> 当前入口：`docs/editorial/komatsu36-rc12-t1-timeline-navigator-polish-runbook.md`；E5 QA 与 F2 handoff 保留为对应批次证据
+> 当前进度：RC12-A2/C2/D2/B2/F2 已完成；RC12-E E1–E5 已完成工程与本地真实 Browser 验证（YT 8 Act／104 Event；SP1 8 Event；SP2 12 Event）；新产品复核独立新增 RC12-T1，修正桌面 Navigator 的 shell-width geometry、窄 segment 投影与 hover/focus 完整标签；B2 Act／Timeline title 分支仍标记 `TODO consumer-check`
 > Release Gate：CLOSED；本文不授权 merge、deploy 或修改 `project.status`
 
-本文记录 RC12-A/B/C/D 第一版经过源码、构建和浏览器验证后，收到的产品层返工裁决。它是后续 agent 的**唯一实施入口**。原 `komatsu36-rc12-visual-polish-source-navigation-plan.md` 保存第一版规格与工程证据，不再代表下一批应直接收口；`komatsu36-rc12-release-readiness-handoff.md` 降级为被产品复核退回的本地 QA 快照。
+本文记录 RC12-A/B/C/D 第一版经过源码、构建和浏览器验证后，收到的产品层返工裁决，并继续作为 RC 0.12 的**总状态入口**。当前下一批的唯一详细实施入口是 `komatsu36-rc12-t1-timeline-navigator-polish-runbook.md`。原 `komatsu36-rc12-visual-polish-source-navigation-plan.md` 保存第一版规格与工程证据，不再代表下一批应直接收口；`komatsu36-rc12-release-readiness-handoff.md` 降级为被产品复核退回的本地 QA 快照。
 
 这次裁决不否认既有工程验证，也不回写 RC 0.11 的完成状态。准确状态是：
 
@@ -16,6 +16,7 @@
 RC 0.11                         REVIEW BRANCH ACCEPTANCE COMPLETE
 RC12-A/B/C/D/F2                 SOURCE-VERIFIED + BROWSER-VERIFIED
 RC12-E E1–E5                    SOURCE-VERIFIED + BROWSER-VERIFIED
+RC12-T1                          REQUIRED — READY FOR IMPLEMENTATION
 RC12 product acceptance          PRODUCT REVIEW PENDING
 RC12 release readiness           NOT REACHED
 Release Gate                     CLOSED
@@ -34,6 +35,9 @@ Release Gate                     CLOSED
 | Cast projection | 已有 table 与窄投影，工程压力测试无 overflow | `REVISE` | RC12-C2：明确 wide / medium / mobile 三档，不以横滚完成 |
 | Source pictograms | RC12-D2 已重做 X Space 声场图标与 Source card 三层信息层级，并完成桌面／移动 Browser QA | `F2 VERIFIED, USER REVIEW ACKNOWLEDGED` | 保留文字、外链、`?track=` 与 Source Event Index 合同 |
 | Source-scoped Timeline | E1–E5 已实现并完成工程／本地真实 Browser 回归：三 scope、source-local Event projection、native clock、URL/history、键盘、focus restore、390px、external no-iframe | `SOURCE-VERIFIED + BROWSER-VERIFIED` | 产品人工停点仍待完成，不得提前标记整体接受 |
+| Timeline Navigator geometry / labels | 当前 8-Act Navigator 在 Expanded 受正文列限制，Docked 仍保留 workspace 内缩；极窄 segment 会显示半截标题；segment 仅有 aria-label | `REQUIRED — RC12-T1` | 按独立 T1 runbook 修正，不回写 B2 或 E 为失败 |
+
+2026-08-10 审阅截图中的红框／蓝框只表达当前范围与目标可用范围，是 QA 标注，不是产品配色方向。任何实现不得据此新增红／蓝边框或改变既有档案色板。
 
 `SOURCE-VERIFIED`、`BROWSER-VERIFIED` 与 `PRODUCT-ACCEPTED` 必须继续分开。此前压力矩阵证明“没有溢出和交互回归”，不能推导“桌面形态好用”。
 
@@ -49,6 +53,10 @@ RC12-B2  Remaining expandable text coverage
 RC12-F2  Full regression and corrected handoff
 
 RC12-E E1–E5 已完成工程与本地真实 Browser 批次；产品人工停点仍独立保留，不能回头混改 A2/C2/D2/B2。
+  ↓ 新产品复核
+RC12-T1 Timeline Navigator geometry + narrow labels + hover/focus tooltip
+  ↓ T1 人工停点
+RC12-Y1/Y2 YouTube handoff 仅为后续候选，当前未授权
 ```
 
 不得把四批合成一次“大改一切”。每批独立：读取本节合同 → 改最小文件面 → 自动门禁 → 真实路由 Browser QA → 截止点记录 → scoped commit。上一批存在产品方向疑问时停止，不用下一批的 CSS 顺手掩盖。
@@ -164,7 +172,7 @@ People 数据、分组、Lead Person、Person panel 与四类 participation 不�
 - 当前 Act／章节完整标题；
 - Media Source 中过长的平台／来源标题。
 
-默认 clamp；只有实际 overflow 才显示“展开”；展开后显示全文并可“收起”。桌面 `title`／tooltip 只能作为增强，touch、keyboard 和移动端必须有可点击全文入口。Timeline Navigator 小 segment 可以继续截断，但其当前章节 header 必须提供完整标题。
+默认 clamp；只有实际 overflow 才显示“展开”；展开后显示全文并可“收起”。桌面 `title`／tooltip 只能作为增强，touch、keyboard 和移动端必须有可点击全文入口。当前章节 header 继续遵守本合同；Timeline Navigator segment 是导航控件，其极窄投影与 hover/focus 可见完整标签已由 RC12-T1 独立接管，不得把 T1 tooltip 计为 B2 返工或用 B2 展开按钮替代。
 
 ## 7. RC12-E — Source-scoped Timeline（E1–E5 工程／Browser 已落地，产品停点待确认）
 
@@ -207,7 +215,7 @@ Browser 必须检查真实 `/projects/komatsu36/` 构建预览，而不是只看
 ## 10. 明确冻结与非目标
 
 - 不回写 RC 0.10／0.11 acceptance 文档；
-- 不重做 Lead Person、8-Act Navigator、124 Event、16 Thread 或三来源数据模型；
+- 不重做 Lead Person、8-Act 数据/比例/current Act 逻辑、124 Event、16 Thread 或三来源数据模型；RC12-T1 只允许调整 Navigator 几何和 segment 信息投影；
 - 不统一 YT／SP1／SP2 时钟；
 - 不新增 provider、X widget、私有 HLS、Transcript、Evidence、Chat 或 Tina Project 编辑器；
 - 不以本轮视觉返工顺手改 reader-facing 内容真值；
@@ -218,7 +226,7 @@ Browser 必须检查真实 `/projects/komatsu36/` 构建预览，而不是只看
 
 1. 读取本文全文，再读目标批次对应的旧实现与 QA；
 2. 核对 `git branch --show-current`、`git rev-parse HEAD`、`git status --short`；
-3. 当前 F2 已完成，RC12-E E1–E5 工程／Browser 批次已落地；后续只处理产品停点明确的修正，不得回头混改 A2/C2/D2/B2；
+3. 当前 F2 与 RC12-E E1–E5 工程／Browser 批次已落地；下一批只执行独立 RC12-T1，不得回头混改 A2/C2/D2/B2，也不得顺手启动 Y1/Y2；
 4. 在动代码前写下本批“不改变”的状态／数据／URL 合同；
 5. 完成后同时给出 source、browser、product 三种状态，不能用一个 `PASS` 混写；
 6. F2 之后不得自行宣布生产接受或打开 Release Gate；真实媒体、长时 soak 与生产授权仍需独立证据和用户授权。
@@ -242,3 +250,11 @@ F2 交接与精确证据见 `docs/editorial/komatsu36-rc12-f2-final-regression-h
 E4 已修复 scope button 的可见焦点环，并补上 panel `aria-hidden`／`aria-labelledby` 与动态 scope 描述 `aria-live=polite`，由静态合同、本地 Browser 计算样式和真实 Playwright Chromium 键盘回归复核；E5 已补做 YT Event 深链、SP1 Event Back／Forward、SP2 直链刷新、single player mount invariant、页面 console、901px／390px overflow 与 Enter／Space 检查。完整证据、当前 payload 和未执行边界见 `docs/qa/komatsu36-rc12/e/E5-HANDOFF.md`。
 
 这仍是 `SOURCE-VERIFIED` + `BROWSER-VERIFIED` 的工程交接，不是 `PRODUCT-ACCEPTED`。390px 人工信息层级、事件密度和键盘使用感受仍需产品停点确认；真实媒体、生产和 Release Gate 边界保持未执行。
+
+## 15. RC12-T1 新产品修正入口
+
+2026-08-10 新复核确认 Source-scoped Timeline 已真实落地，同时要求继续收掉桌面 8-Act Navigator 的三项产品问题：Expanded／Docked 横向几何没有使用 Project shell 可用宽度、A03 等真实短 Act 显示半截标题、A01–A08 缺少 hover／keyboard-focus 可见完整标签。
+
+本轮命名为 `RC12-T1 — Timeline Navigator Geometry & Label Polish`。A2/C2/D2 保持冻结，B2 保持 PASS 并保留 natural consumer TODO，E 保持工程／Browser PASS 与产品停点；T1 不修改 duration ratio、Event、Track、scope、URL、current Act 或 Player playback。唯一详细入口为 `docs/editorial/komatsu36-rc12-t1-timeline-navigator-polish-runbook.md`。
+
+T1 完成前不得宣布 RC 0.12 review-branch acceptance complete。YouTube 外部 360° handoff 的 Y1/Y2 仅在 T1 runbook 登记为后续候选，本批不实施；普通网站不能扫描任意已有 YouTube 标签页，managed WindowProxy 也必须保留 `noopener`/COOP 失效与安全降级边界。

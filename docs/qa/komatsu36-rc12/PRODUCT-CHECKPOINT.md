@@ -1,10 +1,10 @@
 # Komatsu36 RC 0.12 人工停点核对表
 
-> 当前状态：`RC12-E E1–E5 BROWSER VERIFIED — PRODUCT REVIEW PENDING`
+> 当前状态：`RC12-T1 REQUIRED — READY FOR IMPLEMENTATION`
 > 预览地址：`http://127.0.0.1:4322/projects/komatsu36/`
-> 当前执行入口：`docs/editorial/komatsu36-rc12-product-correction-runbook.md`
+> 当前执行入口：`docs/editorial/komatsu36-rc12-t1-timeline-navigator-polish-runbook.md`
 
-这份表保留 2026-08-09 第一版产品裁决，并追加当前状态；它不替代源码、构建或 Browser QA 证据。RC12-A2/C2/D2/B2 与 F2 已完成，RC12-E E1–E5 已完成工程与本地真实 Browser QA，覆盖 scope 键盘、390px、深链、history、播放器边界与无障碍语义；用户在本地简要复核后反馈“基本能接受”并允许继续收口。该反馈不等同于真实媒体通过、生产验收或 Release Gate 授权。后续边界见 `docs/editorial/komatsu36-rc12-product-correction-runbook.md`、`docs/editorial/komatsu36-rc12-f2-final-regression-handoff.md`、`docs/qa/komatsu36-rc12/e/README.md` 与 `docs/qa/komatsu36-rc12/e/E5-HANDOFF.md`。
+这份表保留 2026-08-09 第一版产品裁决，并追加当前状态；它不替代源码、构建或 Browser QA 证据。RC12-A2/C2/D2/B2 与 F2 已完成，RC12-E E1–E5 已完成工程与本地真实 Browser QA。2026-08-10 的新产品复核确认 E 不应回滚，但发现桌面 8-Act Navigator 的横向几何、极窄 segment 和可见完整标签仍需修正，因此独立新增 RC12-T1。用户截图中的红框／蓝框仅为几何说明标注，不是产品配色方向。该复核不等同于真实媒体通过、生产验收或 Release Gate 授权。当前下一批入口为 `docs/editorial/komatsu36-rc12-t1-timeline-navigator-polish-runbook.md`；总边界仍见 product correction runbook、F2 handoff 与 E5 handoff。
 
 ## 第一版停点 1 裁决：Player / People
 
@@ -22,7 +22,7 @@
 | RC12-D 来源图标 | 图标化方向保留；重做 X Space 图形与 Source card 三层信息层级 | `REVISE — RC12-D2` |
 | RC12-E Source-scoped Timeline | 正式保留为 P1 backlog；未明确纳入当时视觉返工 | `历史裁决：DEFERRED / NOT IMPLEMENTED` |
 
-## 下一轮人工停点回复格式
+## 第一版停点回复格式（历史）
 
 直接回复以下任一形式即可：
 
@@ -44,7 +44,7 @@ B2：ACCEPT
 E：DEFERRED
 ```
 
-上方“第一版裁决”只保存 2026-08-09 的历史事实；A2/C2/D2/B2 新证据与 F2 回归现已完成。当前仍不标记 `RC 0.12 REVIEW BRANCH ACCEPTANCE COMPLETE`，不 merge、不 deploy、不修改公开状态，除非用户另行授权。
+上方“第一版裁决”只保存 2026-08-09 的历史事实；A2/C2/D2/B2 新证据与 F2 回归现已完成。B2 正文展开体系继续为 PASS；A01–A08 segment tooltip 属于新的 T1 导航合同，不得回写为 `B2 REJECTED`。当前仍不标记 `RC 0.12 REVIEW BRANCH ACCEPTANCE COMPLETE`，不 merge、不 deploy、不修改公开状态，除非用户另行授权。
 
 ## 2026-08-10 复核跟进
 
@@ -77,3 +77,31 @@ E：REVISE — 390px scope tab 文字太小；其余 ACCEPT
 ```
 
 `E：ACCEPT` 只表示 RC12-E 产品停点通过；它不自动授权真实媒体、生产部署、merge 或 Release Gate。
+
+## 2026-08-10 新产品裁决：RC12-T1
+
+| 项目 | 当前工程事实 | 裁决 |
+|---|---|---|
+| A2 Docked Player | 已完成 Docked Bottom Player 与单媒体 mount 回归 | `PASS / FREEZE` |
+| C2 People / Cast | wide／medium／mobile 投影已完成 | `PASS / FREEZE` |
+| D2 Source hierarchy / icon | 三层信息层级与 X Space radiowave 已完成 | `PASS / FREEZE` |
+| B2 expandable正文 | 机制与 Source consumer 已完成；Act／Timeline natural fixture 仍 TODO | `PASS；TODO consumer-check 保留` |
+| E Source-scoped Timeline | 三 scope、native clock、Event projection 已工程／Browser 验证 | `PRODUCT REVIEW PENDING；不回滚` |
+| T1 Navigator full-shell geometry | Expanded 仍受正文列限制；Docked 仍保留 workspace 内缩 | `NEW — REQUIRED` |
+| T1 narrow segment | A03 等真实短 Act 会露出半截标题 | `NEW — REQUIRED` |
+| T1 hover/focus full label | segment 只有 aria-label，没有鼠标／键盘可见完整标签 | `NEW — REQUIRED` |
+| YouTube external handoff | 尚未实现；网站不能扫描任意已有标签页 | `Y1/Y2 FUTURE — NOT AUTHORIZED` |
+
+红框／蓝框只说明审阅中的几何范围，产品继续使用既有档案色彩与 focus/active 语义。T1 完成工程与 Browser QA 后，人工回复格式为：
+
+```text
+T1：ACCEPT
+```
+
+或指出具体修正：
+
+```text
+T1：REVISE — Expanded 宽度可以；A08 tooltip 仍越界
+```
+
+T1 的产品接受也不自动关闭 E 产品停点，不授权 Y1/Y2、真实媒体、merge、deploy 或 Release Gate。

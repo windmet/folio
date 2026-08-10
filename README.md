@@ -4,7 +4,7 @@
 
 ## 当前检查点
 
-- Komatsu36：RC 0.10 已完成本地验收；RC 0.11 的 UX11-A / B 已提交为 `effa314`，UX11-C、R1 opaque Player / Lead Person hierarchy、R2 UX11-P0 payload audit、R3 UX11-P1 Source Index、R4 UX11-P2 Search JSON、R5 UX11-D Desktop Timeline Navigator、R6 UX11-E 移动合同决策与 R9 UX11-H Final QA 已完成。R6 裁决为 `NO ADDITIONAL MOBILE NAV FOR V1`，R8 的 F/G 已裁决，review branch acceptance complete；Release Gate 仍未授权。
+- Komatsu36：RC 0.10 与 RC 0.11 review-branch acceptance 已完成。RC 0.12 的 A2/C2/D2/B2/F2 已完成，E1–E5 已完成工程与本地 Browser 验证；最新产品复核新增必修 `RC12-T1`（Timeline Navigator shell-width geometry、极窄 segment 投影、hover／keyboard-focus 完整标签），当前为 `READY FOR IMPLEMENTATION`。RC 0.12 产品验收、真实媒体与 Release Gate 均未完成。
 - 审阅分支：[codex/komatsu36-project-archive](https://github.com/windmet/folio/tree/codex/komatsu36-project-archive)
 - 专题路由：`/projects/komatsu36/`
 - Visual QA 与编辑审计：`docs/qa/komatsu36-rc08/`
@@ -13,6 +13,9 @@
 - RC 0.11 导航与视觉层级规格：`docs/editorial/komatsu36-archive-navigation-pass.md`
 - RC 0.11 静态 payload 实施规格：`docs/editorial/komatsu36-static-payload-pass.md`
 - RC 0.11 分批收尾 Runbook：`docs/editorial/komatsu36-rc11-closeout-runbook.md`
+- RC 0.12 当前修正总入口：`docs/editorial/komatsu36-rc12-product-correction-runbook.md`
+- RC12-T1 下一批实施指导：`docs/editorial/komatsu36-rc12-t1-timeline-navigator-polish-runbook.md`
+- RC 0.12 人工产品停点：`docs/qa/komatsu36-rc12/PRODUCT-CHECKPOINT.md`
 - Reader Copy 自动候选：`docs/editorial/komatsu36-reader-copy-candidates.generated.md`
 - Reader Copy 人工裁决：`docs/editorial/komatsu36-reader-copy-decisions.yml`
 - Cloudflare Pages provision / 首次部署清单：`docs/cloudflare-pages-release-checklist.md`
