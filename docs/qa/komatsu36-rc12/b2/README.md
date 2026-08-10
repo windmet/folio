@@ -26,7 +26,7 @@
 | Existing player paths | Target／Reading Context 继续由原 `[data-player-text-toggle]` 处理；新增 `[data-inline-text-toggle]` 不改变 player target、context、source 或 URL 行为 |
 | Console | 页面与 route 交互抽样 `error/warn = []` |
 
-390px 是产品目标断点，当前 Act／Source 标题在该宽度下不触发按钮；额外的 220×780 压力样本已真实验证 Source title 的「展开 → 收起」consumer interaction。Act title 与 Timeline current title 在当前数据下最多两行，未触发点击分支，仍标记为 `TODO consumer-check`；220px 仅用于行为验证，不改变产品支持断点。
+390px 是产品目标断点，当前 Act／Source 标题在该宽度下不触发按钮；此前 220×780 已真实验证 Source title 的「展开 → 收起」consumer interaction。补充的 240×780 真实路由压力样本已使 Act 02、Act 03、Act 05 自然触发展开按钮；Act 02 已验证「展开 → 收起」、`aria-expanded false → true → false`、clamp 恢复与 document overflow `0`。Timeline current title 在该样本中因播放器列宽为 `0` 未触发点击分支，仍保留 `TODO consumer-check`；压力视口只用于行为验证，不改变产品支持断点。
 
 ## 自动门禁
 

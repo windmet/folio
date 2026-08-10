@@ -85,7 +85,7 @@ E：REVISE — 390px scope tab 文字太小；其余 ACCEPT
 | A2 Docked Player | 已完成 Docked Bottom Player 与单媒体 mount 回归 | `PASS / FREEZE` |
 | C2 People / Cast | wide／medium／mobile 投影已完成 | `PASS / FREEZE` |
 | D2 Source hierarchy / icon | 三层信息层级与 X Space radiowave 已完成 | `PASS / FREEZE` |
-| B2 expandable正文 | 机制与 Source consumer 已完成；Act／Timeline natural fixture 仍 TODO | `PASS；TODO consumer-check 保留` |
+| B2 expandable正文 | 机制、Source consumer 与 240px Act consumer 已完成；Timeline current title 仍未自然触发 | `PASS；Timeline current TODO consumer-check 保留` |
 | E Source-scoped Timeline | 三 scope、native clock、Event projection 已工程／Browser 验证 | `PRODUCT REVIEW PENDING；不回滚` |
 | T1 Navigator full-shell geometry | 第一版曾按 shell rect 扩展 Expanded/Docked | `REJECTED — ROLLED BACK IN T1.1` |
 | T1.1 Navigator inline geometry | Expanded 回到左内容列，Docked 自然增宽，Player 独立 sticky | `ENGINEERING/BROWSER VERIFIED；PRODUCT REVIEW PENDING` |
@@ -144,7 +144,7 @@ MT1：REVISE — 章节带摘要仍偏高；普通 Event 密度可以
 
 ## 2026-08-10 Final Cleanup P1 工程结果
 
-P1-C/P1-D 已完成源码实现，待重新执行构建与真实路由 Browser QA。产品复核重点为：
+P1-C/P1-D 已完成源码、构建与真实路由 Browser QA（390px 与 240px 压力视口）。产品复核重点为：
 
 - 390px 下 Media Sources 摘要是否足够清楚，展开后是否仍能顺畅选择来源、查看时长／来源证明与浏览事件；
 - 键盘 Enter／Space 是否能打开 native disclosure，展开前后不出现横向 overflow；

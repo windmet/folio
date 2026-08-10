@@ -83,6 +83,6 @@ Hero 下常驻摘要：`YouTube 主直播 + X Space ① / ②`、`三路媒体 �
 
 P0-A/P0-B 已完成源码、构建、静态门禁与真实路由 Browser QA。Person → Thread 已确认单一可见 overlay、`selectedPersonId` 清空、URL 只保留 `thread`、Thread 焦点循环有效；异常双参数 URL 也以 Thread 为优先。YT Timeline 在桌面／390px 均不再显示重复 Act Context；Overview 等非 Timeline 视图只保留轻量 Timeline CTA；SP1 的 Player 显示 `关联上下文` 与 `1 条相关事件线`。390px Expanded YT Player 的 `scrollHeight - clientHeight` 为 `0`。
 
-P1-C/P1-D 已完成源码实现：中文 taxonomy 使用 `.archive-label-zh` sans-serif token；Media Sources 以常驻摘要 + 默认收起的 native disclosure 呈现，展开后仍包含三张 source card、来源证明与 Source Event Index。下一步只需重新执行构建／静态门禁与真实路由 Browser QA，确认 390px 摘要、键盘展开、source browse、`?track=` 与 console／overflow。
+P1-C/P1-D 已完成源码、构建与真实路由 Browser QA：中文 taxonomy 使用 `.archive-label-zh` sans-serif token；Media Sources 以常驻摘要 + 默认收起的 native disclosure 呈现，展开后仍包含三张 source card、来源证明与 Source Event Index。390px 与 240px 压力视口均无横向 overflow；`space-1` browse、`?track=`、Source Event Index 与 console 均已复测。`summary` 保持 native focus semantics；键盘手感仍属于人工产品停点，不用脚本替代 native 行为。
 
 工程完成后执行了 `npm run validate`、`npx tsc --noEmit`、`git diff --check`、`npm run audit:payload -- komatsu36`，并完成真实路由 Browser QA、console／overflow／focus／URL 检查。工程／Browser 证据不等于 `PRODUCT-ACCEPTED`；真实 Android/iOS、真实媒体长时播放、merge、deploy 与 Release Gate 继续 `NOT EXECUTED / CLOSED`。
