@@ -1,4 +1,6 @@
 ---
+import { participationKindLabels, readerLabel } from '../../lib/projectReaderLabels';
+
 export interface Props {
   person: any;
   eventCount: number;
@@ -7,23 +9,13 @@ export interface Props {
 
 const { person, eventCount, group } = Astro.props;
 const participation = person.data.participation || [];
-const kindLabels: Record<string, string> = {
-  'ore-shiri-cast': 'CAST',
-  production: 'PRODUCTION',
-  ensemble: 'ENSEMBLE',
-  'birthday-live': 'LIVE',
-  'space-guest': 'SPACE GUEST',
-  'remote-call': 'REMOTE CALL',
-  'space-account': 'ACCOUNT APPEARANCE',
-  'submitted-comment': 'SUBMISSION',
-};
 const groupKinds: Record<Props['group'], string[]> = {
   production: ['production', 'ensemble'],
   'birthday-live': ['ore-shiri-cast', 'production', 'ensemble'],
   'space-remote': ['space-guest', 'remote-call', 'space-account'],
 };
 const participationLabels = participation.filter((item: any) => groupKinds[group].includes(item.kind)).map((item: any) => {
-  const label = kindLabels[item.kind] || item.kind;
+  const label = readerLabel(participationKindLabels, item.kind);
   const sessions = item.sessions?.map((session: string) => session === 'day' ? '昼' : '夜').join('／');
   return [label, item.character, sessions, item.credit].filter(Boolean).join(' · ');
 });

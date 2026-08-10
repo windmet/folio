@@ -11,6 +11,7 @@ import SourceTimeline from './SourceTimeline.astro';
 import CastMatrix from './CastMatrix.astro';
 import PersonCard from './PersonCard.astro';
 import LeadPersonCard from './LeadPersonCard.astro';
+import { readerLabel, threadCategoryLabels } from '../../lib/projectReaderLabels';
 
 export interface Props {
   project: any;
@@ -187,7 +188,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         <div class="view-heading">
           <span class="archive-kicker">FIVE-MINUTE ORIENTATION</span>
           <h2>一条线看懂这场活动</h2>
-          <p>这不是五小时流水账。当前垂直切片先展示“提议 → 识破 → 干扰 → 遗忘 → 80 分钟后回收”怎样被转换成可进入、可跳转的档案。</p>
+          <p>这场近五小时直播最有趣的地方，是很多笑点会隔上一两个小时突然回来。最典型的一条从俄罗斯章鱼烧开始：有人先看见绿色、悄悄放回，赛马又把所有人的注意力带走，直到约 80 分钟后才由完全不知情的人踩雷。</p>
         </div>
         <div class="overview-grid">
           <article>
@@ -202,7 +203,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         </div>
         {payoffEvent && (
           <button type="button" class="featured-jump" data-event-seek={localId(payoffEvent.id)}>
-            <span class="archive-kicker">FEATURED PAYOFF · 03:09:23</span>
+            <span class="archive-kicker">精彩回收 · 03:09:23</span>
             <strong>{payoffEvent.data.title}</strong>
             <span>定位并进入时间线 →</span>
           </button>
@@ -211,14 +212,14 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
 
       <section class="project-view timeline-view" data-view-panel="timeline" hidden>
         <div class="view-heading">
-          <span class="archive-kicker">CHRONOLOGICAL CANON · SOURCE-LOCAL CLOCKS</span>
+          <span class="archive-kicker">按原视频时间浏览</span>
           <h2 id="timeline-view-title">Timeline</h2>
           <p>选择一个来源查看其独立本地时钟。YouTube 保留八个 Act 主线，X Space 使用各自的事件列表，不把现场时钟硬拼在一起。</p>
         </div>
         <div class="timeline-scope" data-timeline-scope>
           <div class="timeline-scope__heading">
-            <span class="archive-kicker">TIMELINE SCOPE</span>
-            <p data-timeline-scope-description aria-live="polite">按来源切换；所有时间均保持原始媒体的 native clock。</p>
+            <span class="archive-kicker">选择时间线来源</span>
+            <p data-timeline-scope-description aria-live="polite">按来源切换；所有时间均使用各自原视频的时间。</p>
           </div>
           <div class="timeline-scope__buttons" role="group" aria-label="Timeline 来源范围">
             {orderedTimelineTracks.map((track) => {
@@ -231,11 +232,11 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
                   data-timeline-scope-button={trackId}
                   aria-pressed={trackId === defaultTimelineTrackId ? 'true' : 'false'}
                   aria-controls={`timeline-scope-panel-${trackId}`}
-                  aria-label={`选择${track.data.label} Timeline scope · ${trackEvents.length} events · native clock`}
+                  aria-label={`选择${track.data.label}时间线 · ${trackEvents.length} 个事件 · 原视频时间`}
                 >
                   <span>{track.data.shortLabel}</span>
                   <strong>{track.data.label}</strong>
-                  <small>{trackEvents.length} EVENTS · NATIVE CLOCK</small>
+                  <small>{trackEvents.length} 个事件 · 原视频时间</small>
                 </button>
               );
             })}
@@ -264,14 +265,14 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
 
       <section class="project-view storylines-view" data-view-panel="storylines" hidden>
         <div class="view-heading">
-          <span class="archive-kicker">CONTEXT RECONSTRUCTION</span>
+          <span class="archive-kicker">按故事线浏览</span>
           <h2>Storylines</h2>
           <p>事件线按故事发展顺序排列；跨平台段落保留各自时间，不强行合并成一个时钟。</p>
         </div>
         <div class="storyline-list">
           {orderedThreads.map((thread) => (
             <button type="button" class="storyline-card" data-open-thread={localId(thread.id)}>
-              <span>{thread.data.category.replaceAll('-', ' ').toUpperCase()}</span>
+              <span>{readerLabel(threadCategoryLabels, thread.data.category)}</span>
               <h3>{thread.data.title}</h3>
               <p>{thread.data.deck}</p>
               <strong>{thread.data.nodes.length} 个节点 · 查看完整事件线 →</strong>
@@ -284,7 +285,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         <div class="view-heading">
           <span class="archive-kicker">PEOPLE / CAST</span>
           <h2>People</h2>
-          <p>先看这场企划的中心人物与《俺知》昼夜 Cast，再看制作、生日会和 X Space / Remote 参与关系。人物事件仍由 Event → Person 引用反向生成。</p>
+          <p>每个人物页都会汇总他在主直播、Space 与《俺知》复盘中出现的相关片段。</p>
         </div>
         {leadPerson && (
           <section class="people-lead" aria-labelledby="people-lead-title">
@@ -761,7 +762,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       const track = this.data.tracks[scope];
       const description = this.querySelector<HTMLElement>('[data-timeline-scope-description]');
       if (description && track) {
-        description.textContent = `${track.shortLabel} · ${track.label} · ${track.durationMs ? this.formatArchiveTime(track.durationMs) : '—'} NATIVE CLOCK`;
+        description.textContent = `${track.shortLabel} · ${track.label} · ${track.durationMs ? this.formatArchiveTime(track.durationMs) : '—'} · 原视频时间`;
       }
       const navigator = this.querySelector<HTMLElement>('[data-timeline-navigator]');
       if (navigator) navigator.hidden = scope !== this.data.defaultTrackId;

@@ -1,4 +1,6 @@
 ---
+import { participationKindLabels, readerLabel, threadCategoryLabels } from '../../lib/projectReaderLabels';
+
 export interface Props {
   people: any[];
   eventsByPerson: Map<string, any[]>;
@@ -34,7 +36,7 @@ const formatTime = (milliseconds: number) => {
           <div class="person-participation" aria-label="本项目参与方式">
             {person.data.participation.map((item: any) => (
               <span>
-                {item.kind.replaceAll('-', ' ')}
+                {readerLabel(participationKindLabels, item.kind)}
                 {item.character ? ` · ${item.character}` : ''}
                 {item.sessions?.length ? ` · ${item.sessions.map((session: string) => session === 'day' ? '昼' : '夜').join('／')}` : ''}
                 {item.credit ? ` · ${item.credit}` : ''}
@@ -56,7 +58,7 @@ const formatTime = (milliseconds: number) => {
             const thread = threadsById.get(threadId);
             return thread ? (
               <button type="button" data-open-thread={threadId}>
-                <span>{thread.data.category.replaceAll('-', ' ').toUpperCase()}</span>
+                <span>{readerLabel(threadCategoryLabels, thread.data.category)}</span>
                 <strong>{thread.data.title}</strong>
               </button>
             ) : null;

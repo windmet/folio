@@ -92,7 +92,7 @@ export const buildProjectSearchIndex = ({
     const item: ProjectSearchItem = {
       kind: 'event',
       id: localId(event.id),
-      label: `EVENT · ${track?.data.shortLabel || '—'} ${formatTime(event.data.startMs)}`,
+      label: `事件 · ${track?.data.shortLabel || '—'} ${formatTime(event.data.startMs)}`,
       title: event.data.title,
       searchText: normalizeProjectSearchText(searchText(
         event.data.title,
@@ -110,7 +110,7 @@ export const buildProjectSearchIndex = ({
     items.push({
       kind: 'thread',
       id: localId(thread.id),
-      label: `THREAD · ${thread.data.nodes.length} NODES`,
+      label: `故事线 · ${thread.data.nodes.length} 个节点`,
       title: thread.data.title,
       searchText: normalizeProjectSearchText(searchText(thread.data.title, thread.data.deck, thread.data.category)),
     });
@@ -120,7 +120,7 @@ export const buildProjectSearchIndex = ({
     items.push({
       kind: 'person',
       id: localId(person.id),
-      label: `PERSON · ${person.data.reading || '人物索引'}`,
+      label: `人物 · ${person.data.reading || '人物索引'}`,
       title: person.data.displayName,
       searchText: normalizeProjectSearchText(searchText(
         person.data.displayName,

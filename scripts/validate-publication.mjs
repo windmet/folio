@@ -291,6 +291,13 @@ if (!searchPayload || searchPayload.schemaVersion !== 1 || searchPayload.project
     if (item?.kind === 'event' && (typeof item.trackId !== 'string' || typeof item.startMs !== 'number')) {
       errors.push(`search JSON Event item ${index} is missing trackId/startMs`);
     }
+    const expectedReaderPrefix = itemKind === 'event' ? '事件 · '
+      : itemKind === 'thread' ? '故事线 · '
+        : itemKind === 'person' ? '人物 · '
+          : '';
+    if (expectedReaderPrefix && !item.label.startsWith(expectedReaderPrefix)) {
+      errors.push(`search JSON item ${index} exposes a schema label instead of reader language`);
+    }
   }
   const amazonSearchItem = searchItems.find((item) => item.kind === 'event' && item.id === 'yt-040405-amazon-hama');
   const grabSearchItem = searchItems.find((item) => item.kind === 'event' && item.id === 'yt-040524-hama-grabs-amazon-card');
@@ -628,6 +635,50 @@ for (const [label, pattern] of forbiddenPublicationMarkers) {
 
 for (const [label, pattern] of forbiddenPublicationMarkers) {
   if (pattern.test(searchJsonText)) errors.push(`search JSON contains ${label}`);
+}
+
+const publishedReaderText = html
+  .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, ' ')
+  .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, ' ')
+  .replace(/<[^>]+>/g, ' ')
+  .replace(/\s+/g, ' ');
+
+for (const forbidden of [
+  'PROJECT ARCHIVE · EDITORIAL BUILD',
+  'CHRONOLOGICAL CANON · SOURCE-LOCAL CLOCKS',
+  'TIMELINE SCOPE',
+  'EVENTS · NATIVE CLOCK',
+  'CONTEXT RECONSTRUCTION',
+  'CURRENT SOURCE',
+  'READING CONTEXT',
+  'SOURCE EVENT INDEX',
+  'STORY THREAD ·',
+  '仅索引已公开的 Event、Thread 与 Person',
+  'ACCOUNT APPEARANCE',
+  'REMOTE CALL',
+  'SUBMISSION',
+]) {
+  if (publishedReaderText.includes(forbidden)) {
+    errors.push(`semantic P1 published UI contains superseded reader-facing label: ${forbidden}`);
+  }
+}
+
+for (const required of [
+  '36TH BIRTHDAY · LIVE ARCHIVE',
+  '按原视频时间浏览',
+  '选择时间线来源',
+  '按故事线浏览',
+  '当前播放',
+  '切换来源',
+  '这一段在讲什么',
+  '此来源的事件',
+  '故事线 · 前后回收',
+  '只搜索已经公开的事件、故事线和人物',
+  '每个人物页都会汇总他在主直播、Space 与《俺知》复盘中出现的相关片段。',
+]) {
+  if (!publishedReaderText.includes(required)) {
+    errors.push(`semantic P1 published UI is missing reader-facing label: ${required}`);
+  }
 }
 
 for (const event of publicEvents) {

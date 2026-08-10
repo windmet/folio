@@ -21,7 +21,7 @@ const orderedTracks = [...tracks].sort((left, right) =>
 <section class="archive-player" data-player data-track-id={trackId} data-video-id={videoId || ''}>
   <div class="archive-player__head">
     <div>
-      <span class="archive-kicker">CURRENT SOURCE</span>
+      <span class="archive-kicker">当前播放</span>
       <strong data-player-track-label>{label}</strong>
     </div>
     <button
@@ -36,7 +36,7 @@ const orderedTracks = [...tracks].sort((left, right) =>
       <span class="archive-clock" data-player-time>00:00:00</span>
   </div>
   <nav class="archive-player__sources" aria-label="播放器来源切换">
-    <span class="archive-kicker">SOURCE</span>
+    <span class="archive-kicker">切换来源</span>
     <div>
       {orderedTracks.map((track) => {
         const id = track.id.split('/').at(-1) || track.id;
@@ -76,7 +76,7 @@ const orderedTracks = [...tracks].sort((left, right) =>
     >展开</button>
   </p>
   <section class="archive-player__context" data-player-context hidden aria-label="当前节点上下文">
-    <span class="archive-kicker">READING CONTEXT</span>
+    <span class="archive-kicker">这一段在讲什么</span>
     <p id="player-context-text" data-player-context-summary data-player-expandable="context"></p>
     <button
       type="button"

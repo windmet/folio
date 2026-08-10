@@ -27,11 +27,11 @@ const formatDuration = (milliseconds: number) => {
 >
   <header class="source-timeline__header">
     <div>
-      <span class="archive-kicker">{track.data.shortLabel} · NATIVE CLOCK</span>
+      <span class="archive-kicker">{track.data.shortLabel} · 原视频时间</span>
       <h3 id={`timeline-scope-title-${localTrackId}`}>{track.data.label}</h3>
     </div>
     <div class="source-timeline__facts" aria-label="来源时间线摘要">
-      <span>{events.length} EVENTS</span>
+      <span>{events.length} 个事件</span>
       <span>{formatDuration(track.data.durationMs)}</span>
     </div>
     <p>本来源使用独立本地时钟；以下时间不会换算到 YouTube 主直播轴。</p>

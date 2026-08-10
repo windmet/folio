@@ -48,7 +48,7 @@ const countEvents = (track: any) => events.filter((event) => referenceId(event.d
                 <strong id={`source-title-${trackId}`} data-inline-expandable={`source-title-${trackId}`}>{track.data.label}</strong>
               </span>
             </button>
-            <span class="media-source__events">{countEvents(track)} EVENTS</span>
+            <span class="media-source__events">{countEvents(track)} 个事件</span>
             <button
               type="button"
               class="archive-inline-text-toggle media-source__text-toggle"
@@ -87,7 +87,7 @@ const countEvents = (track: any) => events.filter((event) => referenceId(event.d
   </div>
   <section class="source-event-index" data-source-event-index hidden aria-live="polite">
     <div class="source-event-index__head">
-      <span class="archive-kicker">SOURCE EVENT INDEX</span>
+      <span class="archive-kicker">此来源的事件</span>
       <strong data-source-event-heading>选择来源以浏览事件</strong>
     </div>
     {orderedTracks.map((track) => {
