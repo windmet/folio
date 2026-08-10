@@ -5,7 +5,7 @@
 > 基线分支：`codex/komatsu36-project-archive`
 > 前置状态：RC 0.11 `REVIEW BRANCH ACCEPTANCE COMPLETE`
 > 当前入口：`docs/editorial/komatsu36-rc12-t1-timeline-navigator-polish-runbook.md`；E5 QA 与 F2 handoff 保留为对应批次证据
-> 当前进度：RC12-A2/C2/D2/B2/F2、E1–E5 与 T1.1 已完成工程／Browser 验证；RC12-Y1 已完成工程与 Browser 验证。后续 Semantic P0 已独立纠正 Amazon winner、濱因果线与汐谷读音，当前 Timeline 为 YT 105／SP1 8／SP2 12 Event，证据见 `komatsu36-semantic-p0-handoff.md`。T1/Y1 产品停点与 Semantic P1 仍待完成。
+> 当前进度：RC12-A2/C2/D2/B2/F2、E1–E5 与 T1.1 已完成工程／Browser 验证；RC12-Y1 已完成工程与 Browser 验证。Semantic P0、P1 Person／Story／Thread／UI Reader Language 已分批完成。下一批 RC12-M1 Mobile Player Bubble 规格已锁定但未实施；Semantic P1 Event reader-copy 排在 M1 后。T1/Y1 产品停点与 Release Gate 仍待完成。
 > Release Gate：CLOSED；本文不授权 merge、deploy 或修改 `project.status`
 
 本文记录 RC12-A/B/C/D 第一版经过源码、构建和浏览器验证后，收到的产品层返工裁决，并继续作为 RC 0.12 的**总状态入口**。T1 与 Y1 的工程批次已经分别完成，当前下一步是 T1/Y1 产品复核；Y2 仍未授权。`komatsu36-rc12-t1-timeline-navigator-polish-runbook.md` 仍是 T1/Y1 合同与证据入口。原 `komatsu36-rc12-visual-polish-source-navigation-plan.md` 保存第一版规格与工程证据，不再代表下一批应直接收口；`komatsu36-rc12-release-readiness-handoff.md` 降级为被产品复核退回的本地 QA 快照。

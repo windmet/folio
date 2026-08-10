@@ -64,4 +64,4 @@ node scripts/verify-komatsu36-semantic-p1-thread-language-browser.mjs <optional-
 
 ## 5. 下一批
 
-下一批只处理 semantic patch 第 12–13 节的 UI reader-language：8 个核心组件、Overview／People 说明、Thread category／node role、Person participation 和 Search 类型标签。内部 enum 与结构化 category 继续保留在数据层，只改变 reader-visible mapping。Event 杯类奖品与 Bingo patch 文案留给随后独立 Event 批次。
+> 2026-08-10 状态覆盖：第 12–13 节 UI reader-language 已完成，证据见 `komatsu36-semantic-p1-ui-language-handoff.md`。RC12-M1 Mobile Player Bubble 现为下一批规格；Event 杯类奖品与 Bingo patch 文案继续保留为 M1 后的独立 Event 批次。
