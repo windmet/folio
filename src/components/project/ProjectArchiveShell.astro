@@ -394,6 +394,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     preferredThreadId?: string;
   };
   type PlayerPresentationMode = 'expanded' | 'docked' | 'bubble';
+  type YouTubeLoadState = 'idle' | 'loading' | 'ready' | 'error';
   type ArchiveTrack = {
     id: string;
     label: string;
@@ -476,9 +477,12 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     selectedPersonId: string | null = null;
     player: any = null;
     playerReady = false;
-    playerLoadState: 'idle' | 'loading' | 'ready' | 'error' = 'idle';
+    playerLoadState: YouTubeLoadState = 'idle';
     playerLoadPromise: Promise<any> | null = null;
+    cancelPlayerLoad: (() => void) | null = null;
     playerReadyTimeoutId: number | null = null;
+    playerLoadAttempt = 0;
+    playerPosterFailed = false;
     pendingSeekMs: number | null = null;
     mobileResumeMs: number | null = null;
     playbackSyncTimer: number | null = null;
@@ -530,6 +534,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     }
 
     disconnectedCallback() {
+      this.cancelPendingPlayerLoad();
       this.stopPlaybackSync();
       this.contextFocusObserver?.disconnect();
       this.playerTextResizeObserver?.disconnect();
@@ -603,8 +608,9 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.querySelector<HTMLElement>('[data-load-player]')?.addEventListener('click', () => this.ensurePlayer());
       this.querySelector<HTMLElement>('[data-player-retry]')?.addEventListener('click', () => this.retryPlayer());
       const poster = this.querySelector<HTMLImageElement>('[data-player-poster]');
-      poster?.addEventListener('load', () => this.setPosterFallback(false));
-      poster?.addEventListener('error', () => this.setPosterFallback(true));
+      poster?.addEventListener('load', () => this.setPlayerPosterFailed(false));
+      poster?.addEventListener('error', () => this.setPlayerPosterFailed(true));
+      if (poster?.complete) this.setPlayerPosterFailed(poster.naturalWidth === 0);
       this.querySelector<HTMLElement>('[data-player-mode-toggle]')?.addEventListener('click', () => {
         const desktop = window.matchMedia('(min-width: 901px)').matches;
         this.setPlayerPresentationMode(this.playerPresentationMode === 'expanded'
@@ -1214,7 +1220,6 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       const event = this.data.events[eventId];
       if (!event) return;
       this.selectedEventId = eventId;
-      this.activeTrackId = event.trackId;
       this.timelineScopeId = event.trackId;
       this.classList.add('has-active-event');
       this.updateTrack(event.trackId);
@@ -1245,7 +1250,6 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.pendingSeekMs = null;
       this.mobileResumeMs = null;
       this.classList.remove('has-active-event');
-      this.activeTrackId = trackId;
       this.timelineScopeId = trackId;
       this.updateTrack(trackId);
       this.applyTimelineScope(trackId);
@@ -1535,8 +1539,12 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     }
 
     pauseForMobileBubble() {
-      this.pendingSeekMs = null;
       this.stopPlaybackSync();
+      if (!this.playerReady) {
+        if (this.pendingSeekMs !== null) this.mobileResumeMs = this.pendingSeekMs;
+        return;
+      }
+      this.pendingSeekMs = null;
       if (this.playerReady && this.player?.getCurrentTime) {
         try {
           this.mobileResumeMs = Math.max(0, Math.floor(this.player.getCurrentTime() * 1000));
@@ -1650,6 +1658,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     }
 
     restoreFromUrl() {
+      this.cancelPendingPlayerLoad();
       const restoreTimelineScopeFocus = Boolean(
         document.activeElement instanceof HTMLElement
         && document.activeElement.closest('[data-timeline-scope-button]'),
@@ -1699,121 +1708,263 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     }
 
     async ensurePlayer() {
-      if (this.player) return this.player;
+      if (this.playerReady && this.player) {
+        this.setYouTubeLoadState('ready');
+        return this.player;
+      }
       if (this.playerLoadPromise) return this.playerLoadPromise;
-      const track = this.data.tracks[this.activeTrackId];
+      const requestedTrackId = this.activeTrackId;
+      const track = this.data.tracks[requestedTrackId];
       if (!track || track.playback.provider !== 'youtube') return null;
-      const mount = this.querySelector<HTMLElement>('[data-player-mount]');
-      if (!mount) return null;
-      this.playerLoadState = 'loading';
-      this.hidePlayerError();
-      this.playerLoadPromise = (async () => {
+      const attempt = ++this.playerLoadAttempt;
+      this.setYouTubeLoadState('loading');
+      let attemptPromise: Promise<any>;
+      attemptPromise = (async () => {
         try {
           const YT = await loadYouTubeApi();
-          this.setPosterFallback(false);
-          this.querySelector<HTMLElement>('[data-load-player]')?.setAttribute('hidden', '');
-          this.player = new YT.Player(mount, {
-            width: '100%',
-            height: '100%',
-            videoId: track.playback.videoId,
-            playerVars: { playsinline: 1, rel: 0, origin: window.location.origin },
-            events: {
-              onReady: () => {
-                if (this.playerReadyTimeoutId !== null) window.clearTimeout(this.playerReadyTimeoutId);
-                this.playerReadyTimeoutId = null;
-                this.playerReady = true;
-                this.playerLoadState = 'ready';
-                this.hidePlayerError();
-                if (this.pendingSeekMs !== null) {
-                  const seekMs = this.pendingSeekMs;
-                  this.pendingSeekMs = null;
-                  this.player.seekTo(seekMs / 1000, true);
-                  this.player.playVideo();
-                }
-              },
-              onError: () => {
-                if (this.playerReadyTimeoutId !== null) window.clearTimeout(this.playerReadyTimeoutId);
-                this.playerReadyTimeoutId = null;
-                this.handlePlayerError();
-              },
-              onStateChange: (playerEvent: any) => {
-                if (playerEvent.data === YT.PlayerState.PLAYING && this.playerPresentationMode === 'bubble') {
-                  this.pauseForMobileBubble();
-                } else if (playerEvent.data === YT.PlayerState.PLAYING) this.startPlaybackSync();
-                else {
-                  this.syncFromPlayer();
-                  this.stopPlaybackSync();
-                }
-              },
-            },
-          });
-          this.playerReadyTimeoutId = window.setTimeout(() => {
-            this.playerReadyTimeoutId = null;
+          if (!this.isPlayerLoadAttemptCurrent(attempt, requestedTrackId)) return null;
+          const mount = this.ensurePlayerMount();
+          if (!mount) {
             this.handlePlayerError();
-          }, 10000);
-          this.querySelector<HTMLElement>('[data-player-viewport]')?.setAttribute('data-player-loaded', 'true');
-          return this.player;
+            return null;
+          }
+          return await new Promise<any>((resolve) => {
+            let settled = false;
+            let playerInstance: any = null;
+            let readyTimeoutId: number | null = null;
+            const clearReadyTimeout = () => {
+              if (readyTimeoutId !== null) window.clearTimeout(readyTimeoutId);
+              if (this.playerReadyTimeoutId === readyTimeoutId) this.playerReadyTimeoutId = null;
+              readyTimeoutId = null;
+            };
+            const settle = (value: any) => {
+              if (settled) return;
+              settled = true;
+              clearReadyTimeout();
+              if (this.cancelPlayerLoad === cancelAttempt) this.cancelPlayerLoad = null;
+              resolve(value);
+            };
+            const abandonAttempt = () => {
+              this.safeDestroyPlayer(playerInstance);
+              if (this.player === playerInstance) this.player = null;
+              settle(null);
+            };
+            const failAttempt = () => {
+              if (!this.isPlayerLoadAttemptCurrent(attempt, requestedTrackId)) {
+                abandonAttempt();
+                return;
+              }
+              this.safeDestroyPlayer(playerInstance);
+              if (this.player === playerInstance) this.player = null;
+              this.playerReady = false;
+              this.resetPlayerMount();
+              this.handlePlayerError();
+              settle(null);
+            };
+            const cancelAttempt = () => abandonAttempt();
+            this.cancelPlayerLoad = cancelAttempt;
+            try {
+              playerInstance = new YT.Player(mount, {
+                width: '100%',
+                height: '100%',
+                videoId: track.playback.videoId,
+                playerVars: { playsinline: 1, rel: 0, origin: window.location.origin },
+                events: {
+                  onReady: () => {
+                    if (!this.isPlayerLoadAttemptCurrent(attempt, requestedTrackId)) {
+                      abandonAttempt();
+                      return;
+                    }
+                    this.player = playerInstance;
+                    this.playerReady = true;
+                    this.setYouTubeLoadState('ready');
+                    window.requestAnimationFrame(() => {
+                      if (this.isPlayerLoadAttemptCurrent(attempt, requestedTrackId)
+                        && this.playerLoadState === 'ready') {
+                        this.syncPlayerProviderVisibility();
+                      }
+                    });
+                    if (this.pendingSeekMs !== null) {
+                      const seekMs = this.pendingSeekMs;
+                      this.pendingSeekMs = null;
+                      try {
+                        playerInstance.seekTo(seekMs / 1000, true);
+                        this.mobileResumeMs = seekMs;
+                        this.updatePlayerTime(seekMs);
+                        if (this.playerPresentationMode !== 'bubble') playerInstance.playVideo();
+                      } catch {
+                        // The ready Player stays visible; a later user seek can retry positioning.
+                      }
+                    }
+                    settle(playerInstance);
+                  },
+                  onError: () => {
+                    if (this.player === playerInstance && this.playerReady) {
+                      this.safeDestroyPlayer(playerInstance);
+                      this.player = null;
+                      this.playerReady = false;
+                      this.resetPlayerMount();
+                      this.handlePlayerError();
+                      settle(null);
+                      return;
+                    }
+                    failAttempt();
+                  },
+                  onStateChange: (playerEvent: any) => {
+                    if (playerEvent.data === YT.PlayerState.PLAYING && this.playerPresentationMode === 'bubble') {
+                      this.pauseForMobileBubble();
+                    } else if (playerEvent.data === YT.PlayerState.PLAYING) this.startPlaybackSync();
+                    else {
+                      this.syncFromPlayer();
+                      this.stopPlaybackSync();
+                    }
+                  },
+                },
+              });
+              this.player = playerInstance;
+              readyTimeoutId = window.setTimeout(() => failAttempt(), 10000);
+              this.playerReadyTimeoutId = readyTimeoutId;
+            } catch {
+              failAttempt();
+            }
+          });
         } catch {
-          this.handlePlayerError();
+          if (this.isPlayerLoadAttemptCurrent(attempt, requestedTrackId)) this.handlePlayerError();
           return null;
         } finally {
-          this.playerLoadPromise = null;
+          if (this.playerLoadPromise === attemptPromise) this.playerLoadPromise = null;
         }
       })();
-      return this.playerLoadPromise;
+      this.playerLoadPromise = attemptPromise;
+      return attemptPromise;
     }
 
-    setPosterFallback(failed: boolean) {
+    isPlayerLoadAttemptCurrent(attempt: number, requestedTrackId: string) {
+      return attempt === this.playerLoadAttempt
+        && this.activeTrackId === requestedTrackId
+        && this.data.tracks[requestedTrackId]?.playback.provider === 'youtube';
+    }
+
+    safeDestroyPlayer(player: any) {
+      try {
+        if (player?.destroy) player.destroy();
+      } catch {
+        // A partially initialized provider can reject destroy; the stable
+        // mount host is rebuilt before another instance is created.
+      }
+    }
+
+    ensurePlayerMount() {
+      const host = this.querySelector<HTMLElement>('[data-player-host]');
+      if (!host) return null;
+      let mount = host.querySelector<HTMLElement>('[data-player-mount]');
+      if (!mount) {
+        mount = document.createElement('div');
+        mount.className = 'archive-player__mount';
+        mount.dataset.playerMount = '';
+        host.replaceChildren(mount);
+      }
+      return mount;
+    }
+
+    resetPlayerMount() {
+      const host = this.querySelector<HTMLElement>('[data-player-host]');
+      if (!host) return null;
+      const mount = document.createElement('div');
+      mount.className = 'archive-player__mount';
+      mount.dataset.playerMount = '';
+      host.replaceChildren(mount);
+      return mount;
+    }
+
+    cancelPendingPlayerLoad() {
+      if (this.playerLoadState !== 'loading' && !this.playerLoadPromise) return;
+      this.playerLoadAttempt += 1;
+      const cancel = this.cancelPlayerLoad;
+      this.cancelPlayerLoad = null;
+      cancel?.();
+      this.playerLoadPromise = null;
+      if (!this.playerReady) {
+        this.safeDestroyPlayer(this.player);
+        this.player = null;
+        this.resetPlayerMount();
+        this.setYouTubeLoadState('idle');
+      }
+    }
+
+    renderYouTubeLoadState() {
+      const state = this.playerLoadState;
+      const activeTrack = this.data.tracks[this.activeTrackId];
+      const isYouTubeActive = activeTrack?.playback.provider === 'youtube';
+      const viewport = this.querySelector<HTMLElement>('[data-player-viewport]');
       const poster = this.querySelector<HTMLImageElement>('[data-player-poster]');
       const fallback = this.querySelector<HTMLElement>('[data-player-poster-fallback]');
-      if (poster) poster.hidden = failed;
-      if (fallback) fallback.hidden = !failed;
+      const load = this.querySelector<HTMLButtonElement>('[data-load-player]');
+      const error = this.querySelector<HTMLElement>('[data-player-error]');
+      this.syncPlayerProviderVisibility();
+      if (viewport) {
+        viewport.dataset.youtubeState = state;
+        viewport.toggleAttribute('data-player-loaded', state === 'ready');
+        viewport.toggleAttribute('data-player-error', state === 'error');
+      }
+      if (error) error.hidden = !isYouTubeActive || state !== 'error';
+      if (load) load.hidden = !isYouTubeActive || state !== 'idle';
+      if (poster) poster.hidden = state === 'ready' || state === 'error' || this.playerPosterFailed;
+      if (fallback) fallback.hidden = state === 'ready' || (!this.playerPosterFailed && state !== 'error');
     }
 
-    showPlayerError() {
-      this.querySelector<HTMLElement>('[data-player-error]')?.removeAttribute('hidden');
-      this.querySelector<HTMLElement>('[data-load-player]')?.setAttribute('hidden', '');
-      this.querySelector<HTMLElement>('[data-player-viewport]')?.setAttribute('data-player-error', 'true');
-      this.setPosterFallback(true);
-      this.updateFallback(this.selectedEventId ? this.data.events[this.selectedEventId] : null);
+    syncPlayerProviderVisibility() {
+      const activeTrack = this.data.tracks[this.activeTrackId];
+      const isYouTubeActive = activeTrack?.playback.provider === 'youtube';
+      const viewport = this.querySelector<HTMLElement>('[data-player-viewport]');
+      const unavailable = this.querySelector<HTMLElement>('[data-player-unavailable]');
+      if (viewport) viewport.hidden = !isYouTubeActive;
+      if (unavailable) unavailable.hidden = isYouTubeActive;
     }
 
-    hidePlayerError() {
-      this.querySelector<HTMLElement>('[data-player-error]')?.setAttribute('hidden', '');
-      this.querySelector<HTMLElement>('[data-player-viewport]')?.removeAttribute('data-player-error');
+    setYouTubeLoadState(state: YouTubeLoadState) {
+      this.playerLoadState = state;
+      this.renderYouTubeLoadState();
+    }
+
+    setPlayerPosterFailed(failed: boolean) {
+      this.playerPosterFailed = failed;
+      this.renderYouTubeLoadState();
     }
 
     handlePlayerError() {
       this.playerReady = false;
-      this.playerLoadState = 'error';
       this.stopPlaybackSync();
-      this.showPlayerError();
+      this.setYouTubeLoadState('error');
+      this.updateFallback(this.selectedEventId ? this.data.events[this.selectedEventId] : null);
     }
 
     async retryPlayer() {
       const track = this.data.tracks[this.activeTrackId];
       if (!track || track.playback.provider !== 'youtube') return null;
+      if (this.playerReady && this.player) {
+        this.setYouTubeLoadState('ready');
+        return this.player;
+      }
+      if (this.playerLoadState === 'loading' && this.playerLoadPromise) return this.playerLoadPromise;
+      this.playerLoadAttempt += 1;
+      this.cancelPlayerLoad?.();
+      this.cancelPlayerLoad = null;
+      this.playerLoadPromise = null;
       if (this.playerReadyTimeoutId !== null) window.clearTimeout(this.playerReadyTimeoutId);
       this.playerReadyTimeoutId = null;
-      try {
-        if (this.player?.destroy) this.player.destroy();
-      } catch {
-        // A partially created YouTube iframe can reject destroy; the mount is
-        // cleared below so retry remains available without a page refresh.
-      }
+      this.safeDestroyPlayer(this.player);
       this.player = null;
       this.playerReady = false;
-      this.playerLoadState = 'idle';
       this.stopPlaybackSync();
-      this.querySelector<HTMLElement>('[data-player-mount]')?.replaceChildren();
-      this.querySelector<HTMLElement>('[data-player-viewport]')?.removeAttribute('data-player-loaded');
+      this.resetPlayerMount();
       const poster = this.querySelector<HTMLImageElement>('[data-player-poster]');
       const posterSrc = poster?.dataset.playerPosterSrc;
       if (poster && posterSrc) {
         poster.src = `${posterSrc}${posterSrc.includes('?') ? '&' : '?'}retry=${Date.now()}`;
       }
-      this.setPosterFallback(false);
-      this.hidePlayerError();
+      this.setPlayerPosterFailed(false);
+      this.setYouTubeLoadState('idle');
       return this.ensurePlayer();
     }
 
@@ -1881,13 +2032,16 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     updateTrack(trackId: string) {
       const track = this.data.tracks[trackId];
       if (!track) return;
+      const previousTrackId = this.activeTrackId;
+      if (previousTrackId && previousTrackId !== trackId && this.playerLoadState === 'loading') {
+        this.cancelPendingPlayerLoad();
+      }
       this.activeTrackId = trackId;
       const label = this.querySelector<HTMLElement>('[data-player-track-label]');
       if (label) label.textContent = track.label;
       this.querySelectorAll<HTMLElement>('[data-source-track]').forEach((button) => {
         button.setAttribute('aria-pressed', String(button.dataset.sourceTrack === trackId));
       });
-      const viewport = this.querySelector<HTMLElement>('[data-player-viewport]');
       const unavailable = this.querySelector<HTMLElement>('[data-player-unavailable]');
       const note = this.querySelector<HTMLElement>('[data-player-note]');
       const isPlayable = track.playback.provider === 'youtube';
@@ -1900,8 +2054,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.classList.toggle('is-external-source', track.playback.provider === 'external');
       this.classList.toggle('is-youtube-source', track.playback.provider === 'youtube');
       this.updateSourceEventIndex(trackId);
-      if (viewport) viewport.hidden = !isPlayable;
-      if (unavailable) unavailable.hidden = isPlayable;
+      this.renderYouTubeLoadState();
       if (unavailable && !isPlayable) {
         unavailable.textContent = track.playback.provider === 'external'
           ? 'X SPACE REPLAY · EXTERNAL SOURCE\n本站提供原来源入口，不重托管媒体，也不伪造时间定位。'

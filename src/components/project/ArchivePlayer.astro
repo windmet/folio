@@ -80,21 +80,23 @@ const orderedTracks = [...tracks].sort((left, right) =>
           <span aria-hidden="true">▶</span>
           <small>载入播放器</small>
         </button>
-        <div class="archive-player__mount" data-player-mount></div>
+        <div class="archive-player__mount-host" data-player-host>
+          <div class="archive-player__mount" data-player-mount></div>
+        </div>
+        <section class="archive-player__error" data-player-error hidden role="status" aria-live="polite">
+          <strong>YouTube 无法连接</strong>
+          <p>播放器与预览图未能从 YouTube 加载。若当前网络无法访问 YouTube，请调整网络环境后重试。</p>
+          <div>
+            <button type="button" data-player-retry>重新尝试</button>
+            <a href={fallbackUrl || '#'} target="_blank" rel="noopener noreferrer" data-player-open-source>打开 YouTube ↗</a>
+          </div>
+        </section>
       </>
     ) : (
       <div class="archive-player__unavailable">此轨道目前没有公开播放源</div>
     )}
   </div>
   <div class="archive-player__unavailable" data-player-unavailable hidden>此轨道目前没有公开播放源</div>
-  <section class="archive-player__error" data-player-error hidden role="status" aria-live="polite">
-    <strong>YouTube 无法连接</strong>
-    <p>播放器与预览图未能从 YouTube 加载。若当前网络无法访问 YouTube，请调整网络环境后重试。</p>
-    <div>
-      <button type="button" data-player-retry>重新尝试</button>
-      <a href={fallbackUrl || '#'} target="_blank" rel="noopener noreferrer" data-player-open-source>打开 YouTube ↗</a>
-    </div>
-  </section>
   <p class="archive-player__current" data-player-current>
     <span id="player-current-text" data-player-current-text data-player-expandable="target">选择时间节点开始定位</span>
     <button
