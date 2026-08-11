@@ -414,9 +414,6 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
   };
   type EventArchiveContext = {
     threadIds: string[];
-    actId?: string;
-    actLabel?: string;
-    actTitle?: string;
   };
 
   declare global {
@@ -586,7 +583,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         if (button) this.selectEvent(button.dataset.sourceEvent || '', true, false);
       });
       this.querySelectorAll<HTMLElement>('[data-thread-event-id]').forEach((button) => {
-        button.addEventListener('click', () => this.navigateThreadEventToTimeline(button.dataset.threadEventId || ''));
+        button.addEventListener('click', () => this.navigateEventToTimeline(button.dataset.threadEventId || ''));
       });
       this.querySelectorAll<HTMLElement>('[data-person-event-id]').forEach((button) => {
         button.addEventListener('click', () => {
@@ -643,10 +640,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       });
       this.querySelector<HTMLElement>('[data-player-rail-node]')?.addEventListener('click', () => {
         if (!this.selectedEventId) return;
-        this.navigateToEventContext(this.selectedEventId, { origin: 'player' });
-      });
-      this.querySelector<HTMLElement>('[data-player-rail-act]')?.addEventListener('click', () => {
-        if (this.selectedEventId) this.navigateToEventAct(this.selectedEventId);
+        this.navigateEventToTimeline(this.selectedEventId);
       });
       this.querySelector<HTMLElement>('[data-player-rail-thread]')?.addEventListener('click', () => {
         if (!this.selectedEventId) return;
@@ -957,7 +951,6 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.updatePlayerContext(this.selectedEventId ? this.data.events[this.selectedEventId] : null);
       this.refreshPlayerText();
       this.refreshInlineText();
-      this.updatePlayerRailActiveState();
       if (view === 'timeline') this.scheduleTimelineNavigatorUpdate();
       if (push) this.updateUrl();
     }
@@ -1016,7 +1009,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       }
     }
 
-    navigateThreadEventToTimeline(eventId: string) {
+    navigateEventToTimeline(eventId: string) {
       const event = this.data.events[eventId];
       if (!event) return;
       this.closeSearch(false);
@@ -1108,47 +1101,13 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       const event = this.data.events[eventId];
       if (!event) return { threadIds: [] };
       const timelineTarget = this.querySelector<HTMLElement>(`[data-timeline-event="${CSS.escape(eventId)}"]`);
-      const actSection = timelineTarget?.closest<HTMLElement>('[data-act]');
       const domThreadIds = timelineTarget
         ? [...timelineTarget.querySelectorAll<HTMLElement>('[data-open-thread]')]
           .map((button) => button.dataset.openThread || '')
           .filter(Boolean)
         : [];
       const threadIds = [...new Set([...(event.threadIds || []), ...domThreadIds])];
-      if (!actSection) return { threadIds };
-      return {
-        threadIds,
-        actId: actSection.dataset.act,
-        actLabel: actSection.querySelector<HTMLElement>('.act-number strong')?.textContent?.trim(),
-        actTitle: actSection.querySelector<HTMLElement>('.act-header h2')?.textContent?.trim(),
-      };
-    }
-
-    navigateToEventAct(eventId: string) {
-      const event = this.data.events[eventId];
-      const context = this.getEventArchiveContext(eventId);
-      if (!event || event.trackId !== this.data.defaultTrackId || !context.actId) return;
-      const stateChanged = this.activeView !== 'timeline' || this.selectedEventId !== eventId
-        || Boolean(this.selectedThreadId || this.selectedPersonId || this.searchOpen);
-      this.closeSearch(false);
-      if (this.selectedThreadId) this.closeThread(false);
-      if (this.selectedPersonId) this.closePerson(false);
-      this.closePlayerRailThreadMenu(false);
-      this.selectEvent(eventId, false, false);
-      this.showView('timeline', false);
-      if (stateChanged) this.writeUrl('push');
-      window.requestAnimationFrame(() => this.focusEventAct(eventId));
-    }
-
-    focusEventAct(eventId: string) {
-      const timelineTarget = this.querySelector<HTMLElement>(`[data-timeline-event="${CSS.escape(eventId)}"]`);
-      const header = timelineTarget?.closest<HTMLElement>('[data-act]')?.querySelector<HTMLElement>('[data-act-header]');
-      if (!header) return;
-      const nav = this.querySelector<HTMLElement>('.project-nav');
-      const offset = this.getTimelineScrollOffset();
-      header.style.scrollMarginTop = `${Math.ceil(offset)}px`;
-      header.scrollIntoView({ behavior: 'auto', block: 'start' });
-      header.focus({ preventScroll: true });
+      return { threadIds };
     }
 
     isPlayerRailAvailable() {
@@ -1328,7 +1287,6 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.updateModalBackgroundInert();
       this.lockPage();
       this.querySelector<HTMLElement>('[data-thread-panel]')?.focus();
-      this.updatePlayerRailActiveState();
       if (push) this.updateUrl();
     }
 
@@ -1342,7 +1300,6 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.updateModalBackgroundInert();
       this.unlockPage();
       focusTarget?.focus({ preventScroll: true });
-      this.updatePlayerRailActiveState();
       if (update) this.replaceUrl();
     }
 
@@ -1380,7 +1337,6 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.selectedThreadId = null;
       this.querySelector<HTMLElement>('[data-thread-overlay]')?.setAttribute('hidden', '');
       this.updateModalBackgroundInert();
-      this.updatePlayerRailActiveState();
     }
 
     dismissPersonForTransition() {
@@ -2157,11 +2113,12 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     updatePlayerRail(event: ArchiveEvent | null, archiveContext?: EventArchiveContext) {
       const rail = this.querySelector<HTMLElement>('[data-player-context-rail]');
       const node = this.querySelector<HTMLButtonElement>('[data-player-rail-node]');
-      const act = this.querySelector<HTMLButtonElement>('[data-player-rail-act]');
-      const actLabel = this.querySelector<HTMLElement>('[data-player-rail-act-label]');
+      const timelineLabel = this.querySelector<HTMLElement>('[data-player-rail-timeline-label]');
       const thread = this.querySelector<HTMLButtonElement>('[data-player-rail-thread]');
+      const threadLabel = this.querySelector<HTMLElement>('[data-player-rail-thread-label]');
       const source = this.querySelector<HTMLAnchorElement>('[data-player-rail-source]');
-      if (!rail || !node || !act || !actLabel || !thread || !source) return;
+      const sourceLabel = this.querySelector<HTMLElement>('[data-player-rail-source-label]');
+      if (!rail || !node || !timelineLabel || !thread || !threadLabel || !source || !sourceLabel) return;
       this.closePlayerRailThreadMenu(false);
       if (!event) {
         rail.hidden = true;
@@ -2173,39 +2130,22 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       const fallback = this.querySelector<HTMLAnchorElement>('[data-player-fallback]');
       rail.hidden = false;
       rail.dataset.playerRailEvent = event.id;
-      node.setAttribute('aria-label', `在档案中查看当前节点：${event.title}`);
-
-      const hasAct = event.trackId === this.data.defaultTrackId && Boolean(context.actId);
-      act.disabled = !hasAct;
-      actLabel.textContent = context.actLabel?.replace(/^ACT\s+/i, 'A') || 'ACT';
-      act.setAttribute('aria-label', hasAct
-        ? `${context.actLabel}：${context.actTitle || '定位当前章节'}`
-        : '当前节点没有可用章节');
+      timelineLabel.textContent = this.activeView === 'timeline' ? '定位此处' : '查看时间线';
+      node.setAttribute('aria-label', `在 Timeline 定位当前节点：${event.title}`);
 
       const threadCount = context.threadIds.length;
       thread.disabled = threadCount === 0;
+      threadLabel.textContent = `故事线 · ${threadCount || '—'}`;
       thread.setAttribute('aria-label', threadCount
-        ? `查看当前节点的 ${threadCount} 条事件线`
-        : '当前节点没有事件线');
+        ? `查看当前节点的 ${threadCount} 条故事线`
+        : '当前节点没有故事线');
 
       source.hidden = !fallback || fallback.hidden;
       if (!source.hidden && fallback) source.href = fallback.href;
+      sourceLabel.textContent = track?.playback.provider === 'external' ? 'X 回放 ↗' : 'YouTube ↗';
       source.setAttribute('aria-label', track?.playback.provider === 'external'
         ? '打开当前节点的 X 原始回放'
         : '在 YouTube 打开当前节点时间');
-      this.updatePlayerRailActiveState();
-    }
-
-    updatePlayerRailActiveState() {
-      const event = this.selectedEventId ? this.data?.events[this.selectedEventId] : null;
-      const node = this.querySelector<HTMLElement>('[data-player-rail-node]');
-      const act = this.querySelector<HTMLElement>('[data-player-rail-act]');
-      const thread = this.querySelector<HTMLElement>('[data-player-rail-thread]');
-      node?.classList.toggle('is-current-destination', Boolean(event && (
-        event.trackId === this.data.defaultTrackId ? this.activeView === 'timeline' : this.activeView === 'storylines'
-      )));
-      act?.classList.toggle('is-current-destination', Boolean(event && this.activeView === 'timeline'));
-      thread?.classList.toggle('is-current-destination', Boolean(this.selectedThreadId));
     }
   }
 

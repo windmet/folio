@@ -866,9 +866,9 @@ if (!timelineCssSource.includes('.archive-taxonomy')) {
 if (html.includes('archive-label-zh') || timelineCssSource.includes('.archive-label-zh')) {
   errors.push('RC12-P1-C obsolete archive-label-zh token is still published');
 }
-if (!timelineShellSource.includes('navigateThreadEventToTimeline(')
-  || !timelineShellSource.includes("button.addEventListener('click', () => this.navigateThreadEventToTimeline")) {
-  errors.push('RC12-P0 Thread nodes must use the dedicated Timeline navigation path');
+if (!timelineShellSource.includes('navigateEventToTimeline(')
+  || !timelineShellSource.includes("button.addEventListener('click', () => this.navigateEventToTimeline")) {
+  errors.push('RC12-PA1 Thread nodes and Player action must share the source-scoped Timeline navigation path');
 }
 if (!html.includes('event-thread-chooser')) {
   errors.push('RC12-P0 multi-thread Event CTA chooser is missing');
@@ -918,6 +918,32 @@ if (!/this\.player\.pauseVideo\(\)/.test(handoffSource)) {
 // compliant floating panel. Bubble is presentation state, never a hidden
 // background-audio player, and desktop keeps its expanded/docked contract.
 const archivePlayerSource = await readFile(path.resolve('src/components/project/ArchivePlayer.astro'), 'utf8');
+const playerActionSource = await readFile(path.resolve('src/components/project/PlayerContextRail.astro'), 'utf8');
+if (playerActionSource.includes('data-player-rail-act')
+  || playerActionSource.includes('>节点<')
+  || playerActionSource.includes('>线索<')
+  || playerActionSource.includes('>原链<')) {
+  errors.push('RC12-PA1 Player Action Bar still exposes an obsolete archive-entity action');
+}
+for (const token of ['data-player-rail-timeline-label', 'data-player-rail-thread-label', 'data-player-rail-source-label']) {
+  if (!playerActionSource.includes(token)) errors.push(`RC12-PA1 Player Action Bar is missing ${token}`);
+}
+if (!timelineShellSource.includes("this.navigateEventToTimeline(this.selectedEventId)")
+  || !timelineShellSource.includes("this.activeView === 'timeline' ? '定位此处' : '查看时间线'")
+  || !timelineShellSource.includes("track?.playback.provider === 'external' ? 'X 回放 ↗' : 'YouTube ↗'")) {
+  errors.push('RC12-PA1 controller is missing reader-facing Timeline or provider-aware Source actions');
+}
+if (timelineShellSource.includes('is-current-destination') || timelineCssSource.includes('.is-current-destination')) {
+  errors.push('RC12-PA1 Player actions must not publish persistent tab-like destination state');
+}
+if (!/\.player-context-rail\s*\{[\s\S]*?grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\);/.test(timelineCssSource)
+  || !/data-player-mode='docked'[\s\S]*?grid-template-columns:\s*repeat\(3, 64px\);/.test(timelineCssSource)
+  || timelineCssSource.includes('@container player-column (max-width: 379px)')) {
+  errors.push('RC12-PA1 CSS must keep a 3-column expanded footer and 3x64px docked action area without the old rail branch');
+}
+if (!archivePlayerSource.includes('<PlayerContextRail />\n  <section class="archive-player__context"')) {
+  errors.push('RC12-PA1 Player Action Bar must sit immediately after TARGET inside the Player');
+}
 const playerBubbleTags = [...html.matchAll(/<button[^>]*data-player-bubble[^>]*>/g)].map((match) => match[0]);
 if (playerBubbleTags.length !== 1) errors.push(`RC12-M1 has ${playerBubbleTags.length} Bubble launchers; expected 1`);
 else {

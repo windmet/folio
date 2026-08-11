@@ -1392,17 +1392,13 @@ project-archive-shell {
 }
 
 .archive-player-frame {
-  --player-context-rail-width: 48px;
-  --player-context-rail-offset: 110px;
   position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) var(--player-context-rail-width);
-  align-items: start;
+  display: block;
 }
 
 .archive-player {
   min-width: 0;
-  overflow: hidden;
+  overflow: visible;
   border: 1px solid #cfc5b5;
   background: var(--archive-paper);
   box-shadow: 0 14px 36px rgba(55, 47, 37, 0.08);
@@ -1802,11 +1798,10 @@ project-archive-shell {
   position: relative;
   z-index: 4;
   display: grid;
-  width: var(--player-context-rail-width);
-  margin-top: var(--player-context-rail-offset);
-  margin-left: -1px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: 100%;
+  margin: 0;
   border-top: 1px solid var(--archive-line);
-  border-right: 1px solid var(--archive-line);
   background: #f7f4ed;
 }
 
@@ -1818,19 +1813,23 @@ project-archive-shell {
 .player-context-rail > a,
 .player-context-rail__thread-slot > button {
   position: relative;
-  width: 48px;
-  min-height: 48px;
+  width: 100%;
+  min-height: 44px;
   display: grid;
   place-items: center;
-  padding: 4px 2px;
+  padding: 8px 6px;
   border: 0;
-  border-bottom: 1px solid var(--archive-line);
+  border-right: 1px solid var(--archive-line);
   color: var(--archive-muted);
   background: #f7f4ed;
-  font: 9px/1 ui-monospace, SFMono-Regular, Consolas, monospace;
-  letter-spacing: 0.03em;
+  font: 10px/1.2 ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: 0.02em;
   text-align: center;
   text-decoration: none;
+}
+
+.player-context-rail > :last-child {
+  border-right: 0;
 }
 
 .player-context-rail > button,
@@ -1840,11 +1839,9 @@ project-archive-shell {
 
 .player-context-rail > button:hover,
 .player-context-rail > a:hover,
-.player-context-rail__thread-slot > button:hover,
-.player-context-rail .is-current-destination {
+.player-context-rail__thread-slot > button:hover {
   color: var(--archive-red);
   background: rgba(156, 67, 60, 0.065);
-  box-shadow: inset 2px 0 var(--archive-red);
 }
 
 .player-context-rail button:disabled {
@@ -1861,9 +1858,10 @@ project-archive-shell {
 .player-context-rail__menu {
   position: absolute;
   z-index: 5;
-  top: 0;
-  right: calc(100% - 1px);
-  width: min(270px, calc(100vw - 96px));
+  top: calc(100% - 1px);
+  left: 50%;
+  width: min(300px, calc(100vw - 32px));
+  transform: translateX(-50%);
   border: 1px solid var(--archive-line);
   background: #f7f4ed;
   box-shadow: 0 12px 28px rgba(55, 47, 37, 0.14);
@@ -1935,9 +1933,7 @@ project-archive-shell {
     left: max(16px, calc((100vw - 1320px) / 2));
     right: max(16px, calc((100vw - 1320px) / 2));
     bottom: max(16px, env(safe-area-inset-bottom));
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: stretch;
+    display: block;
     width: auto;
     min-height: 72px;
     border: 1px solid #cfc5b5;
@@ -1947,8 +1943,8 @@ project-archive-shell {
 
   .archive-player-frame[data-player-mode='docked'] .archive-player {
     display: grid;
-    grid-template-columns: 112px minmax(170px, 1fr) minmax(220px, 1.55fr);
-    grid-template-areas: 'media head current';
+    grid-template-columns: 112px minmax(170px, 1fr) minmax(220px, 1.55fr) 192px;
+    grid-template-areas: 'media head current actions';
     min-width: 0;
     min-height: 70px;
     border: 0;
@@ -2023,8 +2019,10 @@ project-archive-shell {
   }
 
   .archive-player-frame[data-player-mode='docked'] .player-context-rail {
-    display: flex;
-    width: auto;
+    grid-area: actions;
+    display: grid;
+    grid-template-columns: repeat(3, 64px);
+    width: 192px;
     margin: 0;
     border-top: 0;
     border-right: 0;
@@ -2035,7 +2033,7 @@ project-archive-shell {
   .archive-player-frame[data-player-mode='docked'] .player-context-rail > button,
   .archive-player-frame[data-player-mode='docked'] .player-context-rail > a,
   .archive-player-frame[data-player-mode='docked'] .player-context-rail__thread-slot > button {
-    width: 48px;
+    width: 64px;
     min-height: 70px;
     border-right: 1px solid var(--archive-line);
     border-bottom: 0;
@@ -2049,49 +2047,9 @@ project-archive-shell {
     top: auto;
     right: 0;
     bottom: calc(100% - 1px);
+    left: auto;
     width: min(270px, calc(100vw - 32px));
-  }
-}
-
-@container player-column (max-width: 379px) {
-  .archive-player-frame {
-    display: block;
-  }
-
-  .player-context-rail {
-    display: flex;
-    width: 100%;
-    margin-top: 0;
-    margin-left: 0;
-    border-right: 0;
-    border-bottom: 1px solid var(--archive-line);
-  }
-
-  .player-context-rail > button,
-  .player-context-rail > a,
-  .player-context-rail__thread-slot {
-    flex: 1 1 0;
-    min-width: 0;
-  }
-
-  .player-context-rail > button,
-  .player-context-rail > a,
-  .player-context-rail__thread-slot > button {
-    width: 100%;
-    min-height: 38px;
-    border-right: 1px solid var(--archive-line);
-    border-bottom: 0;
-  }
-
-  .player-context-rail > :last-child {
-    border-right: 0;
-  }
-
-  .player-context-rail__menu {
-    top: auto;
-    right: 0;
-    bottom: calc(100% - 1px);
-    width: min(270px, calc(100vw - 32px));
+    transform: none;
   }
 }
 
@@ -2921,10 +2879,6 @@ project-archive-shell {
     grid-template-columns: minmax(0, 1fr) minmax(350px, 372px);
     gap: clamp(28px, 3vw, 42px);
     padding: 48px clamp(28px, 3vw, 44px) 92px;
-  }
-
-  .archive-player-frame {
-    --player-context-rail-offset: 102px;
   }
 
   .archive-player__head {

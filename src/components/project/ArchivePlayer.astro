@@ -108,6 +108,7 @@ const orderedTracks = [...tracks].sort((left, right) =>
       hidden
     >展开</button>
   </p>
+  <PlayerContextRail />
   <section class="archive-player__context" data-player-context hidden aria-label="当前节点上下文">
     <span class="archive-kicker" data-player-context-label>READING CONTEXT</span>
     <p id="player-context-text" data-player-context-summary></p>
@@ -124,5 +125,4 @@ const orderedTracks = [...tracks].sort((left, right) =>
   )}
   <p class="archive-player__note" data-player-note>使用 YouTube 原生 360°能力；移动设备的视角支持取决于 YouTube 与设备。</p>
 </section>
-<PlayerContextRail />
 </div>

@@ -1,20 +1,17 @@
-<nav class="player-context-rail" data-player-context-rail hidden aria-label="当前节点档案索引">
-  <button type="button" data-player-rail-node aria-label="在档案中查看当前节点">
-    <span>节点</span>
-  </button>
-  <button type="button" data-player-rail-act disabled aria-label="当前节点没有可用章节">
-    <span data-player-rail-act-label>ACT</span>
+<nav class="player-context-rail player-action-bar" data-player-context-rail hidden aria-label="当前节点操作">
+  <button type="button" data-player-rail-node aria-label="在 Timeline 定位当前节点">
+    <span data-player-rail-timeline-label>查看时间线</span>
   </button>
   <div class="player-context-rail__thread-slot">
     <button
       type="button"
       data-player-rail-thread
       disabled
-      aria-label="当前节点没有事件线"
+      aria-label="当前节点没有故事线"
       aria-expanded="false"
       aria-controls="player-context-rail-thread-menu"
     >
-      <span>线索</span>
+      <span data-player-rail-thread-label>故事线 · —</span>
     </button>
     <section
       class="player-context-rail__menu"
@@ -36,8 +33,8 @@
     href="#"
     target="_blank"
     rel="noopener noreferrer"
-    aria-label="打开当前节点原来源"
+    aria-label="打开当前节点来源"
   >
-    <span>原链</span>
+    <span data-player-rail-source-label>YouTube ↗</span>
   </a>
 </nav>
