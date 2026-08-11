@@ -4,7 +4,7 @@
   "reading": "やの しょうご",
   "callNames": [],
   "searchAliases": [],
-  "projectContext": "《俺知》昼夜两场饰演土方歳三；他在朗读剧结束后赶到生日会，太阳镜礼物又在俳句与 Bingo 结尾两次回收。",
+  "projectContext": "《俺知》昼夜两场饰演土方歳三。朗读剧结束后赶到生日会，送出的太阳镜后来又在俳句和 Bingo 里被反复拿出来说。",
   "participation": [
     { "kind": "ore-shiri-cast", "character": "土方歳三", "sessions": ["day", "night"] },
     { "kind": "birthday-live" }

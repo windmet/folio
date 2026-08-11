@@ -57,8 +57,9 @@ const semanticPersonById = new Map(peopleEntries.map((entry) => [entry.id, entry
 const amazonEvent = semanticEventById.get('yt-040405-amazon-hama');
 const amazonGrabEvent = semanticEventById.get('yt-040524-hama-grabs-amazon-card');
 const amazonPeople = new Set(amazonEvent?.people || []);
-if (!project.editorialRevision.startsWith('2026-08-10-semantic-')) {
-  errors.push(`semantic passes require a 2026-08-10-semantic-* editorialRevision; found ${project.editorialRevision}`);
+if (!project.editorialRevision.startsWith('2026-08-10-semantic-')
+  && project.editorialRevision !== '2026-08-11-reader-copy-reviewed-final') {
+  errors.push(`semantic passes require the semantic baseline or reviewed-final editorialRevision; found ${project.editorialRevision}`);
 }
 if (!semanticPatch.includes('OVERRIDE：Amazonギフトカード 5000円分 × 2')
   || !semanticPatch.includes('本文件第 1～2 节对 Amazon / 濱线的结论覆盖上述旧条目')) {
@@ -66,14 +67,14 @@ if (!semanticPatch.includes('OVERRIDE：Amazonギフトカード 5000円分 × 2
 }
 if (!amazonEvent
   || amazonEvent.title !== 'Amazon 5000 円×2：寺島与堀金同时 Bingo'
-  || amazonEvent.summary !== '23 番让两人同时完成 Bingo，正好对应两名份的 Amazon 5000 円礼券。'
+  || amazonEvent.summary !== '23 番一出，两个人同时 Bingo，正好撞上两份 Amazon 5000 円礼券。'
   || amazonEvent.publicationStatus !== 'qualified'
   || amazonEvent.readerNote
   || amazonPeople.size !== 2
   || !amazonPeople.has('komatsu36/terashima-junta')
   || !amazonPeople.has('komatsu36/horikane-sohei')
   || amazonPeople.has('komatsu36/hama-kento')) {
-  errors.push('semantic P0 Amazon Event must identify 寺島+堀金, exclude 濱 as winner, and preserve the reader-facing uncertainty note');
+  errors.push('semantic P0 Amazon Event must identify 寺島+堀金, exclude 濱 as winner, and keep uncertainty internal');
 }
 if (!amazonGrabEvent
   || amazonGrabEvent.startMs !== 14724000
@@ -92,7 +93,7 @@ if (!bingoNodeIds.has('komatsu36/yt-040405-amazon-hama')
 }
 if (!hamaNodeIds.has('komatsu36/yt-040524-hama-grabs-amazon-card')
   || hamaNodeIds.has('komatsu36/yt-040405-amazon-hama')
-  || !hamaThread?.body.includes('始终没有中到主奖')) {
+  || !hamaThread?.body.includes('自己没中还伸手去抢寺島的卡')) {
   errors.push('semantic P0 濱 thread must use the card-grab Event and must not present 濱 as an Amazon winner');
 }
 if (semanticPersonById.get('shioya-fumiyasu')?.reading !== 'しおや ふみよし') {
@@ -183,18 +184,18 @@ if (!bookSymbolismEvent?.summary.includes('仍希望演员保持与台本的关�
   errors.push('semantic P1 script-language Events must separate observed speech from the editorial interpretation');
 }
 const expectedThreadStoryMarkers = new Map([
-  ['birthday-payback', '最早立规则的人，最后正好被自己的规则绊住'],
+  ['birthday-payback', '规则是自己立的，先被绊住的也是自己'],
   ['broken-sword', '自然得让不少观众以为本来就是演出'],
-  ['ending-wont-end', '节目反而进入最长的尾声'],
-  ['kano-ojisan', '这条不断累积的おじさん线才终于落到歌单上'],
-  ['muro-account', '连说话的人究竟是谁都不能完全确定'],
-  ['ore-shiri-making-of', '最后拼出了《俺知》动作与朗读形式是怎样一起被做出来的'],
-  ['russian-takoyaki', '这颗章鱼烧终于走完了整条回收线'],
+  ['ending-wont-end', '轮番把散场往后拖'],
+  ['kano-ojisan', '一路累积的吐槽终于直接落在歌单上'],
+  ['muro-account', '而不是“室元気本人终于来了”'],
+  ['ore-shiri-making-of', '整段复盘也因此不只是“选一个最喜欢的场面”'],
+  ['russian-takoyaki', '完全不知道前情的堀金蒼平一口踩雷'],
   ['shugo-yakiniku', '把一条信息极少的留言硬凑成完整祝福'],
-  ['space-technical-hell', '最后被 2026 年的手机方向和 Space UI 打败'],
-  ['terashima-big-dream', 'Big Dream 从八千万妄想一路回到零'],
-  ['uchida-line-call', '主直播、Space 和电话三条线在这一刻真的汇到一起'],
-  ['yano-sunglasses', '又顺势问能不能把它拿回来'],
+  ['space-technical-hell', '被 2026 年的手机方向和 Space UI 折腾得够呛'],
+  ['terashima-big-dream', '再认真一算——其实什么都没中'],
+  ['uchida-line-call', '主直播、Space 和 LINE 电话就这样在同一通对话里碰到了一起'],
+  ['yano-sunglasses', '最后干脆问能不能把它拿回来'],
 ]);
 for (const [threadId, marker] of expectedThreadStoryMarkers) {
   if (!semanticThreadById.get(threadId)?.body.includes(marker)) {
@@ -230,10 +231,10 @@ if (project.status === 'published') {
 }
 
 const outputBytes = (await stat(outputFile)).size;
-// RC12-N1 adds an inline poster fallback plus retry/source actions to the
-// player shell. Keep the budget explicit while accounting for that public
-// recovery surface rather than silently accepting arbitrary page growth.
-const maxOutputBytes = 351 * 1024;
+// RC12-N1 adds the player recovery surface; the reviewed-final editorial pass
+// then replaces 123 public fields with slightly longer human copy. Keep this
+// explicit 357 KiB ceiling rather than silently accepting arbitrary growth.
+const maxOutputBytes = 357 * 1024;
 if (outputBytes > maxOutputBytes) {
   errors.push(`project HTML is ${outputBytes} bytes; budget is ${maxOutputBytes} bytes`);
 }
@@ -328,7 +329,7 @@ for (const forbidden of [
 }
 for (const required of [
   'Amazon 5000 円×2：寺島与堀金同时 Bingo',
-  '23 番让两人同时完成 Bingo，正好对应两名份的 Amazon 5000 円礼券。',
+  '23 番一出，两个人同时 Bingo，正好撞上两份 Amazon 5000 円礼券。',
   '濱去抢寺島的 Amazon 卡',
   'しおや ふみよし',
 ]) {

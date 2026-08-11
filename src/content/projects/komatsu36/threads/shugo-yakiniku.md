@@ -2,7 +2,7 @@
 project: komatsu36
 title: "仲村宗悟：只留下今晚吃烤肉"
 category: perfect-callback
-deck: 连接不稳、说完烤肉就消失，重开后小松只好替这句简短留言补成庆生。
+deck: 奇怪的人带着奇怪的话突然闯进 Space，说完“今晚吃烧肉”就消失了。重开Space后的小松只好替这句简短留言补成庆生。
 nodes:
   - event: komatsu36/sp1-002841-shugo-yakiniku
     role: setup

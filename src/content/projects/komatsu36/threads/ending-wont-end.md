@@ -2,7 +2,7 @@
 project: komatsu36
 title: "正式结束之后完全没结束"
 category: perfect-callback
-deck: 第一次締め、两项公告、全员圆阵、Super Chat 和约好的歌，一次次把真正 Ending 推迟。
+deck: 第一次締め、两项公告、全员圆阵、Super Chat，还有之前约好的歌，不硬cue流程的主持让真正 Ending 一直在推迟。
 nodes:
   - event: komatsu36/yt-042657-first-ending
     role: setup
@@ -32,5 +32,4 @@ nodes:
     role: payoff
 featured: true
 ---
-
-第一次说“结束”以后，节目反而进入最长的尾声：先公布 11 月 15 日 mini event，再宣布正式第 4 弹已经开始制作；圆阵结束后又想起约好的歌，接着是 Super Chat、多首 Karaoke、终于兑现的《青春アミーゴ》，最后还剩一首 36 岁抱负的五七五。
+第一次说“结束”以后，节目反而进入了最长的一段尾声。11 月 15 日 mini event、正式第 4 弹制作、全员圆阵、Super Chat、多首 Karaoke，还有一直没兑现的《青春アミーゴ》轮番把散场往后拖；到最后，小松连 36 岁抱负都又用五七五说了一遍。

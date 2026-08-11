@@ -4,7 +4,7 @@
   "reading": "てらしま じゅんた",
   "callNames": ["惇太"],
   "searchAliases": [],
-  "projectContext": "《俺知》昼场饰演武市半平太；他带来三选二生日券和 Big Dream，并参与动作复盘与 Bingo。",
+  "projectContext": "《俺知》昼场饰演武市半平太。带来“三选二”生日券和 Big Dream 赛马，还一路参与动作复盘与 Bingo。",
   "participation": [
     { "kind": "ore-shiri-cast", "character": "武市半平太", "sessions": ["day"] },
     { "kind": "birthday-live" }

@@ -2,7 +2,7 @@
 project: komatsu36
 title: "Space 技术地狱：没开麦到终于竖起来"
 category: cross-platform
-deck: 两段 Space 不是两次孤立故障，而是一条从无声、横屏、重开到终于成功的完整喜剧线。
+deck: 两段 Space 一路在和没开麦、横屏、断线这些问题打架，中间还混进了一个怎么看都很可疑的“账号劫持者”……？
 nodes:
   - event: komatsu36/yt-000913-first-space-departure
     role: setup
@@ -18,5 +18,4 @@ nodes:
     role: payoff
 featured: true
 ---
-
-第一段从没声音开始，刚修好又变横屏，最后只能整个重开；第二段一开场，小松确认终于竖起来后直接宣布“不再碰这台手机”。一群刚演完幕末人物的人，最后被 2026 年的手机方向和 Space UI 打败。
+第一段从没声音开始，刚修好又变横屏，最后干脆只能整个重开。第二段一开场，小松确认“终于竖起来了”以后直接宣布不再碰这台手机。刚演完幕末人物的一群人，最后被 2026 年的手机方向和 Space UI 折腾得够呛。

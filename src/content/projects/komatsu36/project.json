@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "sourceSetId": "komatsu36-20260808-r1",
-  "editorialRevision": "2026-08-10-semantic-p1-closeout-takao",
+  "editorialRevision": "2026-08-11-reader-copy-reviewed-final",
   "slug": "komatsu36",
   "title": "小松昌平 36歳 Birthday Special",
   "eyebrow": "36TH BIRTHDAY · LIVE ARCHIVE",
@@ -9,7 +9,7 @@
   "status": "published",
   "defaultTrack": "komatsu36/yt-main",
   "defaultView": "timeline",
-  "summary": "一场把生日会、《俺を知ってくれ！》打ち上げ与 X Space 凸待ち叠在一起的近五小时直播。档案按主时间线、跨平台事件线与人物关系共同组织。",
+  "summary": "近五小时的生日会、《俺を知ってくれ！》打ち上げ和两段 X Space 挤在同一晚。这里把主直播、跨平台事件和人物线拆开整理，方便从任意时间点重新进入现场。",
   "featuredThreads": [
     "komatsu36/russian-takoyaki",
     "komatsu36/uchida-line-call",

@@ -19,6 +19,7 @@
     "verify:rc12:mt1": "node scripts/verify-rc12-mt1-browser.mjs",
     "editorial:reader-copy": "node scripts/generate-reader-copy-queue.mjs",
     "editorial:export-copy": "node scripts/export-reader-copy.mjs",
+    "editorial:apply-copy": "node scripts/apply-reader-copy.mjs",
     "validate": "npm run validate:projects && npm run validate:reader-copy && npm run build && npm run validate:publication",
     "preview": "astro preview",
     "tina:dev": "tinacms dev -c \"npx astro dev --host 0.0.0.0\" --noTelemetry",
