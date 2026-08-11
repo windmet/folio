@@ -429,19 +429,39 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
   const loadYouTubeApi = () => {
     if (window.YT?.Player) return Promise.resolve(window.YT);
     if (window.__folioYouTubeApi) return window.__folioYouTubeApi;
-    window.__folioYouTubeApi = new Promise((resolve, reject) => {
+    let failedScript: HTMLScriptElement | null = null;
+    let timeoutId: number | null = null;
+    let apiPromise: Promise<any>;
+    apiPromise = new Promise<any>((resolve, reject) => {
       const previous = window.onYouTubeIframeAPIReady;
-      window.onYouTubeIframeAPIReady = () => {
-        previous?.();
-        resolve(window.YT);
+      const ready = () => {
+        if (timeoutId !== null) window.clearTimeout(timeoutId);
+        if (window.onYouTubeIframeAPIReady === ready) window.onYouTubeIframeAPIReady = previous;
+        try {
+          previous?.();
+        } catch {
+          // A stale callback from another page consumer must not block this load.
+        }
+        if (window.YT?.Player) resolve(window.YT);
+        else fail(new Error('YouTube API loaded without a Player constructor'));
       };
-      const script = document.createElement('script');
-      script.src = 'https://www.youtube.com/iframe_api';
-      script.async = true;
-      script.addEventListener('error', () => reject(new Error('YouTube API failed to load')), { once: true });
-      document.head.append(script);
+      const fail = (error: Error) => {
+        if (timeoutId !== null) window.clearTimeout(timeoutId);
+        if (window.onYouTubeIframeAPIReady === ready) window.onYouTubeIframeAPIReady = previous;
+        failedScript?.remove();
+        if (window.__folioYouTubeApi === apiPromise) window.__folioYouTubeApi = undefined;
+        reject(error);
+      };
+      failedScript = document.createElement('script');
+      failedScript.src = 'https://www.youtube.com/iframe_api';
+      failedScript.async = true;
+      failedScript.addEventListener('error', () => fail(new Error('YouTube API failed to load')), { once: true });
+      window.onYouTubeIframeAPIReady = ready;
+      document.head.append(failedScript);
+      timeoutId = window.setTimeout(() => fail(new Error('YouTube API timed out')), 10000);
     });
-    return window.__folioYouTubeApi;
+    window.__folioYouTubeApi = apiPromise;
+    return apiPromise;
   };
 
   class ProjectArchiveShellElement extends HTMLElement {
@@ -456,6 +476,9 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     selectedPersonId: string | null = null;
     player: any = null;
     playerReady = false;
+    playerLoadState: 'idle' | 'loading' | 'ready' | 'error' = 'idle';
+    playerLoadPromise: Promise<any> | null = null;
+    playerReadyTimeoutId: number | null = null;
     pendingSeekMs: number | null = null;
     mobileResumeMs: number | null = null;
     playbackSyncTimer: number | null = null;
@@ -578,6 +601,10 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.querySelectorAll<HTMLElement>('[data-close-thread]').forEach((button) => button.addEventListener('click', () => this.closeThread(true)));
       this.querySelectorAll<HTMLElement>('[data-close-person]').forEach((button) => button.addEventListener('click', () => this.closePerson(true)));
       this.querySelector<HTMLElement>('[data-load-player]')?.addEventListener('click', () => this.ensurePlayer());
+      this.querySelector<HTMLElement>('[data-player-retry]')?.addEventListener('click', () => this.retryPlayer());
+      const poster = this.querySelector<HTMLImageElement>('[data-player-poster]');
+      poster?.addEventListener('load', () => this.setPosterFallback(false));
+      poster?.addEventListener('error', () => this.setPosterFallback(true));
       this.querySelector<HTMLElement>('[data-player-mode-toggle]')?.addEventListener('click', () => {
         const desktop = window.matchMedia('(min-width: 901px)').matches;
         this.setPlayerPresentationMode(this.playerPresentationMode === 'expanded'
@@ -1673,48 +1700,121 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
 
     async ensurePlayer() {
       if (this.player) return this.player;
+      if (this.playerLoadPromise) return this.playerLoadPromise;
       const track = this.data.tracks[this.activeTrackId];
       if (!track || track.playback.provider !== 'youtube') return null;
       const mount = this.querySelector<HTMLElement>('[data-player-mount]');
       if (!mount) return null;
+      this.playerLoadState = 'loading';
+      this.hidePlayerError();
+      this.playerLoadPromise = (async () => {
+        try {
+          const YT = await loadYouTubeApi();
+          this.setPosterFallback(false);
+          this.querySelector<HTMLElement>('[data-load-player]')?.setAttribute('hidden', '');
+          this.player = new YT.Player(mount, {
+            width: '100%',
+            height: '100%',
+            videoId: track.playback.videoId,
+            playerVars: { playsinline: 1, rel: 0, origin: window.location.origin },
+            events: {
+              onReady: () => {
+                if (this.playerReadyTimeoutId !== null) window.clearTimeout(this.playerReadyTimeoutId);
+                this.playerReadyTimeoutId = null;
+                this.playerReady = true;
+                this.playerLoadState = 'ready';
+                this.hidePlayerError();
+                if (this.pendingSeekMs !== null) {
+                  const seekMs = this.pendingSeekMs;
+                  this.pendingSeekMs = null;
+                  this.player.seekTo(seekMs / 1000, true);
+                  this.player.playVideo();
+                }
+              },
+              onError: () => {
+                if (this.playerReadyTimeoutId !== null) window.clearTimeout(this.playerReadyTimeoutId);
+                this.playerReadyTimeoutId = null;
+                this.handlePlayerError();
+              },
+              onStateChange: (playerEvent: any) => {
+                if (playerEvent.data === YT.PlayerState.PLAYING && this.playerPresentationMode === 'bubble') {
+                  this.pauseForMobileBubble();
+                } else if (playerEvent.data === YT.PlayerState.PLAYING) this.startPlaybackSync();
+                else {
+                  this.syncFromPlayer();
+                  this.stopPlaybackSync();
+                }
+              },
+            },
+          });
+          this.playerReadyTimeoutId = window.setTimeout(() => {
+            this.playerReadyTimeoutId = null;
+            this.handlePlayerError();
+          }, 10000);
+          this.querySelector<HTMLElement>('[data-player-viewport]')?.setAttribute('data-player-loaded', 'true');
+          return this.player;
+        } catch {
+          this.handlePlayerError();
+          return null;
+        } finally {
+          this.playerLoadPromise = null;
+        }
+      })();
+      return this.playerLoadPromise;
+    }
+
+    setPosterFallback(failed: boolean) {
+      const poster = this.querySelector<HTMLImageElement>('[data-player-poster]');
+      const fallback = this.querySelector<HTMLElement>('[data-player-poster-fallback]');
+      if (poster) poster.hidden = failed;
+      if (fallback) fallback.hidden = !failed;
+    }
+
+    showPlayerError() {
+      this.querySelector<HTMLElement>('[data-player-error]')?.removeAttribute('hidden');
+      this.querySelector<HTMLElement>('[data-load-player]')?.setAttribute('hidden', '');
+      this.querySelector<HTMLElement>('[data-player-viewport]')?.setAttribute('data-player-error', 'true');
+      this.setPosterFallback(true);
+      this.updateFallback(this.selectedEventId ? this.data.events[this.selectedEventId] : null);
+    }
+
+    hidePlayerError() {
+      this.querySelector<HTMLElement>('[data-player-error]')?.setAttribute('hidden', '');
+      this.querySelector<HTMLElement>('[data-player-viewport]')?.removeAttribute('data-player-error');
+    }
+
+    handlePlayerError() {
+      this.playerReady = false;
+      this.playerLoadState = 'error';
+      this.stopPlaybackSync();
+      this.showPlayerError();
+    }
+
+    async retryPlayer() {
+      const track = this.data.tracks[this.activeTrackId];
+      if (!track || track.playback.provider !== 'youtube') return null;
+      if (this.playerReadyTimeoutId !== null) window.clearTimeout(this.playerReadyTimeoutId);
+      this.playerReadyTimeoutId = null;
       try {
-        const YT = await loadYouTubeApi();
-        this.querySelector<HTMLElement>('[data-player-poster]')?.removeAttribute('hidden');
-        this.querySelector<HTMLElement>('[data-load-player]')?.setAttribute('hidden', '');
-        this.player = new YT.Player(mount, {
-          width: '100%',
-          height: '100%',
-          videoId: track.playback.videoId,
-          playerVars: { playsinline: 1, rel: 0, origin: window.location.origin },
-          events: {
-            onReady: () => {
-              this.playerReady = true;
-              if (this.pendingSeekMs !== null) {
-                const seekMs = this.pendingSeekMs;
-                this.pendingSeekMs = null;
-                this.player.seekTo(seekMs / 1000, true);
-                this.player.playVideo();
-              }
-            },
-            onStateChange: (playerEvent: any) => {
-              if (playerEvent.data === YT.PlayerState.PLAYING && this.playerPresentationMode === 'bubble') {
-                this.pauseForMobileBubble();
-              } else if (playerEvent.data === YT.PlayerState.PLAYING) this.startPlaybackSync();
-              else {
-                this.syncFromPlayer();
-                this.stopPlaybackSync();
-              }
-            },
-          },
-        });
-        this.querySelector<HTMLElement>('[data-player-viewport]')?.setAttribute('data-player-loaded', 'true');
-        return this.player;
+        if (this.player?.destroy) this.player.destroy();
       } catch {
-        const current = this.querySelector<HTMLElement>('[data-player-current-text]');
-        if (current) current.textContent = '播放器载入失败，请使用下方带时间外链';
-        this.refreshPlayerText();
-        return null;
+        // A partially created YouTube iframe can reject destroy; the mount is
+        // cleared below so retry remains available without a page refresh.
       }
+      this.player = null;
+      this.playerReady = false;
+      this.playerLoadState = 'idle';
+      this.stopPlaybackSync();
+      this.querySelector<HTMLElement>('[data-player-mount]')?.replaceChildren();
+      this.querySelector<HTMLElement>('[data-player-viewport]')?.removeAttribute('data-player-loaded');
+      const poster = this.querySelector<HTMLImageElement>('[data-player-poster]');
+      const posterSrc = poster?.dataset.playerPosterSrc;
+      if (poster && posterSrc) {
+        poster.src = `${posterSrc}${posterSrc.includes('?') ? '&' : '?'}retry=${Date.now()}`;
+      }
+      this.setPosterFallback(false);
+      this.hidePlayerError();
+      return this.ensurePlayer();
     }
 
     async seekTo(milliseconds: number) {
@@ -1834,17 +1934,19 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     updateFallback(event: ArchiveEvent | null) {
       const track = this.data.tracks[event?.trackId || this.activeTrackId];
       const link = this.querySelector<HTMLAnchorElement>('[data-player-fallback]');
-      if (!link) return;
-      link.hidden = !track?.fallbackUrl;
+      const sourceLink = this.querySelector<HTMLAnchorElement>('[data-player-open-source]');
+      if (!link && !sourceLink) return;
+      const links = [link, sourceLink].filter((candidate): candidate is HTMLAnchorElement => Boolean(candidate));
+      links.forEach((candidate) => { candidate.hidden = !track?.fallbackUrl; });
       if (!track?.fallbackUrl) return;
       const url = new URL(track.fallbackUrl);
       if (track.playback.provider === 'youtube' && event) {
         url.searchParams.set('t', `${Math.floor(event.startMs / 1000)}s`);
-        link.textContent = '在 YouTube 打开当前时间 ↗';
+        if (link) link.textContent = '在 YouTube 打开当前时间 ↗';
       } else {
-        link.textContent = track.playback.provider === 'external' ? '打开 X 原始回放 ↗' : '在 YouTube 打开原来源 ↗';
+        if (link) link.textContent = track.playback.provider === 'external' ? '打开 X 原始回放 ↗' : '在 YouTube 打开原来源 ↗';
       }
-      link.href = url.toString();
+      links.forEach((candidate) => { candidate.href = url.toString(); });
     }
 
     updatePlayerContext(event: ArchiveEvent | null) {

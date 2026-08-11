@@ -230,7 +230,10 @@ if (project.status === 'published') {
 }
 
 const outputBytes = (await stat(outputFile)).size;
-const maxOutputBytes = 350 * 1024;
+// RC12-N1 adds an inline poster fallback plus retry/source actions to the
+// player shell. Keep the budget explicit while accounting for that public
+// recovery surface rather than silently accepting arbitrary page growth.
+const maxOutputBytes = 351 * 1024;
 if (outputBytes > maxOutputBytes) {
   errors.push(`project HTML is ${outputBytes} bytes; budget is ${maxOutputBytes} bytes`);
 }

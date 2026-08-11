@@ -64,7 +64,18 @@ const orderedTracks = [...tracks].sort((left, right) =>
   <div class="archive-player__viewport" data-player-viewport>
     {videoId ? (
       <>
-        <img src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`} alt="" loading="eager" data-player-poster />
+        <img
+          src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`}
+          alt=""
+          loading="eager"
+          data-player-poster
+          data-player-poster-src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`}
+        />
+        <div class="archive-player__poster-fallback" data-player-poster-fallback hidden aria-hidden="true">
+          <span class="archive-player__poster-fallback-icon" aria-hidden="true">▶</span>
+          <strong>YouTube 预览图暂时无法连接</strong>
+          <small>播放器仍可在网络恢复后重新尝试载入。</small>
+        </div>
         <button type="button" class="archive-player__load" data-load-player aria-label="载入 YouTube 播放器">
           <span aria-hidden="true">▶</span>
           <small>载入播放器</small>
@@ -76,6 +87,14 @@ const orderedTracks = [...tracks].sort((left, right) =>
     )}
   </div>
   <div class="archive-player__unavailable" data-player-unavailable hidden>此轨道目前没有公开播放源</div>
+  <section class="archive-player__error" data-player-error hidden role="status" aria-live="polite">
+    <strong>YouTube 无法连接</strong>
+    <p>播放器与预览图未能从 YouTube 加载。若当前网络无法访问 YouTube，请调整网络环境后重试。</p>
+    <div>
+      <button type="button" data-player-retry>重新尝试</button>
+      <a href={fallbackUrl || '#'} target="_blank" rel="noopener noreferrer" data-player-open-source>打开 YouTube ↗</a>
+    </div>
+  </section>
   <p class="archive-player__current" data-player-current>
     <span id="player-current-text" data-player-current-text data-player-expandable="target">选择时间节点开始定位</span>
     <button
