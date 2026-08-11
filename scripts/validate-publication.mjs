@@ -59,7 +59,8 @@ const amazonEvent = semanticEventById.get('yt-040405-amazon-hama');
 const amazonGrabEvent = semanticEventById.get('yt-040524-hama-grabs-amazon-card');
 const amazonPeople = new Set(amazonEvent?.people || []);
 if (!project.editorialRevision.startsWith('2026-08-10-semantic-')
-  && project.editorialRevision !== '2026-08-11-reader-copy-reviewed-final') {
+  && project.editorialRevision !== '2026-08-11-reader-copy-reviewed-final'
+  && project.editorialRevision !== '2026-08-12-new-event-copy-reviewed-final-v2') {
   errors.push(`semantic passes require the semantic baseline or reviewed-final editorialRevision; found ${project.editorialRevision}`);
 }
 if (!semanticPatch.includes('OVERRIDE：Amazonギフトカード 5000円分 × 2')
@@ -176,18 +177,49 @@ for (const [eventId, passes] of semanticTimelineEventChecks) {
     errors.push(`semantic timeline audit metadata mismatch for ${eventId}`);
   }
 }
-for (const eventId of [
-  'yt-013730-hama-j-coupon',
-  'yt-013827-hama-moet-budget',
-  'yt-013917-kano-spice-sensor',
-  'yt-013840-great-payback',
-  'yt-014246-hama-spicy-chicken',
-  'yt-014321-kano-ojisan',
-]) {
+const reviewedFinalV2Copy = new Map([
+  ['yt-013730-hama-j-coupon', {
+    title: '濱掏出没选的 J 券：这个我能领吗？',
+    summary: '小松没选的お小遣い券不知什么时候已经进了濱口袋。濱直接问能不能兑现，寺島转头先问了他一句：你今年几岁？',
+  }],
+  ['yt-013827-hama-moet-budget', {
+    title: '八千万还没影，濱已经开始按大奖预算点酒',
+    summary: 'Big Dream 还只存在于想象里，濱已经从十瓶 Moët Rosé 开始算，最后退到四瓶、八万日元。小松只能一边听一边求他手下留情。',
+  }],
+  ['yt-013917-kano-spice-sensor', {
+    title: '狩野临时接班“辛さセンサー”，一口判定アウト',
+    summary: '小松先发现炸鸡发辣，狩野这个同样怕辣的人接过试吃。只咬一口就给出「辛い、アウト」，于是现场重新点了不辣的炸鸡。',
+  }],
+  ['yt-013840-great-payback', {
+    title: '频道攒了一年的收入，生日会被说成「大還元祭」',
+    summary: '小松说，频道这一年收到的广告收入和 Super Chat 一直没找到合适的回馈方式。话题顺势把这场生日会说成了「大還元祭」，后面又开始拿收入和税金继续起哄。',
+  }],
+  ['yt-014246-hama-spicy-chicken', {
+    title: '濱接盘辣味炸鸡：好吃，但是真的辣',
+    summary: '小松和狩野都嫌辣的炸鸡最后到了濱手里。濱说自己本来就爱吃辣，尝完的结论也很简单：好吃，是真的辣。',
+  }],
+  ['yt-014321-kano-ojisan', {
+    title: '濱总结狩野这四年：越来越おじさん',
+    summary: '濱开始盘点狩野这四年的变化：以前觉得只有大叔会做的事，如今几乎一个个都做上了。吐槽到最后，又补了一句——还好脸长得好看。',
+  }],
+]);
+for (const [eventId, expectedCopy] of reviewedFinalV2Copy) {
+  const event = semanticEventById.get(eventId);
   for (const field of ['title', 'summary']) {
     const copyKey = `event:komatsu36/${eventId}#${field}`;
-    if (!newEventCopyReview.includes(`### \`${copyKey}\``)) {
+    const heading = `### \`${copyKey}\``;
+    const sectionStart = newEventCopyReview.indexOf(heading);
+    const sectionEnd = newEventCopyReview.indexOf('\n### ', sectionStart + heading.length);
+    const section = sectionStart >= 0
+      ? newEventCopyReview.slice(sectionStart, sectionEnd >= 0 ? sectionEnd : undefined)
+      : '';
+    if (!section) {
       errors.push(`new Event copy review is missing stable key ${copyKey}`);
+    } else if (!section.includes('- [x] reviewed')) {
+      errors.push(`new Event copy review is not approved for ${copyKey}`);
+    }
+    if (event?.[field] !== expectedCopy[field]) {
+      errors.push(`reviewed-final-v2 source mismatch for ${copyKey}`);
     }
   }
 }
