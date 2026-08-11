@@ -1563,6 +1563,46 @@ project-archive-shell {
   pointer-events: none;
 }
 
+.archive-player__poster-fallback {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-content: center;
+  gap: 8px;
+  padding: 24px;
+  color: #d8d0c5;
+  background: #201f1d;
+  text-align: center;
+}
+
+.archive-player__poster-fallback[hidden] {
+  display: none;
+}
+
+.archive-player__poster-fallback-icon {
+  justify-self: center;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255,255,255,0.55);
+  border-radius: 50%;
+  color: white;
+  font-size: 12px;
+}
+
+.archive-player__poster-fallback strong {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.archive-player__poster-fallback small {
+  color: #a9a095;
+  font-size: 10px;
+  line-height: 1.6;
+}
+
 .archive-player__load {
   position: relative;
   z-index: 2;
@@ -1611,6 +1651,53 @@ project-archive-shell {
   font-size: 12px;
   line-height: 1.7;
   white-space: pre-line;
+}
+
+.archive-player__error {
+  padding: 14px 16px 15px;
+  border-bottom: 1px solid var(--archive-line);
+  color: var(--archive-ink);
+  background: var(--archive-paper-deep);
+}
+
+.archive-player__error[hidden] {
+  display: none;
+}
+
+.archive-player__error strong {
+  color: var(--archive-red);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.archive-player__error p {
+  margin: 5px 0 10px;
+  color: var(--archive-muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+.archive-player__error > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.archive-player__error button,
+.archive-player__error a {
+  padding: 6px 9px;
+  border: 1px solid var(--archive-line);
+  color: var(--archive-red);
+  background: transparent;
+  font-size: 10px;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.archive-player__error button:hover,
+.archive-player__error a:hover {
+  border-color: var(--archive-red);
 }
 
 .archive-player [data-player-expandable] {
@@ -3128,7 +3215,7 @@ project-archive-shell {
   }
 
   .project-hero__copy > p {
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .project-hero__source-note {
@@ -3539,6 +3626,33 @@ project-archive-shell {
 
   .source-post {
     margin-left: 75px;
+  }
+
+  .timeline-navigator__mobile-toggle > strong {
+    font-size: 13px;
+  }
+
+  .timeline-scope__button > strong {
+    font-size: 12px;
+  }
+
+  .event-detail-toggle > span {
+    font-size: 15px;
+  }
+
+  .event-summary {
+    font-size: 12px !important;
+  }
+
+  .thread-deck,
+  .person-detail > p,
+  .thread-prose {
+    font-size: 13px;
+  }
+
+  .source-post__context,
+  .person-events span {
+    font-size: 12px;
   }
 }
 
