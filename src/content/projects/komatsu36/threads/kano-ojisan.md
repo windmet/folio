@@ -4,8 +4,10 @@ title: "狩野翔：おじさん化一路唱到 T-BOLAN"
 category: running-gag
 deck: dad joke、厕所离席和一路累积的おじさん吐槽，到了卡拉 OK 终于落在 T-BOLAN 的选曲上。
 nodes:
-  - event: komatsu36/yt-025037-kano-toilet
+  - event: komatsu36/yt-014321-kano-ojisan
     role: setup
+  - event: komatsu36/yt-025037-kano-toilet
+    role: development
   - event: komatsu36/yt-041453-kano-tbolan
     role: payoff
 featured: false

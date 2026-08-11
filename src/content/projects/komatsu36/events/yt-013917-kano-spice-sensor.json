@@ -1,0 +1,15 @@
+{
+  "project": "komatsu36",
+  "track": "komatsu36/yt-main",
+  "act": "komatsu36/act-02",
+  "startMs": 5957580,
+  "endMs": 5995000,
+  "timingStatus": "exact",
+  "title": "狩野接手“辛さセンサー”，一口判定出局",
+  "summary": "小松发现炸鸡发辣，狩野以怕辣者身份接过平时由寺島承担的试辣任务，尝过后马上判定“辛い、アウト”，现场改点不辣的炸鸡。",
+  "people": ["komatsu36/komatsu-shohei", "komatsu36/kano-sho", "komatsu36/terashima-junta"],
+  "tags": ["食事", "辛さセンサー", "日常梗"],
+  "publicationStatus": "verified",
+  "narrativeMode": "timeline-only",
+  "laneAnnotations": []
+}

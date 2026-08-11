@@ -11,8 +11,9 @@ const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..'
 const slug = process.argv[2];
 // Keep this in sync with validate-publication.mjs. The reviewed-final pass
 // replaces 123 public fields with human copy, and the 2026-08-11 semantic
-// timeline audit adds nine visible Thread nodes.
-const rawLimitBytes = 365 * 1024;
+// first timeline audit adds nine visible Thread nodes. The 2026-08-12 event
+// granularity pass adds five public Events plus their storyline projections.
+const rawLimitBytes = 377 * 1024;
 
 const fail = (message) => {
   console.error(`Payload audit failed: ${message}`);

@@ -1,0 +1,15 @@
+{
+  "project": "komatsu36",
+  "track": "komatsu36/yt-main",
+  "act": "komatsu36/act-02",
+  "startMs": 5850600,
+  "endMs": 5862000,
+  "timingStatus": "exact",
+  "title": "濱从口袋拿出剩下的 J 券要求兑现",
+  "summary": "濱承认被放弃的お小遣い券已经在自己口袋里，随即问能否直接领取；寺島转而追问他的年龄，准备按 34J 结算。",
+  "people": ["komatsu36/hama-kento", "komatsu36/terashima-junta"],
+  "tags": ["生日礼物", "36J", "濱running-gag"],
+  "publicationStatus": "verified",
+  "narrativeMode": "threaded",
+  "laneAnnotations": []
+}

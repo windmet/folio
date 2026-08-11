@@ -51,6 +51,7 @@ try {
 
 const project = await readJson(path.join(projectRoot, 'project.json'));
 const semanticPatch = await readFile(path.resolve('docs/komatsu36_semantic_patch_20260810.md'), 'utf8');
+const newEventCopyReview = await readFile(path.resolve('docs/editorial/komatsu36-new-event-copy-review-20260812.md'), 'utf8');
 const semanticEventById = new Map(eventEntries.map((entry) => [entry.id, entry.data]));
 const semanticThreadById = new Map(threadEntries.map((entry) => [entry.id, entry]));
 const semanticPersonById = new Map(peopleEntries.map((entry) => [entry.id, entry.data]));
@@ -111,17 +112,59 @@ const semanticTimelineEventChecks = [
       'komatsu36/kano-sho',
       'komatsu36/terashima-junta',
     ])],
-  ['yt-013800-thirty-four-yen', (event) => event?.narrativeMode === 'threaded'
+  ['yt-013730-hama-j-coupon', (event) => event?.startMs === 5850600
+    && event.endMs === 5862000
+    && event.timingStatus === 'exact'
+    && event.narrativeMode === 'threaded'
+    && JSON.stringify(event.people) === JSON.stringify([
+      'komatsu36/hama-kento',
+      'komatsu36/terashima-junta',
+    ])],
+  ['yt-013800-thirty-four-yen', (event) => event?.startMs === 5862000
+    && event.endMs === 5872000
+    && event.timingStatus === 'exact'
+    && event.narrativeMode === 'threaded'
     && JSON.stringify(event.people) === JSON.stringify([
       'komatsu36/hama-kento',
       'komatsu36/terashima-junta',
       'komatsu36/komatsu-shohei',
     ])],
-  ['yt-013840-great-payback', (event) => event?.narrativeMode === 'threaded'
+  ['yt-013827-hama-moet-budget', (event) => event?.startMs === 5907800
+    && event.endMs === 5943000
+    && event.timingStatus === 'exact'
+    && event.narrativeMode === 'threaded'
     && JSON.stringify(event.people) === JSON.stringify([
       'komatsu36/hama-kento',
-      'komatsu36/terashima-junta',
       'komatsu36/komatsu-shohei',
+    ])],
+  ['yt-013917-kano-spice-sensor', (event) => event?.startMs === 5957580
+    && event.endMs === 5995000
+    && event.timingStatus === 'exact'
+    && event.narrativeMode === 'timeline-only'
+    && JSON.stringify(event.people) === JSON.stringify([
+      'komatsu36/komatsu-shohei',
+      'komatsu36/kano-sho',
+      'komatsu36/terashima-junta',
+    ])],
+  ['yt-013840-great-payback', (event) => event?.startMs === 6058000
+    && event.endMs === 6090000
+    && event.timingStatus === 'exact'
+    && event.narrativeMode === 'threaded'
+    && JSON.stringify(event.people) === JSON.stringify(['komatsu36/komatsu-shohei'])],
+  ['yt-014246-hama-spicy-chicken', (event) => event?.startMs === 6166000
+    && event.endMs === 6174000
+    && event.timingStatus === 'approximate'
+    && event.publicationStatus === 'qualified'
+    && event.narrativeMode === 'threaded'
+    && JSON.stringify(event.people) === JSON.stringify(['komatsu36/hama-kento'])],
+  ['yt-014321-kano-ojisan', (event) => event?.startMs === 6201000
+    && event.endMs === 6233000
+    && event.timingStatus === 'exact'
+    && event.publicationStatus === 'qualified'
+    && event.narrativeMode === 'threaded'
+    && JSON.stringify(event.people) === JSON.stringify([
+      'komatsu36/kano-sho',
+      'komatsu36/hama-kento',
     ])],
   ['yt-024207-controlled-adlib', (event) => event?.narrativeMode === 'threaded'],
   ['yt-040820-kotetsu-kano', (event) => event?.startMs === 14904000
@@ -131,6 +174,21 @@ const semanticTimelineEventChecks = [
 for (const [eventId, passes] of semanticTimelineEventChecks) {
   if (!passes(semanticEventById.get(eventId))) {
     errors.push(`semantic timeline audit metadata mismatch for ${eventId}`);
+  }
+}
+for (const eventId of [
+  'yt-013730-hama-j-coupon',
+  'yt-013827-hama-moet-budget',
+  'yt-013917-kano-spice-sensor',
+  'yt-013840-great-payback',
+  'yt-014246-hama-spicy-chicken',
+  'yt-014321-kano-ojisan',
+]) {
+  for (const field of ['title', 'summary']) {
+    const copyKey = `event:komatsu36/${eventId}#${field}`;
+    if (!newEventCopyReview.includes(`### \`${copyKey}\``)) {
+      errors.push(`new Event copy review is missing stable key ${copyKey}`);
+    }
   }
 }
 
@@ -143,10 +201,22 @@ const semanticTimelineThreadNodes = new Map([
     'komatsu36/yt-030823-sunglasses-haiku',
     'komatsu36/yt-045552-space-ambition',
   ]],
-  ['terashima-big-dream', ['komatsu36/yt-013800-thirty-four-yen']],
-  ['hama-paid-drinking', [
+  ['terashima-big-dream', [
+    'komatsu36/yt-013730-hama-j-coupon',
     'komatsu36/yt-013800-thirty-four-yen',
+    'komatsu36/yt-013827-hama-moet-budget',
+  ]],
+  ['hama-paid-drinking', [
+    'komatsu36/yt-013730-hama-j-coupon',
+    'komatsu36/yt-013800-thirty-four-yen',
+    'komatsu36/yt-013827-hama-moet-budget',
     'komatsu36/yt-013840-great-payback',
+    'komatsu36/yt-014246-hama-spicy-chicken',
+  ]],
+  ['kano-ojisan', [
+    'komatsu36/yt-014321-kano-ojisan',
+    'komatsu36/yt-025037-kano-toilet',
+    'komatsu36/yt-041453-kano-tbolan',
   ]],
   ['uchida-line-call', ['komatsu36/yt-020644-eight-trip']],
   ['ore-shiri-making-of', ['komatsu36/yt-024207-controlled-adlib']],
@@ -170,10 +240,22 @@ const semanticTimelineNodeRoles = new Map([
     ['komatsu36/yt-030823-sunglasses-haiku', 'development'],
     ['komatsu36/yt-045552-space-ambition', 'payoff'],
   ])],
-  ['terashima-big-dream', new Map([['komatsu36/yt-013800-thirty-four-yen', 'development']])],
-  ['hama-paid-drinking', new Map([
+  ['terashima-big-dream', new Map([
+    ['komatsu36/yt-013730-hama-j-coupon', 'development'],
     ['komatsu36/yt-013800-thirty-four-yen', 'development'],
+    ['komatsu36/yt-013827-hama-moet-budget', 'development'],
+  ])],
+  ['hama-paid-drinking', new Map([
+    ['komatsu36/yt-013730-hama-j-coupon', 'development'],
+    ['komatsu36/yt-013800-thirty-four-yen', 'development'],
+    ['komatsu36/yt-013827-hama-moet-budget', 'development'],
     ['komatsu36/yt-013840-great-payback', 'development'],
+    ['komatsu36/yt-014246-hama-spicy-chicken', 'development'],
+  ])],
+  ['kano-ojisan', new Map([
+    ['komatsu36/yt-014321-kano-ojisan', 'setup'],
+    ['komatsu36/yt-025037-kano-toilet', 'development'],
+    ['komatsu36/yt-041453-kano-tbolan', 'payoff'],
   ])],
   ['ore-shiri-making-of', new Map([['komatsu36/yt-024207-controlled-adlib', 'development']])],
   ['bingo-payback', new Map([['komatsu36/yt-035421-bingo-starts', 'development']])],
@@ -328,9 +410,10 @@ if (project.status === 'published') {
 const outputBytes = (await stat(outputFile)).size;
 // RC12-N1 adds the player recovery surface; the reviewed-final editorial pass
 // replaces 123 public fields with human copy, and the 2026-08-11 semantic
-// timeline audit adds nine visible Thread nodes. Keep an explicit ceiling
-// rather than silently accepting arbitrary growth.
-const maxOutputBytes = 365 * 1024;
+// first timeline audit adds nine visible Thread nodes. The 2026-08-12 event
+// granularity pass adds five public Events plus their storyline projections.
+// Keep an explicit ceiling rather than silently accepting arbitrary growth.
+const maxOutputBytes = 377 * 1024;
 if (outputBytes > maxOutputBytes) {
   errors.push(`project HTML is ${outputBytes} bytes; budget is ${maxOutputBytes} bytes`);
 }

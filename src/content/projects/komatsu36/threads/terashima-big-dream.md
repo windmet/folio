@@ -8,7 +8,11 @@ nodes:
     role: setup
   - event: komatsu36/yt-013535-risk-chosen
     role: development
+  - event: komatsu36/yt-013730-hama-j-coupon
+    role: development
   - event: komatsu36/yt-013800-thirty-four-yen
+    role: development
+  - event: komatsu36/yt-013827-hama-moet-budget
     role: development
   - event: komatsu36/yt-014840-wide-bet
     role: development
