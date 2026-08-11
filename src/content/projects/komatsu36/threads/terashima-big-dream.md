@@ -8,6 +8,8 @@ nodes:
     role: setup
   - event: komatsu36/yt-013535-risk-chosen
     role: development
+  - event: komatsu36/yt-013800-thirty-four-yen
+    role: development
   - event: komatsu36/yt-014840-wide-bet
     role: development
   - event: komatsu36/yt-015028-nothing-won

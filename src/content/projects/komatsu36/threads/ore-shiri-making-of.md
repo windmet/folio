@@ -16,6 +16,8 @@ nodes:
     role: development
   - event: komatsu36/yt-024102-audience-view
     role: development
+  - event: komatsu36/yt-024207-controlled-adlib
+    role: development
   - event: komatsu36/yt-032708-book-symbolism
     role: development
   - event: komatsu36/yt-032828-seiten-opening

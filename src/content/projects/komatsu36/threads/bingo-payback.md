@@ -6,6 +6,8 @@ deck: 小松打算用Bingo形式一次还清大家的生日礼物，有人中奖
 nodes:
   - event: komatsu36/yt-035350-bingo-purpose
     role: setup
+  - event: komatsu36/yt-035421-bingo-starts
+    role: development
   - event: komatsu36/yt-035520-bingo-rules-patched
     role: development
   - event: komatsu36/yt-035633-beef-shioya

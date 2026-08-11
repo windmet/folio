@@ -7,6 +7,9 @@ nodes:
   - event: komatsu36/yt-020555-uchida-call-announced
     role: setup
     transition: 主桌宣布电话后，小松转入 SP2——
+  - event: komatsu36/yt-020644-eight-trip
+    role: development
+    transition: 小松离席接内田电话后，主直播一侧因为18TRIP成员聚集又自行长出支线。
   - event: komatsu36/sp2-011242-uchida-connected
     role: development
   - event: komatsu36/sp2-011723-terashima-requested

@@ -7,10 +7,10 @@
   "timingStatus": "approximate",
   "title": "被放弃的 36J 最后只值 34 円",
   "summary": "寺島揭晓剩余的 J 券只有 34 円，现场以“原来 1J 就是 1 円”收掉这个安全选项的玩笑。",
-  "people": ["komatsu36/terashima-junta", "komatsu36/komatsu-shohei"],
+  "people": ["komatsu36/hama-kento", "komatsu36/terashima-junta", "komatsu36/komatsu-shohei"],
   "tags": ["生日礼物", "36J", "笑点"],
   "publicationStatus": "qualified",
   "qualification": "34 円是当场揭晓的笑点；页面不把 J 当作需要建立固定汇率的正式单位。",
-  "narrativeMode": "timeline-only",
+  "narrativeMode": "threaded",
   "laneAnnotations": []
 }

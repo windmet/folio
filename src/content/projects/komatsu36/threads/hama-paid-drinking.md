@@ -6,6 +6,10 @@ deck: 没带礼物却一路吃喝到最后；Amazon 轮自己没中，还伸手�
 nodes:
   - event: komatsu36/yt-011843-hama-no-gift
     role: setup
+  - event: komatsu36/yt-013800-thirty-four-yen
+    role: development
+  - event: komatsu36/yt-013840-great-payback
+    role: development
   - event: komatsu36/yt-020644-eight-trip
     role: development
   - event: komatsu36/yt-040524-hama-grabs-amazon-card

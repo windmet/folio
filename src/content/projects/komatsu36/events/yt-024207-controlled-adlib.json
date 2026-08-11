@@ -10,6 +10,6 @@
   "people": ["komatsu36/kumagai-toshiki", "komatsu36/hama-kento"],
   "tags": ["俺知名场面", "即兴", "喜剧"],
   "publicationStatus": "verified",
-  "narrativeMode": "timeline-only",
+  "narrativeMode": "threaded",
   "laneAnnotations": []
 }

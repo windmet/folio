@@ -9,9 +9,10 @@ import {
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const slug = process.argv[2];
-// Keep this in sync with validate-publication.mjs. The 2026-08-11
-// reviewed-final pass replaces 123 public fields with human-edited copy.
-const rawLimitBytes = 357 * 1024;
+// Keep this in sync with validate-publication.mjs. The reviewed-final pass
+// replaces 123 public fields with human copy, and the 2026-08-11 semantic
+// timeline audit adds nine visible Thread nodes.
+const rawLimitBytes = 365 * 1024;
 
 const fail = (message) => {
   console.error(`Payload audit failed: ${message}`);

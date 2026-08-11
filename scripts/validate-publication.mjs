@@ -99,6 +99,101 @@ if (!hamaNodeIds.has('komatsu36/yt-040524-hama-grabs-amazon-card')
 if (semanticPersonById.get('shioya-fumiyasu')?.reading !== 'しおや ふみよし') {
   errors.push('semantic P0 requires 汐谷文康 reading しおや ふみよし');
 }
+
+const semanticTimelineEventChecks = [
+  ['yt-025449-kano-haiku', (event) => event?.startMs === 10484000
+    && event.narrativeMode === 'threaded'],
+  ['yt-025755-kumagai-haiku', (event) => event?.startMs === 10642000
+    && event.endMs === 10692000
+    && event.timingStatus === 'approximate'
+    && JSON.stringify(event.people) === JSON.stringify([
+      'komatsu36/kumagai-toshiki',
+      'komatsu36/kano-sho',
+      'komatsu36/terashima-junta',
+    ])],
+  ['yt-013800-thirty-four-yen', (event) => event?.narrativeMode === 'threaded'
+    && JSON.stringify(event.people) === JSON.stringify([
+      'komatsu36/hama-kento',
+      'komatsu36/terashima-junta',
+      'komatsu36/komatsu-shohei',
+    ])],
+  ['yt-013840-great-payback', (event) => event?.narrativeMode === 'threaded'
+    && JSON.stringify(event.people) === JSON.stringify([
+      'komatsu36/hama-kento',
+      'komatsu36/terashima-junta',
+      'komatsu36/komatsu-shohei',
+    ])],
+  ['yt-024207-controlled-adlib', (event) => event?.narrativeMode === 'threaded'],
+  ['yt-040820-kotetsu-kano', (event) => event?.startMs === 14904000
+    && event.timingStatus === 'approximate'],
+  ['yt-035421-bingo-starts', (event) => event?.narrativeMode === 'threaded'],
+];
+for (const [eventId, passes] of semanticTimelineEventChecks) {
+  if (!passes(semanticEventById.get(eventId))) {
+    errors.push(`semantic timeline audit metadata mismatch for ${eventId}`);
+  }
+}
+
+const semanticTimelineThreadNodes = new Map([
+  ['popular-space-haiku', [
+    'komatsu36/yt-025057-birthday-haiku-formed',
+    'komatsu36/yt-025353-popular-haiku',
+    'komatsu36/yt-025449-kano-haiku',
+    'komatsu36/yt-025755-kumagai-haiku',
+    'komatsu36/yt-030823-sunglasses-haiku',
+    'komatsu36/yt-045552-space-ambition',
+  ]],
+  ['terashima-big-dream', ['komatsu36/yt-013800-thirty-four-yen']],
+  ['hama-paid-drinking', [
+    'komatsu36/yt-013800-thirty-four-yen',
+    'komatsu36/yt-013840-great-payback',
+  ]],
+  ['uchida-line-call', ['komatsu36/yt-020644-eight-trip']],
+  ['ore-shiri-making-of', ['komatsu36/yt-024207-controlled-adlib']],
+  ['bingo-payback', ['komatsu36/yt-035421-bingo-starts']],
+  ['yano-sunglasses', ['komatsu36/yt-030823-sunglasses-haiku']],
+]);
+for (const [threadId, expectedNodes] of semanticTimelineThreadNodes) {
+  const actualNodes = (semanticThreadById.get(threadId)?.data.nodes || [])
+    .map((node) => String(node.event));
+  const passes = threadId === 'popular-space-haiku'
+    ? JSON.stringify(actualNodes) === JSON.stringify(expectedNodes)
+    : expectedNodes.every((nodeId) => actualNodes.includes(nodeId));
+  if (!passes) errors.push(`semantic timeline audit thread mismatch for ${threadId}`);
+}
+const semanticTimelineNodeRoles = new Map([
+  ['popular-space-haiku', new Map([
+    ['komatsu36/yt-025057-birthday-haiku-formed', 'setup'],
+    ['komatsu36/yt-025353-popular-haiku', 'development'],
+    ['komatsu36/yt-025449-kano-haiku', 'development'],
+    ['komatsu36/yt-025755-kumagai-haiku', 'development'],
+    ['komatsu36/yt-030823-sunglasses-haiku', 'development'],
+    ['komatsu36/yt-045552-space-ambition', 'payoff'],
+  ])],
+  ['terashima-big-dream', new Map([['komatsu36/yt-013800-thirty-four-yen', 'development']])],
+  ['hama-paid-drinking', new Map([
+    ['komatsu36/yt-013800-thirty-four-yen', 'development'],
+    ['komatsu36/yt-013840-great-payback', 'development'],
+  ])],
+  ['ore-shiri-making-of', new Map([['komatsu36/yt-024207-controlled-adlib', 'development']])],
+  ['bingo-payback', new Map([['komatsu36/yt-035421-bingo-starts', 'development']])],
+]);
+for (const [threadId, expectedRoles] of semanticTimelineNodeRoles) {
+  const actualRoles = new Map((semanticThreadById.get(threadId)?.data.nodes || [])
+    .map((node) => [String(node.event), node.role]));
+  for (const [eventId, role] of expectedRoles) {
+    if (actualRoles.get(eventId) !== role) {
+      errors.push(`semantic timeline audit role mismatch for ${threadId} -> ${eventId}`);
+    }
+  }
+}
+const uchidaBranchNode = semanticThreadById.get('uchida-line-call')?.data.nodes
+  .find((node) => String(node.event) === 'komatsu36/yt-020644-eight-trip');
+if (uchidaBranchNode?.role !== 'development'
+  || uchidaBranchNode.transition !== '小松离席接内田电话后，主直播一侧因为18TRIP成员聚集又自行长出支线。') {
+  errors.push('semantic timeline audit requires the 18TRIP branch transition in the Uchida thread');
+}
+
 const expectedCallNames = new Map([
   ['komatsu-shohei', ['コマッチ']],
   ['hama-kento', ['濱ちゃん', 'ハマ']],
@@ -232,9 +327,10 @@ if (project.status === 'published') {
 
 const outputBytes = (await stat(outputFile)).size;
 // RC12-N1 adds the player recovery surface; the reviewed-final editorial pass
-// then replaces 123 public fields with slightly longer human copy. Keep this
-// explicit 357 KiB ceiling rather than silently accepting arbitrary growth.
-const maxOutputBytes = 357 * 1024;
+// replaces 123 public fields with human copy, and the 2026-08-11 semantic
+// timeline audit adds nine visible Thread nodes. Keep an explicit ceiling
+// rather than silently accepting arbitrary growth.
+const maxOutputBytes = 365 * 1024;
 if (outputBytes > maxOutputBytes) {
   errors.push(`project HTML is ${outputBytes} bytes; budget is ${maxOutputBytes} bytes`);
 }

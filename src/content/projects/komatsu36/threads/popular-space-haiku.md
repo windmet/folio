@@ -7,8 +7,12 @@ nodes:
   - event: komatsu36/yt-025057-birthday-haiku-formed
     role: setup
   - event: komatsu36/yt-025353-popular-haiku
-    role: setup
+    role: development
+  - event: komatsu36/yt-025449-kano-haiku
+    role: development
   - event: komatsu36/yt-025755-kumagai-haiku
+    role: development
+  - event: komatsu36/yt-030823-sunglasses-haiku
     role: development
   - event: komatsu36/yt-045552-space-ambition
     role: payoff
