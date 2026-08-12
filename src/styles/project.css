@@ -757,6 +757,17 @@ project-archive-shell {
   line-height: 1.9;
 }
 
+.overview-orientation {
+  display: grid;
+  gap: 14px;
+  max-width: 750px;
+}
+
+.overview-orientation__cta strong {
+  color: var(--archive-ink);
+  font-weight: 600;
+}
+
 .timeline-navigator {
   position: sticky;
   top: var(--project-nav-height, 68px);

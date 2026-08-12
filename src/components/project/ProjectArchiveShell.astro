@@ -203,8 +203,13 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       <section class="project-view overview-view" data-view-panel="overview" hidden>
         <div class="view-heading">
           <span class="archive-kicker">FIVE-MINUTE ORIENTATION</span>
-          <h2>一条线看懂这场活动</h2>
-          <p>这场近五小时直播最有趣的地方，是很多笑点会隔上一两个小时突然回来。最典型的一条从俄罗斯章鱼烧开始：有人先看见绿色、悄悄放回，赛马又把所有人的注意力带走，直到约 80 分钟后才由完全不知情的人踩雷。</p>
+          <h2>不知道从哪里开始的话，可以先看看这些</h2>
+          <div class="overview-orientation">
+            <p>前半程还在为设备和流程焦头烂额，人到齐以后又被礼物、赛马、Space 和各种临时事故不断带跑；随后认真复盘《俺知》，真正准备结束以后，还拖出了公告、圆阵、Super Chat、约好的歌和青春 Amigo。</p>
+            <p>这是刚步入 36 岁的小松昌平——生日主角、主持人，也是《俺知》的主创。</p>
+            <p>然后你会陆续遇到：“空手套礼品卡”的濱健人；把 20:50 变成赛马现场的寺島惇太；从一句“想吃俄罗斯章鱼烧”开始，约 80 分钟后真的炸到后辈嘴里的芥末章鱼烧；突然跑进 Space、只留下“今晚吃烤肉”的仲村宗悟；还有那个一直声称“不是本人”的室元气账号。</p>
+            <p class="overview-orientation__cta"><strong>如果想继续了解这场以《俺を知ってくれ！》为主题的生日会，看看小松和这些来宾在五个小时里到底发生了些什么，就继续往下看吧。→</strong></p>
+          </div>
         </div>
         <div class="overview-grid">
           <article>
@@ -1274,6 +1279,14 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       if (heading) heading.textContent = `${this.data.tracks[trackId]?.label || '来源'} · 事件索引`;
     }
 
+    resetOverlayPanelScroll(selector: string) {
+      const panel = this.querySelector<HTMLElement>(selector);
+      if (!panel) return null;
+      panel.scrollTop = 0;
+      panel.scrollLeft = 0;
+      return panel;
+    }
+
     openThread(threadId: string, trigger: HTMLElement | null, push: boolean) {
       const detail = this.querySelector(`[data-thread-detail="${CSS.escape(threadId)}"]`);
       if (!detail) return;
@@ -1284,9 +1297,10 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.querySelectorAll<HTMLElement>('[data-thread-detail]').forEach((item) => { item.hidden = item.dataset.threadDetail !== threadId; });
       const overlay = this.querySelector<HTMLElement>('[data-thread-overlay]');
       if (overlay) overlay.hidden = false;
+      const panel = this.resetOverlayPanelScroll('[data-thread-panel]');
       this.updateModalBackgroundInert();
       this.lockPage();
-      this.querySelector<HTMLElement>('[data-thread-panel]')?.focus();
+      panel?.focus({ preventScroll: true });
       if (push) this.updateUrl();
     }
 
@@ -1313,9 +1327,10 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.querySelectorAll<HTMLElement>('[data-person-detail]').forEach((item) => { item.hidden = item.dataset.personDetail !== personId; });
       const overlay = this.querySelector<HTMLElement>('[data-person-overlay]');
       if (overlay) overlay.hidden = false;
+      const panel = this.resetOverlayPanelScroll('[data-person-panel]');
       this.updateModalBackgroundInert();
       this.lockPage();
-      this.querySelector<HTMLElement>('[data-person-panel]')?.focus();
+      panel?.focus({ preventScroll: true });
       if (push) this.updateUrl();
     }
 

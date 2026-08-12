@@ -853,6 +853,12 @@ if (!timelineShellSource.includes('dismissPersonForTransition()')
   || !timelineShellSource.includes("else if (personId) this.openPerson(personId, null, false)")) {
   errors.push('RC12 final cleanup overlay transition invariant is missing');
 }
+if (!timelineShellSource.includes('resetOverlayPanelScroll(selector: string)')
+  || !timelineShellSource.includes("this.resetOverlayPanelScroll('[data-person-panel]')")
+  || !timelineShellSource.includes("this.resetOverlayPanelScroll('[data-thread-panel]')")
+  || !timelineShellSource.includes('panel?.focus({ preventScroll: true })')) {
+  errors.push('RC12-PF1 overlay detail openings must reset their shared scroll container before focus');
+}
 
 // RC12-P1-C/D final polish: reader-facing Chinese taxonomy labels use the
 // small serif taxonomy token, while source detail remains a native disclosure.
