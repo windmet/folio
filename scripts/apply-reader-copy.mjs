@@ -6,10 +6,14 @@ import YAML from 'yaml';
 const args = process.argv.slice(2);
 const reviewArg = args.find((arg) => !arg.startsWith('-'));
 const apply = args.includes('--apply');
+const outputLabel = args.find((arg) => arg.startsWith('--output-label='))?.slice('--output-label='.length) || '';
 
 if (!reviewArg) {
-  console.error('Usage: npm run editorial:apply-copy -- <review.md> [--apply]');
+  console.error('Usage: npm run editorial:apply-copy -- <review.md> [--output-label=<label>] [--apply]');
   process.exit(1);
+}
+if (outputLabel && !/^[a-z0-9][a-z0-9-]*$/.test(outputLabel)) {
+  throw new Error(`Invalid output label: ${outputLabel}`);
 }
 
 const reviewPath = path.resolve(reviewArg);
@@ -19,7 +23,10 @@ const reviewRaw = fs.readFileSync(reviewPath, 'utf8');
 const projectMatch = reviewRaw.match(/^- Project: `([^`]+)`$/m);
 if (!projectMatch) throw new Error('Review file is missing its Project metadata');
 const projectId = projectMatch[1];
-const manifestPath = path.resolve('docs/editorial', `${projectId}-reader-copy-manifest.json`);
+const manifestFile = outputLabel
+  ? `${projectId}-reader-copy-manifest-${outputLabel}.json`
+  : `${projectId}-reader-copy-manifest.json`;
+const manifestPath = path.resolve('docs/editorial', manifestFile);
 if (!fs.existsSync(manifestPath)) throw new Error(`Manifest not found: ${manifestPath}`);
 
 const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
