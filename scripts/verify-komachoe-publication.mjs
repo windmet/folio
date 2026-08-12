@@ -67,7 +67,7 @@ assert(project.status === 'draft', 'Project must remain draft during vertical sl
 assert(project.defaultView === 'overview', 'defaultView must remain overview');
 assert(project.visualTheme === 'broadcast-blue', 'Project must use the broadcast-blue visual theme');
 assert(JSON.stringify(project.views) === JSON.stringify(['overview', 'sections', 'timeline', 'mentions']), 'views must be Overview / Sections / Timeline / Mentions in order');
-assert(Array.isArray(project.mentions) && project.mentions.length === 24, 'Mentions must contain the locked 24-entry index');
+assert(Array.isArray(project.mentions) && project.mentions.length === 23, 'Mentions must contain the locked 23-entry index');
 assert(trackFiles.length === 1 && tracks[0].durationMs === 7926041 && tracks[0].order === 1, 'expected one ordered 7,926,041ms Track');
 assert(actFiles.length === 6, `expected 6 Acts, found ${actFiles.length}`);
 assert(eventFiles.length === 30, `expected 30 Events, found ${eventFiles.length}`);

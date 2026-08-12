@@ -95,7 +95,7 @@ try {
       `${label} broadcast-blue theme mismatch: ${JSON.stringify(state.palette)}`,
     );
     assert(state.nav.join() === 'overview,sections,timeline,mentions', `${label} view navigation mismatch`);
-    assert(state.sections === 6 && state.acts === 6 && state.events === 30 && state.mentions === 24, `${label} does not render 6 Sections / 30 Events / 24 Mentions`);
+    assert(state.sections === 6 && state.acts === 6 && state.events === 30 && state.mentions === 23, `${label} does not render 6 Sections / 30 Events / 23 Mentions`);
     assert(state.overflow === 0 && state.forbidden === 0, `${label} overflow or forbidden optional UI: ${JSON.stringify(state)}`);
     assert(logs.length === 0, `${label} console errors: ${logs.join(' | ')}`);
     evidence.viewports[label] = state;
