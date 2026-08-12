@@ -23,16 +23,8 @@ const totalDuration = acts.reduce((sum, act) => sum + Math.max(1, act.data.endMs
     <strong
       id="timeline-navigator-current-title"
       data-timeline-navigator-current-title
-      data-inline-expandable="timeline-current-title"
+      title={firstAct?.data.title || 'Timeline'}
     >{firstAct?.data.title || 'Timeline'}</strong>
-    <button
-      type="button"
-      class="archive-inline-text-toggle"
-      data-inline-text-toggle="timeline-current-title"
-      aria-expanded="false"
-      aria-controls="timeline-navigator-current-title"
-      hidden
-    >展开</button>
     <span data-timeline-navigator-current-time>
       {firstAct ? `${formatTime(firstAct.data.startMs)}–${formatTime(firstAct.data.endMs)}` : '—'}
     </span>
@@ -49,6 +41,7 @@ const totalDuration = acts.reduce((sum, act) => sum + Math.max(1, act.data.endMs
             data-timeline-navigator-segment={id}
             aria-current={act === firstAct ? 'step' : undefined}
             aria-label={`跳转到 ACT ${order}：${act.data.title}`}
+            title={`ACT ${order} · ${act.data.title}`}
           >
             <span>A{order}</span>
             <strong>{act.data.title}</strong>
@@ -90,6 +83,7 @@ const totalDuration = acts.reduce((sum, act) => sum + Math.max(1, act.data.endMs
               type="button"
               data-mobile-act-option={id}
               aria-current={act === firstAct ? 'step' : undefined}
+              aria-label={`跳转到 ACT ${order}：${act.data.title}`}
             >
               <span>ACT {order}</span>
               <strong>{act.data.title}</strong>

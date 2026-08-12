@@ -6,6 +6,7 @@ if (!existsSync(playwrightModule)) throw new Error('Playwright is not installed 
 const { chromium } = await import(playwrightModule.href);
 const baseUrl = process.env.KOMACHOE_BASE_URL || 'http://127.0.0.1:5174';
 const projectUrl = `${baseUrl}/projects/komachoe-20260425/`;
+const komatsuUrl = `${baseUrl}/projects/komatsu36/`;
 const assert = (condition, message) => {
   if (!condition) throw new Error(message);
 };
@@ -42,7 +43,7 @@ const attachLogs = (page) => {
   page.on('pageerror', (error) => logs.push(`pageerror: ${error.message}`));
   return logs;
 };
-const openPage = async (viewport, { failApiOnce = false } = {}) => {
+const openPage = async (viewport, { failApiOnce = false, url = projectUrl } = {}) => {
   const page = await browser.newPage({ viewport });
   const logs = attachLogs(page);
   let apiAttempts = 0;
@@ -52,7 +53,7 @@ const openPage = async (viewport, { failApiOnce = false } = {}) => {
     return route.fulfill({ contentType: 'application/javascript', body: fakeYouTubeApi });
   });
   await page.route('**/img.youtube.com/**', (route) => route.fulfill({ status: 204, body: '' }));
-  await page.goto(projectUrl, { waitUntil: 'domcontentloaded' });
+  await page.goto(url, { waitUntil: 'domcontentloaded' });
   await page.locator('project-archive-shell').waitFor();
   return { page, logs, getApiAttempts: () => apiAttempts };
 };
@@ -121,7 +122,12 @@ try {
         label: link.textContent.trim(),
         target: link.getAttribute('target'),
         rel: link.getAttribute('rel'),
+        borderWidth: getComputedStyle(link).borderTopWidth,
+        paddingLeft: getComputedStyle(link).paddingLeft,
+        textDecoration: getComputedStyle(link).textDecorationLine,
       })),
+      mentionTitleClamp: getComputedStyle(document.querySelector('.mention-card__copy h4')).webkitLineClamp,
+      mentionSummaryClamp: getComputedStyle(document.querySelector('.mention-card__copy p')).webkitLineClamp,
       fifthSlotEmpty: document.querySelectorAll('[data-view-button]').length === 4,
       overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
     }));
@@ -129,7 +135,8 @@ try {
     assert(state.groups.map((group) => group.kind).join() === 'person,work,context', `Mentions group order mismatch: ${JSON.stringify(state.groups)}`);
     assert(JSON.stringify(state.groups.map((group) => group.cards)) === JSON.stringify([10, 8, 1]) && state.columns === 2 && state.jumpLinks === 3 && state.fifthSlotEmpty, `Mentions card grid or fifth nav slot contract failed: ${JSON.stringify(state)}`);
     assert(state.foldedTimes.length === 1 && state.foldedTimes.every((item) => !item.open && item.hiddenButtons === 1), `Mentions time folding mismatch: ${JSON.stringify(state.foldedTimes)}`);
-    assert(state.sources.length === 9 && state.sources.every((source) => source.target === '_blank' && source.rel === 'noopener noreferrer'), `Mentions primary-source links mismatch: ${JSON.stringify(state.sources)}`);
+    assert(state.mentionTitleClamp === '2' && state.mentionSummaryClamp === '3', `Mentions title/summary clamp contract failed: ${JSON.stringify(state)}`);
+    assert(state.sources.length === 9 && state.sources.every((source) => source.label.startsWith('查看') && source.target === '_blank' && source.rel === 'noopener noreferrer' && source.borderWidth === '0px' && source.paddingLeft === '0px' && source.textDecoration.includes('underline')), `Mentions primary-source links mismatch: ${JSON.stringify(state.sources)}`);
     await page.locator('.mention-times-more summary').first().click();
     assert(await page.locator('.mention-times-more').first().getAttribute('open') !== null, 'Mentions +N control did not expand');
     await page.locator('[data-mention-event="yt-005429-hosoya-bonfire"]').first().click();
@@ -163,6 +170,43 @@ try {
     assert(state.columns === 1 && state.cardWidth > 300 && state.summaryClamp === '2', `mobile Mentions card stack mismatch: ${JSON.stringify(state)}`);
     assert(state.jumpLinks === 3 && state.overflow === 0 && logs.length === 0, `mobile Mentions navigation or overflow failed: ${JSON.stringify(state)}`);
     evidence.mobileMentions = state;
+    await page.close();
+  }
+
+  {
+    const { page, logs } = await openPage({ width: 1440, height: 900 });
+    await page.locator('[data-view-button="sections"]').click();
+    const sectionClamp = await page.locator('.section-card h3').first().evaluate((title) => getComputedStyle(title).webkitLineClamp);
+    await page.locator('[data-view-button="timeline"]').click();
+    const timeline = await page.evaluate(() => ({
+      actTitleClamp: getComputedStyle(document.querySelector('.act-header h2')).webkitLineClamp,
+      eventTitleClamp: getComputedStyle(document.querySelector('.event-heading h3')).webkitLineClamp,
+      actTitleToggles: document.querySelectorAll('.act-header [data-inline-text-toggle]').length,
+      navigatorTooltips: document.querySelectorAll('[data-timeline-navigator-tooltip]').length,
+      overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    }));
+    assert(sectionClamp === '2' && timeline.actTitleClamp === '2' && timeline.eventTitleClamp === '2', `Komachoe desktop title contract failed: ${JSON.stringify({ sectionClamp, timeline })}`);
+    assert(timeline.actTitleToggles === 0 && timeline.navigatorTooltips === 6 && timeline.overflow === 0 && logs.length === 0, `Komachoe desktop title navigation failed: ${JSON.stringify(timeline)}`);
+    evidence.komachoeTextContract = { sectionClamp, timeline };
+    await page.close();
+  }
+
+  for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
+    const { page, logs } = await openPage(viewport, { url: komatsuUrl });
+    await page.locator('[data-view-button="timeline"]').click();
+    const mobile = viewport.width <= 600;
+    if (mobile) await page.locator('[data-mobile-act-toggle]').click();
+    const state = await page.evaluate((isMobile) => ({
+      actTitleClamp: getComputedStyle(document.querySelector('.act-header h2')).webkitLineClamp,
+      eventTitleClamp: getComputedStyle(document.querySelector(isMobile ? '.event-detail-toggle > span' : '.event-heading h3')).webkitLineClamp,
+      mobileMenuTitleClamp: isMobile ? getComputedStyle(document.querySelector('.timeline-navigator__mobile-menu strong')).webkitLineClamp : null,
+      actTitleToggles: document.querySelectorAll('.act-header [data-inline-text-toggle]').length,
+      navigatorTooltips: document.querySelectorAll('[data-timeline-navigator-tooltip]').length,
+      overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    }), mobile);
+    assert(state.actTitleClamp === '2' && state.eventTitleClamp === '2' && (!mobile || state.mobileMenuTitleClamp === '2'), `Komatsu36 ${viewport.width}px title contract failed: ${JSON.stringify(state)}`);
+    assert(state.actTitleToggles === 0 && state.navigatorTooltips === 8 && state.overflow === 0 && logs.length === 0, `Komatsu36 ${viewport.width}px title navigation failed: ${JSON.stringify(state)}`);
+    evidence[`komatsuTextContract${viewport.width}`] = state;
     await page.close();
   }
 

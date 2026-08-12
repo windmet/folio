@@ -592,10 +592,9 @@ if (actualSourceLists.length !== expectedTrackIds.size || actualSourceLists.some
   errors.push(`source event list hosts are ${actualSourceLists.join(', ')}; expected one host for each public track`);
 }
 
-// RC12-B2 publication contract: every reader-facing expandable title must have
-// exactly one hidden inline control wired to a real DOM target. This is a
-// structural check for the built artifact; overflow and click behavior remain
-// Browser consumer checks because they depend on the rendered viewport.
+// RC12-B2 remains the source-card title contract. Act body titles now follow
+// the shared two-line text-overflow contract, while Timeline navigation keeps
+// compact labels plus full-title tooltips instead of inline expansion controls.
 const readAttribute = (tag, name) => tag.match(new RegExp(`${name}="([^"]*)"`))?.[1] ?? null;
 const expandableTags = [...html.matchAll(/<[^>]*data-inline-expandable="[^"]+"[^>]*>/g)]
   .map((match) => match[0]);
@@ -618,8 +617,6 @@ const expectedInlineKeys = [
   'source-title-yt-main',
   'source-title-space-1',
   'source-title-space-2',
-  'timeline-current-title',
-  ...Array.from({ length: 8 }, (_, index) => `act-title-act-${String(index + 1).padStart(2, '0')}`),
 ];
 if (expandableEntries.some(({ id, key }) => !id || !key)) {
   errors.push('inline expandable title is missing id or data-inline-expandable');
@@ -629,7 +626,7 @@ if (new Set(expandableEntries.map(({ id }) => id)).size !== expandableEntries.le
 }
 if (expandableKeys.size !== expectedInlineKeys.length
   || expectedInlineKeys.some((key) => !expandableKeys.has(key))) {
-  errors.push(`inline expandable title keys are ${[...expandableKeys].join(', ')}; expected RC12-B2 Act/Timeline/Source coverage`);
+  errors.push(`inline expandable title keys are ${[...expandableKeys].join(', ')}; expected RC12-B2 Source-only coverage`);
 }
 if (toggleEntries.length !== expandableEntries.length) {
   errors.push(`inline text toggle count is ${toggleEntries.length}; expected one toggle per expandable title (${expandableEntries.length})`);
@@ -1128,5 +1125,5 @@ if (errors.length) {
 }
 
 console.log(
-  `Publication validation passed (${outputBytes} bytes, ${searchPayload?.items?.length || 0} search JSON items, ${actualSourceEventButtons} initial source event buttons, ${expandableEntries.length} RC12-B2 expandable title contracts, ${actualTimelineScopeButtons} RC12-E timeline scopes, controller coverage verified, no private source markers).`,
+  `Publication validation passed (${outputBytes} bytes, ${searchPayload?.items?.length || 0} search JSON items, ${actualSourceEventButtons} initial source event buttons, ${expandableEntries.length} RC12-B2 source-title expandable contracts, ${actualTimelineScopeButtons} RC12-E timeline scopes, controller coverage verified, no private source markers).`,
 );

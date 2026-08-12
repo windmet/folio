@@ -854,6 +854,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       });
       navigator.querySelectorAll<HTMLElement>('[data-timeline-navigator-current-title]').forEach((currentTitle) => {
         currentTitle.textContent = title;
+        currentTitle.title = title;
       });
       navigator.querySelectorAll<HTMLElement>('[data-timeline-navigator-current-time]').forEach((currentTime) => {
         currentTime.textContent = `${this.formatArchiveTime(startMs)}–${this.formatArchiveTime(endMs)}`;

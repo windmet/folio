@@ -21,6 +21,11 @@ const eventsFor = (mention: any) => (mention.events || [])
   .map((reference: any) => eventsById.get(referenceId(reference)))
   .filter(Boolean)
   .sort((left: any, right: any) => left.data.startMs - right.data.startMs);
+const sourceLabelFor = (mention: any) => {
+  if (mention.urlLabel === '公式サイト' || mention.urlLabel === 'Official Site') return '查看官方网站';
+  if (mention.urlLabel) return `查看${mention.urlLabel}`;
+  return mention.kind === 'context' ? '查看背景资料' : '查看官方资料';
+};
 ---
 
 <section class="project-view mentions-view" data-view-panel="mentions" hidden>
@@ -93,7 +98,7 @@ const eventsFor = (mention: any) => (mention.events || [])
                     </div>
                     {mention.kind !== 'person' && mention.url && (
                       <a class="mention-source" href={mention.url} target="_blank" rel="noopener noreferrer">
-                        {mention.urlLabel || (mention.kind === 'context' ? '背景资料' : '官方资料')} ↗
+                        {sourceLabelFor(mention)} ↗
                       </a>
                     )}
                   </div>

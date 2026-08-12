@@ -153,7 +153,9 @@ assert(html.includes('data-view-button="mentions"') && html.includes('data-view-
 assert(html.includes('MENTION INDEX') && html.includes('提及索引'), 'Mentions presentation copy is missing');
 assert(html.includes('class="mentions-jump"') && html.includes('class="mention-times-more"'), 'Mentions card-grid navigation or time folding is missing');
 assert((html.match(/class="mention-source"/g) || []).length === 9, 'Mentions must render exactly 9 labeled primary-source links');
-for (const label of ['声優グランプリ', '公式サイト', 'KiR 作品页', 'Official Site', '福岡県｜筑豊地域']) {
+assert((html.match(/class="mention-source"[^>]*>\s*查看/g) || []).length === 9, 'Mentions primary sources must render as secondary 查看 links');
+assert(!html.includes('data-inline-expandable="act-title-'), 'Act body titles must not use inline expansion controls');
+for (const label of ['查看声優グランプリ', '查看官方网站', '查看KiR 作品页', '查看福岡県｜筑豊地域']) {
   assert(html.includes(label), `Mentions source label is missing: ${label}`);
 }
 assert(html.includes(project.playerNote) && !html.includes('使用 YouTube 原生 360°能力'), 'Player note is not Project-specific');

@@ -941,8 +941,7 @@ project-archive-shell {
   gap: 6px;
 }
 
-.mention-time,
-.mention-source {
+.mention-time {
   display: inline-flex;
   align-items: center;
   min-height: 28px;
@@ -959,15 +958,29 @@ project-archive-shell {
   cursor: pointer;
 }
 
-.mention-time:hover,
-.mention-source:hover {
+.mention-time:hover {
   border-color: var(--archive-red);
   color: var(--archive-red);
 }
 
 .mention-source {
-  color: var(--archive-red);
+  display: inline-flex;
+  align-items: center;
+  padding: 0;
+  border: 0;
+  color: var(--archive-muted);
   background: transparent;
+  font-size: 10px;
+  line-height: 1.45;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--archive-muted) 45%, transparent);
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
+
+.mention-source:hover {
+  color: var(--archive-red);
+  text-decoration-color: var(--archive-red);
 }
 
 @container mentions-view (max-width: 640px) {
@@ -1029,7 +1042,7 @@ project-archive-shell {
 
 .timeline-navigator__current {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   gap: 10px 16px;
   align-items: baseline;
 }
@@ -1399,16 +1412,16 @@ project-archive-shell {
   font-weight: 400;
 }
 
-.act-title-row {
+.mention-card__copy h4,
+.section-card h3,
+.act-header h2,
+.event-heading h3 {
+  display: -webkit-box;
   min-width: 0;
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-}
-
-.act-title-row h2 {
-  min-width: 0;
-  flex: 1 1 auto;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .act-header span {
@@ -3311,11 +3324,15 @@ project-archive-shell {
   }
 
   .timeline-navigator__mobile-menu strong {
+    display: -webkit-box;
     overflow: hidden;
+    overflow-wrap: anywhere;
     font-size: 12px;
     font-weight: 400;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    line-height: 1.35;
+    white-space: normal;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 
   .timeline-scope__heading {
@@ -3864,7 +3881,6 @@ project-archive-shell {
     display: none;
   }
 
-  .timeline-event:is(.is-active, .is-manual-expanded) .event-detail-toggle > span,
   .timeline-event:is(.is-active, .is-manual-expanded) .event-summary {
     display: block;
     overflow: visible;

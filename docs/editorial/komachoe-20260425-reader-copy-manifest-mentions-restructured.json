@@ -1739,8 +1739,8 @@
       "entityId": "project-archive.mentions",
       "source": "src/components/project/ProjectMentionsView.astro",
       "field": "sourceCta[0]",
-      "originalHash": "c8c1a2ef21d1b2f7a7daa764f2587ff5dbb6f9d699ba48ae31e7dcd6a30ab69e",
-      "value": "官方资料"
+      "originalHash": "31d5d6aef485f848a89d654bb1f4971c07c047d9e7f871df5f9a8d128ae58ac6",
+      "value": "查看官方网站"
     },
     {
       "copyKey": "ui:project-archive.mentions#sourceCta[1]",
@@ -1748,8 +1748,17 @@
       "entityId": "project-archive.mentions",
       "source": "src/components/project/ProjectMentionsView.astro",
       "field": "sourceCta[1]",
-      "originalHash": "1dfcbbfae8da0c5288d50d2b3b2ed3359958898cab0127506da7d642b08372e9",
-      "value": "背景资料"
+      "originalHash": "40a31c3e3b55634ce1b1094026728f7634d3c56f7eae44d7435a3247f8e7b1a0",
+      "value": "查看官方资料"
+    },
+    {
+      "copyKey": "ui:project-archive.mentions#sourceCta[2]",
+      "scope": "system/ui",
+      "entityId": "project-archive.mentions",
+      "source": "src/components/project/ProjectMentionsView.astro",
+      "field": "sourceCta[2]",
+      "originalHash": "a5260f3bdb66e4dc562aa31ca5e12ac1157d014afa1c6e3fdd187ab929e1ff31",
+      "value": "查看背景资料"
     },
     {
       "copyKey": "ui:project-archive.nav#overview",

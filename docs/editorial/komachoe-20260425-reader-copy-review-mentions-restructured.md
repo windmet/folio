@@ -2207,10 +2207,10 @@ MENTION INDEX
 - [ ] reviewed
 - Source: `src/components/project/ProjectMentionsView.astro`
 - Field: `sourceCta[0]`
-- Original hash: `c8c1a2ef21d1b2f7a7daa764f2587ff5dbb6f9d699ba48ae31e7dcd6a30ab69e`
+- Original hash: `31d5d6aef485f848a89d654bb1f4971c07c047d9e7f871df5f9a8d128ae58ac6`
 
 ```text
-官方资料
+查看官方网站
 ```
 
 ### `ui:project-archive.mentions#sourceCta[1]`
@@ -2218,10 +2218,21 @@ MENTION INDEX
 - [ ] reviewed
 - Source: `src/components/project/ProjectMentionsView.astro`
 - Field: `sourceCta[1]`
-- Original hash: `1dfcbbfae8da0c5288d50d2b3b2ed3359958898cab0127506da7d642b08372e9`
+- Original hash: `40a31c3e3b55634ce1b1094026728f7634d3c56f7eae44d7435a3247f8e7b1a0`
 
 ```text
-背景资料
+查看官方资料
+```
+
+### `ui:project-archive.mentions#sourceCta[2]`
+
+- [ ] reviewed
+- Source: `src/components/project/ProjectMentionsView.astro`
+- Field: `sourceCta[2]`
+- Original hash: `a5260f3bdb66e4dc562aa31ca5e12ac1157d014afa1c6e3fdd187ab929e1ff31`
+
+```text
+查看背景资料
 ```
 
 ### `ui:project-archive.nav#overview`
