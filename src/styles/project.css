@@ -1044,14 +1044,16 @@ project-archive-shell {
   gap: 12px;
 }
 
-.overview-grid article {
+.overview-grid :is(article, button) {
   min-height: 200px;
   padding: 24px;
   border: 1px solid var(--archive-line);
+  color: var(--archive-ink);
   background: rgba(255,255,255,0.34);
+  text-align: left;
 }
 
-.overview-grid article > span {
+.overview-grid :is(article, button) > span {
   color: var(--archive-red);
   font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
   font-size: 11px;
@@ -2065,12 +2067,14 @@ project-archive-shell {
 }
 
 .storyline-list,
+.section-card-list,
 .people-grid {
   display: grid;
   gap: 12px;
 }
 
 .storyline-card,
+.section-card,
 .person-index-row {
   padding: 25px;
   border: 1px solid var(--archive-line);
@@ -2078,6 +2082,40 @@ project-archive-shell {
   background: rgba(255,255,255,0.34);
   text-align: left;
   cursor: pointer;
+}
+
+.section-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px 24px;
+}
+
+.section-card h3,
+.section-card p {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.section-card h3 {
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.section-card time,
+.section-card strong {
+  color: var(--archive-muted);
+  font: 10px ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+
+.section-card p {
+  color: var(--archive-muted);
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.section-card:hover,
+.section-card:focus-visible {
+  border-color: var(--archive-red);
 }
 
 .lead-person-index {
@@ -3148,7 +3186,7 @@ project-archive-shell {
     grid-template-columns: minmax(130px, 1fr) minmax(0, 1.5fr) auto;
   }
 
-  .overview-grid article {
+  .overview-grid :is(article, button) {
     min-height: 0;
   }
 

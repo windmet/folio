@@ -1,0 +1,15 @@
+---
+export interface Props {
+  views: Array<{ id: string; labels: [string, string] }>;
+}
+
+const { views } = Astro.props;
+---
+
+<nav class="project-nav" aria-label="专题视图">
+  {views.map(({ id, labels: [en, zh] }) => (
+    <button type="button" data-view-button={id} aria-pressed="false">
+      <strong>{en}</strong><span>{zh}</span>
+    </button>
+  ))}
+</nav>

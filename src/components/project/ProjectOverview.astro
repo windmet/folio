@@ -1,0 +1,59 @@
+---
+export interface Props {
+  overview: any;
+  eventsById: Map<string, any>;
+}
+
+const { overview, eventsById } = Astro.props;
+const localId = (id: string) => id.split('/').at(-1) || id;
+const referenceId = (reference: any) => reference?.id || reference;
+const formatTime = (milliseconds: number) => {
+  const total = Math.max(0, Math.floor(milliseconds / 1000));
+  return [Math.floor(total / 3600), Math.floor((total % 3600) / 60), total % 60]
+    .map((part) => String(part).padStart(2, '0')).join(':');
+};
+const featuredEvent = overview?.featuredEvent
+  ? eventsById.get(referenceId(overview.featuredEvent))
+  : null;
+---
+
+<section class="project-view overview-view" data-view-panel="overview" hidden>
+  <div class="view-heading">
+    <span class="archive-kicker">{overview?.kicker}</span>
+    <h2>{overview?.title}</h2>
+    <div class="overview-orientation">
+      {(overview?.paragraphs || []).map((paragraph: string, index: number) => (
+        <p class:list={{ 'overview-orientation__cta': index === overview.paragraphs.length - 1 }}>
+          {index === overview.paragraphs.length - 1 ? <strong>{paragraph}</strong> : paragraph}
+        </p>
+      ))}
+    </div>
+  </div>
+  {(overview?.cards || []).length > 0 && (
+    <div class="overview-grid">
+      {overview.cards.map((card: any, index: number) => {
+        const eventId = card.event ? localId(referenceId(card.event)) : null;
+        const actId = card.act ? localId(referenceId(card.act)) : null;
+        const Tag = eventId || actId ? 'button' : 'article';
+        return (
+          <Tag
+            type={Tag === 'button' ? 'button' : undefined}
+            data-event-seek={eventId || undefined}
+            data-section-act={actId || undefined}
+          >
+            <span>{card.label || String(index + 1).padStart(2, '0')}</span>
+            <h3>{card.title}</h3>
+            <p>{card.summary}</p>
+          </Tag>
+        );
+      })}
+    </div>
+  )}
+  {featuredEvent && (
+    <button type="button" class="featured-jump" data-event-seek={localId(featuredEvent.id)}>
+      <span class="archive-kicker">精彩回收 · {formatTime(featuredEvent.data.startMs)}</span>
+      <strong>{featuredEvent.data.title}</strong>
+      <span>定位并进入时间线 →</span>
+    </button>
+  )}
+</section>

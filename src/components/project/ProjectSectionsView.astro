@@ -1,0 +1,47 @@
+---
+export interface Props {
+  acts: any[];
+  events: any[];
+}
+
+const { acts, events } = Astro.props;
+const localId = (id: string) => id.split('/').at(-1) || id;
+const formatTime = (milliseconds: number) => {
+  const total = Math.max(0, Math.floor(milliseconds / 1000));
+  return [Math.floor(total / 3600), Math.floor((total % 3600) / 60), total % 60]
+    .map((part) => String(part).padStart(2, '0')).join(':');
+};
+const sectionLabels: Record<string, string> = {
+  'special-talk': 'SPECIAL TALK',
+  mail: 'MAIL',
+  'monthly-benmei': 'MONTHLY FEATURE',
+  futsuota: 'FUTSUOTA',
+  superchat: 'SUPER CHAT',
+  ending: 'ENDING',
+};
+const labelFor = (act: any) => act.data.presentationLabel
+  || sectionLabels[act.data.sectionKey]
+  || `SECTION ${String(act.data.order).padStart(2, '0')}`;
+const publicEventCount = (act: any) => events.filter((event) => (
+  event.data.publicationStatus !== 'withheld' && event.data.act?.id === act.id
+)).length;
+---
+
+<section class="project-view sections-view" data-view-panel="sections" hidden>
+  <div class="view-heading">
+    <span class="archive-kicker">PROGRAM STRUCTURE</span>
+    <h2>Sections</h2>
+    <p>按节目环节浏览完整结构，再进入 Timeline 查看值得直接跳听的具体节点。</p>
+  </div>
+  <div class="section-card-list">
+    {acts.map((act) => (
+      <button type="button" class="section-card" data-section-act={localId(act.id)}>
+        <span class="archive-taxonomy">{labelFor(act)}</span>
+        <h3>{act.data.title}</h3>
+        <time>{formatTime(act.data.startMs)} → {formatTime(act.data.endMs)}</time>
+        <p>{act.data.summary}</p>
+        <strong>{publicEventCount(act)} 个精选节点 →</strong>
+      </button>
+    ))}
+  </div>
+</section>

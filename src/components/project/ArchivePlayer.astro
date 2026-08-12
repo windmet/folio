@@ -8,13 +8,11 @@ export interface Props {
   videoId?: string;
   fallbackUrl?: string;
   tracks: any[];
+  showSourceTabs?: boolean;
 }
 
-const { trackId, label, videoId, fallbackUrl, tracks } = Astro.props;
-const order = new Map([['yt-main', 0], ['space-1', 1], ['space-2', 2]]);
-const orderedTracks = [...tracks].sort((left, right) =>
-  (order.get(left.id.split('/').at(-1) || '') ?? 99) - (order.get(right.id.split('/').at(-1) || '') ?? 99),
-);
+const { trackId, label, videoId, fallbackUrl, tracks, showSourceTabs = tracks.length > 1 } = Astro.props;
+const orderedTracks = [...tracks].sort((left, right) => left.data.order - right.data.order);
 ---
 
 <div class="archive-player-frame" data-player-frame data-player-mode="expanded">
@@ -47,7 +45,7 @@ const orderedTracks = [...tracks].sort((left, right) =>
     </button>
       <span class="archive-clock" data-player-time>00:00:00</span>
   </div>
-  <nav class="archive-player__sources" aria-label="播放器来源切换">
+  {showSourceTabs && <nav class="archive-player__sources" aria-label="播放器来源切换">
     <span class="archive-kicker">SOURCE</span>
     <div>
       {orderedTracks.map((track) => {
@@ -60,7 +58,7 @@ const orderedTracks = [...tracks].sort((left, right) =>
         );
       })}
     </div>
-  </nav>
+  </nav>}
   <div class="archive-player__viewport" data-player-viewport>
     {videoId ? (
       <>

@@ -6,6 +6,8 @@
   "title": "小松昌平 36歳 Birthday Special",
   "eyebrow": "36TH BIRTHDAY · LIVE ARCHIVE",
   "mark": "36",
+  "markLabel": "BIRTHDAY\nSPECIAL",
+  "sourceNote": "本档案整理自 YouTube 主直播与两段 X Space；三份媒体保留各自原视频时间，不强行换算为统一时钟。",
   "status": "published",
   "defaultTrack": "komatsu36/yt-main",
   "defaultView": "timeline",
@@ -17,6 +19,22 @@
     "transcript"
   ],
   "summary": "近五小时的生日会、《俺を知ってくれ！》打ち上げ和两段 X Space 挤在同一晚。这里把主直播、跨平台事件和人物线拆开整理，方便从任意时间点重新进入现场。",
+  "overview": {
+    "kicker": "FIVE-MINUTE ORIENTATION",
+    "title": "不知道从哪里开始的话，可以先看看这些",
+    "paragraphs": [
+      "前半程还在为设备和流程焦头烂额，人到齐以后又被礼物、赛马、Space 和各种临时事故不断带跑；随后认真复盘《俺知》，真正准备结束以后，还拖出了公告、圆阵、Super Chat、约好的歌和青春 Amigo。",
+      "这是刚步入 36 岁的小松昌平——生日主角、主持人，也是《俺知》的主创。",
+      "然后你会陆续遇到：“空手套礼品卡”的濱健人；把 20:50 变成赛马现场的寺島惇太；从一句“想吃俄罗斯章鱼烧”开始，约 80 分钟后真的炸到后辈嘴里的芥末章鱼烧；突然跑进 Space、只留下“今晚吃烤肉”的仲村宗悟；还有那个一直声称“不是本人”的室元气账号。",
+      "如果想继续了解这场以《俺を知ってくれ！》为主题的生日会，看看小松和这些来宾在五个小时里到底发生了些什么，就继续往下看吧。→"
+    ],
+    "cards": [
+      { "label": "01", "title": "生日会", "summary": "礼物、赛马、俳句、Bingo 与最后的 36 岁抱负。" },
+      { "label": "02", "title": "《俺知》打ち上げ", "summary": "名场面、动作、方言与朗读形式的现场复盘。" },
+      { "label": "03", "title": "Space 技术线", "summary": "主播反复离席，另一平台的事件又回流到主桌。" }
+    ],
+    "featuredEvent": "komatsu36/yt-030923-takoyaki-payoff"
+  },
   "featuredThreads": [
     "komatsu36/russian-takoyaki",
     "komatsu36/uchida-line-call",

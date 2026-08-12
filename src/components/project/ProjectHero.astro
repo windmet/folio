@@ -1,0 +1,36 @@
+---
+export interface Props {
+  project: any;
+  stats: string[][];
+}
+
+const { project, stats } = Astro.props;
+const markLabelLines = project.data.markLabel?.split('\n') || [];
+---
+
+<header class="project-hero">
+  <div class="project-hero__copy">
+    <span class="archive-kicker">{project.data.eyebrow}</span>
+    <h1>{project.data.title}</h1>
+    <p>
+      {project.data.summary}
+      {project.data.sourceNote && <span class="project-hero__source-note">{project.data.sourceNote}</span>}
+    </p>
+    <div class="project-facts" aria-label="档案统计">
+      {stats.map(([value, label]) => (
+        <div class="project-fact">
+          <strong>{value}</strong>
+          <span>{label}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+  {project.data.mark && (
+    <div class="project-hero__stamp" aria-hidden="true">
+      <strong>{project.data.mark}</strong>
+      {markLabelLines.length > 0 && (
+        <span>{markLabelLines.map((line, index) => <>{line}{index < markLabelLines.length - 1 && <br />}</>)}</span>
+      )}
+    </div>
+  )}
+</header>

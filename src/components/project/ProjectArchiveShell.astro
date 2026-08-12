@@ -11,7 +11,12 @@ import SourceTimeline from './SourceTimeline.astro';
 import CastMatrix from './CastMatrix.astro';
 import PersonCard from './PersonCard.astro';
 import LeadPersonCard from './LeadPersonCard.astro';
+import ProjectHero from './ProjectHero.astro';
+import ProjectOverview from './ProjectOverview.astro';
+import ProjectSectionsView from './ProjectSectionsView.astro';
+import ProjectViewNav from './ProjectViewNav.astro';
 import { readerLabel, threadCategoryLabels } from '../../lib/projectReaderLabels';
+import { deriveProjectPresentation } from '../../lib/projectPresentation.mjs';
 
 export interface Props {
   project: any;
@@ -95,33 +100,22 @@ const threadViews = await Promise.all(threads.map(async (entry) => {
   };
 }));
 
-const defaultTrack = tracks.find((track) => track.id === referenceId(project.data.defaultTrack)) || tracks[0];
+const presentation = deriveProjectPresentation({ project: project.data, tracks, acts, events, threads, people });
+const defaultTrack = presentation.orderedTracks.find((track: any) => track.id === referenceId(project.data.defaultTrack)) || presentation.orderedTracks[0];
 const defaultTimelineTrackId = localId(defaultTrack.id);
-const orderedActs = [...acts].sort((a, b) => a.data.order - b.data.order);
+const orderedActs = acts
+  .filter((act) => referenceId(act.data.track) === defaultTrack.id)
+  .sort((a, b) => a.data.order - b.data.order);
 const orderedThreads = [...threads].sort((a, b) => Number(b.data.featured) - Number(a.data.featured) || a.data.title.localeCompare(b.data.title, 'zh-CN'));
 const threadsById = new Map(orderedThreads.map((thread) => [localId(thread.id), thread]));
 const orderedPeople = [...people].sort((a, b) => a.data.displayName.localeCompare(b.data.displayName, 'zh-CN'));
-const formatDuration = (milliseconds: number) => {
-  const total = Math.max(0, Math.floor(milliseconds / 1000));
-  const parts = [Math.floor(total / 3600), Math.floor((total % 3600) / 60), total % 60];
-  return parts.map((part) => String(part).padStart(2, '0')).join(':');
-};
-const archiveStats = [
-  [formatDuration(defaultTrack.data.durationMs), '主直播时长'],
-  [String(tracks.length), '独立媒体'],
-  [String(orderedThreads.length), '故事线'],
-];
 const leadPersonId = 'komatsu-shohei';
 const leadPerson = orderedPeople.find((person) => localId(person.id) === leadPersonId);
 const publishedEvents = events.filter((event) => event.data.publicationStatus !== 'withheld');
 const eventsForAct = (actId: string) => publishedEvents
   .filter((event) => event.data.act?.id === actId)
   .sort((a, b) => a.data.startMs - b.data.startMs);
-const payoffEvent = publishedEvents.find((event) => localId(event.id) === 'yt-030923-takoyaki-payoff');
-const trackOrder = new Map([['yt-main', 0], ['space-1', 1], ['space-2', 2]]);
-const orderedTimelineTracks = [...tracks].sort((left, right) =>
-  (trackOrder.get(localId(left.id)) ?? 99) - (trackOrder.get(localId(right.id)) ?? 99),
-);
+const orderedTimelineTracks = presentation.orderedTracks;
 const eventsByTrack = new Map<string, any[]>(
   orderedTimelineTracks.map((track) => [
     localId(track.id),
@@ -157,87 +151,30 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
 ---
 
 <project-archive-shell data-project-archive>
-  <header class="project-hero">
-    <div class="project-hero__copy">
-      <span class="archive-kicker">{project.data.eyebrow}</span>
-      <h1>{project.data.title}</h1>
-      <p>
-        {project.data.summary}
-        <span class="project-hero__source-note">本档案整理自 YouTube 主直播与两段 X Space；三份媒体保留各自原视频时间，不强行换算为统一时钟。</span>
-      </p>
-      <div class="project-facts" aria-label="档案统计">
-        {archiveStats.map(([value, label]) => (
-          <div class="project-fact">
-            <strong>{value}</strong>
-            <span>{label}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-    <div class="project-hero__stamp" aria-hidden="true">
-      <strong>{project.data.mark || 'A'}</strong>
-      <span>BIRTHDAY<br />SPECIAL</span>
-    </div>
-  </header>
+  <ProjectHero project={project} stats={presentation.stats} />
 
-  <MediaSourceNavigator tracks={tracks} events={publishedEvents} sources={sources} />
+  {presentation.showMediaSources && (
+    <MediaSourceNavigator tracks={presentation.orderedTracks} events={publishedEvents} sources={sources} />
+  )}
 
-  <nav class="project-nav" aria-label="专题视图">
-    {[
-      ['overview', 'Overview', '快速了解'],
-      ['timeline', 'Timeline', '按时间浏览'],
-      ['storylines', 'Storylines', '精彩事件'],
-      ['people', 'People', '人物'],
-      ['transcript', 'Transcript', '完整资料'],
-    ].map(([id, en, zh]) => (
-      <button type="button" data-view-button={id} aria-pressed="false">
-        <strong>{en}</strong><span>{zh}</span>
-      </button>
-    ))}
-  </nav>
+  <ProjectViewNav views={presentation.viewDefinitions} />
 
   <ProjectSearch projectSlug={project.data.slug} />
 
   <div class="project-workspace">
     <div class="project-content">
-      <section class="project-view overview-view" data-view-panel="overview" hidden>
-        <div class="view-heading">
-          <span class="archive-kicker">FIVE-MINUTE ORIENTATION</span>
-          <h2>不知道从哪里开始的话，可以先看看这些</h2>
-          <div class="overview-orientation">
-            <p>前半程还在为设备和流程焦头烂额，人到齐以后又被礼物、赛马、Space 和各种临时事故不断带跑；随后认真复盘《俺知》，真正准备结束以后，还拖出了公告、圆阵、Super Chat、约好的歌和青春 Amigo。</p>
-            <p>这是刚步入 36 岁的小松昌平——生日主角、主持人，也是《俺知》的主创。</p>
-            <p>然后你会陆续遇到：“空手套礼品卡”的濱健人；把 20:50 变成赛马现场的寺島惇太；从一句“想吃俄罗斯章鱼烧”开始，约 80 分钟后真的炸到后辈嘴里的芥末章鱼烧；突然跑进 Space、只留下“今晚吃烤肉”的仲村宗悟；还有那个一直声称“不是本人”的室元气账号。</p>
-            <p class="overview-orientation__cta"><strong>如果想继续了解这场以《俺を知ってくれ！》为主题的生日会，看看小松和这些来宾在五个小时里到底发生了些什么，就继续往下看吧。→</strong></p>
-          </div>
-        </div>
-        <div class="overview-grid">
-          <article>
-            <span>01</span><h3>生日会</h3><p>礼物、赛马、俳句、Bingo 与最后的 36 岁抱负。</p>
-          </article>
-          <article>
-            <span>02</span><h3>《俺知》打ち上げ</h3><p>名场面、动作、方言与朗读形式的现场复盘。</p>
-          </article>
-          <article>
-            <span>03</span><h3>Space 技术线</h3><p>主播反复离席，另一平台的事件又回流到主桌。</p>
-          </article>
-        </div>
-        {payoffEvent && (
-          <button type="button" class="featured-jump" data-event-seek={localId(payoffEvent.id)}>
-            <span class="archive-kicker">精彩回收 · 03:09:23</span>
-            <strong>{payoffEvent.data.title}</strong>
-            <span>定位并进入时间线 →</span>
-          </button>
-        )}
-      </section>
+      {presentation.showOverview && <ProjectOverview overview={project.data.overview} eventsById={eventsById} />}
+      {presentation.showSections && <ProjectSectionsView acts={orderedActs} events={publishedEvents} />}
 
-      <section class="project-view timeline-view" data-view-panel="timeline" hidden>
+      {presentation.showTimeline && <section class="project-view timeline-view" data-view-panel="timeline" hidden>
         <div class="view-heading">
-          <span class="archive-kicker">CHRONOLOGICAL CANON · SOURCE-LOCAL CLOCKS</span>
+          <span class="archive-kicker">{presentation.hasMultipleTracks ? 'CHRONOLOGICAL CANON · SOURCE-LOCAL CLOCKS' : 'CHRONOLOGICAL CANON · NATIVE CLOCK'}</span>
           <h2 id="timeline-view-title">Timeline</h2>
-          <p>选择一个来源查看其独立本地时钟。YouTube 保留八个 Act 主线，X Space 使用各自的事件列表，不把现场时钟硬拼在一起。</p>
+          <p>{presentation.hasMultipleTracks
+            ? `选择一个来源查看其独立本地时钟。${defaultTrack.data.shortLabel} 保留 ${orderedActs.length} 个 Act 主线，其他来源使用各自的事件列表，不把现场时钟硬拼在一起。`
+            : `按节目原始时钟浏览 ${orderedActs.length} 个 Section 与精选节点。`}</p>
         </div>
-        <div class="timeline-scope" data-timeline-scope>
+        {presentation.showTimelineScope && <div class="timeline-scope" data-timeline-scope>
           <div class="timeline-scope__heading">
             <span class="archive-kicker">TIMELINE SCOPE</span>
             <p data-timeline-scope-description aria-live="polite">按来源切换；所有时间均使用各自原视频的时间。</p>
@@ -262,10 +199,11 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
               );
             })}
           </div>
-        </div>
+        </div>}
         <div
-          id={`timeline-scope-panel-${defaultTimelineTrackId}`}
-          data-timeline-scope-panel={defaultTimelineTrackId}
+          id={presentation.showTimelineScope ? `timeline-scope-panel-${defaultTimelineTrackId}` : undefined}
+          data-timeline-scope-panel={presentation.showTimelineScope ? defaultTimelineTrackId : undefined}
+          data-single-track-timeline={presentation.showTimelineScope ? undefined : true}
           aria-labelledby="timeline-view-title"
           aria-hidden="false"
         >
@@ -274,7 +212,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
             <ActSection act={act} actTotal={orderedActs.length} events={eventsForAct(act.id)} peopleById={peopleById} threadsByEvent={threadsByEvent} threadsById={threadsById} />
           ))}
         </div>
-        {orderedTimelineTracks.filter((track) => localId(track.id) !== defaultTimelineTrackId).map((track) => (
+        {presentation.hasMultipleTracks && orderedTimelineTracks.filter((track) => localId(track.id) !== defaultTimelineTrackId).map((track) => (
           <SourceTimeline
             track={track}
             events={eventsByTrack.get(localId(track.id)) || []}
@@ -283,9 +221,9 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
             threadsById={threadsById}
           />
         ))}
-      </section>
+      </section>}
 
-      <section class="project-view storylines-view" data-view-panel="storylines" hidden>
+      {presentation.showStorylines && <section class="project-view storylines-view" data-view-panel="storylines" hidden>
         <div class="view-heading">
           <span class="archive-kicker">CONTEXT RECONSTRUCTION</span>
           <h2>Storylines</h2>
@@ -301,9 +239,9 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
             </button>
           ))}
         </div>
-      </section>
+      </section>}
 
-      <section class="project-view people-view" data-view-panel="people" hidden>
+      {presentation.showPeople && <section class="project-view people-view" data-view-panel="people" hidden>
         <div class="view-heading">
           <span class="archive-kicker">PEOPLE / CAST</span>
           <h2>People</h2>
@@ -343,15 +281,15 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
             ))}
           </div>
         </section>
-      </section>
+      </section>}
 
-      <section class="project-view transcript-view" data-view-panel="transcript" hidden>
+      {presentation.showTranscript && <section class="project-view transcript-view" data-view-panel="transcript" hidden>
         <div class="view-heading">
           <span class="archive-kicker">RIGHTS GATE</span>
           <h2>Transcript 暂不公开</h2>
           <p>逐字稿暂不公开；本档案先提供时间线、事件摘要和事件线，保留原始媒体入口。</p>
         </div>
-      </section>
+      </section>}
     </div>
 
     <aside class="project-player-column">
@@ -360,13 +298,14 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         label={defaultTrack.data.label}
         videoId={defaultTrack.data.playback.provider === 'youtube' ? defaultTrack.data.playback.videoId : undefined}
         fallbackUrl={defaultTrack.data.fallbackUrl}
-        tracks={tracks}
+        tracks={presentation.orderedTracks}
+        showSourceTabs={presentation.showPlayerSourceTabs}
       />
     </aside>
   </div>
 
-  <ThreadPanel threads={threadViews} />
-  <PersonPopover
+  {presentation.showStorylines && <ThreadPanel threads={threadViews} />}
+  {presentation.showPeople && <PersonPopover
     people={orderedPeople}
     eventsByPerson={eventsByPerson}
     tracksById={tracksById}
@@ -374,7 +313,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     threadsByPerson={threadsByPerson}
     threadsById={threadsById}
     defaultTrackId={defaultTrack.id}
-  />
+  />}
   <script type="application/json" data-archive-controller-data set:html={serializedControllerData}></script>
 </project-archive-shell>
 
@@ -548,6 +487,12 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     bindEvents() {
       this.querySelectorAll<HTMLElement>('[data-view-button]').forEach((button) => {
         button.addEventListener('click', () => this.showView(button.dataset.viewButton || 'timeline', true));
+      });
+      this.querySelectorAll<HTMLElement>('[data-section-act]').forEach((button) => {
+        button.addEventListener('click', () => {
+          this.showView('timeline', true);
+          window.requestAnimationFrame(() => this.navigateToAct(button.dataset.sectionAct || ''));
+        });
       });
       this.querySelector<HTMLElement>('[data-timeline-navigator]')?.addEventListener('click', (event) => {
         const target = event.target instanceof Element ? event.target : null;
