@@ -37,7 +37,7 @@ const sourceLabelFor = (mention: any) => {
 
   <nav class="mentions-jump" aria-label="Mentions 分组导航">
     {groups.map((group) => (
-      <a href={`#mentions-${group.kind}`}>{group.label.split(' / ')[0]}</a>
+      <a href={`#mentions-${group.kind}`} data-mention-group-link={group.kind}>{group.label.split(' / ')[0]}</a>
     ))}
   </nav>
 
@@ -53,7 +53,7 @@ const sourceLabelFor = (mention: any) => {
               <h3>{group.label} <span>· {groupMentions.length}</span></h3>
             </div>
           </header>
-          <div class="mentions-list">
+          <div class="mentions-list" id={`mentions-list-${group.kind}`}>
             {groupMentions.map((mention: any) => {
               const events = eventsFor(mention);
               const visibleEvents = events.slice(0, 3);
@@ -62,7 +62,15 @@ const sourceLabelFor = (mention: any) => {
                 <article class="mention-card" data-mention-card={mention.id} id={`mention-${mention.id}`}>
                   <div class="mention-card__copy">
                     <h4>{mention.label}</h4>
-                    <p>{mention.summary}</p>
+                    <p id={`mention-summary-${mention.id}`} data-mention-summary={mention.id}>{mention.summary}</p>
+                    <button
+                      type="button"
+                      class="mention-summary-toggle"
+                      data-mention-summary-toggle={mention.id}
+                      aria-expanded="false"
+                      aria-controls={`mention-summary-${mention.id}`}
+                      hidden
+                    >查看更多 ↓</button>
                   </div>
                   <div class="mention-card__actions">
                     <div class="mention-times" aria-label={`${mention.label} 在 Timeline 的提及时间`}>
@@ -106,6 +114,17 @@ const sourceLabelFor = (mention: any) => {
               );
             })}
           </div>
+          {groupMentions.length > 5 && (
+            <button
+              type="button"
+              class="mention-group-toggle"
+              data-mention-group-toggle={group.kind}
+              data-mention-group-label={group.label.split(' / ')[0]}
+              data-mention-group-count={groupMentions.length}
+              aria-expanded="false"
+              aria-controls={`mentions-list-${group.kind}`}
+            >查看全部{group.label.split(' / ')[0]}（{groupMentions.length}） ↓</button>
+          )}
         </section>
       );
     })}

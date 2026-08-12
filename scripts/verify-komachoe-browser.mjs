@@ -106,6 +106,7 @@ try {
   {
     const { page, logs } = await openPage({ width: 1440, height: 900 });
     await page.locator('[data-view-button="mentions"]').click();
+    await page.waitForTimeout(100);
     const state = await page.evaluate(() => ({
       activeView: document.querySelector('project-archive-shell')?.activeView,
       groups: [...document.querySelectorAll('[data-mention-kind]')].map((group) => ({
@@ -127,7 +128,11 @@ try {
         textDecoration: getComputedStyle(link).textDecorationLine,
       })),
       mentionTitleClamp: getComputedStyle(document.querySelector('.mention-card__copy h4')).webkitLineClamp,
-      mentionSummaryClamp: getComputedStyle(document.querySelector('.mention-card__copy p')).webkitLineClamp,
+      mentionSummaries: [...document.querySelectorAll('[data-mention-summary]')].map((summary) => ({
+        clamp: getComputedStyle(summary).webkitLineClamp,
+        toggleHidden: summary.nextElementSibling?.hidden,
+      })),
+      groupToggleDisplays: [...document.querySelectorAll('[data-mention-group-toggle]')].map((toggle) => getComputedStyle(toggle).display),
       fifthSlotEmpty: document.querySelectorAll('[data-view-button]').length === 4,
       overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
     }));
@@ -135,7 +140,9 @@ try {
     assert(state.groups.map((group) => group.kind).join() === 'person,work,context', `Mentions group order mismatch: ${JSON.stringify(state.groups)}`);
     assert(JSON.stringify(state.groups.map((group) => group.cards)) === JSON.stringify([10, 8, 1]) && state.columns === 2 && state.jumpLinks === 3 && state.fifthSlotEmpty, `Mentions card grid or fifth nav slot contract failed: ${JSON.stringify(state)}`);
     assert(state.foldedTimes.length === 1 && state.foldedTimes.every((item) => !item.open && item.hiddenButtons === 1), `Mentions time folding mismatch: ${JSON.stringify(state.foldedTimes)}`);
-    assert(state.mentionTitleClamp === '2' && state.mentionSummaryClamp === '3', `Mentions title/summary clamp contract failed: ${JSON.stringify(state)}`);
+    assert(state.mentionTitleClamp === '2', `Mentions title clamp contract failed: ${JSON.stringify(state)}`);
+    assert(state.mentionSummaries.some((summary) => !summary.clamp || summary.clamp === 'none') && state.mentionSummaries.every((summary) => !summary.clamp || summary.clamp === 'none' || summary.clamp === '4'), `Mentions adaptive summary contract failed: ${JSON.stringify(state.mentionSummaries)}`);
+    assert(state.groupToggleDisplays.every((display) => display === 'none'), `Desktop Mentions group toggles must stay hidden: ${JSON.stringify(state.groupToggleDisplays)}`);
     assert(state.sources.length === 9 && state.sources.every((source) => source.label.startsWith('查看') && source.target === '_blank' && source.rel === 'noopener noreferrer' && source.borderWidth === '0px' && source.paddingLeft === '0px' && source.textDecoration.includes('underline')), `Mentions primary-source links mismatch: ${JSON.stringify(state.sources)}`);
     await page.locator('.mention-times-more summary').first().click();
     assert(await page.locator('.mention-times-more').first().getAttribute('open') !== null, 'Mentions +N control did not expand');
@@ -156,20 +163,63 @@ try {
   {
     const { page, logs } = await openPage({ width: 390, height: 844 });
     await page.locator('[data-view-button="mentions"]').click();
+    await page.waitForTimeout(100);
+    const initial = await page.evaluate(() => ({
+      visibleByGroup: [...document.querySelectorAll('[data-mention-kind]')].map((group) =>
+        [...group.querySelectorAll('[data-mention-card]')].filter((card) => getComputedStyle(card).display !== 'none').length),
+      groupToggleDisplays: [...document.querySelectorAll('[data-mention-group-toggle]')].map((toggle) => getComputedStyle(toggle).display),
+    }));
+    assert(JSON.stringify(initial.visibleByGroup) === JSON.stringify([5, 5, 1]), `mobile Mentions group preview mismatch: ${JSON.stringify(initial)}`);
+    assert(initial.groupToggleDisplays.every((display) => display !== 'none'), `mobile Mentions group controls are missing: ${JSON.stringify(initial)}`);
+    await page.locator('[data-mention-group-toggle="work"]').click();
+    await page.waitForTimeout(100);
     const state = await page.evaluate(() => {
       const card = document.querySelector('[data-mention-card]');
-      const summary = card?.querySelector('.mention-card__copy p');
+      const genshin = document.querySelector('[data-mention-card="genshin-impact"]');
+      const summary = genshin?.querySelector('[data-mention-summary]');
+      const actions = genshin?.querySelector('.mention-card__actions');
+      const time = genshin?.querySelector('.mention-time');
+      const source = genshin?.querySelector('.mention-source');
       return {
         columns: getComputedStyle(document.querySelector('.mentions-list')).gridTemplateColumns.split(' ').length,
         cardWidth: Math.round(card?.getBoundingClientRect().width || 0),
-        summaryClamp: getComputedStyle(summary).webkitLineClamp,
+        workVisible: [...document.querySelectorAll('[data-mention-kind="work"] [data-mention-card]')]
+          .filter((item) => getComputedStyle(item).display !== 'none').length,
+        genshinText: summary?.textContent.trim(),
+        genshinClamp: getComputedStyle(summary).webkitLineClamp,
+        genshinToggleHidden: summary?.nextElementSibling?.hidden,
+        genshinFullyVisible: summary ? summary.scrollHeight <= summary.clientHeight + 1 : false,
+        actionDirection: getComputedStyle(actions).flexDirection,
+        footerAligned: time && source ? Math.abs(time.getBoundingClientRect().bottom - source.getBoundingClientRect().bottom) < 12 : false,
         jumpLinks: document.querySelectorAll('.mentions-jump a').length,
         overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
       };
     });
-    assert(state.columns === 1 && state.cardWidth > 300 && state.summaryClamp === '2', `mobile Mentions card stack mismatch: ${JSON.stringify(state)}`);
+    assert(state.columns === 1 && state.cardWidth > 300 && state.workVisible === 8, `mobile Mentions card stack/group expansion mismatch: ${JSON.stringify(state)}`);
+    assert(state.genshinText.includes('咔库库') && (!state.genshinClamp || state.genshinClamp === 'none') && state.genshinToggleHidden && state.genshinFullyVisible, `normal-length 原神 summary is not fully visible: ${JSON.stringify(state)}`);
+    assert(state.actionDirection === 'row' && state.footerAligned, `mobile Mentions footer hierarchy mismatch: ${JSON.stringify(state)}`);
+    const syntheticOverflow = await page.evaluate(() => {
+      const summary = document.querySelector('[data-mention-summary="genshin-impact"]');
+      if (!summary) return null;
+      summary.textContent += ' 这是一段用于验证真实溢出测量的重复说明。'.repeat(12);
+      document.querySelector('project-archive-shell')?.refreshMentionSummaries();
+      const toggle = document.querySelector('[data-mention-summary-toggle="genshin-impact"]');
+      return {
+        clamp: getComputedStyle(summary).webkitLineClamp,
+        toggleHidden: toggle?.hidden,
+        collapsedHeight: summary.clientHeight,
+      };
+    });
+    assert(syntheticOverflow?.clamp === '4' && !syntheticOverflow.toggleHidden, `long Mention summary is not using the four-line overflow disclosure: ${JSON.stringify(syntheticOverflow)}`);
+    await page.locator('[data-mention-summary-toggle="genshin-impact"]').click();
+    const expanded = await page.locator('[data-mention-summary="genshin-impact"]').evaluate((element) => ({
+      height: element.clientHeight,
+      clamped: element.classList.contains('is-clamped'),
+      expanded: element.dataset.expanded,
+    }));
+    assert(expanded.height > syntheticOverflow.collapsedHeight && !expanded.clamped && expanded.expanded === 'true', `long Mention disclosure did not reveal its complete summary: ${JSON.stringify(expanded)}`);
     assert(state.jumpLinks === 3 && state.overflow === 0 && logs.length === 0, `mobile Mentions navigation or overflow failed: ${JSON.stringify(state)}`);
-    evidence.mobileMentions = state;
+    evidence.mobileMentions = { initial, state };
     await page.close();
   }
 

@@ -451,13 +451,16 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     sourceEventListsBuilt = new Set<string>();
     contextFocusObserver: ResizeObserver | null = null;
     playerTextResizeObserver: ResizeObserver | null = null;
+    mentionResizeObserver: ResizeObserver | null = null;
     contextArrivalTimer: number | null = null;
     timelineScrollScheduled = false;
     timelineScrollHandler = () => this.scheduleTimelineNavigatorUpdate();
     timelineResizeHandler = () => {
       this.applyPlayerPresentationMode(this.activeView);
       this.scheduleTimelineNavigatorUpdate();
+      this.refreshMentionSummaries();
     };
+    mentionHashHandler = () => this.expandMentionGroupFromHash();
 
     connectedCallback() {
       if (this.dataset.ready === 'true') return;
@@ -480,11 +483,19 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
           this.playerTextResizeObserver?.observe(text);
         });
       }
+      if (typeof ResizeObserver !== 'undefined') {
+        this.mentionResizeObserver = new ResizeObserver(() => this.refreshMentionSummaries());
+        this.querySelectorAll<HTMLElement>('[data-mention-summary]').forEach((summary) => {
+          this.mentionResizeObserver?.observe(summary);
+        });
+      }
       window.addEventListener('scroll', this.timelineScrollHandler, { passive: true });
       window.addEventListener('resize', this.timelineResizeHandler, { passive: true });
+      window.addEventListener('hashchange', this.mentionHashHandler);
       this.scheduleTimelineNavigatorUpdate();
       this.restoreFromUrl();
       this.refreshInlineText();
+      this.expandMentionGroupFromHash();
     }
 
     disconnectedCallback() {
@@ -492,9 +503,11 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.stopPlaybackSync();
       this.contextFocusObserver?.disconnect();
       this.playerTextResizeObserver?.disconnect();
+      this.mentionResizeObserver?.disconnect();
       if (this.contextArrivalTimer !== null) window.clearTimeout(this.contextArrivalTimer);
       window.removeEventListener('scroll', this.timelineScrollHandler);
       window.removeEventListener('resize', this.timelineResizeHandler);
+      window.removeEventListener('hashchange', this.mentionHashHandler);
     }
 
     bindEvents() {
@@ -523,6 +536,15 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       });
       this.querySelectorAll<HTMLElement>('[data-mention-event]').forEach((button) => {
         button.addEventListener('click', () => this.navigateEventToTimeline(button.dataset.mentionEvent || ''));
+      });
+      this.querySelectorAll<HTMLButtonElement>('[data-mention-summary-toggle]').forEach((button) => {
+        button.addEventListener('click', () => this.toggleMentionSummary(button.dataset.mentionSummaryToggle || ''));
+      });
+      this.querySelectorAll<HTMLButtonElement>('[data-mention-group-toggle]').forEach((button) => {
+        button.addEventListener('click', () => this.toggleMentionGroup(button.dataset.mentionGroupToggle || ''));
+      });
+      this.querySelectorAll<HTMLAnchorElement>('[data-mention-group-link]').forEach((link) => {
+        link.addEventListener('click', () => this.setMentionGroupExpanded(link.dataset.mentionGroupLink || '', true));
       });
       this.querySelectorAll<HTMLElement>('[data-event-detail]').forEach((button) => {
         button.addEventListener('click', () => {
@@ -917,6 +939,10 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.refreshPlayerText();
       this.refreshInlineText();
       if (view === 'timeline') this.scheduleTimelineNavigatorUpdate();
+      if (view === 'mentions') {
+        this.expandMentionGroupFromHash();
+        window.requestAnimationFrame(() => this.refreshMentionSummaries());
+      }
       if (push) this.updateUrl();
     }
 
@@ -1586,6 +1612,64 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       if (!text || !toggle || toggle.hidden) return;
       text.dataset.expanded = String(text.dataset.expanded !== 'true');
       this.refreshInlineText();
+    }
+
+    refreshMentionSummaries() {
+      if (this.activeView !== 'mentions') return;
+      this.querySelectorAll<HTMLElement>('[data-mention-summary]').forEach((summary) => {
+        const key = summary.dataset.mentionSummary;
+        const toggle = key
+          ? this.querySelector<HTMLButtonElement>(`[data-mention-summary-toggle="${CSS.escape(key)}"]`)
+          : null;
+        if (!toggle || summary.offsetParent === null) return;
+        const wasExpanded = summary.dataset.expanded === 'true';
+        summary.classList.remove('is-clamped');
+        const styles = getComputedStyle(summary);
+        const parsedLineHeight = Number.parseFloat(styles.lineHeight);
+        const lineHeight = Number.isFinite(parsedLineHeight)
+          ? parsedLineHeight
+          : Number.parseFloat(styles.fontSize) * 1.7;
+        const overflow = summary.scrollHeight > lineHeight * 4 + 1;
+        const expanded = overflow && wasExpanded;
+        summary.classList.toggle('is-clamped', overflow && !expanded);
+        summary.dataset.expanded = String(expanded);
+        toggle.hidden = !overflow;
+        toggle.setAttribute('aria-expanded', String(expanded));
+        toggle.textContent = expanded ? '收起 ↑' : '查看更多 ↓';
+      });
+    }
+
+    toggleMentionSummary(key: string) {
+      const summary = this.querySelector<HTMLElement>(`[data-mention-summary="${CSS.escape(key)}"]`);
+      const toggle = this.querySelector<HTMLButtonElement>(`[data-mention-summary-toggle="${CSS.escape(key)}"]`);
+      if (!summary || !toggle || toggle.hidden) return;
+      summary.dataset.expanded = String(summary.dataset.expanded !== 'true');
+      this.refreshMentionSummaries();
+    }
+
+    setMentionGroupExpanded(kind: string, expanded: boolean) {
+      if (!kind) return;
+      const group = this.querySelector<HTMLElement>(`[data-mention-kind="${CSS.escape(kind)}"]`);
+      const toggle = this.querySelector<HTMLButtonElement>(`[data-mention-group-toggle="${CSS.escape(kind)}"]`);
+      if (!group || !toggle) return;
+      group.classList.toggle('is-expanded', expanded);
+      toggle.setAttribute('aria-expanded', String(expanded));
+      const label = toggle.dataset.mentionGroupLabel || '';
+      const count = toggle.dataset.mentionGroupCount || '';
+      toggle.textContent = expanded ? `收起${label} ↑` : `查看全部${label}（${count}） ↓`;
+      window.requestAnimationFrame(() => this.refreshMentionSummaries());
+    }
+
+    toggleMentionGroup(kind: string) {
+      const group = this.querySelector<HTMLElement>(`[data-mention-kind="${CSS.escape(kind)}"]`);
+      if (!group) return;
+      this.setMentionGroupExpanded(kind, !group.classList.contains('is-expanded'));
+    }
+
+    expandMentionGroupFromHash() {
+      const match = window.location.hash.match(/^#mentions-(person|work|context)$/);
+      if (!match) return;
+      this.setMentionGroupExpanded(match[1], true);
     }
 
     replaceUrl() {

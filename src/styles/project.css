@@ -878,27 +878,65 @@ project-archive-shell {
 }
 
 .mention-card__copy p {
-  display: -webkit-box;
-  overflow: hidden;
+  display: block;
   margin: 0;
   color: var(--archive-muted);
   font-size: 12px;
   line-height: 1.75;
+}
+
+.mention-card__copy p.is-clamped {
+  display: -webkit-box;
+  overflow: hidden;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 4;
+}
+
+.mention-summary-toggle,
+.mention-group-toggle {
+  padding: 0;
+  border: 0;
+  color: var(--archive-muted);
+  background: transparent;
+  font: 10px/1.45 ui-sans-serif, system-ui, sans-serif;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--archive-muted) 45%, transparent);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.mention-summary-toggle {
+  margin-top: 7px;
+}
+
+.mention-summary-toggle:hover,
+.mention-group-toggle:hover {
+  color: var(--archive-red);
+  text-decoration-color: var(--archive-red);
+}
+
+.mention-summary-toggle[hidden] {
+  display: none;
+}
+
+.mention-group-toggle {
+  display: none;
 }
 
 .mention-card__actions {
   display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-  gap: 9px;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px 16px;
   margin-top: auto;
   padding-top: 18px;
 }
 
 .mention-times {
   display: flex;
+  flex: 1 1 auto;
   flex-wrap: wrap;
   justify-content: flex-start;
   gap: 6px;
@@ -976,6 +1014,7 @@ project-archive-shell {
   text-decoration-color: color-mix(in srgb, var(--archive-muted) 45%, transparent);
   text-underline-offset: 3px;
   white-space: nowrap;
+  margin-left: auto;
 }
 
 .mention-source:hover {
@@ -3718,7 +3757,7 @@ project-archive-shell {
 
   .mention-card {
     min-height: 0;
-    padding: 17px;
+    padding: 16px;
   }
 
   .mention-card__copy h4 {
@@ -3728,11 +3767,19 @@ project-archive-shell {
   .mention-card__copy p {
     font-size: 11px;
     line-height: 1.7;
-    -webkit-line-clamp: 2;
   }
 
   .mention-card__actions {
-    padding-top: 14px;
+    padding-top: 12px;
+  }
+
+  .mentions-group:not(.is-expanded) .mentions-list > .mention-card:nth-child(n + 6) {
+    display: none;
+  }
+
+  .mention-group-toggle {
+    display: inline-flex;
+    margin-top: 13px;
   }
 
   .featured-jump {

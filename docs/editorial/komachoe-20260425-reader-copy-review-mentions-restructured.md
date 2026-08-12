@@ -2114,6 +2114,50 @@ YouTube ↗
 本期提及的人物、作品与背景信息。点击时间直接回到 Timeline；外部链接只用于补充公开资料。
 ```
 
+### `ui:project-archive.mentions#groupDisclosure[0]`
+
+- [ ] reviewed
+- Source: `src/components/project/ProjectMentionsView.astro`
+- Field: `groupDisclosure[0]`
+- Original hash: `6b644286cf4be67d4bdf952d777bda266464eb7aaf58ce15257d2ca8a3b8e468`
+
+```text
+查看全部人物
+```
+
+### `ui:project-archive.mentions#groupDisclosure[1]`
+
+- [ ] reviewed
+- Source: `src/components/project/ProjectMentionsView.astro`
+- Field: `groupDisclosure[1]`
+- Original hash: `1e3db6cae8616630535dc93e709bd9f58441602711627e60fa7809d377cd3ca5`
+
+```text
+查看全部作品
+```
+
+### `ui:project-archive.mentions#groupDisclosure[2]`
+
+- [ ] reviewed
+- Source: `src/components/project/ProjectMentionsView.astro`
+- Field: `groupDisclosure[2]`
+- Original hash: `5755dadf76462cf7bc8ff9cfe507cf4dbbf88c08efc9c3a15e64d3d9d6ba03f1`
+
+```text
+收起人物
+```
+
+### `ui:project-archive.mentions#groupDisclosure[3]`
+
+- [ ] reviewed
+- Source: `src/components/project/ProjectMentionsView.astro`
+- Field: `groupDisclosure[3]`
+- Original hash: `5b7415fc22b7c9ff6d160b2d03b8dd5c048b5d9ab5004c0eae49883afcc27efe`
+
+```text
+收起作品
+```
+
 ### `ui:project-archive.mentions#groups[0]`
 
 - [ ] reviewed
@@ -2233,6 +2277,28 @@ MENTION INDEX
 
 ```text
 查看背景资料
+```
+
+### `ui:project-archive.mentions#summaryDisclosure[0]`
+
+- [ ] reviewed
+- Source: `src/components/project/ProjectMentionsView.astro`
+- Field: `summaryDisclosure[0]`
+- Original hash: `92b2b2dec25efa81dea073080518aa0a02b4309d95dd2d35a3775b820222a9d1`
+
+```text
+查看更多
+```
+
+### `ui:project-archive.mentions#summaryDisclosure[1]`
+
+- [ ] reviewed
+- Source: `src/components/project/ProjectMentionsView.astro`
+- Field: `summaryDisclosure[1]`
+- Original hash: `afd4b783536b8297bb2506836727af1ccae7626a7d04e89de7ad402360e0a970`
+
+```text
+收起
 ```
 
 ### `ui:project-archive.nav#overview`

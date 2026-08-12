@@ -303,6 +303,8 @@ const komachoeUiCopy = [
   ['project-archive.mentions', 'description', '本期提及的人物、作品与背景信息。点击时间直接回到 Timeline；外部链接只用于补充公开资料。', 'src/components/project/ProjectMentionsView.astro'],
   ['project-archive.mentions', 'groups', 'WORKS|PEOPLE|CONTEXT|作品 / 企划|人物|背景 / 词条', 'src/components/project/ProjectMentionsView.astro'],
   ['project-archive.mentions', 'sourceCta', '查看官方网站|查看官方资料|查看背景资料', 'src/components/project/ProjectMentionsView.astro'],
+  ['project-archive.mentions', 'summaryDisclosure', '查看更多|收起', 'src/components/project/ProjectMentionsView.astro'],
+  ['project-archive.mentions', 'groupDisclosure', '查看全部人物|查看全部作品|收起人物|收起作品', 'src/components/project/ProjectMentionsView.astro'],
   ['timeline', 'acts', 'Timeline Acts', 'src/components/project/TimelineNavigator.astro'],
   ['timeline', 'expand', '展开', 'src/components/project/TimelineNavigator.astro'],
   ['timeline', 'act', 'ACT', 'src/components/project/TimelineNavigator.astro'],
