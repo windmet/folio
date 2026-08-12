@@ -14,6 +14,7 @@ import LeadPersonCard from './LeadPersonCard.astro';
 import ProjectHero from './ProjectHero.astro';
 import ProjectOverview from './ProjectOverview.astro';
 import ProjectSectionsView from './ProjectSectionsView.astro';
+import ProjectMentionsView from './ProjectMentionsView.astro';
 import ProjectViewNav from './ProjectViewNav.astro';
 import { readerLabel, threadCategoryLabels } from '../../lib/projectReaderLabels';
 import { deriveProjectPresentation } from '../../lib/projectPresentation.mjs';
@@ -228,6 +229,8 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
           />
         ))}
       </section>}
+
+      {presentation.showMentions && <ProjectMentionsView mentions={project.data.mentions || []} eventsById={eventsById} />}
 
       {presentation.showStorylines && <section class="project-view storylines-view" data-view-panel="storylines" hidden>
         <div class="view-heading">
@@ -517,6 +520,9 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       });
       this.querySelectorAll<HTMLElement>('[data-event-seek]').forEach((button) => {
         button.addEventListener('click', () => this.selectEvent(button.dataset.eventSeek || '', true, true));
+      });
+      this.querySelectorAll<HTMLElement>('[data-mention-event]').forEach((button) => {
+        button.addEventListener('click', () => this.navigateEventToTimeline(button.dataset.mentionEvent || ''));
       });
       this.querySelectorAll<HTMLElement>('[data-event-detail]').forEach((button) => {
         button.addEventListener('click', () => {

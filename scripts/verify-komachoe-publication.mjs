@@ -66,7 +66,8 @@ const homeHtml = await readFile(path.resolve('dist/index.html'), 'utf8');
 assert(project.status === 'draft', 'Project must remain draft during vertical slice');
 assert(project.defaultView === 'overview', 'defaultView must remain overview');
 assert(project.visualTheme === 'broadcast-blue', 'Project must use the broadcast-blue visual theme');
-assert(JSON.stringify(project.views) === JSON.stringify(['overview', 'sections', 'timeline']), 'views must be Overview / Sections / Timeline in order');
+assert(JSON.stringify(project.views) === JSON.stringify(['overview', 'sections', 'timeline', 'mentions']), 'views must be Overview / Sections / Timeline / Mentions in order');
+assert(Array.isArray(project.mentions) && project.mentions.length === 24, 'Mentions must contain the locked 24-entry index');
 assert(trackFiles.length === 1 && tracks[0].durationMs === 7926041 && tracks[0].order === 1, 'expected one ordered 7,926,041ms Track');
 assert(actFiles.length === 6, `expected 6 Acts, found ${actFiles.length}`);
 assert(eventFiles.length === 30, `expected 30 Events, found ${eventFiles.length}`);
@@ -115,6 +116,7 @@ assert(html.includes('data-archive-theme="broadcast-blue"'), 'rendered route is 
 assert(JSON.stringify(attributeValues(html, 'data-view-button')) === JSON.stringify(project.views), 'rendered view buttons do not match Project views');
 assert(JSON.stringify(attributeValues(html, 'data-view-panel')) === JSON.stringify(project.views), 'rendered view panels do not match Project views');
 assert((html.match(/class="section-card"/g) || []).length === 6, 'rendered Sections view must contain 6 cards');
+assert((html.match(/data-mention-row="/g) || []).length === project.mentions.length, 'rendered Mentions view must contain one row per mention');
 assert((html.match(/data-event-card="/g) || []).length === 30, 'rendered Timeline must contain 30 Event cards');
 assert((html.match(/data-timeline-navigator-segment="/g) || []).length === 6, 'Timeline navigator must contain 6 segments');
 assert(searchPayload.items?.length === 30 && searchPayload.items.every((item) => item.kind === 'event'), 'search index must contain exactly 30 Event items');
@@ -134,6 +136,8 @@ for (const [label, marker] of [
 }
 
 assert(html.includes('搜索事件') && html.includes('placeholder="输入姓名、作品或主题"'), 'single-source Search copy is not Project-appropriate');
+assert(html.includes('data-view-button="mentions"') && html.includes('data-view-panel="mentions"'), 'Mentions view is not rendered');
+assert(html.includes('MENTION INDEX') && html.includes('提及索引'), 'Mentions presentation copy is missing');
 assert(html.includes(project.playerNote) && !html.includes('使用 YouTube 原生 360°能力'), 'Player note is not Project-specific');
 
 const controllerMatch = html.match(/<script type="application\/json" data-archive-controller-data[^>]*>([\s\S]*?)<\/script>/);

@@ -12,9 +12,205 @@
   "status": "draft",
   "defaultTrack": "komachoe-20260425/yt-main",
   "defaultView": "overview",
-  "views": ["overview", "sections", "timeline"],
+  "views": ["overview", "sections", "timeline", "mentions"],
   "summary": "这期从复盘 4 月生日配信开场：360°设备、主持分工、没读完的邮件和没来得及做的事都重新讲了一遍。之后进入《俺知》来信、今月の弁明与ふつおた，最后一路聊到 Super Chat、待播游戏和《Slay the Spire 2》。",
   "featuredThreads": [],
+  "mentions": [
+    {
+      "id": "ore-shiri",
+      "kind": "work",
+      "label": "さらに！俺を知ってくれ！～幕末編～",
+      "summary": "从再演台本、舞台事故到假想 casting，小松把《俺知》的制作现场重新讲了一遍。",
+      "events": [
+        "komachoe-20260425/yt-003057-script-staging-documented",
+        "komachoe-20260425/yt-003304-izo-performance-change",
+        "komachoe-20260425/yt-003730-broken-bamboo-sword",
+        "komachoe-20260425/yt-004333-producer-casting"
+      ]
+    },
+    {
+      "id": "proto-deus-no-hakobune",
+      "kind": "work",
+      "label": "プロトデウスの方舟",
+      "summary": "围绕排练中的「焚き火」、昼夜演法和第五名乘员的假想选择展开。",
+      "events": [
+        "komachoe-20260425/yt-005429-hosoya-bonfire",
+        "komachoe-20260425/yt-010348-performance-varies-naturally",
+        "komachoe-20260425/yt-011004-fifth-crew-decision"
+      ]
+    },
+    {
+      "id": "strange-eden",
+      "kind": "work",
+      "label": "STRANGE EDEN",
+      "summary": "从《Boy meets xxx》MV 的赛车镜头聊到瑠何像突然拥有了自己的声音。",
+      "events": ["komachoe-20260425/yt-012529-boy-meets-xxx"]
+    },
+    {
+      "id": "ban-ban-kizuna",
+      "kind": "work",
+      "label": "小松昌平の盤・番・絆",
+      "summary": "TRPG 主题活动因为容易超时，正在往规则和时长更容易控制的桌游形式准备。",
+      "events": ["komachoe-20260425/yt-012036-trpg-event-format"]
+    },
+    {
+      "id": "seito-kaicho-yankee-kun",
+      "kind": "work",
+      "label": "生徒会長とヤンキーくん",
+      "summary": "近期告知中提到的迷你语音剧；现场顺口出现的「高菜味」「バリカタ」不是正式标题。",
+      "events": ["komachoe-20260425/yt-011737-recent-announcements"]
+    },
+    {
+      "id": "genshin-impact",
+      "kind": "work",
+      "label": "原神",
+      "summary": "积压的待播游戏之一，也成为小松解释“五小时才开播”习惯的例子。",
+      "events": ["komachoe-20260425/yt-020257-game-backlog-and-recovery"]
+    },
+    {
+      "id": "varlet",
+      "kind": "work",
+      "label": "VARLET",
+      "summary": "和《原神》一起被提到的待播游戏，出现在近况与开播门槛的闲聊里。",
+      "events": ["komachoe-20260425/yt-020257-game-backlog-and-recovery"]
+    },
+    {
+      "id": "slay-the-spire-2",
+      "kind": "work",
+      "label": "Slay the Spire 2",
+      "summary": "最近最让小松上头的游戏；他聊到计算卡牌和肉鸽路线时，甚至说自己梦里也在继续算。",
+      "events": ["komachoe-20260425/yt-020612-slay-the-spire-2"]
+    },
+    {
+      "id": "terashima-junta",
+      "kind": "person",
+      "label": "寺島惇太",
+      "summary": "生日配信前被拜托做裏回し，散场后又陪小松去吃深夜家系。",
+      "events": [
+        "komachoe-20260425/yt-002351-terashima-backstage-mc",
+        "komachoe-20260425/yt-002803-terashima-midnight-ramen"
+      ]
+    },
+    {
+      "id": "hosoya-yoshimasa",
+      "kind": "person",
+      "label": "細谷佳正",
+      "summary": "《プロトデウスの方舟》排练中把大家叫上台围成一圈，小松把这种做法称为「焚き火」。",
+      "events": ["komachoe-20260425/yt-005429-hosoya-bonfire"]
+    },
+    {
+      "id": "maeda-kaori",
+      "kind": "person",
+      "label": "前田佳織里",
+      "summary": "昼夜演法与第五名乘员的假想讨论中被提到；她现场接住了小松突然偏题的追问。",
+      "events": [
+        "komachoe-20260425/yt-010348-performance-varies-naturally",
+        "komachoe-20260425/yt-011004-fifth-crew-decision"
+      ]
+    },
+    {
+      "id": "miyazaki-masaya",
+      "kind": "person",
+      "label": "宮﨑雅也",
+      "summary": "小松用“不咬螺丝”和临时追加吻戏的后台玩笑，解释自己如何让他放松。",
+      "events": ["komachoe-20260425/yt-010139-miyazaki-backstage-jokes"]
+    },
+    {
+      "id": "kumagai-toshiki",
+      "kind": "person",
+      "label": "熊谷俊輝",
+      "summary": "小松切换到制作人视角时，为他安排了《俺知》里的平助。",
+      "events": ["komachoe-20260425/yt-004333-producer-casting"]
+    },
+    {
+      "id": "sato-yugo",
+      "kind": "person",
+      "label": "佐藤祐吾",
+      "summary": "假想 casting 中被小松安排为《俺知》的以蔵。",
+      "events": ["komachoe-20260425/yt-004333-producer-casting"]
+    },
+    {
+      "id": "horikane-sohei",
+      "kind": "person",
+      "label": "堀金蒼平",
+      "summary": "假想 casting 中被小松安排为《俺知》的沖田。",
+      "events": ["komachoe-20260425/yt-004333-producer-casting"]
+    },
+    {
+      "id": "mitsutomi-takao",
+      "kind": "person",
+      "label": "光富崇雄",
+      "summary": "假想 casting 中被小松安排为《俺知》的武市。",
+      "events": ["komachoe-20260425/yt-004333-producer-casting"]
+    },
+    {
+      "id": "kiyoten",
+      "kind": "person",
+      "label": "清典",
+      "summary": "竹光折断后的后台处理，以及此前《俺知》打ち上げ的参与情况中被提到。",
+      "events": [
+        "komachoe-20260425/yt-003730-broken-bamboo-sword",
+        "komachoe-20260425/yt-015153-seiten-and-ito"
+      ]
+    },
+    {
+      "id": "ito",
+      "kind": "person",
+      "label": "伊藤",
+      "summary": "小松说明他两次没能参加打ち上げ，但双方已经聊过之后私下吃饭。",
+      "events": ["komachoe-20260425/yt-015153-seiten-and-ito"]
+    },
+    {
+      "id": "360-live",
+      "kind": "context",
+      "label": "360°直播",
+      "summary": "本期前半制作复盘的核心：观众视角、镜头拼接、后台可见性与现场规则都从这里展开。",
+      "events": [
+        "komachoe-20260425/yt-000643-360-experience-worked",
+        "komachoe-20260425/yt-000820-camera-model-gap",
+        "komachoe-20260425/yt-001242-backstage-became-visible",
+        "komachoe-20260425/yt-001602-360-industry-rules"
+      ]
+    },
+    {
+      "id": "spatial-audio",
+      "kind": "context",
+      "label": "空间收音",
+      "summary": "让声音跟着人与相机的距离变化；现场感和清晰度之间的取舍仍然没有唯一答案。",
+      "events": ["komachoe-20260425/yt-001850-spatial-audio-tradeoff"]
+    },
+    {
+      "id": "chikuho-ben",
+      "kind": "context",
+      "label": "筑豊弁",
+      "summary": "福冈县筑丰地区的方言统称。本期谈到地域内部差异与「ぶちくらす／うちくらす」等表达。",
+      "events": ["komachoe-20260425/yt-013901-chikuho-dialect"]
+    },
+    {
+      "id": "honto-wa-accent",
+      "kind": "context",
+      "label": "「本当は」的重音",
+      "summary": "小松试着用一串「にゃ」证明这只是重音变化，最后还是被聊天区判成了方言。",
+      "events": ["komachoe-20260425/yt-013430-hontou-wa-accent"]
+    },
+    {
+      "id": "trpg-format",
+      "kind": "context",
+      "label": "TRPG 活动形式",
+      "summary": "自由度太高会让活动超时，所以《盤・番・絆》先往更接近桌游的形式收束。",
+      "events": ["komachoe-20260425/yt-012036-trpg-event-format"]
+    },
+    {
+      "id": "uchia-ge",
+      "kind": "context",
+      "label": "打ち上げ",
+      "summary": "生日配信与《俺知》复盘都绕不开的现场语境：松弛感保留了，但流程和参与机会也因此被挤压。",
+      "events": [
+        "komachoe-20260425/yt-000031-production-retrospective",
+        "komachoe-20260425/yt-015153-seiten-and-ito"
+      ]
+    }
+  ],
   "overview": {
     "kicker": "QUICK ORIENTATION",
     "title": "这期广播从哪里开始听？",

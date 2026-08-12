@@ -81,6 +81,7 @@ try {
       sections: document.querySelectorAll('[data-section-act]').length,
       acts: document.querySelectorAll('[data-timeline-navigator-segment]').length,
       events: document.querySelectorAll('[data-event-card]').length,
+      mentions: document.querySelectorAll('[data-mention-row]').length,
       overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
       forbidden: document.querySelectorAll('[data-timeline-scope], [data-source-track], [data-player-rail-thread], [data-thread-overlay], [data-person-overlay]').length,
     }));
@@ -93,11 +94,39 @@ try {
         && state.palette.accent === '#5e7c96',
       `${label} broadcast-blue theme mismatch: ${JSON.stringify(state.palette)}`,
     );
-    assert(state.nav.join() === 'overview,sections,timeline', `${label} view navigation mismatch`);
-    assert(state.sections === 6 && state.acts === 6 && state.events === 30, `${label} does not render 6 Sections / Acts and 30 Events`);
+    assert(state.nav.join() === 'overview,sections,timeline,mentions', `${label} view navigation mismatch`);
+    assert(state.sections === 6 && state.acts === 6 && state.events === 30 && state.mentions === 24, `${label} does not render 6 Sections / 30 Events / 24 Mentions`);
     assert(state.overflow === 0 && state.forbidden === 0, `${label} overflow or forbidden optional UI: ${JSON.stringify(state)}`);
     assert(logs.length === 0, `${label} console errors: ${logs.join(' | ')}`);
     evidence.viewports[label] = state;
+    await page.close();
+  }
+
+  {
+    const { page, logs } = await openPage({ width: 1440, height: 900 });
+    await page.locator('[data-view-button="mentions"]').click();
+    const state = await page.evaluate(() => ({
+      activeView: document.querySelector('project-archive-shell')?.activeView,
+      groups: [...document.querySelectorAll('[data-mention-kind]')].map((group) => ({
+        kind: group.getAttribute('data-mention-kind'),
+        rows: group.querySelectorAll('[data-mention-row]').length,
+      })),
+      fifthSlotEmpty: document.querySelectorAll('[data-view-button]').length === 4,
+      overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    }));
+    assert(state.activeView === 'mentions' && state.groups.length === 3, `Mentions view did not render its three groups: ${JSON.stringify(state)}`);
+    assert(state.groups.every((group) => group.rows > 0) && state.fifthSlotEmpty, `Mentions grouping or fifth nav slot contract failed: ${JSON.stringify(state)}`);
+    await page.locator('[data-mention-event="yt-005429-hosoya-bonfire"]').first().click();
+    await page.waitForFunction(() => document.querySelector('project-archive-shell')?.activeView === 'timeline');
+    const navigated = await page.evaluate(() => ({
+      activeView: document.querySelector('project-archive-shell')?.activeView,
+      selectedEvent: document.querySelector('project-archive-shell')?.selectedEventId,
+      url: location.href,
+      overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    }));
+    assert(navigated.selectedEvent === 'yt-005429-hosoya-bonfire' && /view=timeline/.test(navigated.url), `Mention time did not return to Timeline: ${JSON.stringify(navigated)}`);
+    assert(state.overflow === 0 && navigated.overflow === 0 && logs.length === 0, `Mentions browser errors: ${logs.join(' | ')}`);
+    evidence.mentions = { state, navigated };
     await page.close();
   }
 

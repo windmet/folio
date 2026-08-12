@@ -93,6 +93,10 @@ addEntry({ scope: 'project', id: projectId, field: 'overview.title', value: proj
   addEntry({ scope: 'project', id: projectId, field: `overview.cards[${index}].title`, value: card.title, source: projectSource });
   addEntry({ scope: 'project', id: projectId, field: `overview.cards[${index}].summary`, value: card.summary, source: projectSource });
 });
+(project.mentions || []).forEach((mention, index) => {
+  addEntry({ scope: 'project', id: projectId, field: `mentions[${index}].label`, value: mention.label, source: projectSource });
+  addEntry({ scope: 'project', id: projectId, field: `mentions[${index}].summary`, value: mention.summary, source: projectSource });
+});
 
 for (const item of tracks.values()) {
   const source = relative(path.join(projectRoot, 'tracks', item.file));
@@ -289,6 +293,11 @@ const komachoeUiCopy = [
   ['project-archive.timeline', 'kicker', 'CHRONOLOGICAL CANON · NATIVE CLOCK', 'src/components/project/ProjectArchiveShell.astro'],
   ['project-archive.timeline', 'heading', 'Timeline', 'src/components/project/ProjectArchiveShell.astro'],
   ['project-archive.timeline', 'description', `按节目原始时钟浏览 ${acts.size} 个 Section 与精选节点。`, 'src/components/project/ProjectArchiveShell.astro'],
+  ['project-archive.mentions', 'kicker', 'MENTION INDEX', 'src/components/project/ProjectMentionsView.astro'],
+  ['project-archive.mentions', 'heading', 'Mentions', 'src/components/project/ProjectMentionsView.astro'],
+  ['project-archive.mentions', 'description', '本期提及的人物、作品与背景信息。点击时间直接回到 Timeline；外部链接只用于补充公开资料。', 'src/components/project/ProjectMentionsView.astro'],
+  ['project-archive.mentions', 'groups', 'WORKS|PEOPLE|CONTEXT|作品 / 企划|人物|背景 / 词条', 'src/components/project/ProjectMentionsView.astro'],
+  ['project-archive.mentions', 'sourceCta', '官方资料|背景资料', 'src/components/project/ProjectMentionsView.astro'],
   ['timeline', 'acts', 'Timeline Acts', 'src/components/project/TimelineNavigator.astro'],
   ['timeline', 'expand', '展开', 'src/components/project/TimelineNavigator.astro'],
   ['timeline', 'act', 'ACT', 'src/components/project/TimelineNavigator.astro'],

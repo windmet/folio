@@ -83,6 +83,15 @@ for (const projectDir of projectDirs) {
   if (views.includes('people') && people.length === 0) {
     errors.push(`${projectId}: people view requires at least one person`);
   }
+  if (views.includes('mentions') && (!Array.isArray(project.mentions) || project.mentions.length === 0)) {
+    errors.push(`${projectId}: mentions view requires at least one mention`);
+  }
+  const mentionIds = new Set();
+  for (const [index, mention] of (project.mentions || []).entries()) {
+    if (mentionIds.has(mention.id)) errors.push(`${projectId}/project.json mentions[${index}]: duplicate id ${mention.id}`);
+    mentionIds.add(mention.id);
+    for (const eventId of mention.events || []) exists(eventIds, eventId, `${projectId}/project.json mentions[${index}]`);
+  }
   if (project.markLabel && !project.mark) errors.push(`${projectId}: markLabel requires mark`);
 
   const orderedTracks = [...tracks].sort((a, b) => a.data.order - b.data.order);

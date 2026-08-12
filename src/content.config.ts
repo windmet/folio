@@ -36,6 +36,7 @@ const projectView = z.enum([
   'overview',
   'sections',
   'timeline',
+  'mentions',
   'storylines',
   'people',
   'transcript',
@@ -66,6 +67,14 @@ const projects = defineCollection({
     views: z.array(projectView).min(1),
     summary: z.string(),
     featuredThreads: z.array(reference('projectThreads')),
+    mentions: z.array(z.object({
+      id: z.string().regex(/^[a-z0-9][a-z0-9-]*$/),
+      kind: z.enum(['work', 'person', 'context']),
+      label: z.string(),
+      summary: z.string(),
+      events: z.array(reference('projectEvents')).min(1),
+      url: z.string().url().optional(),
+    })).default([]),
     overview: z.object({
       kicker: z.string(),
       title: z.string(),
