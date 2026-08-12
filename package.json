@@ -15,6 +15,7 @@
     "validate:publication": "node scripts/validate-publication.mjs",
     "audit:payload": "node scripts/audit-payload.mjs",
     "verify:komatsu36:semantic": "node scripts/verify-komatsu36-semantic-closeout.mjs",
+    "verify:youtube:n1": "node scripts/verify-youtube-n1-browser.mjs",
     "verify:rc12:y1": "node scripts/verify-rc12-y1-browser.mjs",
     "verify:rc12:mt1": "node scripts/verify-rc12-mt1-browser.mjs",
     "verify:rc12:pa1": "node scripts/verify-rc12-pa1-browser.mjs",

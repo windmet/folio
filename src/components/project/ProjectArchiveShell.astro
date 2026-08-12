@@ -1754,8 +1754,23 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
                     }
                     settle(playerInstance);
                   },
-                  onError: () => {
+                  onError: (playerEvent: any) => {
+                    console.warn('[Folio][YouTube]', {
+                      code: Number.isFinite(Number(playerEvent?.data)) ? Number(playerEvent.data) : null,
+                      videoId: track.playback.videoId,
+                    });
                     if (this.player === playerInstance && this.playerReady) {
+                      try {
+                        this.pendingSeekMs = Math.max(0, Math.floor(playerInstance.getCurrentTime() * 1000));
+                        this.mobileResumeMs = this.pendingSeekMs;
+                        this.updatePlayerTime(this.pendingSeekMs);
+                      } catch {
+                        const selectedEvent = this.selectedEventId ? this.data.events[this.selectedEventId] : null;
+                        if (selectedEvent?.trackId === requestedTrackId) {
+                          this.pendingSeekMs = selectedEvent.startMs;
+                          this.mobileResumeMs = selectedEvent.startMs;
+                        }
+                      }
                       this.safeDestroyPlayer(playerInstance);
                       this.player = null;
                       this.playerReady = false;
@@ -1925,6 +1940,11 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     }
 
     async seekTo(milliseconds: number) {
+      const track = this.data.tracks[this.activeTrackId];
+      if (!track || track.playback.provider !== 'youtube') {
+        this.pendingSeekMs = null;
+        return;
+      }
       this.pendingSeekMs = milliseconds;
       this.mobileResumeMs = milliseconds;
       if (this.playerReady && this.player) {

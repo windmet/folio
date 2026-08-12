@@ -996,6 +996,26 @@ if (!/PlayerPresentationMode\s*=\s*'expanded'\s*\|\s*'docked'\s*\|\s*'bubble'/.t
 if (!/playerEvent\.data === YT\.PlayerState\.PLAYING && this\.playerPresentationMode === 'bubble'/.test(archiveShellSource)) {
   errors.push('RC12-M1 must reject provider playback while collapsed to Bubble');
 }
+if (!archiveShellSource.includes("console.warn('[Folio][YouTube]'")
+  || !archiveShellSource.includes('code: Number.isFinite(Number(playerEvent?.data))')
+  || !archiveShellSource.includes('videoId: track.playback.videoId')) {
+  errors.push('RC12-N1 must retain lightweight YouTube provider code diagnostics');
+}
+if (!archiveShellSource.includes('this.pendingSeekMs = Math.max(0, Math.floor(playerInstance.getCurrentTime() * 1000))')
+  || !archiveShellSource.includes('if (selectedEvent?.trackId === requestedTrackId)')) {
+  errors.push('RC12-N1 provider errors after ready must preserve a retry resume time');
+}
+const playerSeekStart = archiveShellSource.indexOf('\n    async seekTo(milliseconds: number)');
+const playerSeekEnd = playerSeekStart >= 0
+  ? archiveShellSource.indexOf('\n    startPlaybackSync()', playerSeekStart)
+  : -1;
+const playerSeekSource = playerSeekStart >= 0 && playerSeekEnd > playerSeekStart
+  ? archiveShellSource.slice(playerSeekStart, playerSeekEnd)
+  : '';
+if (!playerSeekSource.includes("track.playback.provider !== 'youtube'")
+  || !playerSeekSource.includes('this.pendingSeekMs = null')) {
+  errors.push('RC12-N1 external sources must not retain a pending YouTube seek');
+}
 
 const forbiddenPublicationMarkers = [
   ['raw ASR file marker', /external_asr_raw/i],
