@@ -61,12 +61,14 @@ for (const { id: projectId, data: project } of projects) {
     continue;
   }
 
-  const [trackFiles, eventFiles, threadFiles, peopleFiles] = await Promise.all([
+  const [trackFiles, actFiles, eventFiles, threadFiles, peopleFiles] = await Promise.all([
     listFiles(path.join(root, 'tracks'), '.json'),
+    listFiles(path.join(root, 'acts'), '.json'),
     listFiles(path.join(root, 'events'), '.json'),
     listFiles(path.join(root, 'threads'), '.md'),
     listFiles(path.join(root, 'people'), '.json'),
   ]);
+  const acts = await Promise.all(actFiles.map((name) => readJson(path.join(root, 'acts', name))));
   const events = await Promise.all(eventFiles.map((name) => readJson(path.join(root, 'events', name))));
   const publicEventCount = events.filter((event) => event.publicationStatus !== 'withheld').length;
   const expectedSearchItems = publicEventCount + threadFiles.length + peopleFiles.length;
@@ -94,6 +96,13 @@ for (const { id: projectId, data: project } of projects) {
   }
   if (!sameMembers(panelViews, expectedViews)) {
     errors.push(`${projectId}: rendered view panels (${panelViews.join(', ')}) do not match views (${expectedViews.join(', ')})`);
+  }
+  if (project.views.includes('sections')) {
+    const expectedSections = acts.filter((act) => act.track === project.defaultTrack).length;
+    const renderedSections = (html.match(/class="section-card"/g) || []).length;
+    if (renderedSections !== expectedSections) {
+      errors.push(`${projectId}: expected ${expectedSections} section cards, found ${renderedSections}`);
+    }
   }
 
   if (trackFiles.length === 1) {

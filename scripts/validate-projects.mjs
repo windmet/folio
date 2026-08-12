@@ -74,6 +74,9 @@ for (const projectDir of projectDirs) {
   if (views.includes('sections') && acts.length === 0) {
     errors.push(`${projectId}: sections view requires at least one act`);
   }
+  if (views.includes('overview') && !project.overview) {
+    errors.push(`${projectId}: overview view requires overview content`);
+  }
   if (views.includes('storylines') && threads.length === 0) {
     errors.push(`${projectId}: storylines view requires at least one thread`);
   }
