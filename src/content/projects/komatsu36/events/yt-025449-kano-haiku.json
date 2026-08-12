@@ -1,0 +1,16 @@
+{
+  "project": "komatsu36",
+  "track": "komatsu36/yt-main",
+  "act": "komatsu36/act-05",
+  "startMs": 10484000,
+  "endMs": 10505000,
+  "timingStatus": "exact",
+  "title": "狩野把“眼睛飞出来了”写进庆生俳句",
+  "summary": "狩野把祝贺、眼睛飞出去和“めでたい”硬凑成一首临场俳句，现场就这么继续玩了下去。",
+  "people": ["komatsu36/kano-sho", "komatsu36/komatsu-shohei"],
+  "tags": ["生日俳句", "狩野翔", "语言游戏"],
+  "publicationStatus": "qualified",
+  "qualification": "事件和核心构造已锁定；页面只作摘要，不发布完整逐字俳句。",
+  "narrativeMode": "threaded",
+  "laneAnnotations": []
+}

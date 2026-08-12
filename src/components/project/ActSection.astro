@@ -1,0 +1,63 @@
+---
+import TimelineEvent from './TimelineEvent.astro';
+
+export interface Props {
+  act: any;
+  events: any[];
+  peopleById: Map<string, any>;
+  threadsByEvent: Map<string, string[]>;
+  threadsById: Map<string, any>;
+  actTotal: number;
+}
+
+const { act, events, peopleById, threadsByEvent, threadsById, actTotal } = Astro.props;
+const localActId = act.id.split('/').at(-1) || act.id;
+const formatTime = (milliseconds: number) => {
+  const total = Math.floor(milliseconds / 1000);
+  const hours = Math.floor(total / 3600);
+  const minutes = Math.floor((total % 3600) / 60);
+  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+};
+---
+
+<section
+  class="act-section"
+  data-act={act.id.split('/').at(-1)}
+  data-act-order={String(act.data.order)}
+  data-act-start-ms={String(act.data.startMs)}
+  data-act-end-ms={String(act.data.endMs)}
+>
+  <header class="act-header" data-act-header tabindex="-1">
+    <div class="act-number">
+      <strong>ACT {String(act.data.order).padStart(2, '0')}</strong>
+      <span class="act-total">/ {String(actTotal).padStart(2, '0')}</span>
+      {act.data.editorialStatus === 'draft' && <span>编辑草案</span>}
+    </div>
+    <div>
+      <p>{formatTime(act.data.startMs)}–{formatTime(act.data.endMs)}</p>
+      <div class="act-title-row">
+        <h2 id={`act-title-${localActId}`} data-inline-expandable={`act-title-${localActId}`}>{act.data.title}</h2>
+        <button
+          type="button"
+          class="archive-inline-text-toggle"
+          data-inline-text-toggle={`act-title-${localActId}`}
+          aria-expanded="false"
+          aria-controls={`act-title-${localActId}`}
+          hidden
+        >展开</button>
+      </div>
+      <span class="act-summary">{act.data.summary}</span>
+      <small class="act-event-count">{events.length} EVENTS</small>
+    </div>
+  </header>
+  <div class="act-events">
+    {events.map((event) => (
+      <TimelineEvent
+        event={event}
+        people={event.data.people.map((reference: any) => peopleById.get(reference.id)).filter(Boolean)}
+        threadIds={threadsByEvent.get(event.id) || []}
+        threadsById={threadsById}
+      />
+    ))}
+  </div>
+</section>

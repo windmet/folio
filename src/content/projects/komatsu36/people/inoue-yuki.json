@@ -1,0 +1,13 @@
+{
+  "project": "komatsu36",
+  "displayName": "井上雄貴",
+  "reading": "いのうえ ゆうき",
+  "callNames": [],
+  "searchAliases": [],
+  "projectContext": "《俺知》昼场饰演藤堂平助。复盘时从北辰一刀流研究聊到角色动作的高低差，二次会又和夜场平助汐谷文康一起唱歌。",
+  "participation": [
+    { "kind": "ore-shiri-cast", "character": "藤堂平助", "sessions": ["day"] },
+    { "kind": "birthday-live" }
+  ],
+  "links": []
+}

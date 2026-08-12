@@ -1,0 +1,16 @@
+{
+  "project": "komatsu36",
+  "track": "komatsu36/yt-main",
+  "act": "komatsu36/act-04",
+  "startMs": 7150000,
+  "endMs": 7235000,
+  "timingStatus": "exact",
+  "title": "堀金用 ChatGPT 调查后送来红茶",
+  "summary": "堀金蒼平先用 ChatGPT 调查小松的喜好，再选择 MARIAGE FRÈRES 红茶；紧接着另一只 GODIVA 袋又被说明里面并不是 GODIVA。",
+  "people": ["komatsu36/horikane-sohei", "komatsu36/komatsu-shohei"],
+  "tags": ["生日礼物", "ChatGPT", "红茶"],
+  "publicationStatus": "qualified",
+  "qualification": "红茶品牌与事件已锁定；具体茶款、GODIVA 袋内物品及后续“撞礼物”细节仍需画面或短窗复核。",
+  "narrativeMode": "timeline-only",
+  "laneAnnotations": []
+}

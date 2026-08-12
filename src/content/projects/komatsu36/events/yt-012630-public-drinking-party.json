@@ -1,0 +1,15 @@
+{
+  "project": "komatsu36",
+  "track": "komatsu36/yt-main",
+  "act": "komatsu36/act-02",
+  "startMs": 5190000,
+  "endMs": 5430000,
+  "timingStatus": "approximate",
+  "title": "收礼物环节逐渐自称“认真饮酒会”",
+  "summary": "小松说明观众不必一直盯着收礼物，现场也开始把节目称为“ガチ飲み会”，生日展示由此滑向公开聚会。",
+  "people": ["komatsu36/komatsu-shohei"],
+  "tags": ["节目结构", "转场", "饮酒会"],
+  "publicationStatus": "verified",
+  "narrativeMode": "timeline-only",
+  "laneAnnotations": []
+}

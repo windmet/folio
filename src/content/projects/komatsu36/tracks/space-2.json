@@ -1,0 +1,15 @@
+{
+  "project": "komatsu36",
+  "kind": "video",
+  "label": "X Space ②",
+  "shortLabel": "SP2",
+  "durationMs": 10571000,
+  "clock": "native",
+  "transcriptPolicy": "private",
+  "playback": {
+    "provider": "external",
+    "url": "https://x.com/i/spaces/1OxwblPnkDDJB"
+  },
+  "fallbackUrl": "https://x.com/i/spaces/1OxwblPnkDDJB",
+  "sourcePublishedAt": "2026-04-14T10:59:26.204Z"
+}

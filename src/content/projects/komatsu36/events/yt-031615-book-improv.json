@@ -1,0 +1,16 @@
+{
+  "project": "komatsu36",
+  "track": "komatsu36/yt-main",
+  "act": "komatsu36/act-06",
+  "startMs": 11775000,
+  "endMs": 11938000,
+  "timingStatus": "approximate",
+  "title": "剧中争“本”意外卷入演员手里的真实台本",
+  "summary": "汐谷选择夜场武市爆发的“本”场景；稽古即兴中，剧中争夺的书与演员实际拿着的朗读台本重叠，狩野顺势把意外吸收到角色反应里。",
+  "people": ["komatsu36/shioya-fumiyasu", "komatsu36/kano-sho", "komatsu36/komatsu-shohei"],
+  "tags": ["俺知名场面", "朗读台本", "即兴"],
+  "publicationStatus": "qualified",
+  "qualification": "“本／台本”重叠与角色即兴已锁定；具体抓取动作和多个回忆版本不合并成单一逐字原句。",
+  "narrativeMode": "timeline-only",
+  "laneAnnotations": []
+}

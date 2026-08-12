@@ -1,0 +1,13 @@
+{
+  "project": "komatsu36",
+  "displayName": "寺島惇太",
+  "reading": "てらしま じゅんた",
+  "callNames": ["惇太"],
+  "searchAliases": [],
+  "projectContext": "《俺知》昼场饰演武市半平太。带来“三选二”生日券和 Big Dream 赛马，还一路参与动作复盘与 Bingo。",
+  "participation": [
+    { "kind": "ore-shiri-cast", "character": "武市半平太", "sessions": ["day"] },
+    { "kind": "birthday-live" }
+  ],
+  "links": []
+}

@@ -1,0 +1,14 @@
+{
+  "project": "komatsu36",
+  "track": "komatsu36/yt-main",
+  "act": "komatsu36/act-02",
+  "startMs": 4522000,
+  "endMs": 4535000,
+  "timingStatus": "exact",
+  "title": "狩野提出俄罗斯章鱼烧",
+  "summary": "聊到吃的时，狩野翔突然提了一句俄罗斯章鱼烧。当时只是个随口提议。",
+  "people": ["komatsu36/kano-sho"],
+  "tags": ["俄罗斯章鱼烧", "setup"],
+  "publicationStatus": "verified",
+  "laneAnnotations": []
+}

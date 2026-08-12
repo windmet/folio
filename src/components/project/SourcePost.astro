@@ -1,0 +1,28 @@
+---
+export interface Props {
+  source: any;
+  context: string;
+}
+
+const { source, context } = Astro.props;
+const publishedDate = source.data.publishedAt?.slice(0, 10);
+const authorName = source.data.author?.name || 'X source';
+const authorHandle = source.data.author?.handle;
+---
+
+<aside class="source-post" data-related-source={source.id.split('/').at(-1)}>
+  <div class="source-post__topline">
+    <span class="archive-kicker">OUTSIDE THE STREAM · X</span>
+    {publishedDate && <time datetime={publishedDate}>{publishedDate}</time>}
+  </div>
+  <p class="source-post__author">
+    <strong>{authorName}</strong>
+    {authorHandle && <span>{authorHandle}</span>}
+  </p>
+  <p class="source-post__context">{context}</p>
+  {source.data.publicUrl ? (
+    <a href={source.data.publicUrl} target="_blank" rel="noopener noreferrer">在 X 查看原帖 ↗</a>
+  ) : (
+    <span class="source-post__unavailable">来源曾用于本次编辑，原帖当前不可直达。</span>
+  )}
+</aside>

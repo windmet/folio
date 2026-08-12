@@ -1,0 +1,16 @@
+{
+  "project": "komatsu36",
+  "track": "komatsu36/yt-main",
+  "act": "komatsu36/act-06",
+  "startMs": 12508000,
+  "endMs": 12660000,
+  "timingStatus": "exact",
+  "title": "清典 Pick 了整段 Opening",
+  "summary": "清典挑的不是某个单独招式，而是从朗读导入、名乘杀阵、全员列阵、标题和掌声一路到暗转进本篇的整段 Opening。",
+  "people": ["komatsu36/seiten", "komatsu36/komatsu-shohei"],
+  "tags": ["俺知制作", "Opening", "动作演出", "development"],
+  "publicationStatus": "qualified",
+  "qualification": "Opening 结构和选择理由已锁定；投稿第一句中一个名词仍不稳定，页面不发布该句逐字。",
+  "narrativeMode": "threaded",
+  "laneAnnotations": []
+}

@@ -1,0 +1,16 @@
+{
+  "project": "komatsu36",
+  "track": "komatsu36/yt-main",
+  "act": "komatsu36/act-03",
+  "startMs": 6201000,
+  "endMs": 6233000,
+  "timingStatus": "exact",
+  "title": "濱总结狩野这四年：越来越おじさん",
+  "summary": "濱开始盘点狩野这四年的变化：以前觉得只有大叔会做的事，如今几乎一个个都做上了。吐槽到最后，又补了一句——还好脸长得好看。",
+  "people": ["komatsu36/kano-sho", "komatsu36/hama-kento"],
+  "tags": ["狩野おじさん线", "dad joke", "setup"],
+  "publicationStatus": "qualified",
+  "qualification": "起始调侃者由人工回听确认作濱健人；无 speaker ASR 仅用于句子与时间互证。",
+  "narrativeMode": "threaded",
+  "laneAnnotations": []
+}

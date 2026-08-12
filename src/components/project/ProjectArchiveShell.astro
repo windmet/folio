@@ -1,0 +1,2190 @@
+---
+import { render } from 'astro:content';
+import ArchivePlayer from './ArchivePlayer.astro';
+import ActSection from './ActSection.astro';
+import ThreadPanel from './ThreadPanel.astro';
+import PersonPopover from './PersonPopover.astro';
+import ProjectSearch from './ProjectSearch.astro';
+import MediaSourceNavigator from './MediaSourceNavigator.astro';
+import TimelineNavigator from './TimelineNavigator.astro';
+import SourceTimeline from './SourceTimeline.astro';
+import CastMatrix from './CastMatrix.astro';
+import PersonCard from './PersonCard.astro';
+import LeadPersonCard from './LeadPersonCard.astro';
+import { readerLabel, threadCategoryLabels } from '../../lib/projectReaderLabels';
+
+export interface Props {
+  project: any;
+  tracks: any[];
+  acts: any[];
+  events: any[];
+  threads: any[];
+  people: any[];
+  sources: any[];
+}
+
+const { project, tracks, acts, events, threads, people, sources } = Astro.props;
+const localId = (id: string) => id.split('/').at(-1) || id;
+const referenceId = (reference: any) => reference.id;
+const peopleById = new Map(people.map((person) => [person.id, person]));
+const eventsById = new Map(events.map((event) => [event.id, event]));
+const tracksById = new Map(tracks.map((track) => [track.id, track]));
+const sourcesById = new Map(sources.map((source) => [source.id, source]));
+const threadsByEvent = new Map<string, string[]>();
+const threadsByPerson = new Map<string, string[]>();
+const eventsByPerson = new Map<string, any[]>();
+
+for (const thread of threads) {
+  for (const node of thread.data.nodes) {
+    const list = threadsByEvent.get(referenceId(node.event)) || [];
+    list.push(localId(thread.id));
+    threadsByEvent.set(referenceId(node.event), list);
+  }
+}
+
+for (const threadIds of threadsByEvent.values()) {
+  threadIds.sort((a, b) => a.localeCompare(b, 'en'));
+}
+
+for (const event of events) {
+  for (const personReference of event.data.people) {
+    const list = eventsByPerson.get(referenceId(personReference)) || [];
+    list.push(event);
+    eventsByPerson.set(referenceId(personReference), list);
+  }
+}
+
+for (const thread of threads) {
+  const personIds = new Set<string>();
+  for (const node of thread.data.nodes) {
+    const event = eventsById.get(referenceId(node.event));
+    for (const personReference of event?.data.people || []) personIds.add(referenceId(personReference));
+  }
+  for (const personId of personIds) {
+    const list = threadsByPerson.get(personId) || [];
+    list.push(localId(thread.id));
+    threadsByPerson.set(personId, list);
+  }
+}
+
+for (const threadIds of threadsByPerson.values()) {
+  threadIds.sort((left, right) => {
+    const leftThread = threads.find((thread) => localId(thread.id) === left);
+    const rightThread = threads.find((thread) => localId(thread.id) === right);
+    return Number(rightThread?.data.featured) - Number(leftThread?.data.featured)
+      || leftThread?.data.title.localeCompare(rightThread?.data.title, 'zh-CN');
+  });
+}
+
+const threadViews = await Promise.all(threads.map(async (entry) => {
+  const { Content } = await render(entry);
+  return {
+    entry,
+    Content,
+    relatedSources: (entry.data.relatedSources || []).map((relatedSource: any) => ({
+      source: sourcesById.get(referenceId(relatedSource.source)),
+      afterEvent: referenceId(relatedSource.afterEvent),
+      context: relatedSource.context,
+    })).filter((relatedSource: any) => relatedSource.source),
+    nodes: entry.data.nodes.map((node: any) => ({
+      event: eventsById.get(referenceId(node.event)),
+      role: node.role,
+      transition: node.transition,
+      trackLabel: tracksById.get(referenceId(eventsById.get(referenceId(node.event))?.data.track))?.data.shortLabel || '—',
+    })).filter((node: any) => node.event),
+  };
+}));
+
+const defaultTrack = tracks.find((track) => track.id === referenceId(project.data.defaultTrack)) || tracks[0];
+const defaultTimelineTrackId = localId(defaultTrack.id);
+const orderedActs = [...acts].sort((a, b) => a.data.order - b.data.order);
+const orderedThreads = [...threads].sort((a, b) => Number(b.data.featured) - Number(a.data.featured) || a.data.title.localeCompare(b.data.title, 'zh-CN'));
+const threadsById = new Map(orderedThreads.map((thread) => [localId(thread.id), thread]));
+const orderedPeople = [...people].sort((a, b) => a.data.displayName.localeCompare(b.data.displayName, 'zh-CN'));
+const formatDuration = (milliseconds: number) => {
+  const total = Math.max(0, Math.floor(milliseconds / 1000));
+  const parts = [Math.floor(total / 3600), Math.floor((total % 3600) / 60), total % 60];
+  return parts.map((part) => String(part).padStart(2, '0')).join(':');
+};
+const archiveStats = [
+  [formatDuration(defaultTrack.data.durationMs), '主直播时长'],
+  [String(tracks.length), '独立媒体'],
+  [String(orderedThreads.length), '故事线'],
+];
+const leadPersonId = 'komatsu-shohei';
+const leadPerson = orderedPeople.find((person) => localId(person.id) === leadPersonId);
+const publishedEvents = events.filter((event) => event.data.publicationStatus !== 'withheld');
+const eventsForAct = (actId: string) => publishedEvents
+  .filter((event) => event.data.act?.id === actId)
+  .sort((a, b) => a.data.startMs - b.data.startMs);
+const payoffEvent = publishedEvents.find((event) => localId(event.id) === 'yt-030923-takoyaki-payoff');
+const trackOrder = new Map([['yt-main', 0], ['space-1', 1], ['space-2', 2]]);
+const orderedTimelineTracks = [...tracks].sort((left, right) =>
+  (trackOrder.get(localId(left.id)) ?? 99) - (trackOrder.get(localId(right.id)) ?? 99),
+);
+const eventsByTrack = new Map<string, any[]>(
+  orderedTimelineTracks.map((track) => [
+    localId(track.id),
+    publishedEvents
+      .filter((event) => localId(referenceId(event.data.track)) === localId(track.id))
+      .sort((left, right) => left.data.startMs - right.data.startMs || localId(left.id).localeCompare(localId(right.id), 'en')),
+  ]),
+);
+
+const controllerData = {
+  projectId: project.id,
+  defaultView: project.data.defaultView,
+  defaultTrackId: localId(defaultTrack.id),
+  tracks: Object.fromEntries(tracks.map((track) => [localId(track.id), {
+    id: localId(track.id),
+    label: track.data.label,
+    shortLabel: track.data.shortLabel,
+    kind: track.data.kind,
+    clock: track.data.clock,
+    durationMs: track.data.durationMs,
+    playback: track.data.playback,
+    fallbackUrl: track.data.fallbackUrl,
+  }])),
+  events: Object.fromEntries(publishedEvents.map((event) => [localId(event.id), {
+    id: localId(event.id),
+    trackId: localId(referenceId(event.data.track)),
+    startMs: event.data.startMs,
+    title: event.data.title,
+    threadIds: localId(referenceId(event.data.track)) === localId(defaultTrack.id) ? [] : (threadsByEvent.get(event.id) || []),
+  }])),
+};
+const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', '\\u003c');
+---
+
+<project-archive-shell data-project-archive>
+  <header class="project-hero">
+    <div class="project-hero__copy">
+      <span class="archive-kicker">{project.data.eyebrow}</span>
+      <h1>{project.data.title}</h1>
+      <p>
+        {project.data.summary}
+        <span class="project-hero__source-note">本档案整理自 YouTube 主直播与两段 X Space；三份媒体保留各自原视频时间，不强行换算为统一时钟。</span>
+      </p>
+      <div class="project-facts" aria-label="档案统计">
+        {archiveStats.map(([value, label]) => (
+          <div class="project-fact">
+            <strong>{value}</strong>
+            <span>{label}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+    <div class="project-hero__stamp" aria-hidden="true">
+      <strong>{project.data.mark || 'A'}</strong>
+      <span>BIRTHDAY<br />SPECIAL</span>
+    </div>
+  </header>
+
+  <MediaSourceNavigator tracks={tracks} events={publishedEvents} sources={sources} />
+
+  <nav class="project-nav" aria-label="专题视图">
+    {[
+      ['overview', 'Overview', '快速了解'],
+      ['timeline', 'Timeline', '按时间浏览'],
+      ['storylines', 'Storylines', '精彩事件'],
+      ['people', 'People', '人物'],
+      ['transcript', 'Transcript', '完整资料'],
+    ].map(([id, en, zh]) => (
+      <button type="button" data-view-button={id} aria-pressed="false">
+        <strong>{en}</strong><span>{zh}</span>
+      </button>
+    ))}
+  </nav>
+
+  <ProjectSearch projectSlug={project.data.slug} />
+
+  <div class="project-workspace">
+    <div class="project-content">
+      <section class="project-view overview-view" data-view-panel="overview" hidden>
+        <div class="view-heading">
+          <span class="archive-kicker">FIVE-MINUTE ORIENTATION</span>
+          <h2>不知道从哪里开始的话，可以先看看这些</h2>
+          <div class="overview-orientation">
+            <p>前半程还在为设备和流程焦头烂额，人到齐以后又被礼物、赛马、Space 和各种临时事故不断带跑；随后认真复盘《俺知》，真正准备结束以后，还拖出了公告、圆阵、Super Chat、约好的歌和青春 Amigo。</p>
+            <p>这是刚步入 36 岁的小松昌平——生日主角、主持人，也是《俺知》的主创。</p>
+            <p>然后你会陆续遇到：“空手套礼品卡”的濱健人；把 20:50 变成赛马现场的寺島惇太；从一句“想吃俄罗斯章鱼烧”开始，约 80 分钟后真的炸到后辈嘴里的芥末章鱼烧；突然跑进 Space、只留下“今晚吃烤肉”的仲村宗悟；还有那个一直声称“不是本人”的室元气账号。</p>
+            <p class="overview-orientation__cta"><strong>如果想继续了解这场以《俺を知ってくれ！》为主题的生日会，看看小松和这些来宾在五个小时里到底发生了些什么，就继续往下看吧。→</strong></p>
+          </div>
+        </div>
+        <div class="overview-grid">
+          <article>
+            <span>01</span><h3>生日会</h3><p>礼物、赛马、俳句、Bingo 与最后的 36 岁抱负。</p>
+          </article>
+          <article>
+            <span>02</span><h3>《俺知》打ち上げ</h3><p>名场面、动作、方言与朗读形式的现场复盘。</p>
+          </article>
+          <article>
+            <span>03</span><h3>Space 技术线</h3><p>主播反复离席，另一平台的事件又回流到主桌。</p>
+          </article>
+        </div>
+        {payoffEvent && (
+          <button type="button" class="featured-jump" data-event-seek={localId(payoffEvent.id)}>
+            <span class="archive-kicker">精彩回收 · 03:09:23</span>
+            <strong>{payoffEvent.data.title}</strong>
+            <span>定位并进入时间线 →</span>
+          </button>
+        )}
+      </section>
+
+      <section class="project-view timeline-view" data-view-panel="timeline" hidden>
+        <div class="view-heading">
+          <span class="archive-kicker">CHRONOLOGICAL CANON · SOURCE-LOCAL CLOCKS</span>
+          <h2 id="timeline-view-title">Timeline</h2>
+          <p>选择一个来源查看其独立本地时钟。YouTube 保留八个 Act 主线，X Space 使用各自的事件列表，不把现场时钟硬拼在一起。</p>
+        </div>
+        <div class="timeline-scope" data-timeline-scope>
+          <div class="timeline-scope__heading">
+            <span class="archive-kicker">TIMELINE SCOPE</span>
+            <p data-timeline-scope-description aria-live="polite">按来源切换；所有时间均使用各自原视频的时间。</p>
+          </div>
+          <div class="timeline-scope__buttons" role="group" aria-label="Timeline 来源范围">
+            {orderedTimelineTracks.map((track) => {
+              const trackId = localId(track.id);
+              const trackEvents = eventsByTrack.get(trackId) || [];
+              return (
+                <button
+                  type="button"
+                  class="timeline-scope__button"
+                  data-timeline-scope-button={trackId}
+                  aria-pressed={trackId === defaultTimelineTrackId ? 'true' : 'false'}
+                  aria-controls={`timeline-scope-panel-${trackId}`}
+                  aria-label={`选择${track.data.label}时间线 · ${trackEvents.length} 个事件 · 原视频时间`}
+                >
+                  <span>{track.data.shortLabel}</span>
+                  <strong>{track.data.label}</strong>
+                  <small>{trackEvents.length} 个事件 · 原视频时间</small>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+        <div
+          id={`timeline-scope-panel-${defaultTimelineTrackId}`}
+          data-timeline-scope-panel={defaultTimelineTrackId}
+          aria-labelledby="timeline-view-title"
+          aria-hidden="false"
+        >
+          <TimelineNavigator acts={orderedActs} />
+          {orderedActs.map((act) => (
+            <ActSection act={act} actTotal={orderedActs.length} events={eventsForAct(act.id)} peopleById={peopleById} threadsByEvent={threadsByEvent} threadsById={threadsById} />
+          ))}
+        </div>
+        {orderedTimelineTracks.filter((track) => localId(track.id) !== defaultTimelineTrackId).map((track) => (
+          <SourceTimeline
+            track={track}
+            events={eventsByTrack.get(localId(track.id)) || []}
+            peopleById={peopleById}
+            threadsByEvent={threadsByEvent}
+            threadsById={threadsById}
+          />
+        ))}
+      </section>
+
+      <section class="project-view storylines-view" data-view-panel="storylines" hidden>
+        <div class="view-heading">
+          <span class="archive-kicker">CONTEXT RECONSTRUCTION</span>
+          <h2>Storylines</h2>
+          <p>事件线按故事发展顺序排列；跨平台段落保留各自时间，不强行合并成一个时钟。</p>
+        </div>
+        <div class="storyline-list">
+          {orderedThreads.map((thread) => (
+            <button type="button" class="storyline-card" data-open-thread={localId(thread.id)}>
+              <span class="archive-taxonomy">{readerLabel(threadCategoryLabels, thread.data.category)}</span>
+              <h3>{thread.data.title}</h3>
+              <p>{thread.data.deck}</p>
+              <strong>{thread.data.nodes.length} 个节点 · 查看完整事件线 →</strong>
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <section class="project-view people-view" data-view-panel="people" hidden>
+        <div class="view-heading">
+          <span class="archive-kicker">PEOPLE / CAST</span>
+          <h2>People</h2>
+          <p>每个人物页都会汇总他在主直播、Space 与《俺知》复盘中出现的相关片段。</p>
+        </div>
+        {leadPerson && (
+          <section class="people-lead" aria-labelledby="people-lead-title">
+            <div class="people-group__heading"><span>00</span><h3 id="people-lead-title">HOST / BIRTHDAY</h3></div>
+            <LeadPersonCard person={leadPerson} eventCount={(eventsByPerson.get(leadPerson.id) || []).length} />
+          </section>
+        )}
+        <section class="people-group">
+          <div class="people-group__heading"><span>01</span><h3>ORE-SHIRI CAST</h3></div>
+          <CastMatrix people={orderedPeople} />
+        </section>
+        <section class="people-group">
+          <div class="people-group__heading"><span>02</span><h3>PRODUCTION / ACTION</h3></div>
+          <div class="people-grid">
+            {orderedPeople.filter((person) => (person.data.participation || []).some((item: any) => ['production', 'ensemble'].includes(item.kind))).map((person) => (
+              <PersonCard person={person} group="production" eventCount={(eventsByPerson.get(person.id) || []).length} />
+            ))}
+          </div>
+        </section>
+        <section class="people-group">
+          <div class="people-group__heading"><span>03</span><h3>BIRTHDAY LIVE PARTICIPANTS</h3></div>
+          <div class="people-grid">
+            {orderedPeople.filter((person) => localId(person.id) !== leadPersonId && (person.data.participation || []).some((item: any) => item.kind === 'birthday-live')).map((person) => (
+              <PersonCard person={person} group="birthday-live" eventCount={(eventsByPerson.get(person.id) || []).length} />
+            ))}
+          </div>
+        </section>
+        <section class="people-group">
+          <div class="people-group__heading"><span>04</span><h3>X SPACE / REMOTE</h3></div>
+          <div class="people-grid">
+            {orderedPeople.filter((person) => (person.data.participation || []).some((item: any) => ['space-guest', 'remote-call', 'space-account'].includes(item.kind))).map((person) => (
+              <PersonCard person={person} group="space-remote" eventCount={(eventsByPerson.get(person.id) || []).length} />
+            ))}
+          </div>
+        </section>
+      </section>
+
+      <section class="project-view transcript-view" data-view-panel="transcript" hidden>
+        <div class="view-heading">
+          <span class="archive-kicker">RIGHTS GATE</span>
+          <h2>Transcript 暂不公开</h2>
+          <p>逐字稿暂不公开；本档案先提供时间线、事件摘要和事件线，保留原始媒体入口。</p>
+        </div>
+      </section>
+    </div>
+
+    <aside class="project-player-column">
+      <ArchivePlayer
+        trackId={localId(defaultTrack.id)}
+        label={defaultTrack.data.label}
+        videoId={defaultTrack.data.playback.provider === 'youtube' ? defaultTrack.data.playback.videoId : undefined}
+        fallbackUrl={defaultTrack.data.fallbackUrl}
+        tracks={tracks}
+      />
+    </aside>
+  </div>
+
+  <ThreadPanel threads={threadViews} />
+  <PersonPopover
+    people={orderedPeople}
+    eventsByPerson={eventsByPerson}
+    tracksById={tracksById}
+    threadsByEvent={threadsByEvent}
+    threadsByPerson={threadsByPerson}
+    threadsById={threadsById}
+    defaultTrackId={defaultTrack.id}
+  />
+  <script type="application/json" data-archive-controller-data set:html={serializedControllerData}></script>
+</project-archive-shell>
+
+<script>
+  import { normalizeProjectSearchText } from '../../lib/projectSearchNormalization';
+
+  type ArchiveEvent = {
+    id: string;
+    trackId: string;
+    startMs: number;
+    title: string;
+    threadIds: string[];
+  };
+  type SearchItem = {
+    kind: 'event' | 'thread' | 'person';
+    id: string;
+    label: string;
+    title: string;
+    searchText: string;
+    trackId?: string;
+    startMs?: number;
+    preferredThreadId?: string;
+  };
+  type PlayerPresentationMode = 'expanded' | 'docked' | 'bubble';
+  type YouTubeLoadState = 'idle' | 'loading' | 'ready' | 'error';
+  type ArchiveTrack = {
+    id: string;
+    label: string;
+    shortLabel: string;
+    kind: 'video' | 'audio';
+    clock: 'native' | 'offset';
+    durationMs: number;
+    playback: { provider: 'youtube'; videoId: string } | { provider: 'external'; url: string } | { provider: 'unavailable' };
+    fallbackUrl?: string;
+  };
+  type ControllerData = {
+    projectId: string;
+    defaultView: string;
+    defaultTrackId: string;
+    tracks: Record<string, ArchiveTrack>;
+    events: Record<string, ArchiveEvent>;
+  };
+  type EventArchiveContext = {
+    threadIds: string[];
+  };
+
+  declare global {
+    interface Window {
+      YT?: any;
+      onYouTubeIframeAPIReady?: () => void;
+      __folioYouTubeApi?: Promise<any>;
+    }
+  }
+
+  const loadYouTubeApi = () => {
+    if (window.YT?.Player) return Promise.resolve(window.YT);
+    if (window.__folioYouTubeApi) return window.__folioYouTubeApi;
+    let failedScript: HTMLScriptElement | null = null;
+    let timeoutId: number | null = null;
+    let apiPromise: Promise<any>;
+    apiPromise = new Promise<any>((resolve, reject) => {
+      const previous = window.onYouTubeIframeAPIReady;
+      const ready = () => {
+        if (timeoutId !== null) window.clearTimeout(timeoutId);
+        if (window.onYouTubeIframeAPIReady === ready) window.onYouTubeIframeAPIReady = previous;
+        try {
+          previous?.();
+        } catch {
+          // A stale callback from another page consumer must not block this load.
+        }
+        if (window.YT?.Player) resolve(window.YT);
+        else fail(new Error('YouTube API loaded without a Player constructor'));
+      };
+      const fail = (error: Error) => {
+        if (timeoutId !== null) window.clearTimeout(timeoutId);
+        if (window.onYouTubeIframeAPIReady === ready) window.onYouTubeIframeAPIReady = previous;
+        failedScript?.remove();
+        if (window.__folioYouTubeApi === apiPromise) window.__folioYouTubeApi = undefined;
+        reject(error);
+      };
+      failedScript = document.createElement('script');
+      failedScript.src = 'https://www.youtube.com/iframe_api';
+      failedScript.async = true;
+      failedScript.addEventListener('error', () => fail(new Error('YouTube API failed to load')), { once: true });
+      window.onYouTubeIframeAPIReady = ready;
+      document.head.append(failedScript);
+      timeoutId = window.setTimeout(() => fail(new Error('YouTube API timed out')), 10000);
+    });
+    window.__folioYouTubeApi = apiPromise;
+    return apiPromise;
+  };
+
+  class ProjectArchiveShellElement extends HTMLElement {
+    data!: ControllerData;
+    activeView = 'timeline';
+    playerPresentationMode: PlayerPresentationMode = 'expanded';
+    playerModePreferences: Record<string, 'expanded' | 'docked'> = {};
+    activeTrackId = '';
+    timelineScopeId = '';
+    selectedEventId: string | null = null;
+    selectedThreadId: string | null = null;
+    selectedPersonId: string | null = null;
+    player: any = null;
+    playerReady = false;
+    playerLoadState: YouTubeLoadState = 'idle';
+    playerLoadPromise: Promise<any> | null = null;
+    cancelPlayerLoad: (() => void) | null = null;
+    playerReadyTimeoutId: number | null = null;
+    playerLoadAttempt = 0;
+    playerPosterFailed = false;
+    pendingSeekMs: number | null = null;
+    mobileResumeMs: number | null = null;
+    playbackSyncTimer: number | null = null;
+    returnFocus: HTMLElement | null = null;
+    lockedScrollY = 0;
+    lockedBodyPaddingRight = '';
+    searchOpen = false;
+    searchItems: SearchItem[] = [];
+    searchLoadPromise: Promise<SearchItem[] | null> | null = null;
+    searchLoaded = false;
+    sourceEventsOpen = false;
+    sourceEventListsBuilt = new Set<string>();
+    contextFocusObserver: ResizeObserver | null = null;
+    playerTextResizeObserver: ResizeObserver | null = null;
+    contextArrivalTimer: number | null = null;
+    timelineScrollScheduled = false;
+    timelineScrollHandler = () => this.scheduleTimelineNavigatorUpdate();
+    timelineResizeHandler = () => {
+      this.applyPlayerPresentationMode(this.activeView);
+      this.scheduleTimelineNavigatorUpdate();
+    };
+
+    connectedCallback() {
+      if (this.dataset.ready === 'true') return;
+      this.dataset.ready = 'true';
+      const dataNode = this.querySelector('[data-archive-controller-data]');
+      if (!(dataNode instanceof HTMLScriptElement)) return;
+      this.data = JSON.parse(dataNode.textContent || '{}');
+      this.loadPlayerModePreferences();
+      this.activeTrackId = this.data.defaultTrackId;
+      this.timelineScopeId = this.data.defaultTrackId;
+      this.bindEvents();
+      const playerFrame = this.querySelector<HTMLElement>('[data-player-frame]');
+      if (playerFrame && typeof ResizeObserver !== 'undefined') {
+        this.playerTextResizeObserver = new ResizeObserver(() => {
+          this.refreshPlayerText();
+          this.refreshInlineText();
+        });
+        this.playerTextResizeObserver.observe(playerFrame);
+        this.querySelectorAll<HTMLElement>('[data-inline-expandable]').forEach((text) => {
+          this.playerTextResizeObserver?.observe(text);
+        });
+      }
+      window.addEventListener('scroll', this.timelineScrollHandler, { passive: true });
+      window.addEventListener('resize', this.timelineResizeHandler, { passive: true });
+      this.scheduleTimelineNavigatorUpdate();
+      this.restoreFromUrl();
+      this.refreshInlineText();
+    }
+
+    disconnectedCallback() {
+      this.cancelPendingPlayerLoad();
+      this.stopPlaybackSync();
+      this.contextFocusObserver?.disconnect();
+      this.playerTextResizeObserver?.disconnect();
+      if (this.contextArrivalTimer !== null) window.clearTimeout(this.contextArrivalTimer);
+      window.removeEventListener('scroll', this.timelineScrollHandler);
+      window.removeEventListener('resize', this.timelineResizeHandler);
+    }
+
+    bindEvents() {
+      this.querySelectorAll<HTMLElement>('[data-view-button]').forEach((button) => {
+        button.addEventListener('click', () => this.showView(button.dataset.viewButton || 'timeline', true));
+      });
+      this.querySelector<HTMLElement>('[data-timeline-navigator]')?.addEventListener('click', (event) => {
+        const target = event.target instanceof Element ? event.target : null;
+        const button = target?.closest<HTMLElement>('[data-timeline-navigator-segment]');
+        const mobileOption = target?.closest<HTMLElement>('[data-mobile-act-option]');
+        if (button) this.navigateToAct(button.dataset.timelineNavigatorSegment || '');
+        else if (mobileOption) this.navigateToAct(mobileOption.dataset.mobileActOption || '');
+      });
+      this.querySelector<HTMLElement>('[data-mobile-act-toggle]')?.addEventListener('click', () => this.toggleMobileActMenu());
+      this.querySelectorAll<HTMLElement>('[data-timeline-scope-button]').forEach((button) => {
+        button.addEventListener('click', () => this.switchTimelineScope(button.dataset.timelineScopeButton || '', true));
+      });
+      this.querySelectorAll<HTMLElement>('[data-event-seek]').forEach((button) => {
+        button.addEventListener('click', () => this.selectEvent(button.dataset.eventSeek || '', true, true));
+      });
+      this.querySelectorAll<HTMLElement>('[data-event-detail]').forEach((button) => {
+        button.addEventListener('click', () => {
+          if (!window.matchMedia('(max-width: 900px)').matches) return;
+          const eventId = button.dataset.eventDetail || '';
+          const card = button.closest<HTMLElement>('[data-event-card]');
+          if (card?.classList.contains('is-active')) this.setActiveEventState(null);
+          else this.selectEvent(eventId, true, false);
+        });
+      });
+      this.querySelectorAll<HTMLElement>('[data-source-track]').forEach((button) => {
+        button.addEventListener('click', () => this.switchTrack(button.dataset.sourceTrack || '', true));
+      });
+      this.querySelectorAll<HTMLElement>('[data-source-browse]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const trackId = button.dataset.sourceBrowse || '';
+          this.switchTrack(trackId, true);
+          this.showSourceEventIndex(trackId);
+        });
+      });
+      this.querySelector<HTMLElement>('[data-source-event-index]')?.addEventListener('click', (event) => {
+        const target = event.target instanceof Element ? event.target : null;
+        const button = target?.closest<HTMLElement>('[data-source-event]');
+        if (button) this.selectEvent(button.dataset.sourceEvent || '', true, false);
+      });
+      this.querySelectorAll<HTMLElement>('[data-thread-event-id]').forEach((button) => {
+        button.addEventListener('click', () => this.navigateEventToTimeline(button.dataset.threadEventId || ''));
+      });
+      this.querySelectorAll<HTMLElement>('[data-person-event-id]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const eventId = button.dataset.personEventId || '';
+          this.navigateToEventContext(eventId, {
+            origin: 'person',
+            preferredThreadId: button.dataset.personThread,
+          });
+        });
+      });
+      this.querySelectorAll<HTMLElement>('[data-open-thread]').forEach((button) => {
+        button.addEventListener('click', () => this.openThread(button.dataset.openThread || '', button, true));
+      });
+      this.querySelectorAll<HTMLElement>('[data-open-person]').forEach((button) => {
+        button.addEventListener('click', () => this.openPerson(button.dataset.openPerson || '', button, true));
+      });
+      this.querySelectorAll<HTMLElement>('[data-close-thread]').forEach((button) => button.addEventListener('click', () => this.closeThread(true)));
+      this.querySelectorAll<HTMLElement>('[data-close-person]').forEach((button) => button.addEventListener('click', () => this.closePerson(true)));
+      this.querySelector<HTMLElement>('[data-load-player]')?.addEventListener('click', () => this.ensurePlayer());
+      this.querySelector<HTMLElement>('[data-player-retry]')?.addEventListener('click', () => this.retryPlayer());
+      const poster = this.querySelector<HTMLImageElement>('[data-player-poster]');
+      poster?.addEventListener('load', () => this.setPlayerPosterFailed(false));
+      poster?.addEventListener('error', () => this.setPlayerPosterFailed(true));
+      if (poster?.complete) this.setPlayerPosterFailed(poster.naturalWidth === 0);
+      this.querySelector<HTMLElement>('[data-player-mode-toggle]')?.addEventListener('click', () => {
+        const desktop = window.matchMedia('(min-width: 901px)').matches;
+        this.setPlayerPresentationMode(this.playerPresentationMode === 'expanded'
+          ? desktop ? 'docked' : 'bubble'
+          : 'expanded');
+      });
+      this.querySelector<HTMLElement>('[data-player-bubble]')?.addEventListener('click', () => {
+        this.setPlayerPresentationMode('expanded');
+      });
+      this.querySelectorAll<HTMLButtonElement>('[data-player-text-toggle]').forEach((button) => {
+        button.addEventListener('click', () => this.togglePlayerText(button.dataset.playerTextToggle || ''));
+      });
+      this.querySelectorAll<HTMLButtonElement>('[data-inline-text-toggle]').forEach((button) => {
+        button.addEventListener('click', () => this.toggleInlineText(button.dataset.inlineTextToggle || ''));
+      });
+      this.querySelector<HTMLElement>('[data-player-context-cta]')?.addEventListener('click', () => {
+        if (!this.selectedEventId) return;
+        this.navigateToEventContext(this.selectedEventId, { origin: 'player' });
+      });
+      this.querySelectorAll<HTMLAnchorElement>('[data-external-youtube-handoff]').forEach((link) => {
+        link.addEventListener('click', () => this.pauseEmbeddedForExternalHandoff());
+      });
+      this.querySelector<HTMLElement>('[data-player-context-thread-list]')?.addEventListener('click', (event) => {
+        const button = (event.target as HTMLElement).closest<HTMLElement>('[data-player-context-thread]');
+        if (!button || !this.selectedEventId) return;
+        this.navigateToEventContext(this.selectedEventId, {
+          origin: 'player',
+          preferredThreadId: button.dataset.playerContextThread,
+        });
+      });
+      this.querySelector<HTMLElement>('[data-player-rail-node]')?.addEventListener('click', () => {
+        if (!this.selectedEventId) return;
+        this.navigateEventToTimeline(this.selectedEventId);
+      });
+      this.querySelector<HTMLElement>('[data-player-rail-thread]')?.addEventListener('click', () => {
+        if (!this.selectedEventId) return;
+        const threadIds = this.getEventArchiveContext(this.selectedEventId).threadIds;
+        if (threadIds.length === 0) return;
+        if (threadIds.length === 1) {
+          this.closePlayerRailThreadMenu(false);
+          this.openThreadFromPlayerRail(threadIds[0]);
+          return;
+        }
+        this.togglePlayerRailThreadMenu(threadIds);
+      });
+      this.querySelector<HTMLElement>('[data-player-rail-thread-list]')?.addEventListener('click', (event) => {
+        const button = (event.target as HTMLElement).closest<HTMLElement>('[data-player-rail-thread-option]');
+        if (!button || !this.selectedEventId) return;
+        const threadId = button.dataset.playerRailThreadOption;
+        if (!threadId) return;
+        this.closePlayerRailThreadMenu(false);
+        this.openThreadFromPlayerRail(threadId);
+      });
+      document.addEventListener('click', (event) => {
+        const menu = this.querySelector<HTMLElement>('[data-player-rail-thread-menu]');
+        if (menu?.hidden) return;
+        const slot = this.querySelector<HTMLElement>('.player-context-rail__thread-slot');
+        if (slot && !slot.contains(event.target as Node)) this.closePlayerRailThreadMenu(false);
+      });
+      document.addEventListener('click', (event) => {
+        const menu = this.querySelector<HTMLElement>('[data-mobile-act-menu]');
+        if (!menu || menu.hidden) return;
+        const mobileNavigator = this.querySelector<HTMLElement>('.timeline-navigator__mobile');
+        if (mobileNavigator && !mobileNavigator.contains(event.target as Node)) this.closeMobileActMenu(false);
+      });
+      const searchInput = this.querySelector<HTMLInputElement>('[data-archive-search]');
+      searchInput?.addEventListener('focus', () => { void this.ensureSearchIndex(); });
+      searchInput?.addEventListener('input', () => { void this.filterSearch(searchInput.value); });
+      this.querySelector<HTMLElement>('[data-search-clear]')?.addEventListener('click', () => {
+        if (searchInput) searchInput.value = '';
+        this.closeSearch(true);
+      });
+      this.querySelector<HTMLElement>('[data-search-results]')?.addEventListener('click', (event) => {
+        const target = event.target instanceof Element ? event.target : null;
+        const button = target?.closest<HTMLElement>('[data-search-item]');
+        if (button) this.handleSearchResult(button, searchInput || null);
+      });
+      window.addEventListener('popstate', () => this.restoreFromUrl());
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Tab' && (this.selectedThreadId || this.selectedPersonId)) {
+          this.trapModalFocus(event);
+          return;
+        }
+        if (event.key !== 'Escape') return;
+        const actMenu = this.querySelector<HTMLElement>('[data-mobile-act-menu]');
+        const railMenu = this.querySelector<HTMLElement>('[data-player-rail-thread-menu]');
+        if (actMenu && !actMenu.hidden) this.closeMobileActMenu(true);
+        else if (railMenu && !railMenu.hidden) this.closePlayerRailThreadMenu(true);
+        else if (this.selectedPersonId) this.closePerson(true);
+        else if (this.selectedThreadId) this.closeThread(true);
+        else if (this.searchOpen) this.closeSearch(true);
+      });
+    }
+
+    async ensureSearchIndex(): Promise<SearchItem[] | null> {
+      if (this.searchLoaded) return this.searchItems;
+      if (this.searchLoadPromise) return this.searchLoadPromise;
+      const endpoint = this.querySelector<HTMLElement>('[data-search-shell]')?.dataset.searchEndpoint;
+      const status = this.querySelector<HTMLElement>('[data-search-status]');
+      const errorPanel = this.querySelector<HTMLElement>('[data-search-error]');
+      if (!endpoint) {
+        if (status) status.textContent = '搜索索引配置缺失';
+        if (errorPanel) {
+          errorPanel.hidden = false;
+          errorPanel.textContent = '搜索索引暂时无法载入，专题其余内容仍可继续浏览。';
+        }
+        this.searchLoadPromise = Promise.resolve(null);
+        return this.searchLoadPromise;
+      }
+      if (status) status.textContent = '正在加载公开搜索索引…';
+      if (errorPanel) errorPanel.hidden = true;
+      this.searchLoadPromise = fetch(endpoint, { headers: { Accept: 'application/json' } })
+        .then(async (response) => {
+          if (!response.ok) throw new Error(`Search index request failed: ${response.status}`);
+          const payload = await response.json() as { schemaVersion?: number; items?: SearchItem[] };
+          if (payload.schemaVersion !== 1 || !Array.isArray(payload.items)) throw new Error('Search index payload is invalid');
+          if (payload.items.some((item) => !item || !['event', 'thread', 'person'].includes(item.kind)
+            || typeof item.id !== 'string' || typeof item.title !== 'string' || typeof item.searchText !== 'string')) {
+            throw new Error('Search index item is invalid');
+          }
+          this.searchItems = payload.items;
+          this.searchLoaded = true;
+          if (status) status.textContent = `公开搜索索引已加载 · ${payload.items.length} 项`;
+          return this.searchItems;
+        })
+        .catch((loadError) => {
+          if (status) status.textContent = '搜索索引未载入';
+          if (errorPanel) {
+            errorPanel.hidden = false;
+            errorPanel.textContent = '搜索索引暂时无法载入，专题其余内容仍可继续浏览。';
+          }
+          void loadError;
+          return null;
+        });
+      return this.searchLoadPromise;
+    }
+
+    createSearchResultButton(item: SearchItem) {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.dataset.searchItem = '';
+      button.dataset.searchKind = item.kind;
+      if (item.kind === 'event') {
+        button.dataset.searchEvent = item.id;
+        if (item.preferredThreadId) button.dataset.searchThread = item.preferredThreadId;
+      } else if (item.kind === 'thread') {
+        button.dataset.searchThread = item.id;
+      } else {
+        button.dataset.searchPerson = item.id;
+      }
+      const label = document.createElement('span');
+      label.textContent = item.label;
+      const title = document.createElement('strong');
+      title.textContent = item.title;
+      button.append(label, title);
+      return button;
+    }
+
+    handleSearchResult(button: HTMLElement, searchInput: HTMLInputElement | null) {
+      if (button.dataset.searchKind === 'event') {
+        this.navigateToEventContext(button.dataset.searchEvent || '', {
+          origin: 'search',
+          preferredThreadId: button.dataset.searchThread,
+        });
+        return;
+      }
+      this.closeSearch(false);
+      if (button.dataset.searchKind === 'thread') {
+        this.showView('storylines', false);
+        this.openThread(button.dataset.searchThread || '', searchInput, true);
+      } else if (button.dataset.searchKind === 'person') {
+        this.showView('people', false);
+        this.openPerson(button.dataset.searchPerson || '', searchInput, true);
+      }
+    }
+
+    async filterSearch(query: string) {
+      const normalized = normalizeProjectSearchText(query);
+      const panel = this.querySelector<HTMLElement>('[data-search-results]');
+      const input = this.querySelector<HTMLInputElement>('[data-archive-search]');
+      const clear = this.querySelector<HTMLElement>('[data-search-clear]');
+      const empty = this.querySelector<HTMLElement>('[data-search-empty]');
+      const count = this.querySelector<HTMLElement>('[data-search-count]');
+      const list = this.querySelector<HTMLElement>('[data-search-list]');
+      if (!panel || !input) return;
+      if (!normalized) {
+        this.closeSearch(false);
+        return;
+      }
+      const items = await this.ensureSearchIndex();
+      if (!items || normalizeProjectSearchText(input.value) !== normalized) return;
+      const matches = items.filter((item) => item.searchText.includes(normalized));
+      list?.replaceChildren(...matches.map((item) => this.createSearchResultButton(item)));
+      this.searchOpen = true;
+      panel.hidden = false;
+      input.setAttribute('aria-expanded', 'true');
+      if (clear) clear.hidden = false;
+      if (empty) empty.hidden = matches.length !== 0;
+      if (count) count.textContent = `${matches.length} 条结果`;
+    }
+
+    closeSearch(focus: boolean) {
+      this.searchOpen = false;
+      const panel = this.querySelector<HTMLElement>('[data-search-results]');
+      const input = this.querySelector<HTMLInputElement>('[data-archive-search]');
+      const clear = this.querySelector<HTMLElement>('[data-search-clear]');
+      if (panel) panel.hidden = true;
+      if (input) input.setAttribute('aria-expanded', 'false');
+      if (clear) clear.hidden = !(input?.value);
+      if (focus) input?.focus({ preventScroll: true });
+    }
+
+    applyTimelineScope(trackId: string) {
+      const scope = this.data.tracks[trackId] ? trackId : this.data.defaultTrackId;
+      this.timelineScopeId = scope;
+      this.querySelectorAll<HTMLElement>('[data-timeline-scope-panel]').forEach((panel) => {
+        const isActive = panel.dataset.timelineScopePanel === scope;
+        panel.hidden = !isActive;
+        panel.setAttribute('aria-hidden', String(!isActive));
+      });
+      this.querySelectorAll<HTMLElement>('[data-timeline-scope-button]').forEach((button) => {
+        button.setAttribute('aria-pressed', String(button.dataset.timelineScopeButton === scope));
+      });
+      const track = this.data.tracks[scope];
+      const description = this.querySelector<HTMLElement>('[data-timeline-scope-description]');
+      if (description && track) {
+        description.textContent = `${track.shortLabel} · ${track.label} · ${track.durationMs ? this.formatArchiveTime(track.durationMs) : '—'} · 原视频时间`;
+      }
+      const navigator = this.querySelector<HTMLElement>('[data-timeline-navigator]');
+      if (navigator) navigator.hidden = scope !== this.data.defaultTrackId;
+      if (scope !== this.data.defaultTrackId) this.closeMobileActMenu(false);
+      this.refreshInlineText();
+      this.scheduleTimelineNavigatorUpdate();
+    }
+
+    switchTimelineScope(trackId: string, push: boolean) {
+      if (!this.data.tracks[trackId]) return;
+      this.switchTrack(trackId, false);
+      this.applyTimelineScope(trackId);
+      if (push) this.updateUrl();
+    }
+
+    getTimelineScrollOffset() {
+      const nav = this.querySelector<HTMLElement>('.project-nav');
+      const navigator = this.querySelector<HTMLElement>('[data-timeline-navigator]');
+      return (nav?.getBoundingClientRect().height || 0)
+        + (navigator?.getBoundingClientRect().height || 0)
+        + 16;
+    }
+
+    scheduleTimelineNavigatorUpdate() {
+      if (this.timelineScrollScheduled) return;
+      this.timelineScrollScheduled = true;
+      window.requestAnimationFrame(() => {
+        this.timelineScrollScheduled = false;
+        const nav = this.querySelector<HTMLElement>('.project-nav');
+        this.style.setProperty('--project-nav-height', `${Math.ceil(nav?.getBoundingClientRect().height || 68)}px`);
+        this.updateTimelineNavigator();
+      });
+    }
+
+    updateTimelineNavigator() {
+      const navigator = this.querySelector<HTMLElement>('[data-timeline-navigator]');
+      if (!navigator || this.activeView !== 'timeline' || this.timelineScopeId !== this.data.defaultTrackId) return;
+      const sections = [...this.querySelectorAll<HTMLElement>('[data-view-panel="timeline"] [data-act]')];
+      if (sections.length === 0) return;
+      const pivot = this.getTimelineScrollOffset() + 8;
+      let current = sections[0];
+      for (const section of sections) {
+        if (section.getBoundingClientRect().top <= pivot) current = section;
+        else break;
+      }
+      const order = Number(current.dataset.actOrder || 1);
+      const total = sections.length;
+      const startMs = Number(current.dataset.actStartMs || 0);
+      const endMs = Number(current.dataset.actEndMs || 0);
+      const title = current.querySelector<HTMLElement>('.act-header h2')?.textContent?.trim() || 'Timeline';
+      navigator.querySelectorAll<HTMLElement>('[data-timeline-navigator-current-label]').forEach((label) => {
+        label.textContent = `ACT ${String(order).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
+      });
+      navigator.querySelectorAll<HTMLElement>('[data-timeline-navigator-current-title]').forEach((currentTitle) => {
+        currentTitle.textContent = title;
+      });
+      navigator.querySelectorAll<HTMLElement>('[data-timeline-navigator-current-time]').forEach((currentTime) => {
+        currentTime.textContent = `${this.formatArchiveTime(startMs)}–${this.formatArchiveTime(endMs)}`;
+      });
+      this.refreshInlineText();
+      navigator.dataset.currentAct = current.dataset.act || '';
+      navigator.querySelectorAll<HTMLElement>('[data-timeline-navigator-segment]').forEach((button) => {
+        button.setAttribute('aria-current', button.dataset.timelineNavigatorSegment === current.dataset.act ? 'step' : 'false');
+      });
+      navigator.querySelectorAll<HTMLElement>('[data-mobile-act-option]').forEach((button) => {
+        button.setAttribute('aria-current', button.dataset.mobileActOption === current.dataset.act ? 'step' : 'false');
+      });
+    }
+
+    toggleMobileActMenu() {
+      const menu = this.querySelector<HTMLElement>('[data-mobile-act-menu]');
+      const trigger = this.querySelector<HTMLElement>('[data-mobile-act-toggle]');
+      if (!menu || !trigger) return;
+      const opening = menu.hidden;
+      menu.hidden = !opening;
+      trigger.setAttribute('aria-expanded', String(opening));
+      if (opening) window.requestAnimationFrame(() => menu.querySelector<HTMLElement>('[aria-current="step"]')?.focus({ preventScroll: true }));
+    }
+
+    closeMobileActMenu(focus: boolean) {
+      const menu = this.querySelector<HTMLElement>('[data-mobile-act-menu]');
+      const trigger = this.querySelector<HTMLElement>('[data-mobile-act-toggle]');
+      if (menu) menu.hidden = true;
+      trigger?.setAttribute('aria-expanded', 'false');
+      if (focus) trigger?.focus({ preventScroll: true });
+    }
+
+    navigateToAct(actId: string) {
+      const section = this.querySelector<HTMLElement>(`[data-view-panel="timeline"] [data-act="${CSS.escape(actId)}"]`);
+      const header = section?.querySelector<HTMLElement>('[data-act-header]');
+      if (!section || !header) return;
+      this.closeMobileActMenu(false);
+      this.closeSearch(false);
+      this.showView('timeline', false);
+      header.style.scrollMarginTop = `${Math.ceil(this.getTimelineScrollOffset())}px`;
+      header.scrollIntoView({
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+        block: 'start',
+      });
+      header.focus({ preventScroll: true });
+      this.scheduleTimelineNavigatorUpdate();
+    }
+
+    showView(view: string, push: boolean) {
+      const panel = this.querySelector(`[data-view-panel="${CSS.escape(view)}"]`);
+      if (!panel) view = this.data.defaultView;
+      this.activeView = view;
+      this.querySelectorAll<HTMLElement>('[data-view-panel]').forEach((item) => { item.hidden = item.dataset.viewPanel !== view; });
+      this.querySelectorAll<HTMLElement>('[data-view-button]').forEach((button) => {
+        button.setAttribute('aria-pressed', String(button.dataset.viewButton === view));
+      });
+      this.applyTimelineScope(this.timelineScopeId || this.data.defaultTrackId);
+      this.applyPlayerPresentationMode(view);
+      this.updatePlayerContext(this.selectedEventId ? this.data.events[this.selectedEventId] : null);
+      this.refreshPlayerText();
+      this.refreshInlineText();
+      if (view === 'timeline') this.scheduleTimelineNavigatorUpdate();
+      if (push) this.updateUrl();
+    }
+
+    navigateToEventContext(eventId: string, options: { origin: 'person' | 'search' | 'player'; preferredThreadId?: string }) {
+      const event = this.data.events[eventId];
+      if (!event) return;
+
+      const contextTrigger = options.origin === 'player' && document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : options.origin === 'player'
+          ? this.querySelector<HTMLElement>('[data-player-context-cta]')
+          : null;
+      this.closeSearch(false);
+      if (this.selectedThreadId) this.closeThread(false);
+      if (this.selectedPersonId) this.closePerson(false);
+
+      this.selectEvent(eventId, false, false, options.origin === 'player');
+      const threadIds = this.getEventArchiveContext(eventId).threadIds;
+      const preferredThreadId = options.preferredThreadId && threadIds.includes(options.preferredThreadId)
+        ? options.preferredThreadId
+        : undefined;
+      const orderedThreadIds = preferredThreadId
+        ? [preferredThreadId, ...threadIds.filter((threadId) => threadId !== preferredThreadId)]
+        : threadIds;
+
+      if (event.trackId === this.data.defaultTrackId) {
+        this.showView('timeline', false);
+        this.writeUrl('push');
+        this.scheduleTimelineContextFocus(eventId);
+        return;
+      }
+
+      if (orderedThreadIds.length === 0) {
+        this.showSourceEventIndex(event.trackId);
+        this.writeUrl('push');
+        window.requestAnimationFrame(() => this.focusSourceEvent(eventId));
+        return;
+      }
+
+      this.showView('storylines', false);
+      if (orderedThreadIds.length === 1 || preferredThreadId) {
+        this.openThread(preferredThreadId || orderedThreadIds[0], contextTrigger, false);
+      } else if (options.origin === 'player' && this.isPlayerRailAvailable()) {
+        this.openPlayerRailThreadMenu(orderedThreadIds);
+      } else {
+        this.renderPlayerContextThreads(eventId, orderedThreadIds);
+        const choices = this.querySelector<HTMLElement>('[data-player-context-threads]');
+        if (choices) choices.hidden = false;
+      }
+      this.writeUrl('push');
+      if (threadIds.length > 1 && !(options.origin === 'player' && this.isPlayerRailAvailable())) {
+        window.requestAnimationFrame(() => {
+          this.querySelector<HTMLElement>('[data-player-context-thread]')?.focus({ preventScroll: true });
+        });
+      }
+    }
+
+    navigateEventToTimeline(eventId: string) {
+      const event = this.data.events[eventId];
+      if (!event) return;
+      this.closeSearch(false);
+      this.returnFocus = null;
+      if (this.selectedThreadId) this.closeThread(false);
+      if (this.selectedPersonId) this.closePerson(false);
+      this.selectEvent(eventId, false, false);
+      this.showView('timeline', false);
+      this.applyTimelineScope(event.trackId);
+      this.writeUrl('push');
+      window.requestAnimationFrame(() => this.focusTimelineEvent(eventId));
+    }
+
+    scheduleTimelineContextFocus(eventId: string) {
+      this.contextFocusObserver?.disconnect();
+      this.contextFocusObserver = null;
+      const target = this.querySelector<HTMLElement>(`[data-timeline-event="${CSS.escape(eventId)}"]`);
+      const playerColumn = this.querySelector<HTMLElement>('.project-player-column');
+      if (target && playerColumn && typeof ResizeObserver !== 'undefined') {
+        this.contextFocusObserver = new ResizeObserver(() => {
+          this.focusTimelineEvent(eventId);
+        });
+        this.contextFocusObserver.observe(playerColumn);
+        let observationFrames = 0;
+        const releaseObservation = () => {
+          if (!this.contextFocusObserver) return;
+          observationFrames += 1;
+          if (observationFrames >= 180) {
+            this.contextFocusObserver.disconnect();
+            this.contextFocusObserver = null;
+            return;
+          }
+          window.requestAnimationFrame(releaseObservation);
+        };
+        window.requestAnimationFrame(releaseObservation);
+      }
+      this.focusTimelineEvent(eventId);
+    }
+
+    focusTimelineEvent(eventId: string) {
+      const target = this.querySelector<HTMLElement>(`[data-timeline-event="${CSS.escape(eventId)}"]`);
+      if (!target) return false;
+      const nav = this.querySelector<HTMLElement>('.project-nav');
+      const navigatorOffset = this.activeView === 'timeline' && this.timelineScopeId === this.data.defaultTrackId
+        ? this.getTimelineScrollOffset()
+        : (nav?.getBoundingClientRect().height || 0) + 16;
+      const offset = navigatorOffset;
+      target.style.scrollMarginTop = `${Math.ceil(offset)}px`;
+      target.scrollIntoView({ behavior: 'auto', block: 'start' });
+      target.focus({ preventScroll: true });
+      this.markTimelineArrival(target);
+      const rect = target.getBoundingClientRect();
+      return rect.top < window.innerHeight && rect.bottom > offset;
+    }
+
+    markTimelineArrival(target: HTMLElement) {
+      this.querySelectorAll<HTMLElement>('.timeline-event.is-context-arrival').forEach((item) => item.classList.remove('is-context-arrival'));
+      if (this.contextArrivalTimer !== null) window.clearTimeout(this.contextArrivalTimer);
+      target.classList.add('is-context-arrival');
+      this.contextArrivalTimer = window.setTimeout(() => {
+        target.classList.remove('is-context-arrival');
+        this.contextArrivalTimer = null;
+      }, 1400);
+    }
+
+    focusSourceEvent(eventId: string) {
+      const event = this.data.events[eventId];
+      if (event) this.ensureSourceEventIndex(event.trackId);
+      this.querySelector<HTMLElement>(`[data-source-event="${CSS.escape(eventId)}"]`)?.focus({ preventScroll: true });
+    }
+
+    renderPlayerContextThreads(eventId: string, threadIds: string[]) {
+      const list = this.querySelector<HTMLElement>('[data-player-context-thread-list]');
+      if (!list) return;
+      list.replaceChildren();
+      for (const threadId of threadIds) {
+        const detail = this.querySelector<HTMLElement>(`[data-thread-detail="${CSS.escape(threadId)}"]`);
+        const title = detail?.querySelector('h2')?.textContent?.trim() || threadId;
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.dataset.playerContextThread = threadId;
+        button.textContent = title;
+        list.append(button);
+      }
+      list.dataset.playerContextEvent = eventId;
+    }
+
+    getEventArchiveContext(eventId: string): EventArchiveContext {
+      const event = this.data.events[eventId];
+      if (!event) return { threadIds: [] };
+      const timelineTarget = this.querySelector<HTMLElement>(`[data-timeline-event="${CSS.escape(eventId)}"]`);
+      const domThreadIds = timelineTarget
+        ? [...timelineTarget.querySelectorAll<HTMLElement>('[data-open-thread]')]
+          .map((button) => button.dataset.openThread || '')
+          .filter(Boolean)
+        : [];
+      const threadIds = [...new Set([...(event.threadIds || []), ...domThreadIds])];
+      return { threadIds };
+    }
+
+    isPlayerRailAvailable() {
+      const rail = this.querySelector<HTMLElement>('[data-player-context-rail]');
+      return Boolean(rail && !rail.hidden && window.matchMedia('(min-width: 901px)').matches);
+    }
+
+    togglePlayerRailThreadMenu(threadIds: string[]) {
+      const menu = this.querySelector<HTMLElement>('[data-player-rail-thread-menu]');
+      if (!menu) return;
+      if (!menu.hidden) {
+        this.closePlayerRailThreadMenu(true);
+        return;
+      }
+      this.openPlayerRailThreadMenu(threadIds);
+    }
+
+    openPlayerRailThreadMenu(threadIds: string[]) {
+      const menu = this.querySelector<HTMLElement>('[data-player-rail-thread-menu]');
+      const list = this.querySelector<HTMLElement>('[data-player-rail-thread-list]');
+      const count = this.querySelector<HTMLElement>('[data-player-rail-thread-count]');
+      const trigger = this.querySelector<HTMLElement>('[data-player-rail-thread]');
+      if (!menu || !list || threadIds.length < 2) return;
+      list.replaceChildren();
+      for (const threadId of threadIds) {
+        const detail = this.querySelector<HTMLElement>(`[data-thread-detail="${CSS.escape(threadId)}"]`);
+        const title = detail?.querySelector('h2')?.textContent?.trim() || threadId;
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.dataset.playerRailThreadOption = threadId;
+        button.textContent = `${title} →`;
+        list.append(button);
+      }
+      if (count) count.textContent = `${threadIds.length} 条`;
+      menu.hidden = false;
+      trigger?.setAttribute('aria-expanded', 'true');
+      window.requestAnimationFrame(() => list.querySelector<HTMLElement>('button')?.focus({ preventScroll: true }));
+    }
+
+    closePlayerRailThreadMenu(focus: boolean) {
+      const menu = this.querySelector<HTMLElement>('[data-player-rail-thread-menu]');
+      const trigger = this.querySelector<HTMLElement>('[data-player-rail-thread]');
+      if (menu) menu.hidden = true;
+      trigger?.setAttribute('aria-expanded', 'false');
+      if (focus) trigger?.focus({ preventScroll: true });
+    }
+
+    openThreadFromPlayerRail(threadId: string) {
+      const trigger = this.querySelector<HTMLElement>('[data-player-rail-thread]');
+      if (this.selectedPersonId) this.closePerson(false);
+      if (this.selectedThreadId) this.closeThread(false);
+      this.closeSearch(false);
+      this.openThread(threadId, trigger, true);
+    }
+
+    setActiveEventState(eventId: string | null) {
+      this.querySelectorAll<HTMLElement>('[data-event-card]').forEach((card) => {
+        card.classList.toggle('is-active', Boolean(eventId) && card.dataset.eventCard === eventId);
+      });
+      this.querySelectorAll<HTMLElement>('[data-event-detail]').forEach((button) => {
+        const active = Boolean(eventId) && button.dataset.eventDetail === eventId;
+        button.setAttribute('aria-expanded', String(active));
+        const mark = button.querySelector<HTMLElement>('small');
+        if (mark) mark.textContent = active ? '−' : '＋';
+      });
+    }
+
+    selectEvent(eventId: string, push: boolean, seek: boolean, preservePresentation = false) {
+      const event = this.data.events[eventId];
+      if (!event) return;
+      this.selectedEventId = eventId;
+      this.timelineScopeId = event.trackId;
+      this.classList.add('has-active-event');
+      this.updateTrack(event.trackId);
+      this.applyTimelineScope(event.trackId);
+      this.setActiveEventState(eventId);
+      const current = this.querySelector<HTMLElement>('[data-player-current-text]');
+      if (current) current.textContent = `TARGET · ${this.formatArchiveTime(event.startMs)}\n${event.title}`;
+      this.refreshPlayerText();
+      this.updatePlayerTime(event.startMs);
+      if (!this.playerReady) this.mobileResumeMs = event.startMs;
+      this.updateFallback(event);
+      this.updatePlayerContext(event);
+      if (!preservePresentation && window.matchMedia('(max-width: 900px)').matches) {
+        this.setPlayerPresentationMode(seek ? 'expanded' : 'bubble');
+        if (!seek) {
+          this.mobileResumeMs = event.startMs;
+          this.updatePlayerTime(event.startMs);
+        }
+      }
+      if (push) this.updateUrl();
+      if (seek) this.seekTo(event.startMs);
+    }
+
+    switchTrack(trackId: string, push: boolean) {
+      const track = this.data.tracks[trackId];
+      if (!track) return;
+      this.selectedEventId = null;
+      this.pendingSeekMs = null;
+      this.mobileResumeMs = null;
+      this.classList.remove('has-active-event');
+      this.timelineScopeId = trackId;
+      this.updateTrack(trackId);
+      this.applyTimelineScope(trackId);
+      this.updateSourceEventIndex(trackId);
+      this.setActiveEventState(null);
+      const current = this.querySelector<HTMLElement>('[data-player-current-text]');
+      if (current) current.textContent = track.playback.provider === 'external'
+        ? 'NO TARGET SELECTED\n选择一个此来源事件以获得定位时间'
+        : '选择时间节点开始定位';
+      this.refreshPlayerText();
+      this.updatePlayerTime(null);
+      this.updateFallback(null);
+      this.updatePlayerContext(null);
+      this.applyPlayerPresentationMode(this.activeView);
+      if (push) this.updateUrl();
+    }
+
+    showSourceEventIndex(trackId: string) {
+      if (!this.data.tracks[trackId]) return;
+      if (!this.ensureSourceEventIndex(trackId)) return;
+      this.sourceEventsOpen = true;
+      this.updateSourceEventIndex(trackId);
+    }
+
+    ensureSourceEventIndex(trackId: string) {
+      const list = this.querySelector<HTMLElement>(`[data-source-event-list="${CSS.escape(trackId)}"]`);
+      if (!list) return null;
+      if (this.sourceEventListsBuilt.has(trackId)) return list;
+
+      const events = Object.values(this.data.events)
+        .filter((event) => event.trackId === trackId)
+        .sort((left, right) => left.startMs - right.startMs || left.id.localeCompare(right.id, 'en'));
+      const fragment = document.createDocumentFragment();
+      for (const event of events) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.dataset.sourceEvent = event.id;
+        button.dataset.eventCard = event.id;
+        const time = document.createElement('time');
+        time.textContent = this.formatArchiveTime(event.startMs);
+        const title = document.createElement('span');
+        title.textContent = event.title;
+        button.append(time, title);
+        fragment.append(button);
+      }
+      list.replaceChildren(fragment);
+      this.sourceEventListsBuilt.add(trackId);
+      return list;
+    }
+
+    updateSourceEventIndex(trackId: string) {
+      const index = this.querySelector<HTMLElement>('[data-source-event-index]');
+      if (!index) return;
+      if (this.sourceEventsOpen) this.ensureSourceEventIndex(trackId);
+      index.hidden = !this.sourceEventsOpen;
+      this.querySelectorAll<HTMLElement>('[data-source-event-list]').forEach((list) => {
+        list.hidden = list.dataset.sourceEventList !== trackId || !this.sourceEventsOpen;
+      });
+      this.querySelectorAll<HTMLElement>('[data-source-browse]').forEach((button) => {
+        button.setAttribute('aria-expanded', String(this.sourceEventsOpen && button.dataset.sourceBrowse === trackId));
+      });
+      const heading = this.querySelector<HTMLElement>('[data-source-event-heading]');
+      if (heading) heading.textContent = `${this.data.tracks[trackId]?.label || '来源'} · 事件索引`;
+    }
+
+    resetOverlayPanelScroll(selector: string) {
+      const panel = this.querySelector<HTMLElement>(selector);
+      if (!panel) return null;
+      panel.scrollTop = 0;
+      panel.scrollLeft = 0;
+      return panel;
+    }
+
+    openThread(threadId: string, trigger: HTMLElement | null, push: boolean) {
+      const detail = this.querySelector(`[data-thread-detail="${CSS.escape(threadId)}"]`);
+      if (!detail) return;
+      const transitioningFromPerson = Boolean(this.selectedPersonId);
+      if (transitioningFromPerson) this.dismissPersonForTransition();
+      this.returnFocus = transitioningFromPerson ? null : trigger;
+      this.selectedThreadId = threadId;
+      this.querySelectorAll<HTMLElement>('[data-thread-detail]').forEach((item) => { item.hidden = item.dataset.threadDetail !== threadId; });
+      const overlay = this.querySelector<HTMLElement>('[data-thread-overlay]');
+      if (overlay) overlay.hidden = false;
+      const panel = this.resetOverlayPanelScroll('[data-thread-panel]');
+      this.updateModalBackgroundInert();
+      this.lockPage();
+      panel?.focus({ preventScroll: true });
+      if (push) this.updateUrl();
+    }
+
+    closeThread(update: boolean) {
+      if (!this.selectedThreadId) return;
+      const focusTarget = this.returnFocus && !this.returnFocus.closest('[hidden]') ? this.returnFocus : null;
+      this.selectedThreadId = null;
+      this.returnFocus = null;
+      const overlay = this.querySelector<HTMLElement>('[data-thread-overlay]');
+      if (overlay) overlay.hidden = true;
+      this.updateModalBackgroundInert();
+      this.unlockPage();
+      focusTarget?.focus({ preventScroll: true });
+      if (update) this.replaceUrl();
+    }
+
+    openPerson(personId: string, trigger: HTMLElement | null, push: boolean) {
+      const detail = this.querySelector(`[data-person-detail="${CSS.escape(personId)}"]`);
+      if (!detail) return;
+      const transitioningFromThread = Boolean(this.selectedThreadId);
+      if (transitioningFromThread) this.dismissThreadForTransition();
+      this.returnFocus = transitioningFromThread ? null : trigger;
+      this.selectedPersonId = personId;
+      this.querySelectorAll<HTMLElement>('[data-person-detail]').forEach((item) => { item.hidden = item.dataset.personDetail !== personId; });
+      const overlay = this.querySelector<HTMLElement>('[data-person-overlay]');
+      if (overlay) overlay.hidden = false;
+      const panel = this.resetOverlayPanelScroll('[data-person-panel]');
+      this.updateModalBackgroundInert();
+      this.lockPage();
+      panel?.focus({ preventScroll: true });
+      if (push) this.updateUrl();
+    }
+
+    closePerson(update: boolean) {
+      if (!this.selectedPersonId) return;
+      const focusTarget = this.returnFocus && !this.returnFocus.closest('[hidden]') ? this.returnFocus : null;
+      this.selectedPersonId = null;
+      this.returnFocus = null;
+      const overlay = this.querySelector<HTMLElement>('[data-person-overlay]');
+      if (overlay) overlay.hidden = true;
+      this.updateModalBackgroundInert();
+      this.unlockPage();
+      focusTarget?.focus({ preventScroll: true });
+      if (update) this.replaceUrl();
+    }
+
+    dismissThreadForTransition() {
+      if (!this.selectedThreadId) return;
+      this.selectedThreadId = null;
+      this.querySelector<HTMLElement>('[data-thread-overlay]')?.setAttribute('hidden', '');
+      this.updateModalBackgroundInert();
+    }
+
+    dismissPersonForTransition() {
+      if (!this.selectedPersonId) return;
+      this.selectedPersonId = null;
+      this.querySelector<HTMLElement>('[data-person-overlay]')?.setAttribute('hidden', '');
+      this.updateModalBackgroundInert();
+    }
+
+    updateModalBackgroundInert() {
+      const modalOpen = Boolean(this.selectedThreadId || this.selectedPersonId);
+      this.querySelectorAll<HTMLElement>(':scope > *').forEach((child) => {
+        if (child.matches('[data-thread-overlay], [data-person-overlay], script')) return;
+        child.inert = modalOpen;
+      });
+    }
+
+    trapModalFocus(event: KeyboardEvent) {
+      const dialog = this.querySelector<HTMLElement>(this.selectedPersonId ? '[data-person-panel]' : '[data-thread-panel]');
+      if (!dialog) return;
+      const focusable = [...dialog.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      )].filter((element) => !element.hidden && element.getAttribute('aria-hidden') !== 'true');
+      if (focusable.length === 0) {
+        event.preventDefault();
+        dialog.focus();
+        return;
+      }
+      const first = focusable[0];
+      const last = focusable.at(-1);
+      const active = document.activeElement;
+      if (event.shiftKey && (active === first || !dialog.contains(active))) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && (active === last || !dialog.contains(active))) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    lockPage() {
+      if (document.body.classList.contains('archive-panel-open')) return;
+      this.lockedScrollY = window.scrollY;
+      this.lockedBodyPaddingRight = document.body.style.paddingRight;
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+      document.body.classList.add('archive-panel-open');
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${this.lockedScrollY}px`;
+      document.body.style.width = '100%';
+      if (scrollbarWidth > 0) document.body.style.paddingRight = `${scrollbarWidth}px`;
+    }
+
+    unlockPage() {
+      document.body.classList.remove('archive-panel-open');
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.paddingRight = this.lockedBodyPaddingRight;
+      // The site enables smooth scrolling globally. Panel restoration must be
+      // imperceptible, otherwise closing a detail visibly travels from page
+      // top back to the trigger position.
+      const previousScrollBehavior = document.documentElement.style.scrollBehavior;
+      document.documentElement.style.scrollBehavior = 'auto';
+      window.scrollTo(0, this.lockedScrollY);
+      requestAnimationFrame(() => {
+        document.documentElement.style.scrollBehavior = previousScrollBehavior;
+      });
+    }
+
+    updateUrl() {
+      this.writeUrl('push');
+    }
+
+    playerModeStorageKey() {
+      return `folio:player-mode:${this.data?.projectId || 'archive'}:v2`;
+    }
+
+    loadPlayerModePreferences() {
+      try {
+        const raw = window.sessionStorage.getItem(this.playerModeStorageKey())
+          || window.sessionStorage.getItem(`folio:player-mode:${this.data?.projectId || 'archive'}:v1`);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== 'object') return;
+        this.playerModePreferences = Object.fromEntries(
+          Object.entries(parsed)
+            .map(([view, value]) => [view, value === 'compact' ? 'docked' : value] as const)
+            .filter(([, value]) => value === 'expanded' || value === 'docked'),
+        ) as Record<string, 'expanded' | 'docked'>;
+      } catch {
+        this.playerModePreferences = {};
+      }
+    }
+
+    savePlayerModePreferences() {
+      try {
+        window.sessionStorage.setItem(this.playerModeStorageKey(), JSON.stringify(this.playerModePreferences));
+      } catch {
+        // Session storage is an enhancement; the in-memory preference still applies.
+      }
+    }
+
+    defaultPlayerPresentationMode(view: string): 'expanded' | 'docked' {
+      return view === 'timeline' || view === 'storylines' ? 'expanded' : 'docked';
+    }
+
+    applyPlayerPresentationMode(view: string) {
+      const frame = this.querySelector<HTMLElement>('[data-player-frame]');
+      const toggle = this.querySelector<HTMLButtonElement>('[data-player-mode-toggle]');
+      if (!frame) return;
+      const desktop = window.matchMedia('(min-width: 901px)').matches;
+      const requested = this.playerModePreferences[view] || this.defaultPlayerPresentationMode(view);
+      const mode: PlayerPresentationMode = desktop
+        ? requested
+        : this.selectedEventId && this.playerPresentationMode === 'bubble'
+          ? 'bubble'
+          : 'expanded';
+      this.playerPresentationMode = mode;
+      frame.dataset.playerMode = mode;
+      this.classList.toggle('is-player-docked', mode === 'docked');
+      this.classList.toggle('is-player-bubble', mode === 'bubble');
+      document.body.classList.toggle('archive-player-docked', mode === 'docked');
+      const bubble = this.querySelector<HTMLButtonElement>('[data-player-bubble]');
+      if (bubble) {
+        bubble.hidden = desktop || !this.selectedEventId || mode !== 'bubble';
+        bubble.setAttribute('aria-expanded', String(mode === 'expanded'));
+      }
+      if (!toggle) return;
+      toggle.hidden = !desktop && (!this.selectedEventId || mode !== 'expanded');
+      const docked = mode === 'docked';
+      toggle.setAttribute('aria-pressed', String(desktop && docked));
+      toggle.setAttribute('aria-label', desktop
+        ? docked ? '展开完整播放器' : '切换为底部播放栏'
+        : '收起为浮动播放入口');
+      const label = toggle.querySelector<HTMLElement>('[data-player-mode-toggle-label]');
+      if (label) label.textContent = desktop
+        ? docked ? '展开播放器' : '收起为底部播放栏'
+        : '最小化';
+    }
+
+    setPlayerPresentationMode(mode: PlayerPresentationMode) {
+      const desktop = window.matchMedia('(min-width: 901px)').matches;
+      if (desktop && mode === 'bubble') return;
+      if (!desktop && (mode === 'docked' || !this.selectedEventId)) return;
+      if (desktop) {
+        this.playerModePreferences[this.activeView] = mode as 'expanded' | 'docked';
+        this.savePlayerModePreferences();
+      } else if (mode === 'bubble') {
+        this.pauseForMobileBubble();
+      }
+      this.playerPresentationMode = mode;
+      this.applyPlayerPresentationMode(this.activeView);
+      if (!desktop && mode === 'expanded') this.restoreMobileResumePosition();
+      this.refreshPlayerText();
+      this.scheduleTimelineNavigatorUpdate();
+    }
+
+    pauseForMobileBubble() {
+      this.stopPlaybackSync();
+      if (!this.playerReady) {
+        if (this.pendingSeekMs !== null) this.mobileResumeMs = this.pendingSeekMs;
+        return;
+      }
+      this.pendingSeekMs = null;
+      if (this.playerReady && this.player?.getCurrentTime) {
+        try {
+          this.mobileResumeMs = Math.max(0, Math.floor(this.player.getCurrentTime() * 1000));
+          this.updatePlayerTime(this.mobileResumeMs);
+        } catch {
+          // Preserve the selected Event time when the provider is between states.
+        }
+      }
+      if (!this.playerReady || !this.player?.pauseVideo) return;
+      try {
+        this.player.pauseVideo();
+      } catch {
+        // Presentation still collapses if the provider has already torn down.
+      }
+    }
+
+    restoreMobileResumePosition() {
+      if (!this.playerReady || this.mobileResumeMs === null || !this.player?.seekTo) return;
+      window.requestAnimationFrame(() => {
+        try {
+          const currentMs = this.player?.getCurrentTime
+            ? Math.max(0, Math.floor(this.player.getCurrentTime() * 1000))
+            : this.mobileResumeMs;
+          if (Math.abs(currentMs - this.mobileResumeMs!) > 1250) {
+            this.player.seekTo(this.mobileResumeMs! / 1000, true);
+          }
+          this.updatePlayerTime(this.mobileResumeMs);
+        } catch {
+          // The panel remains expanded and paused even if a mobile browser
+          // needs the user to reload the provider instance.
+        }
+      });
+    }
+
+    refreshPlayerText() {
+      this.querySelectorAll<HTMLElement>('[data-player-expandable]').forEach((text) => {
+        const key = text.dataset.playerExpandable;
+        const toggle = key
+          ? this.querySelector<HTMLButtonElement>(`[data-player-text-toggle="${CSS.escape(key)}"]`)
+          : null;
+        if (!toggle) return;
+        const wasExpanded = text.dataset.expanded === 'true';
+        text.classList.add('is-clamped');
+        const overflow = text.scrollHeight > text.clientHeight + 1;
+        const expanded = overflow && wasExpanded;
+        text.classList.toggle('is-clamped', overflow && !expanded);
+        text.dataset.expanded = String(expanded);
+        toggle.hidden = !overflow;
+        toggle.setAttribute('aria-expanded', String(expanded));
+        toggle.textContent = expanded ? '收起' : '展开';
+        if (overflow) text.title = text.textContent?.trim() || '';
+        else text.removeAttribute('title');
+      });
+    }
+
+    togglePlayerText(key: string) {
+      const text = this.querySelector<HTMLElement>(`[data-player-expandable="${CSS.escape(key)}"]`);
+      const toggle = this.querySelector<HTMLButtonElement>(`[data-player-text-toggle="${CSS.escape(key)}"]`);
+      if (!text || !toggle || toggle.hidden) return;
+      text.dataset.expanded = String(text.dataset.expanded !== 'true');
+      this.refreshPlayerText();
+    }
+
+    refreshInlineText() {
+      this.querySelectorAll<HTMLElement>('[data-inline-expandable]').forEach((text) => {
+        const key = text.dataset.inlineExpandable;
+        const toggle = key
+          ? this.querySelector<HTMLButtonElement>(`[data-inline-text-toggle="${CSS.escape(key)}"]`)
+          : null;
+        if (!toggle) return;
+        const wasExpanded = text.dataset.expanded === 'true';
+        text.classList.add('is-clamped');
+        const overflow = text.scrollHeight > text.clientHeight + 1 || text.scrollWidth > text.clientWidth + 1;
+        const expanded = overflow && wasExpanded;
+        text.classList.toggle('is-clamped', overflow && !expanded);
+        text.dataset.expanded = String(expanded);
+        toggle.hidden = !overflow;
+        toggle.setAttribute('aria-expanded', String(expanded));
+        toggle.textContent = expanded ? '收起' : '展开';
+        toggle.setAttribute('aria-label', `${expanded ? '收起' : '展开'}${text.textContent?.trim() || '完整标题'}`);
+        if (overflow) text.title = text.textContent?.trim() || '';
+        else text.removeAttribute('title');
+      });
+    }
+
+    toggleInlineText(key: string) {
+      const text = this.querySelector<HTMLElement>(`[data-inline-expandable="${CSS.escape(key)}"]`);
+      const toggle = this.querySelector<HTMLButtonElement>(`[data-inline-text-toggle="${CSS.escape(key)}"]`);
+      if (!text || !toggle || toggle.hidden) return;
+      text.dataset.expanded = String(text.dataset.expanded !== 'true');
+      this.refreshInlineText();
+    }
+
+    replaceUrl() {
+      this.writeUrl('replace');
+    }
+
+    writeUrl(mode: 'push' | 'replace') {
+      const url = new URL(window.location.href);
+      url.searchParams.set('view', this.activeView);
+      if (this.selectedEventId) url.searchParams.set('event', this.selectedEventId);
+      else url.searchParams.delete('event');
+      if (!this.selectedEventId && this.activeTrackId !== this.data.defaultTrackId) url.searchParams.set('track', this.activeTrackId);
+      else url.searchParams.delete('track');
+      if (this.selectedThreadId) url.searchParams.set('thread', this.selectedThreadId);
+      else url.searchParams.delete('thread');
+      if (this.selectedPersonId) url.searchParams.set('person', this.selectedPersonId);
+      else url.searchParams.delete('person');
+      if (mode === 'replace') history.replaceState({}, '', url);
+      else history.pushState({}, '', url);
+    }
+
+    restoreFromUrl() {
+      this.cancelPendingPlayerLoad();
+      const restoreTimelineScopeFocus = Boolean(
+        document.activeElement instanceof HTMLElement
+        && document.activeElement.closest('[data-timeline-scope-button]'),
+      );
+      const params = new URLSearchParams(window.location.search);
+      const view = params.get('view') || this.data.defaultView;
+      this.selectedEventId = null;
+      this.selectedThreadId = null;
+      this.selectedPersonId = null;
+      this.activeTrackId = this.data.defaultTrackId;
+      this.timelineScopeId = this.data.defaultTrackId;
+      this.pendingSeekMs = null;
+      this.mobileResumeMs = null;
+      this.returnFocus = null;
+      this.classList.remove('has-active-event');
+      this.setActiveEventState(null);
+      this.updatePlayerTime(null);
+      this.updatePlayerContext(null);
+      this.updateFallback(null);
+      this.querySelectorAll<HTMLElement>('[data-thread-detail]').forEach((item) => { item.hidden = true; });
+      this.querySelectorAll<HTMLElement>('[data-person-detail]').forEach((item) => { item.hidden = true; });
+      this.querySelector<HTMLElement>('[data-thread-overlay]')?.setAttribute('hidden', '');
+      this.querySelector<HTMLElement>('[data-person-overlay]')?.setAttribute('hidden', '');
+      if (document.body.classList.contains('archive-panel-open')) this.unlockPage();
+      this.updateModalBackgroundInert();
+      this.showView(view, false);
+      const eventId = params.get('event');
+      if (eventId && this.data.events[eventId]) {
+        this.selectEvent(eventId, false, false);
+      }
+      else {
+        const trackId = params.get('track');
+        if (trackId && this.data.tracks[trackId]) this.switchTrack(trackId, false);
+        else this.updateTrack(this.data.defaultTrackId);
+      }
+      const threadId = params.get('thread');
+      const personId = params.get('person');
+      if (threadId) this.openThread(threadId, null, false);
+      else if (personId) this.openPerson(personId, null, false);
+      this.replaceUrl();
+      if (restoreTimelineScopeFocus && this.activeView === 'timeline') {
+        window.requestAnimationFrame(() => {
+          this.querySelector<HTMLElement>(`[data-timeline-scope-button="${CSS.escape(this.timelineScopeId)}"]`)
+            ?.focus({ preventScroll: true });
+        });
+      }
+    }
+
+    async ensurePlayer() {
+      if (this.playerReady && this.player) {
+        this.setYouTubeLoadState('ready');
+        return this.player;
+      }
+      if (this.playerLoadPromise) return this.playerLoadPromise;
+      const requestedTrackId = this.activeTrackId;
+      const track = this.data.tracks[requestedTrackId];
+      if (!track || track.playback.provider !== 'youtube') return null;
+      const attempt = ++this.playerLoadAttempt;
+      this.setYouTubeLoadState('loading');
+      let attemptPromise: Promise<any>;
+      attemptPromise = (async () => {
+        try {
+          const YT = await loadYouTubeApi();
+          if (!this.isPlayerLoadAttemptCurrent(attempt, requestedTrackId)) return null;
+          const mount = this.ensurePlayerMount();
+          if (!mount) {
+            this.handlePlayerError();
+            return null;
+          }
+          return await new Promise<any>((resolve) => {
+            let settled = false;
+            let playerInstance: any = null;
+            let readyTimeoutId: number | null = null;
+            const clearReadyTimeout = () => {
+              if (readyTimeoutId !== null) window.clearTimeout(readyTimeoutId);
+              if (this.playerReadyTimeoutId === readyTimeoutId) this.playerReadyTimeoutId = null;
+              readyTimeoutId = null;
+            };
+            const settle = (value: any) => {
+              if (settled) return;
+              settled = true;
+              clearReadyTimeout();
+              if (this.cancelPlayerLoad === cancelAttempt) this.cancelPlayerLoad = null;
+              resolve(value);
+            };
+            const abandonAttempt = () => {
+              this.safeDestroyPlayer(playerInstance);
+              if (this.player === playerInstance) this.player = null;
+              settle(null);
+            };
+            const failAttempt = () => {
+              if (!this.isPlayerLoadAttemptCurrent(attempt, requestedTrackId)) {
+                abandonAttempt();
+                return;
+              }
+              this.safeDestroyPlayer(playerInstance);
+              if (this.player === playerInstance) this.player = null;
+              this.playerReady = false;
+              this.resetPlayerMount();
+              this.handlePlayerError();
+              settle(null);
+            };
+            const cancelAttempt = () => abandonAttempt();
+            this.cancelPlayerLoad = cancelAttempt;
+            try {
+              playerInstance = new YT.Player(mount, {
+                width: '100%',
+                height: '100%',
+                videoId: track.playback.videoId,
+                playerVars: { playsinline: 1, rel: 0, origin: window.location.origin },
+                events: {
+                  onReady: () => {
+                    if (!this.isPlayerLoadAttemptCurrent(attempt, requestedTrackId)) {
+                      abandonAttempt();
+                      return;
+                    }
+                    this.player = playerInstance;
+                    this.playerReady = true;
+                    this.setYouTubeLoadState('ready');
+                    window.requestAnimationFrame(() => {
+                      if (this.isPlayerLoadAttemptCurrent(attempt, requestedTrackId)
+                        && this.playerLoadState === 'ready') {
+                        this.syncPlayerProviderVisibility();
+                      }
+                    });
+                    if (this.pendingSeekMs !== null) {
+                      const seekMs = this.pendingSeekMs;
+                      this.pendingSeekMs = null;
+                      try {
+                        playerInstance.seekTo(seekMs / 1000, true);
+                        this.mobileResumeMs = seekMs;
+                        this.updatePlayerTime(seekMs);
+                        if (this.playerPresentationMode !== 'bubble') playerInstance.playVideo();
+                      } catch {
+                        // The ready Player stays visible; a later user seek can retry positioning.
+                      }
+                    }
+                    settle(playerInstance);
+                  },
+                  onError: (playerEvent: any) => {
+                    console.warn('[Folio][YouTube]', {
+                      code: Number.isFinite(Number(playerEvent?.data)) ? Number(playerEvent.data) : null,
+                      videoId: track.playback.videoId,
+                    });
+                    if (this.player === playerInstance && this.playerReady) {
+                      try {
+                        this.pendingSeekMs = Math.max(0, Math.floor(playerInstance.getCurrentTime() * 1000));
+                        this.mobileResumeMs = this.pendingSeekMs;
+                        this.updatePlayerTime(this.pendingSeekMs);
+                      } catch {
+                        const selectedEvent = this.selectedEventId ? this.data.events[this.selectedEventId] : null;
+                        if (selectedEvent?.trackId === requestedTrackId) {
+                          this.pendingSeekMs = selectedEvent.startMs;
+                          this.mobileResumeMs = selectedEvent.startMs;
+                        }
+                      }
+                      this.safeDestroyPlayer(playerInstance);
+                      this.player = null;
+                      this.playerReady = false;
+                      this.resetPlayerMount();
+                      this.handlePlayerError();
+                      settle(null);
+                      return;
+                    }
+                    failAttempt();
+                  },
+                  onStateChange: (playerEvent: any) => {
+                    if (playerEvent.data === YT.PlayerState.PLAYING && this.playerPresentationMode === 'bubble') {
+                      this.pauseForMobileBubble();
+                    } else if (playerEvent.data === YT.PlayerState.PLAYING) this.startPlaybackSync();
+                    else {
+                      this.syncFromPlayer();
+                      this.stopPlaybackSync();
+                    }
+                  },
+                },
+              });
+              this.player = playerInstance;
+              readyTimeoutId = window.setTimeout(() => failAttempt(), 10000);
+              this.playerReadyTimeoutId = readyTimeoutId;
+            } catch {
+              failAttempt();
+            }
+          });
+        } catch {
+          if (this.isPlayerLoadAttemptCurrent(attempt, requestedTrackId)) this.handlePlayerError();
+          return null;
+        } finally {
+          if (this.playerLoadPromise === attemptPromise) this.playerLoadPromise = null;
+        }
+      })();
+      this.playerLoadPromise = attemptPromise;
+      return attemptPromise;
+    }
+
+    isPlayerLoadAttemptCurrent(attempt: number, requestedTrackId: string) {
+      return attempt === this.playerLoadAttempt
+        && this.activeTrackId === requestedTrackId
+        && this.data.tracks[requestedTrackId]?.playback.provider === 'youtube';
+    }
+
+    safeDestroyPlayer(player: any) {
+      try {
+        if (player?.destroy) player.destroy();
+      } catch {
+        // A partially initialized provider can reject destroy; the stable
+        // mount host is rebuilt before another instance is created.
+      }
+    }
+
+    ensurePlayerMount() {
+      const host = this.querySelector<HTMLElement>('[data-player-host]');
+      if (!host) return null;
+      let mount = host.querySelector<HTMLElement>('[data-player-mount]');
+      if (!mount) {
+        mount = document.createElement('div');
+        mount.className = 'archive-player__mount';
+        mount.dataset.playerMount = '';
+        host.replaceChildren(mount);
+      }
+      return mount;
+    }
+
+    resetPlayerMount() {
+      const host = this.querySelector<HTMLElement>('[data-player-host]');
+      if (!host) return null;
+      const mount = document.createElement('div');
+      mount.className = 'archive-player__mount';
+      mount.dataset.playerMount = '';
+      host.replaceChildren(mount);
+      return mount;
+    }
+
+    cancelPendingPlayerLoad() {
+      if (this.playerLoadState !== 'loading' && !this.playerLoadPromise) return;
+      this.playerLoadAttempt += 1;
+      const cancel = this.cancelPlayerLoad;
+      this.cancelPlayerLoad = null;
+      cancel?.();
+      this.playerLoadPromise = null;
+      if (!this.playerReady) {
+        this.safeDestroyPlayer(this.player);
+        this.player = null;
+        this.resetPlayerMount();
+        this.setYouTubeLoadState('idle');
+      }
+    }
+
+    renderYouTubeLoadState() {
+      const state = this.playerLoadState;
+      const activeTrack = this.data.tracks[this.activeTrackId];
+      const isYouTubeActive = activeTrack?.playback.provider === 'youtube';
+      const viewport = this.querySelector<HTMLElement>('[data-player-viewport]');
+      const poster = this.querySelector<HTMLImageElement>('[data-player-poster]');
+      const fallback = this.querySelector<HTMLElement>('[data-player-poster-fallback]');
+      const load = this.querySelector<HTMLButtonElement>('[data-load-player]');
+      const error = this.querySelector<HTMLElement>('[data-player-error]');
+      this.syncPlayerProviderVisibility();
+      if (viewport) {
+        viewport.dataset.youtubeState = state;
+        viewport.toggleAttribute('data-player-loaded', state === 'ready');
+        viewport.toggleAttribute('data-player-error', state === 'error');
+      }
+      if (error) error.hidden = !isYouTubeActive || state !== 'error';
+      if (load) load.hidden = !isYouTubeActive || state !== 'idle';
+      if (poster) poster.hidden = state === 'ready' || state === 'error' || this.playerPosterFailed;
+      if (fallback) fallback.hidden = state === 'ready' || (!this.playerPosterFailed && state !== 'error');
+    }
+
+    syncPlayerProviderVisibility() {
+      const activeTrack = this.data.tracks[this.activeTrackId];
+      const isYouTubeActive = activeTrack?.playback.provider === 'youtube';
+      const viewport = this.querySelector<HTMLElement>('[data-player-viewport]');
+      const unavailable = this.querySelector<HTMLElement>('[data-player-unavailable]');
+      if (viewport) viewport.hidden = !isYouTubeActive;
+      if (unavailable) unavailable.hidden = isYouTubeActive;
+    }
+
+    setYouTubeLoadState(state: YouTubeLoadState) {
+      this.playerLoadState = state;
+      this.renderYouTubeLoadState();
+    }
+
+    setPlayerPosterFailed(failed: boolean) {
+      this.playerPosterFailed = failed;
+      this.renderYouTubeLoadState();
+    }
+
+    handlePlayerError() {
+      this.playerReady = false;
+      this.stopPlaybackSync();
+      this.setYouTubeLoadState('error');
+      this.updateFallback(this.selectedEventId ? this.data.events[this.selectedEventId] : null);
+    }
+
+    async retryPlayer() {
+      const track = this.data.tracks[this.activeTrackId];
+      if (!track || track.playback.provider !== 'youtube') return null;
+      if (this.playerReady && this.player) {
+        this.setYouTubeLoadState('ready');
+        return this.player;
+      }
+      if (this.playerLoadState === 'loading' && this.playerLoadPromise) return this.playerLoadPromise;
+      this.playerLoadAttempt += 1;
+      this.cancelPlayerLoad?.();
+      this.cancelPlayerLoad = null;
+      this.playerLoadPromise = null;
+      if (this.playerReadyTimeoutId !== null) window.clearTimeout(this.playerReadyTimeoutId);
+      this.playerReadyTimeoutId = null;
+      this.safeDestroyPlayer(this.player);
+      this.player = null;
+      this.playerReady = false;
+      this.stopPlaybackSync();
+      this.resetPlayerMount();
+      const poster = this.querySelector<HTMLImageElement>('[data-player-poster]');
+      const posterSrc = poster?.dataset.playerPosterSrc;
+      if (poster && posterSrc) {
+        poster.src = `${posterSrc}${posterSrc.includes('?') ? '&' : '?'}retry=${Date.now()}`;
+      }
+      this.setPlayerPosterFailed(false);
+      this.setYouTubeLoadState('idle');
+      return this.ensurePlayer();
+    }
+
+    async seekTo(milliseconds: number) {
+      const track = this.data.tracks[this.activeTrackId];
+      if (!track || track.playback.provider !== 'youtube') {
+        this.pendingSeekMs = null;
+        return;
+      }
+      this.pendingSeekMs = milliseconds;
+      this.mobileResumeMs = milliseconds;
+      if (this.playerReady && this.player) {
+        this.pendingSeekMs = null;
+        this.player.seekTo(milliseconds / 1000, true);
+        this.player.playVideo();
+        return;
+      }
+      await this.ensurePlayer();
+    }
+
+    startPlaybackSync() {
+      this.stopPlaybackSync();
+      this.syncFromPlayer();
+      this.playbackSyncTimer = window.setInterval(() => this.syncFromPlayer(), 750);
+    }
+
+    stopPlaybackSync() {
+      if (this.playbackSyncTimer === null) return;
+      window.clearInterval(this.playbackSyncTimer);
+      this.playbackSyncTimer = null;
+    }
+
+    pauseEmbeddedForExternalHandoff() {
+      // A link click is a user-initiated handoff. Clear a queued seek first so
+      // a player that finishes loading after the new tab opens cannot resume
+      // the embedded video unexpectedly.
+      this.pendingSeekMs = null;
+      this.stopPlaybackSync();
+      if (!this.playerReady || !this.player?.pauseVideo) return;
+      try {
+        this.player.pauseVideo();
+      } catch {
+        // The external navigation remains valid even if the provider player
+        // has already been torn down or is between state transitions.
+      }
+    }
+
+    syncFromPlayer() {
+      if (!this.playerReady || !this.player?.getCurrentTime) return;
+      if (this.data.tracks[this.activeTrackId]?.playback.provider !== 'youtube') return;
+      const currentMs = Math.max(0, Math.floor(this.player.getCurrentTime() * 1000));
+      this.updatePlayerTime(currentMs);
+
+      const eventAtTime = Object.entries(this.data.events)
+        .filter(([, event]) => event.trackId === this.activeTrackId && event.startMs <= currentMs)
+        .sort(([leftId, left], [rightId, right]) => right.startMs - left.startMs || leftId.localeCompare(rightId))[0];
+      if (!eventAtTime || eventAtTime[0] === this.selectedEventId) return;
+
+      const currentUrl = new URL(window.location.href);
+      const urlHasEvent = currentUrl.searchParams.has('event');
+      if (!urlHasEvent && this.activeView !== 'timeline') return;
+
+      this.selectEvent(eventAtTime[0], false, false, true);
+      // selectEvent shows the anchor time. While playback is active the clock
+      // should continue to reflect the player's actual position.
+      this.updatePlayerTime(currentMs);
+      this.replaceUrl();
+    }
+
+    updateTrack(trackId: string) {
+      const track = this.data.tracks[trackId];
+      if (!track) return;
+      const previousTrackId = this.activeTrackId;
+      if (previousTrackId && previousTrackId !== trackId && this.playerLoadState === 'loading') {
+        this.cancelPendingPlayerLoad();
+      }
+      this.activeTrackId = trackId;
+      const label = this.querySelector<HTMLElement>('[data-player-track-label]');
+      if (label) label.textContent = track.label;
+      this.querySelectorAll<HTMLElement>('[data-source-track]').forEach((button) => {
+        button.setAttribute('aria-pressed', String(button.dataset.sourceTrack === trackId));
+      });
+      const unavailable = this.querySelector<HTMLElement>('[data-player-unavailable]');
+      const note = this.querySelector<HTMLElement>('[data-player-note]');
+      const isPlayable = track.playback.provider === 'youtube';
+      const bubbleCode = this.querySelector<HTMLElement>('[data-player-bubble-code]');
+      const bubbleSymbol = this.querySelector<HTMLElement>('[data-player-bubble-symbol]');
+      const frame = this.querySelector<HTMLElement>('[data-player-frame]');
+      if (bubbleCode) bubbleCode.textContent = track.shortLabel;
+      if (bubbleSymbol) bubbleSymbol.textContent = isPlayable ? '▶' : '↗';
+      if (frame) frame.dataset.playerProvider = track.playback.provider;
+      this.classList.toggle('is-external-source', track.playback.provider === 'external');
+      this.classList.toggle('is-youtube-source', track.playback.provider === 'youtube');
+      this.updateSourceEventIndex(trackId);
+      this.renderYouTubeLoadState();
+      if (unavailable && !isPlayable) {
+        unavailable.textContent = track.playback.provider === 'external'
+          ? 'X SPACE REPLAY · EXTERNAL SOURCE\n本站提供原来源入口，不重托管媒体，也不伪造时间定位。'
+          : '此轨道目前没有公开播放源';
+      }
+      if (note) note.textContent = track.playback.provider === 'youtube'
+        ? '使用 YouTube 原生 360°能力；移动设备的视角支持取决于 YouTube 与设备。'
+        : track.playback.provider === 'external'
+          ? 'EXTERNAL SOURCE · 站内不播放，不提供程序化 seek；点击上方链接打开 X 原始回放。'
+          : '当前未登记公开播放源。';
+      if (!isPlayable && this.playerReady && this.player?.pauseVideo) this.player.pauseVideo();
+    }
+
+    formatArchiveTime(milliseconds: number) {
+      const total = Math.floor(milliseconds / 1000);
+      const parts = [Math.floor(total / 3600), Math.floor((total % 3600) / 60), total % 60];
+      return parts.map((part) => String(part).padStart(2, '0')).join(':');
+    }
+
+    updatePlayerTime(milliseconds: number | null) {
+      if (milliseconds === null) {
+        const target = this.querySelector<HTMLElement>('[data-player-time]');
+        if (target) target.textContent = '—';
+        return;
+      }
+      const target = this.querySelector<HTMLElement>('[data-player-time]');
+      if (target) target.textContent = this.formatArchiveTime(milliseconds);
+    }
+
+    updateFallback(event: ArchiveEvent | null) {
+      const track = this.data.tracks[event?.trackId || this.activeTrackId];
+      const link = this.querySelector<HTMLAnchorElement>('[data-player-fallback]');
+      const sourceLink = this.querySelector<HTMLAnchorElement>('[data-player-open-source]');
+      if (!link && !sourceLink) return;
+      const links = [link, sourceLink].filter((candidate): candidate is HTMLAnchorElement => Boolean(candidate));
+      links.forEach((candidate) => { candidate.hidden = !track?.fallbackUrl; });
+      if (!track?.fallbackUrl) return;
+      const url = new URL(track.fallbackUrl);
+      if (track.playback.provider === 'youtube' && event) {
+        url.searchParams.set('t', `${Math.floor(event.startMs / 1000)}s`);
+        if (link) link.textContent = '在 YouTube 打开当前时间 ↗';
+      } else {
+        if (link) link.textContent = track.playback.provider === 'external' ? '打开 X 原始回放 ↗' : '在 YouTube 打开原来源 ↗';
+      }
+      links.forEach((candidate) => { candidate.href = url.toString(); });
+    }
+
+    updatePlayerContext(event: ArchiveEvent | null) {
+      const context = this.querySelector<HTMLElement>('[data-player-context]');
+      const label = this.querySelector<HTMLElement>('[data-player-context-label]');
+      const summary = this.querySelector<HTMLElement>('[data-player-context-summary]');
+      const cta = this.querySelector<HTMLButtonElement>('[data-player-context-cta]');
+      const threads = this.querySelector<HTMLElement>('[data-player-context-threads]');
+      const list = this.querySelector<HTMLElement>('[data-player-context-thread-list]');
+      if (!context || !summary || !cta || !threads) return;
+      if (!event) {
+        context.hidden = true;
+        threads.hidden = true;
+        list?.replaceChildren();
+        if (label) label.hidden = false;
+        summary.hidden = false;
+        cta.hidden = false;
+        this.updatePlayerRail(null);
+        return;
+      }
+
+      const archiveContext = this.getEventArchiveContext(event.id);
+      const isYouTube = event.trackId === this.data.defaultTrackId;
+      const showYouTubeNavigation = isYouTube && this.activeView !== 'timeline';
+      context.hidden = isYouTube ? !showYouTubeNavigation : false;
+      threads.hidden = true;
+      list?.replaceChildren();
+      if (isYouTube) {
+        context.dataset.contextKind = 'navigation';
+        if (label) label.hidden = true;
+        summary.hidden = true;
+        summary.textContent = '';
+        cta.hidden = !showYouTubeNavigation;
+        cta.textContent = '在 Timeline 查看此节点 →';
+      } else {
+        context.dataset.contextKind = 'related';
+        if (label) {
+          label.hidden = false;
+          label.textContent = '关联上下文';
+        }
+        summary.hidden = false;
+        const threadCount = archiveContext.threadIds.length;
+        summary.textContent = threadCount ? `${threadCount} 条相关事件线` : '暂无相关事件线';
+        cta.hidden = false;
+        cta.textContent = threadCount === 0
+          ? '在来源事件索引中查看 →'
+          : threadCount > 1
+          ? '在 Storyline 选择上下文 →'
+          : '在 Storyline 查看上下文 →';
+      }
+      this.refreshPlayerText();
+      this.updatePlayerRail(event, archiveContext);
+    }
+
+    updatePlayerRail(event: ArchiveEvent | null, archiveContext?: EventArchiveContext) {
+      const rail = this.querySelector<HTMLElement>('[data-player-context-rail]');
+      const node = this.querySelector<HTMLButtonElement>('[data-player-rail-node]');
+      const timelineLabel = this.querySelector<HTMLElement>('[data-player-rail-timeline-label]');
+      const thread = this.querySelector<HTMLButtonElement>('[data-player-rail-thread]');
+      const threadLabel = this.querySelector<HTMLElement>('[data-player-rail-thread-label]');
+      const source = this.querySelector<HTMLAnchorElement>('[data-player-rail-source]');
+      const sourceLabel = this.querySelector<HTMLElement>('[data-player-rail-source-label]');
+      if (!rail || !node || !timelineLabel || !thread || !threadLabel || !source || !sourceLabel) return;
+      this.closePlayerRailThreadMenu(false);
+      if (!event) {
+        rail.hidden = true;
+        return;
+      }
+
+      const context = archiveContext || this.getEventArchiveContext(event.id);
+      const track = this.data.tracks[event.trackId];
+      const fallback = this.querySelector<HTMLAnchorElement>('[data-player-fallback]');
+      rail.hidden = false;
+      rail.dataset.playerRailEvent = event.id;
+      timelineLabel.textContent = this.activeView === 'timeline' ? '定位此处' : '查看时间线';
+      node.setAttribute('aria-label', `在 Timeline 定位当前节点：${event.title}`);
+
+      const threadCount = context.threadIds.length;
+      thread.disabled = threadCount === 0;
+      threadLabel.textContent = `故事线 · ${threadCount || '—'}`;
+      thread.setAttribute('aria-label', threadCount
+        ? `查看当前节点的 ${threadCount} 条故事线`
+        : '当前节点没有故事线');
+
+      source.hidden = !fallback || fallback.hidden;
+      if (!source.hidden && fallback) source.href = fallback.href;
+      sourceLabel.textContent = track?.playback.provider === 'external' ? 'X 回放 ↗' : 'YouTube ↗';
+      source.setAttribute('aria-label', track?.playback.provider === 'external'
+        ? '打开当前节点的 X 原始回放'
+        : '在 YouTube 打开当前节点时间');
+    }
+  }
+
+  if (!customElements.get('project-archive-shell')) {
+    customElements.define('project-archive-shell', ProjectArchiveShellElement);
+  }
+</script>

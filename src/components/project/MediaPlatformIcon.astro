@@ -1,0 +1,24 @@
+---
+export type Platform = 'youtube' | 'x-space';
+
+export interface Props {
+  platform: Platform;
+}
+
+const { platform } = Astro.props;
+---
+
+{platform === 'youtube' ? (
+  <svg class="media-platform-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <rect x="3.25" y="5.5" width="17.5" height="13" rx="3.25"></rect>
+    <path class="media-platform-icon__fill" d="m10 9 5.25 3L10 15.0V9Z"></path>
+  </svg>
+) : (
+  <svg class="media-platform-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+    <circle cx="12" cy="12" r="1.6"></circle>
+    <path d="M8.5 8.5a5 5 0 0 0 0 7"></path>
+    <path d="M15.5 8.5a5 5 0 0 1 0 7"></path>
+    <path d="M5.5 6a8.5 8.5 0 0 0 0 12"></path>
+    <path d="M18.5 6a8.5 8.5 0 0 1 0 12"></path>
+  </svg>
+)}

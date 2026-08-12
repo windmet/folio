@@ -1,0 +1,14 @@
+{
+  "project": "komatsu36",
+  "kind": "video",
+  "label": "YouTube 主直播",
+  "shortLabel": "YT",
+  "durationMs": 17846000,
+  "clock": "native",
+  "transcriptPolicy": "private",
+  "playback": {
+    "provider": "youtube",
+    "videoId": "jszQ4MQfRg8"
+  },
+  "fallbackUrl": "https://www.youtube.com/watch?v=jszQ4MQfRg8"
+}

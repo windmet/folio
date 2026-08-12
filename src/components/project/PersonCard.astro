@@ -1,0 +1,39 @@
+---
+import { participationKindLabels, readerLabel } from '../../lib/projectReaderLabels';
+
+export interface Props {
+  person: any;
+  eventCount: number;
+  group: 'production' | 'birthday-live' | 'space-remote';
+}
+
+const { person, eventCount, group } = Astro.props;
+const participation = person.data.participation || [];
+const groupKinds: Record<Props['group'], string[]> = {
+  production: ['production', 'ensemble'],
+  'birthday-live': ['ore-shiri-cast', 'production', 'ensemble'],
+  'space-remote': ['space-guest', 'remote-call', 'space-account'],
+};
+const participationLabels = participation.filter((item: any) => groupKinds[group].includes(item.kind)).map((item: any) => {
+  const label = readerLabel(participationKindLabels, item.kind);
+  const sessions = item.sessions?.map((session: string) => session === 'day' ? '昼' : '夜').join('／');
+  return [label, item.character, sessions, item.credit].filter(Boolean).join(' · ');
+});
+const groupLabels = {
+  production: 'PRODUCTION / ACTION',
+  'birthday-live': 'BIRTHDAY LIVE',
+  'space-remote': 'X SPACE / REMOTE',
+};
+---
+
+<button type="button" class="person-index-row" data-open-person={person.id.split('/').at(-1)}>
+  <span class="person-index-row__identity">
+    <span>{person.data.reading || '人物资料'}</span>
+    <strong>{person.data.displayName}</strong>
+  </span>
+  <span class="person-index-row__group">{groupLabels[group]}</span>
+  <span class="person-index-row__chips" aria-label="当前分组中的参与方式">
+    {participationLabels.map((label: string) => <span class="archive-taxonomy">{label}</span>)}
+  </span>
+  <span class="person-index-row__count">{eventCount} 个相关节点 →</span>
+</button>

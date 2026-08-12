@@ -1,0 +1,108 @@
+---
+import MediaPlatformIcon from './MediaPlatformIcon.astro';
+
+export interface Props {
+  tracks: any[];
+  events: any[];
+  sources: any[];
+}
+
+const { tracks, events, sources } = Astro.props;
+const referenceId = (reference: any) => reference?.id || reference;
+const order = new Map([['yt-main', 0], ['space-1', 1], ['space-2', 2]]);
+const orderedTracks = [...tracks].sort((left, right) =>
+  (order.get(left.id.split('/').at(-1) || '') ?? 99) - (order.get(right.id.split('/').at(-1) || '') ?? 99),
+);
+const formatDuration = (milliseconds: number) => {
+  const total = Math.floor(milliseconds / 1000);
+  const hours = Math.floor(total / 3600);
+  const minutes = Math.floor((total % 3600) / 60);
+  const seconds = total % 60;
+  return [hours, minutes, seconds].map((part) => String(part).padStart(2, '0')).join(':');
+};
+const countEvents = (track: any) => events.filter((event) => referenceId(event.data.track) === track.id).length;
+---
+
+<section class="media-sources" aria-labelledby="media-sources-title">
+  <div class="media-sources__summary">
+    <div class="media-sources__summary-copy">
+      <span class="archive-taxonomy" id="media-sources-title">媒体来源</span>
+      <strong>YouTube 主直播 + X Space ① / ②</strong>
+      <p>三路媒体 · 各自原视频时间</p>
+    </div>
+    <details class="media-sources__disclosure">
+      <summary>查看 3 个媒体来源、时长与来源证明</summary>
+      <div class="media-sources__details">
+        <div class="media-sources__list">
+    {orderedTracks.map((track) => {
+      const trackId = track.id.split('/').at(-1) || track.id;
+      const isYouTube = track.data.playback.provider === 'youtube';
+      return (
+        <article class="media-source" data-source-card={trackId}>
+          <div class="media-source__identity-row">
+            <button
+              type="button"
+              class="media-source__select"
+              data-source-track={trackId}
+              aria-pressed="false"
+              aria-label={`选择${track.data.label}`}
+            >
+              <MediaPlatformIcon platform={isYouTube ? 'youtube' : 'x-space'} />
+              <span class="media-source__code">{track.data.shortLabel}</span>
+              <span class="media-source__body">
+                <strong id={`source-title-${trackId}`} data-inline-expandable={`source-title-${trackId}`}>{track.data.label}</strong>
+              </span>
+            </button>
+            <span class="media-source__events">{countEvents(track)} 个事件</span>
+            <button
+              type="button"
+              class="archive-inline-text-toggle media-source__text-toggle"
+              data-inline-text-toggle={`source-title-${trackId}`}
+              aria-expanded="false"
+              aria-controls={`source-title-${trackId}`}
+              aria-label={`展开${track.data.label}`}
+              hidden
+            >展开</button>
+          </div>
+          <div class="media-source__status-row">
+            <span class="media-source__state">{isYouTube ? 'INLINE PLAYBACK' : 'EXTERNAL SOURCE'}</span>
+            <span class="media-source__meta">{formatDuration(track.data.durationMs)} · {track.data.kind.toUpperCase()}{isYouTube ? ' · 360°' : ''}</span>
+          </div>
+          <span class="media-source__actions">
+            {isYouTube ? (
+              <span class="media-source__action">站内播放</span>
+            ) : (
+              <a class="media-source__action" href={track.data.playback.url} target="_blank" rel="noopener noreferrer">
+                打开原来源 ↗
+              </a>
+            )}
+            <button type="button" class="media-source__browse" data-source-browse={trackId} aria-expanded="false" aria-controls={`source-event-list-${trackId}`}>
+              浏览事件 →
+            </button>
+          </span>
+        </article>
+      );
+    })}
+        </div>
+        <div class="media-sources__provenance" aria-label="来源证明">
+    <span>来源证明</span>
+    {sources.filter((source) => source.data.kind === 'editorial' && source.data.publicUrl).map((source) => (
+      <a href={source.data.publicUrl} target="_blank" rel="noopener noreferrer">{source.data.label} ↗</a>
+    ))}
+        </div>
+        <section class="source-event-index" data-source-event-index hidden aria-live="polite">
+          <div class="source-event-index__head">
+            <span class="archive-taxonomy">此来源的事件</span>
+            <strong data-source-event-heading>选择来源以浏览事件</strong>
+          </div>
+    {orderedTracks.map((track) => {
+      const trackId = track.id.split('/').at(-1) || track.id;
+      return (
+        <div id={`source-event-list-${trackId}`} class="source-event-index__list" data-source-event-list={trackId} hidden></div>
+      );
+    })}
+        </section>
+      </div>
+    </details>
+  </div>
+</section>

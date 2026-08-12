@@ -1,0 +1,88 @@
+---
+import { participationKindLabels, readerLabel, threadCategoryLabels } from '../../lib/projectReaderLabels';
+
+export interface Props {
+  people: any[];
+  eventsByPerson: Map<string, any[]>;
+  tracksById: Map<string, any>;
+  threadsByEvent: Map<string, string[]>;
+  threadsByPerson: Map<string, string[]>;
+  threadsById: Map<string, any>;
+  defaultTrackId: string;
+}
+
+const { people, eventsByPerson, tracksById, threadsByEvent, threadsByPerson, threadsById, defaultTrackId } = Astro.props;
+const referenceId = (reference: any) => reference.id;
+const formatTime = (milliseconds: number) => {
+  const total = Math.floor(milliseconds / 1000);
+  const hours = Math.floor(total / 3600);
+  const minutes = Math.floor((total % 3600) / 60);
+  const seconds = total % 60;
+  return [hours, minutes, seconds].map((part) => String(part).padStart(2, '0')).join(':');
+};
+---
+
+<div class="archive-overlay" data-person-overlay hidden>
+  <button type="button" class="archive-overlay__backdrop" data-close-person aria-label="关闭人物资料"></button>
+  <aside class="person-panel" data-person-panel role="dialog" aria-modal="true" aria-label="人物资料" tabindex="-1">
+    <button type="button" class="panel-close" data-close-person aria-label="关闭人物资料">×</button>
+    {people.map((person) => (
+      <article class="person-detail" data-person-detail={person.id.split('/').at(-1)} hidden>
+        <span class="archive-kicker">PEOPLE INDEX</span>
+        <h2>{person.data.displayName}</h2>
+        {person.data.reading && <p class="person-reading">{person.data.reading}</p>}
+        {person.data.projectContext && <p class="person-context">{person.data.projectContext}</p>}
+        {(person.data.participation || []).length > 0 && (
+          <div class="person-participation" aria-label="本项目参与方式">
+            {person.data.participation.map((item: any) => (
+              <span class="archive-taxonomy">
+                {readerLabel(participationKindLabels, item.kind)}
+                {item.character ? ` · ${item.character}` : ''}
+                {item.sessions?.length ? ` · ${item.sessions.map((session: string) => session === 'day' ? '昼' : '夜').join('／')}` : ''}
+                {item.credit ? ` · ${item.credit}` : ''}
+              </span>
+            ))}
+          </div>
+        )}
+        {(person.data.links || []).length > 0 && (
+          <div class="person-links">
+            {person.data.links.map((link: any) => <a href={link.url} target="_blank" rel="noreferrer">{link.label} ↗</a>)}
+          </div>
+        )}
+        {person.data.callNames.length > 0 && (
+          <p class="person-aliases"><span>本场常用称呼</span>{person.data.callNames.join(' · ')}</p>
+        )}
+        <h3>相关事件线</h3>
+        <div class="person-storylines">
+          {(threadsByPerson.get(person.id) || []).map((threadId) => {
+            const thread = threadsById.get(threadId);
+            return thread ? (
+              <button type="button" data-open-thread={threadId}>
+                <span class="archive-taxonomy">{readerLabel(threadCategoryLabels, thread.data.category)}</span>
+                <strong>{thread.data.title}</strong>
+              </button>
+            ) : null;
+          })}
+        </div>
+        <h3>本切片相关节点</h3>
+        <div class="person-events">
+          {(eventsByPerson.get(person.id) || []).map((event) => (
+            <button
+              type="button"
+              data-person-event-id={event.id.split('/').at(-1)}
+              data-person-thread={referenceId(event.data.track) === defaultTrackId
+                ? undefined
+                : (threadsByEvent.get(event.id) || [])[0]}
+            >
+              <span class="person-event-clock">
+                <b>{tracksById.get(referenceId(event.data.track))?.data.shortLabel || '—'}</b>
+                <time>{formatTime(event.data.startMs)}</time>
+              </span>
+              <span>{event.data.title}</span>
+            </button>
+          ))}
+        </div>
+      </article>
+    ))}
+  </aside>
+</div>

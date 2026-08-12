@@ -1,0 +1,15 @@
+{
+  "project": "komatsu36",
+  "track": "komatsu36/yt-main",
+  "act": "komatsu36/act-04",
+  "startMs": 8586000,
+  "endMs": 8598000,
+  "timingStatus": "approximate",
+  "title": "Space 后的空档被解释成“换装”",
+  "summary": "小松结束 Space 后没有立刻回到镜头，主桌便把这段空档解释成生日会式的“お色直し”。",
+  "people": ["komatsu36/komatsu-shohei"],
+  "tags": ["换装", "转场", "Space回流"],
+  "publicationStatus": "verified",
+  "narrativeMode": "timeline-only",
+  "laneAnnotations": []
+}

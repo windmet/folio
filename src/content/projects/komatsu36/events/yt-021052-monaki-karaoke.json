@@ -1,0 +1,15 @@
+{
+  "project": "komatsu36",
+  "track": "komatsu36/yt-main",
+  "act": "komatsu36/act-04",
+  "startMs": 7852000,
+  "endMs": 8054000,
+  "timingStatus": "approximate",
+  "title": "汐谷用モナキ开启留守组卡拉 OK",
+  "summary": "汐谷用モナキ的关西吐槽歌曲开了主桌卡拉 OK。熊谷又补了一句这首歌在高中生里也很流行，前辈们立刻有了代际危机感。",
+  "people": ["komatsu36/shioya-fumiyasu", "komatsu36/kumagai-toshiki"],
+  "tags": ["卡拉OK", "留守组", "代际"],
+  "publicationStatus": "verified",
+  "narrativeMode": "timeline-only",
+  "laneAnnotations": []
+}

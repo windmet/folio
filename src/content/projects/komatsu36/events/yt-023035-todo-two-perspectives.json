@@ -1,0 +1,15 @@
+{
+  "project": "komatsu36",
+  "track": "komatsu36/yt-main",
+  "act": "komatsu36/act-05",
+  "startMs": 9035000,
+  "endMs": 9431000,
+  "timingStatus": "approximate",
+  "title": "同一段藤堂戏，堀金看反差、井上看动作研究",
+  "summary": "堀金被藤堂从理性位置突然变热的反差吸引；井上则说明自己为后半杀阵查北辰一刀流与正眼构え，并用平助高位和以蔵低位维持舞台构图。",
+  "people": ["komatsu36/horikane-sohei", "komatsu36/inoue-yuki", "komatsu36/komatsu-shohei"],
+  "tags": ["俺知制作", "北辰一刀流", "动作研究", "development"],
+  "publicationStatus": "verified",
+  "narrativeMode": "threaded",
+  "laneAnnotations": []
+}

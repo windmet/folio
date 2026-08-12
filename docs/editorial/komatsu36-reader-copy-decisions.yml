@@ -1,0 +1,259 @@
+version: 1
+
+# This is the only hand-edited Reader Copy decision ledger.
+# The generated candidates Markdown is disposable and may be rebuilt at any time.
+#
+# Event example:
+# decisions:
+#   yt-000100-stream-start:
+#     copyAction: rewrite # keep | rewrite | listen
+#     readerNoteAction: none # none | add
+#     newSummary: "Approved reader-facing summary"
+#     note: "Why this decision was made"
+#
+# Thread example:
+#   shugo-yakiniku:
+#     copyAction: rewrite
+#     newBody: "Approved reader-facing body"
+#     note: "Remove editorial meta-language"
+
+decisions:
+  yt-000100-stream-start:
+    copyAction: rewrite
+    readerNoteAction: none
+    newSummary: "近五小时主直播从这里开始，开场先介绍场地、技术和活动安排。"
+    note: "把可用时间轴、canonical 和导航锚点留在内部资格说明，读者只需要知道节目从这里开始。"
+  yt-002044-first-space-return:
+    copyAction: rewrite
+    readerNoteAction: none
+    newSummary: "小松第一次从 Space 回到主直播；后面还会继续在两边来回跑。"
+    note: "用交替推进替代跨平台往返与现场轨，保留跨平台结构但移除工程术语。"
+  yt-002541-second-space-departure:
+    copyAction: rewrite
+    readerNoteAction: none
+    newTitle: "小松再次离席，主直播与 Space 同时继续"
+    newSummary: "小松第二次转去 Space；那边还在继续聊，主直播这边也没有停。"
+    note: "把双轨、并发标注与本地时钟换算留在内部资格说明，直接描述两个现场同时发生。"
+  yt-010711-first-guests-arrive:
+    copyAction: keep
+    readerNoteAction: none
+    note: "现有文案已能说明第一批来宾进入主区，限定只存在于内部资格说明。"
+  yt-011036-terashima-arrives:
+    copyAction: keep
+    readerNoteAction: none
+    note: "现有文案自然说明昼夜两位武市演员的关系。"
+  yt-011311-host-returns:
+    copyAction: keep
+    readerNoteAction: none
+    note: "现有文案只保留回到主区及后续庆生段落，内部时间限定不向读者暴露。"
+  yt-012117-cigar-chocolate:
+    copyAction: keep
+    readerNoteAction: none
+    note: "品牌和商品级不确定性不改变雪茄形巧克力这一事件理解。"
+  yt-013800-thirty-four-yen:
+    copyAction: keep
+    readerNoteAction: none
+    note: "现有文案准确保留节目内的 34 円玩笑，没有把 J 扩写成正式单位。"
+  yt-013840-great-payback:
+    copyAction: keep
+    readerNoteAction: none
+    note: "假设奖金和消费对话的限定保留在内部资格说明，读者文案已经是自然摘要。"
+  yt-014822-race-interrupts:
+    copyAction: keep
+    readerNoteAction: none
+    note: "现有文案已经明确赛马与遗忘的关系是时序关联而非已证实因果。"
+  yt-015525-second-guests-arrive:
+    copyAction: keep
+    readerNoteAction: none
+    note: "批次到场与自我介绍重叠属于内部定位限制，读者摘要本身无需改写。"
+  yt-015910-tea-chatgpt:
+    copyAction: keep
+    readerNoteAction: none
+    note: "品牌和礼物细节的复核限制不改变主要事件，读者文案保持当前摘要。"
+  yt-020048-baystars-towel:
+    copyAction: keep
+    readerNoteAction: none
+    note: "礼物品类与动机已经足够支撑事件，具体商品限制不影响读者理解。"
+  yt-020445-candle-fire:
+    copyAction: keep
+    readerNoteAction: none
+    note: "蜡烛与收拾房间的现场玩笑已是完整读者摘要，品牌不确定性留在内部说明。"
+  yt-020555-uchida-call-announced:
+    copyAction: rewrite
+    readerNoteAction: none
+    newSummary: "小松收到个人联络后离开主区，转去处理 LINE 电话和 Space；主桌这边则继续自己的聊天。"
+    note: "将另一轨道替换为读者可理解的电话另一边，保留分流事实。"
+  yt-021540-milk-wordplay:
+    copyAction: keep
+    readerNoteAction: none
+    note: "不发布逐字口令不妨碍读者理解歌曲被改成饮酒玩笑。"
+  yt-022240-public-drinking-pace:
+    copyAction: keep
+    readerNoteAction: none
+    note: "2900 作为现场当时的口头规模已在摘要中限定为观看现场，不冒充最终统计。"
+  yt-022700-makoto-theme:
+    copyAction: keep
+    readerNoteAction: none
+    note: "现有摘要自然说明誠如何从符号变成人物选择。"
+  yt-025037-kano-toilet:
+    copyAction: keep
+    readerNoteAction: none
+    note: "事件级离席摘要足够，未把未核实的逐字桥段写入正文。"
+  yt-025449-kano-haiku:
+    copyAction: keep
+    readerNoteAction: none
+    note: "现有摘要保留俳句构造和喜剧线，不需要完整逐字稿。"
+  yt-025829-hair-grab:
+    copyAction: keep
+    readerNoteAction: none
+    note: "动作机制、投诉与歯白っ的闭环已经清楚，法证级逐字限制不属于读者说明。"
+  yt-030202-yano-arrives:
+    copyAction: keep
+    readerNoteAction: none
+    note: "后到来宾带出的连续小线已清楚，canonical 只存在于内部定位。"
+  yt-031258-blade-accident-recount:
+    copyAction: keep
+    readerNoteAction: none
+    note: "标题与摘要描述的是复盘入口，事故原始发生时刻的区别留在内部资格说明。"
+  yt-031300-ryoma-line-callback:
+    copyAction: keep
+    readerNoteAction: none
+    note: "同步感和观众误以为是演出的笑点已经完整。"
+  yt-031615-book-improv:
+    copyAction: keep
+    readerNoteAction: none
+    note: "本与台本的重叠及即兴吸收已足够说明事件，不合并逐字版本。"
+  yt-032139-kano-back-pain:
+    copyAction: keep
+    readerNoteAction: none
+    note: "文案明确区分腰伤时序与芝居效果，没有倒因为果。"
+  yt-032828-seiten-opening:
+    copyAction: keep
+    readerNoteAction: none
+    note: "Opening 的完整结构和选择理由可直接面向读者，投稿首句不影响理解。"
+  yt-034011-blood-flick-research:
+    copyAction: rewrite
+    readerNoteAction: none
+    newSummary: "汐谷查流派后提出血振り，并在两位演员之间共享研究；制作讨论最后把这一动作留在正式演出中。"
+    note: "把制作锁定替换为制作讨论最后保留，避免把编辑流程词带给读者。"
+  yt-034507-space-close-departure:
+    copyAction: rewrite
+    readerNoteAction: none
+    newSummary: "《俺知》名场面环节结束后，小松离开主直播去收尾 X Space；主区暂时继续进行。"
+    note: "把短暂分流换成主区继续进行的自然描述，时间锚点仍留在内部资格说明。"
+  yt-035300-space-close-return:
+    copyAction: keep
+    readerNoteAction: none
+    note: "现有文案清楚说明第二段 Space 收束、回到主区及 Bingo 的承接。"
+  yt-035520-bingo-rules-patched:
+    copyAction: rewrite
+    readerNoteAction: none
+    newTitle: "Bingo 规则越玩越多，口令也临时改掉"
+    newSummary: "一开始每人一张卡，同一时刻多人 Bingo 的单份奖品会流局；玩到后面又临时加入“double Bingo 优先”。连中奖口令也从普通“Bingo”改成了“俺を知ってくれ”。"
+    note: "把规则 patch 改成现场规则逐步增加的读者叙事，不改变 Bingo 规则事实。"
+  yt-040000-tumbler-mitsutomi:
+    copyAction: rewrite
+    readerNoteAction: none
+    newSummary: "第二轮 64 号由光富崇雄中奖，奖品是新選組／瀬戸焼き“誠”杯类物件。"
+    note: "早先误听属于内部纠错历史；页面只保留中奖者和当前可确认的奖品品类。"
+  yt-040405-amazon-hama:
+    copyAction: rewrite
+    newSummary: "23 番一出，两个人同时 Bingo，正好撞上两份 Amazon 5000 円礼券。"
+    readerNoteAction: none
+    note: "2026-08-10 semantic override：读者层只保留寺島与堀金同时 Bingo 的事件事实；堀金的排除链保留在内部 qualification，濱未中主奖，抢卡另拆 Event。"
+  yt-040539-fan-inoue:
+    copyAction: keep
+    readerNoteAction: none
+    note: "扇子、号码和中奖者已构成完整事件，商品细节限制留在内部资格说明。"
+  yt-041453-kano-tbolan:
+    copyAction: keep
+    readerNoteAction: none
+    note: "现有摘要能同时交代 T-BOLAN 与 Super Chat 的现场并行，不需要逐句对齐。"
+  yt-041810-snack-akemi:
+    copyAction: keep
+    readerNoteAction: none
+    note: "Snack Akemi 轶事作为卡拉 OK 旁支已经清楚，事件级时间限制不需读者说明。"
+  yt-042117-keserasera:
+    copyAction: keep
+    readerNoteAction: none
+    note: "现有摘要自然说明滨接棒和现场并行话题，不发布歌词。"
+  yt-042252-seigura-superchat:
+    copyAction: keep
+    readerNoteAction: none
+    note: "发送方称呼与现场反应足以支撑事件，账号细节和金额不影响理解。"
+  yt-042314-hama-self-intro:
+    copyAction: keep
+    readerNoteAction: none
+    note: "等级式自评的喜剧结构已清楚，未把不稳定细节写成成绩表。"
+  yt-043520-ojamajo:
+    copyAction: keep
+    readerNoteAction: none
+    note: "多人合流和二次会扩张已完整，重叠发言与歌词限制不必展示。"
+  yt-044023-wheel-song:
+    copyAction: keep
+    readerNoteAction: none
+    note: "Heisuke 组合、曲目和加演段落已经可读。"
+  yt-044513-fantastipo:
+    copyAction: keep
+    readerNoteAction: none
+    note: "合唱与 Super Chat 并行是事件重点，内部并发标注不向读者暴露。"
+  yt-045435-shuji-akira:
+    copyAction: keep
+    readerNoteAction: none
+    note: "现有摘要保留余兴延长这一作用，不对未确认的说话人和现实指代做归属。"
+  sp2-000311-account-hijack:
+    copyAction: rewrite
+    readerNoteAction: none
+    newSummary: "这段发言只与室账号有关；对方自称“乗っ取り”，不能据此认作室元気本人。"
+    note: "把页面、原始区分等编辑语句改成直接的身份边界说明。"
+  sp2-025344-uchida-forgotten:
+    copyAction: keep
+    readerNoteAction: none
+    note: "事件摘要已清楚表达漏问生日的笑点，逐字听辨限制留在内部资格说明。"
+  sp2-025404-public-offer:
+    copyAction: keep
+    readerNoteAction: none
+    note: "这里的“发布”是小松预告稍后公开续报的现场动作，不是档案编辑流程词；现有摘要保留公开邀约与未正式发表出演的边界。"
+  bingo-payback:
+    copyAction: rewrite
+    newDeck: "小松打算用Bingo形式一次还清大家的生日礼物，有人中奖，有人扑空，有人空手而来却+1000円。"
+    newBody: "小松本来只是想用 Bingo 一次还清大家的生日礼物，结果规则一路边玩边补。有人很快拿到主奖，有人始终扑空；濱明明空手来，Amazon 卡没抢到，最后却和矢野一起多拿了 1000 円参加赏。"
+    note: "2026-08-10 semantic override：移除濱中奖判断，并把抢寺島卡作为独立节点接入。"
+  birthday-payback:
+    copyAction: rewrite
+    newBody: "小松先对観世临时立下“以后也要记得给别人庆生”的规则，到了清典这里又认真问起 11 月 14 日。结果话刚说完，他突然想起：自己前面明明和内田聊了很久，却完全忘了问内田生日。规则是自己立的，先被绊住的也是自己。"
+    note: "历史 RAW 恢复后，直接讲清从立规则到忘问内田生日的回收，不再向读者展示旧听辨谨慎说明。"
+  hama-paid-drinking:
+    copyAction: rewrite
+    newDeck: "没带礼物却一路吃喝到最后；Amazon 轮自己没中，还伸手去抢寺島的卡，最后只拿到 1000 円参加赏，于是现场真的变成了“ギャラ飲み”。"
+    newBody: "濱这晚从一句「俺ない」开始就没停过：没带礼物、喝高价酒、只关心自己出演作品，到了 Bingo 又盯上 Amazon 礼券，自己没中还伸手去抢寺島的卡。最后他和矢野作为仅剩的两名未中奖者拿到 1000 円参加赏，濱干脆自己把它说成「ギャラ＋1000円」。"
+    note: "2026-08-10 semantic override：濱没有中 Amazon 主奖，人物线终点改为抢卡与 1000 円参加赏。"
+  broken-sword:
+    copyAction: rewrite
+    newBody: "大家复盘的是昼场那次真事故：濱的刀真的折断，矢野那把只被削伤，碎片飞向舞台袖，幸好没有人受伤。偏偏下一句就是「刀で斬り合う時代は終わりじゃ」，自然得让不少观众以为本来就是演出。"
+    note: "用事故经过和下一句台词构成故事，不再解释档案记录坐标。"
+  kano-ojisan:
+    copyAction: rewrite
+    newBody: "狩野前面一路被吐槽越来越“おじさん”，厕所离席只是其中一个小插曲。等二次会真的点到 T-BOLAN，这条一路累积的吐槽终于直接落在歌单上。"
+    note: "直接交代连续笑点如何落到歌单，不再向读者说明资料缺口。"
+  muro-account:
+    copyAction: rewrite
+    newBody: "第一段 Space 结束前只来得及看到室元気的账号。重开以后，账号再次出现，对方却自己说出了「乗っ取り」。所以这里能确认的是“室元気账号参与了 Space”，而不是“室元気本人终于来了”。"
+    note: "保留必须公开的身份边界，同时把它写成账号插曲本身的故事。"
+  ore-shiri-making-of:
+    copyAction: rewrite
+    newBody: "大家挑出来的“名场面”根本不是同一种东西：有人认真聊武器、流派和身体重心，有人记住的是方言、朗读节奏，甚至还有俳句即兴。清典先生的长投稿又从动作指导的角度补上训练和制作细节，整段复盘也因此不只是“选一个最喜欢的场面”。"
+    note: "改成制作过程的故事总结，不再解释 Thread 的编辑分层。"
+  russian-takoyaki:
+    copyAction: rewrite
+    newBody: "濱最早抽中那颗章鱼烧，看见已经绿到几乎能确认是 wasabi，因为「ひよって」又直接放了回去。大家很快也识破了那颗芥末章鱼烧，紧接着却忙着看赛马和跑后面的节目流程，再没人管它。赛马是否真的导致“忘记”并不能确认，只能说时间上正好挨在一起。约 80 分钟后，完全不知道前情的堀金蒼平一口踩雷，现场直接冒出一句「時限爆弾すぎるだろ！」。"
+    note: "把因果边界写成自然叙述，移除现场原声和不把它写成等编辑判断句。"
+  shugo-yakiniku:
+    copyAction: rewrite
+    newDeck: "奇怪的人带着奇怪的话突然闯进 Space，说完“今晚吃烧肉”就消失了。重开Space后的小松只好替这句简短留言补成庆生。"
+    newBody: "仲村好不容易接进来，几乎只留下“今晚去吃烤肉”就又掉线。重开以后，小松只好自顾自替他补成“因为我生日很开心，所以去吃烤肉庆祝”，把一条信息极少的留言硬凑成完整祝福。"
+    note: "用掉线与小松强行补祝福构成故事，不再评论资料信息量。"
+  terashima-big-dream:
+    copyAction: rewrite
+    newBody: "小松没有选最安全的 36J，而是拿走了“陪寿星折腾杀阵”和 Big Dream 赛马下注。寺島另外买的是 5-6，小松拿到的生日礼物票则是 5-8 wide。全员最后围在 20:50 的赛马直播前喊出「惜しい！」，再认真一算——其实什么都没中。"
+    note: "用两张票和最终归零讲清笑点，不再写事件线如何裁决。"

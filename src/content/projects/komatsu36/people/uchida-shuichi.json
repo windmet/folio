@@ -1,0 +1,10 @@
+{
+  "project": "komatsu36",
+  "displayName": "内田修一",
+  "reading": "うちだ しゅういち",
+  "callNames": ["修"],
+  "searchAliases": [],
+  "projectContext": "因为没有 X 账号，只能改用 LINE 电话接进 Space。档案因此把他单独标作 remote call，而不是普通 Space guest。",
+  "participation": [{ "kind": "remote-call" }],
+  "links": []
+}

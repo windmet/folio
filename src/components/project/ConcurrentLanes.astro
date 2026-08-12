@@ -1,0 +1,22 @@
+---
+export interface Props {
+  lanes: Array<{ lane: string; label: string }>;
+}
+
+const { lanes } = Astro.props;
+---
+
+{lanes.length > 0 && (
+  <aside class="concurrent-lanes" aria-label="同时发生提示">
+    <span>HAPPENING IN PARALLEL</span>
+    <ul>
+      {lanes.map((lane) => (
+        <li>
+          <strong>{lane.lane}</strong>
+          <p>{lane.label}</p>
+        </li>
+      ))}
+    </ul>
+    <small>这里表示两个现场在同一段时间发生，不把它们的时钟强行对齐。</small>
+  </aside>
+)}

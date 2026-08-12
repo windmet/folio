@@ -1,0 +1,15 @@
+{
+  "project": "komatsu36",
+  "displayName": "清典",
+  "reading": "せいてん",
+  "callNames": [],
+  "searchAliases": [],
+  "projectContext": "《俺知》的アクション演出与 ensemble。复盘时从专业动作视角聊演员训练和舞台细节，Space 结尾处又被小松当场公开邀约后续企划。",
+  "participation": [
+    { "kind": "production", "credit": "アクション演出" },
+    { "kind": "ensemble" },
+    { "kind": "space-guest" },
+    { "kind": "submitted-comment" }
+  ],
+  "links": []
+}

@@ -1,0 +1,78 @@
+---
+import ConcurrentLanes from './ConcurrentLanes.astro';
+import { readerLabel, threadCategoryLabels } from '../../lib/projectReaderLabels';
+
+export interface Props {
+  event: any;
+  people: any[];
+  threadIds: string[];
+  threadsById: Map<string, any>;
+}
+
+const { event, people, threadIds, threadsById } = Astro.props;
+const threadViews = threadIds.map((threadId) => threadsById.get(threadId)).filter(Boolean);
+const localId = event.id.split('/').at(-1);
+const relationByPersonId = new Map((event.data.personRelations || []).map((relation: any) => [relation.person.id, relation.kind]));
+const personLabel = (person: any) => relationByPersonId.get(person.id) === 'account-context'
+  ? `${person.data.displayName}账号`
+  : person.data.displayName;
+const seconds = Math.floor(event.data.startMs / 1000);
+const formatTime = (totalSeconds: number) => {
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const secondsPart = totalSeconds % 60;
+  return [hours, minutes, secondsPart].map((part) => String(part).padStart(2, '0')).join(':');
+};
+---
+
+<article class="timeline-event" data-event-card={localId} data-timeline-event={localId} id={`event-${localId}`} tabindex="-1">
+  <button type="button" class="event-time" data-event-seek={localId} data-seconds={seconds}>
+    <span aria-hidden="true">▶</span> {event.data.timingStatus === 'approximate' ? '≈' : ''}{formatTime(seconds)}
+  </button>
+  <div class="event-body">
+    <div class="event-heading">
+      <h3>{event.data.title}</h3>
+      <button
+        type="button"
+        class="event-detail-toggle"
+        data-event-detail={localId}
+        aria-expanded="false"
+        aria-controls={`event-detail-${localId}`}
+      >
+        <span>{event.data.title}</span>
+        <small aria-hidden="true">＋</small>
+      </button>
+    </div>
+    <div class="event-detail" id={`event-detail-${localId}`}>
+      <p class="event-summary">{event.data.summary}</p>
+      {event.data.readerNote && <p class="event-reader-note">{event.data.readerNote}</p>}
+      <ConcurrentLanes lanes={event.data.laneAnnotations} />
+      <div class="event-meta">
+        <div class="event-people" aria-label="相关人物">
+          {people.map((person) => (
+            <button type="button" data-open-person={person.id.split('/').at(-1)}>{personLabel(person)}</button>
+          ))}
+        </div>
+        {threadViews.length === 1 && (
+          <button type="button" class="event-thread" data-open-thread={threadViews[0].id.split('/').at(-1)}>
+            查看「{threadViews[0].data.title}」 <span aria-hidden="true">↗</span>
+          </button>
+        )}
+        {threadViews.length > 1 && (
+          <details class="event-thread-chooser">
+            <summary>{threadViews.length} 条相关事件线</summary>
+            <div class="event-thread-chooser__list">
+              {threadViews.map((thread: any) => (
+                <button type="button" class="event-thread" data-open-thread={thread.id.split('/').at(-1)}>
+                  <span class="event-thread__category archive-taxonomy">{readerLabel(threadCategoryLabels, thread.data.category)}</span>
+                  <span>{thread.data.title}</span>
+                  <span aria-hidden="true">↗</span>
+                </button>
+              ))}
+            </div>
+          </details>
+        )}
+      </div>
+    </div>
+  </div>
+</article>

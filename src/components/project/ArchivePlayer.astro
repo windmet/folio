@@ -1,0 +1,128 @@
+---
+import PlayerContextRail from './PlayerContextRail.astro';
+import MediaPlatformIcon from './MediaPlatformIcon.astro';
+
+export interface Props {
+  trackId: string;
+  label: string;
+  videoId?: string;
+  fallbackUrl?: string;
+  tracks: any[];
+}
+
+const { trackId, label, videoId, fallbackUrl, tracks } = Astro.props;
+const order = new Map([['yt-main', 0], ['space-1', 1], ['space-2', 2]]);
+const orderedTracks = [...tracks].sort((left, right) =>
+  (order.get(left.id.split('/').at(-1) || '') ?? 99) - (order.get(right.id.split('/').at(-1) || '') ?? 99),
+);
+---
+
+<div class="archive-player-frame" data-player-frame data-player-mode="expanded">
+<button
+  type="button"
+  class="archive-player-bubble"
+  data-player-bubble
+  aria-label="展开移动播放器"
+  aria-controls="archive-player-panel"
+  aria-expanded="false"
+  hidden
+>
+  <span class="archive-player-bubble__symbol" data-player-bubble-symbol aria-hidden="true">▶</span>
+  <strong data-player-bubble-code>YT</strong>
+</button>
+<section id="archive-player-panel" class="archive-player" data-player data-track-id={trackId} data-video-id={videoId || ''}>
+  <div class="archive-player__head">
+    <div>
+      <span class="archive-kicker">CURRENT SOURCE</span>
+      <strong data-player-track-label>{label}</strong>
+    </div>
+    <button
+      type="button"
+      class="archive-player__mode-toggle"
+      data-player-mode-toggle
+      aria-pressed="false"
+      aria-label="切换播放器显示方式"
+    >
+      <span data-player-mode-toggle-label>收起为底部播放栏</span>
+    </button>
+      <span class="archive-clock" data-player-time>00:00:00</span>
+  </div>
+  <nav class="archive-player__sources" aria-label="播放器来源切换">
+    <span class="archive-kicker">SOURCE</span>
+    <div>
+      {orderedTracks.map((track) => {
+        const id = track.id.split('/').at(-1) || track.id;
+        return (
+          <button type="button" data-source-track={id} aria-pressed={id === trackId ? 'true' : 'false'}>
+            <MediaPlatformIcon platform={track.data.playback.provider === 'youtube' ? 'youtube' : 'x-space'} />
+            {track.data.shortLabel}
+          </button>
+        );
+      })}
+    </div>
+  </nav>
+  <div class="archive-player__viewport" data-player-viewport>
+    {videoId ? (
+      <>
+        <img
+          src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`}
+          alt=""
+          loading="eager"
+          data-player-poster
+          data-player-poster-src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`}
+        />
+        <div class="archive-player__poster-fallback" data-player-poster-fallback hidden aria-hidden="true">
+          <span class="archive-player__poster-fallback-icon" aria-hidden="true">▶</span>
+          <strong>YouTube 预览图暂时无法连接</strong>
+          <small>播放器仍可在网络恢复后重新尝试载入。</small>
+        </div>
+        <button type="button" class="archive-player__load" data-load-player aria-label="载入 YouTube 播放器">
+          <span aria-hidden="true">▶</span>
+          <small>载入播放器</small>
+        </button>
+        <div class="archive-player__mount-host" data-player-host>
+          <div class="archive-player__mount" data-player-mount></div>
+        </div>
+        <section class="archive-player__error" data-player-error hidden role="status" aria-live="polite">
+          <strong>YouTube 无法连接</strong>
+          <p>播放器与预览图未能从 YouTube 加载。若当前网络无法访问 YouTube，请调整网络环境后重试。</p>
+          <div>
+            <button type="button" data-player-retry>重新尝试</button>
+            <a href={fallbackUrl || '#'} target="_blank" rel="noopener noreferrer" data-player-open-source>打开 YouTube ↗</a>
+          </div>
+        </section>
+      </>
+    ) : (
+      <div class="archive-player__unavailable">此轨道目前没有公开播放源</div>
+    )}
+  </div>
+  <div class="archive-player__unavailable" data-player-unavailable hidden>此轨道目前没有公开播放源</div>
+  <p class="archive-player__current" data-player-current>
+    <span id="player-current-text" data-player-current-text data-player-expandable="target">选择时间节点开始定位</span>
+    <button
+      type="button"
+      class="archive-player__text-toggle"
+      data-player-text-toggle="target"
+      aria-expanded="false"
+      aria-controls="player-current-text"
+      hidden
+    >展开</button>
+  </p>
+  <PlayerContextRail />
+  <section class="archive-player__context" data-player-context hidden aria-label="当前节点上下文">
+    <span class="archive-kicker" data-player-context-label>READING CONTEXT</span>
+    <p id="player-context-text" data-player-context-summary></p>
+    <button type="button" class="archive-player__context-cta" data-player-context-cta>在 Timeline 查看此节点 →</button>
+    <div class="archive-player__context-threads" data-player-context-threads hidden>
+      <span data-player-context-thread-heading>选择一条相关事件线</span>
+      <div data-player-context-thread-list></div>
+    </div>
+  </section>
+  {fallbackUrl && (
+    <a class="archive-player__fallback" href={fallbackUrl} target="_blank" rel="noopener noreferrer" data-player-fallback data-external-youtube-handoff>
+      在 YouTube 打开原来源 ↗
+    </a>
+  )}
+  <p class="archive-player__note" data-player-note>使用 YouTube 原生 360°能力；移动设备的视角支持取决于 YouTube 与设备。</p>
+</section>
+</div>

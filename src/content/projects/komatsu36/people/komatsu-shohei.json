@@ -1,0 +1,14 @@
+{
+  "project": "komatsu36",
+  "displayName": "小松昌平",
+  "reading": "こまつ しょうへい",
+  "callNames": ["コマッチ"],
+  "searchAliases": [],
+  "projectContext": "《俺知》昼夜两场饰演岡田以蔵，也是企划、脚本与这场生日会的主持。整晚在主直播、两段 Space 和打ち上げ之间来回跑，几乎所有线都绕着他展开。",
+  "participation": [
+    { "kind": "ore-shiri-cast", "character": "岡田以蔵", "sessions": ["day", "night"] },
+    { "kind": "production", "credit": "プロデュース・脚本" },
+    { "kind": "birthday-live" }
+  ],
+  "links": []
+}

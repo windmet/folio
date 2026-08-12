@@ -1,0 +1,15 @@
+{
+  "project": "komatsu36",
+  "track": "komatsu36/yt-main",
+  "act": "komatsu36/act-02",
+  "startMs": 5170000,
+  "endMs": 5200000,
+  "timingStatus": "exact",
+  "title": "汐谷的 GODIVA 与前一份巧克力撞品类",
+  "summary": "汐谷文康送出 GODIVA，现场立即发现它与狩野的雪茄形巧克力撞了礼物品类。",
+  "people": ["komatsu36/shioya-fumiyasu", "komatsu36/kano-sho", "komatsu36/komatsu-shohei"],
+  "tags": ["生日礼物", "巧克力"],
+  "publicationStatus": "verified",
+  "narrativeMode": "timeline-only",
+  "laneAnnotations": []
+}

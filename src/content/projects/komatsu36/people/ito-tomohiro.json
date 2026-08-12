@@ -1,0 +1,13 @@
+{
+  "project": "komatsu36",
+  "displayName": "伊藤友紘",
+  "reading": "いとう ともひろ",
+  "callNames": [],
+  "searchAliases": [],
+  "projectContext": "《俺知》昼夜两场饰演沖田総司。虽然没有到生日会现场，仍通过事前投稿参与名场面复盘。",
+  "participation": [
+    { "kind": "ore-shiri-cast", "character": "沖田総司", "sessions": ["day", "night"] },
+    { "kind": "submitted-comment" }
+  ],
+  "links": []
+}

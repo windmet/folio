@@ -1,0 +1,15 @@
+{
+  "project": "komatsu36",
+  "track": "komatsu36/yt-main",
+  "act": "komatsu36/act-05",
+  "startMs": 9727000,
+  "endMs": 10256000,
+  "timingStatus": "approximate",
+  "title": "熊谷的喜剧名场面揭开“受控即兴”",
+  "summary": "熊谷赞赏演员在舞台现场敢于即兴，复盘却说明自由发挥仍受角色、方言、段落功能与后续节奏约束，还必须有人负责把场面收回来。",
+  "people": ["komatsu36/kumagai-toshiki", "komatsu36/hama-kento"],
+  "tags": ["俺知名场面", "即兴", "喜剧"],
+  "publicationStatus": "verified",
+  "narrativeMode": "threaded",
+  "laneAnnotations": []
+}

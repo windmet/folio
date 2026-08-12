@@ -1,0 +1,14 @@
+{
+  "project": "komatsu36",
+  "displayName": "濱健人",
+  "reading": "はま けんと",
+  "callNames": ["濱ちゃん", "ハマ"],
+  "searchAliases": [],
+  "projectContext": "《俺知》昼夜两场饰演坂本龍馬，同时负责土佐弁监修。生日会里，他最早抽到那颗芥末章鱼烧，也一路把“没带礼物”玩成了整晚的梗。",
+  "participation": [
+    { "kind": "ore-shiri-cast", "character": "坂本龍馬", "sessions": ["day", "night"] },
+    { "kind": "production", "credit": "土佐弁監修" },
+    { "kind": "birthday-live" }
+  ],
+  "links": []
+}
