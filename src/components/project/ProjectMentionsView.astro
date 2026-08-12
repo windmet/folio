@@ -13,8 +13,8 @@ const formatTime = (milliseconds: number) => {
     .map((part) => String(part).padStart(2, '0')).join(':');
 };
 const groups = [
-  { kind: 'work', en: 'WORKS', label: '作品 / 企划' },
   { kind: 'person', en: 'PEOPLE', label: '人物' },
+  { kind: 'work', en: 'WORKS', label: '作品 / 企划' },
   { kind: 'context', en: 'CONTEXT', label: '背景 / 词条' },
 ];
 const eventsFor = (mention: any) => (mention.events || [])
@@ -30,31 +30,38 @@ const eventsFor = (mention: any) => (mention.events || [])
     <p>本期提及的人物、作品与背景信息。点击时间直接回到 Timeline；外部链接只用于补充公开资料。</p>
   </div>
 
+  <nav class="mentions-jump" aria-label="Mentions 分组导航">
+    {groups.map((group) => (
+      <a href={`#mentions-${group.kind}`}>{group.label.split(' / ')[0]}</a>
+    ))}
+  </nav>
+
   <div class="mentions-groups">
     {groups.map((group) => {
       const groupMentions = mentions.filter((mention: any) => mention.kind === group.kind);
       if (groupMentions.length === 0) return null;
       return (
-        <section class="mentions-group" data-mention-kind={group.kind}>
+        <section class="mentions-group" data-mention-kind={group.kind} id={`mentions-${group.kind}`}>
           <header class="mentions-group__heading">
             <div>
               <span class="archive-kicker">{group.en}</span>
-              <h3>{group.label}</h3>
+              <h3>{group.label} <span>· {groupMentions.length}</span></h3>
             </div>
-            <small>{String(groupMentions.length).padStart(2, '0')}</small>
           </header>
           <div class="mentions-list">
             {groupMentions.map((mention: any) => {
               const events = eventsFor(mention);
+              const visibleEvents = events.slice(0, 3);
+              const hiddenEvents = events.slice(3);
               return (
-                <article class="mention-row" data-mention-row={mention.id} id={`mention-${mention.id}`}>
-                  <div class="mention-row__copy">
+                <article class="mention-card" data-mention-card={mention.id} id={`mention-${mention.id}`}>
+                  <div class="mention-card__copy">
                     <h4>{mention.label}</h4>
                     <p>{mention.summary}</p>
                   </div>
-                  <div class="mention-row__actions">
+                  <div class="mention-card__actions">
                     <div class="mention-times" aria-label={`${mention.label} 在 Timeline 的提及时间`}>
-                      {events.map((event: any) => (
+                      {visibleEvents.map((event: any) => (
                         <button
                           type="button"
                           class="mention-time"
@@ -64,8 +71,27 @@ const eventsFor = (mention: any) => (mention.events || [])
                           {formatTime(event.data.startMs)} <span aria-hidden="true">→</span>
                         </button>
                       ))}
+                      {hiddenEvents.length > 0 && (
+                        <details class="mention-times-more">
+                          <summary aria-label={`展开 ${mention.label} 的其余 ${hiddenEvents.length} 个时间点`}>
+                            +{hiddenEvents.length}
+                          </summary>
+                          <div class="mention-times-more__items">
+                            {hiddenEvents.map((event: any) => (
+                              <button
+                                type="button"
+                                class="mention-time"
+                                data-mention-event={localId(event.id)}
+                                aria-label={`在 Timeline 查看 ${mention.label}：${formatTime(event.data.startMs)}`}
+                              >
+                                {formatTime(event.data.startMs)} <span aria-hidden="true">→</span>
+                              </button>
+                            ))}
+                          </div>
+                        </details>
+                      )}
                     </div>
-                    {mention.url && (
+                    {mention.kind !== 'person' && mention.url && (
                       <a class="mention-source" href={mention.url} target="_blank" rel="noopener noreferrer">
                         {mention.kind === 'context' ? '背景资料' : '官方资料'} ↗
                       </a>

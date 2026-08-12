@@ -802,6 +802,32 @@ project-archive-shell {
   gap: 48px;
 }
 
+.mentions-jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: -24px 0 38px;
+}
+
+.mentions-jump a {
+  padding: 7px 11px;
+  border: 1px solid var(--archive-line);
+  color: var(--archive-muted);
+  font-size: 11px;
+  line-height: 1.2;
+  text-decoration: none;
+}
+
+.mentions-jump a:hover,
+.mentions-jump a:focus-visible {
+  border-color: var(--archive-red);
+  color: var(--archive-red);
+}
+
+.mentions-group {
+  scroll-margin-top: 100px;
+}
+
 .mentions-group__heading {
   display: flex;
   align-items: end;
@@ -817,54 +843,101 @@ project-archive-shell {
   font-weight: 400;
 }
 
-.mentions-group__heading small {
+.mentions-group__heading h3 span {
   color: var(--archive-muted);
-  font: 10px/1.4 ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 12px;
 }
 
 .mentions-list {
   display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 14px;
+  padding-top: 16px;
 }
 
-.mention-row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(220px, auto);
-  gap: 28px;
-  align-items: center;
-  padding: 22px 0;
-  border-bottom: 1px solid var(--archive-line);
+.mention-card {
+  display: flex;
+  min-width: 0;
+  min-height: 172px;
+  flex-direction: column;
+  padding: 20px;
+  border: 1px solid var(--archive-line);
+  background: color-mix(in srgb, var(--archive-surface) 82%, transparent);
 }
 
-.mention-row__copy {
+.mention-card__copy {
   min-width: 0;
 }
 
-.mention-row__copy h4 {
+.mention-card__copy h4 {
   margin: 0 0 7px;
   font-size: 17px;
   font-weight: 400;
   line-height: 1.35;
 }
 
-.mention-row__copy p {
-  max-width: 640px;
+.mention-card__copy p {
+  display: -webkit-box;
+  overflow: hidden;
   margin: 0;
   color: var(--archive-muted);
   font-size: 12px;
   line-height: 1.75;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
 }
 
-.mention-row__actions {
+.mention-card__actions {
   display: flex;
+  align-items: flex-start;
   flex-direction: column;
-  align-items: flex-end;
-  gap: 10px;
+  gap: 9px;
+  margin-top: auto;
+  padding-top: 18px;
 }
 
 .mention-times {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
+  justify-content: flex-start;
+  gap: 6px;
+}
+
+.mention-times-more {
+  position: relative;
+}
+
+.mention-times-more summary {
+  display: inline-flex;
+  min-height: 28px;
+  align-items: center;
+  padding: 5px 8px;
+  border: 1px solid var(--archive-line);
+  color: var(--archive-muted);
+  background: rgba(255, 255, 255, 0.34);
+  font: 10px/1.3 ui-monospace, SFMono-Regular, Consolas, monospace;
+  cursor: pointer;
+  list-style: none;
+}
+
+.mention-times-more summary::-webkit-details-marker {
+  display: none;
+}
+
+.mention-times-more[open] {
+  flex-basis: 100%;
+}
+
+.mention-times-more[open] summary {
+  margin-bottom: 6px;
+  border-color: var(--archive-red);
+  color: var(--archive-red);
+}
+
+.mention-times-more__items {
+  display: flex;
+  flex-wrap: wrap;
   gap: 6px;
 }
 
@@ -895,6 +968,12 @@ project-archive-shell {
 .mention-source {
   color: var(--archive-red);
   background: transparent;
+}
+
+@container mentions-view (max-width: 640px) {
+  .mentions-list {
+    grid-template-columns: 1fr;
+  }
 }
 
 .project-player-column {
@@ -3610,27 +3689,33 @@ project-archive-shell {
     gap: 34px;
   }
 
-  .mention-row {
-    grid-template-columns: 1fr;
-    gap: 13px;
-    padding: 18px 0;
+  .mentions-jump {
+    margin: -16px 0 30px;
   }
 
-  .mention-row__copy h4 {
+  .mentions-list {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding-top: 12px;
+  }
+
+  .mention-card {
+    min-height: 0;
+    padding: 17px;
+  }
+
+  .mention-card__copy h4 {
     font-size: 16px;
   }
 
-  .mention-row__copy p {
+  .mention-card__copy p {
     font-size: 11px;
     line-height: 1.7;
+    -webkit-line-clamp: 2;
   }
 
-  .mention-row__actions {
-    align-items: flex-start;
-  }
-
-  .mention-times {
-    justify-content: flex-start;
+  .mention-card__actions {
+    padding-top: 14px;
   }
 
   .featured-jump {

@@ -81,7 +81,7 @@ try {
       sections: document.querySelectorAll('[data-section-act]').length,
       acts: document.querySelectorAll('[data-timeline-navigator-segment]').length,
       events: document.querySelectorAll('[data-event-card]').length,
-      mentions: document.querySelectorAll('[data-mention-row]').length,
+      mentions: document.querySelectorAll('[data-mention-card]').length,
       overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
       forbidden: document.querySelectorAll('[data-timeline-scope], [data-source-track], [data-player-rail-thread], [data-thread-overlay], [data-person-overlay]').length,
     }));
@@ -109,13 +109,23 @@ try {
       activeView: document.querySelector('project-archive-shell')?.activeView,
       groups: [...document.querySelectorAll('[data-mention-kind]')].map((group) => ({
         kind: group.getAttribute('data-mention-kind'),
-        rows: group.querySelectorAll('[data-mention-row]').length,
+        cards: group.querySelectorAll('[data-mention-card]').length,
+      })),
+      columns: getComputedStyle(document.querySelector('.mentions-list')).gridTemplateColumns.split(' ').length,
+      jumpLinks: document.querySelectorAll('.mentions-jump a').length,
+      foldedTimes: [...document.querySelectorAll('.mention-times-more')].map((details) => ({
+        open: details.open,
+        hiddenButtons: details.querySelectorAll('[data-mention-event]').length,
       })),
       fifthSlotEmpty: document.querySelectorAll('[data-view-button]').length === 4,
       overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
     }));
     assert(state.activeView === 'mentions' && state.groups.length === 3, `Mentions view did not render its three groups: ${JSON.stringify(state)}`);
-    assert(state.groups.every((group) => group.rows > 0) && state.fifthSlotEmpty, `Mentions grouping or fifth nav slot contract failed: ${JSON.stringify(state)}`);
+    assert(state.groups.map((group) => group.kind).join() === 'person,work,context', `Mentions group order mismatch: ${JSON.stringify(state.groups)}`);
+    assert(state.groups.every((group) => group.cards > 0) && state.columns === 2 && state.jumpLinks === 3 && state.fifthSlotEmpty, `Mentions card grid or fifth nav slot contract failed: ${JSON.stringify(state)}`);
+    assert(state.foldedTimes.length === 2 && state.foldedTimes.every((item) => !item.open && item.hiddenButtons === 1), `Mentions time folding mismatch: ${JSON.stringify(state.foldedTimes)}`);
+    await page.locator('.mention-times-more summary').first().click();
+    assert(await page.locator('.mention-times-more').first().getAttribute('open') !== null, 'Mentions +N control did not expand');
     await page.locator('[data-mention-event="yt-005429-hosoya-bonfire"]').first().click();
     await page.waitForFunction(() => document.querySelector('project-archive-shell')?.activeView === 'timeline');
     const navigated = await page.evaluate(() => ({
@@ -127,6 +137,26 @@ try {
     assert(navigated.selectedEvent === 'yt-005429-hosoya-bonfire' && /view=timeline/.test(navigated.url), `Mention time did not return to Timeline: ${JSON.stringify(navigated)}`);
     assert(state.overflow === 0 && navigated.overflow === 0 && logs.length === 0, `Mentions browser errors: ${logs.join(' | ')}`);
     evidence.mentions = { state, navigated };
+    await page.close();
+  }
+
+  {
+    const { page, logs } = await openPage({ width: 390, height: 844 });
+    await page.locator('[data-view-button="mentions"]').click();
+    const state = await page.evaluate(() => {
+      const card = document.querySelector('[data-mention-card]');
+      const summary = card?.querySelector('.mention-card__copy p');
+      return {
+        columns: getComputedStyle(document.querySelector('.mentions-list')).gridTemplateColumns.split(' ').length,
+        cardWidth: Math.round(card?.getBoundingClientRect().width || 0),
+        summaryClamp: getComputedStyle(summary).webkitLineClamp,
+        jumpLinks: document.querySelectorAll('.mentions-jump a').length,
+        overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+      };
+    });
+    assert(state.columns === 1 && state.cardWidth > 300 && state.summaryClamp === '2', `mobile Mentions card stack mismatch: ${JSON.stringify(state)}`);
+    assert(state.jumpLinks === 3 && state.overflow === 0 && logs.length === 0, `mobile Mentions navigation or overflow failed: ${JSON.stringify(state)}`);
+    evidence.mobileMentions = state;
     await page.close();
   }
 
