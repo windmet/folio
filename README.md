@@ -4,8 +4,10 @@
 
 ## 当前检查点
 
-- Komatsu36：RC 0.10 与 RC 0.11 review-branch acceptance 已完成。RC 0.12 的 A2/C2/D2/B2/F2、E1–E5、T1.1、Y1、M1、MT1 与 Final Cleanup P0-A/P0-B 均已完成工程／Browser 验证，产品复核仍待人工。2026-08-10 Semantic P0/P1 已完成逐项总审计，P2 兼容 ID 迁移继续延后。真实设备、真实媒体与 Release Gate 均未完成，Y2 managed external session 未授权。
-- 审阅分支：[codex/komatsu36-project-archive](https://github.com/windmet/folio/tree/codex/komatsu36-project-archive)
+- Komatsu36：Project Archive v1 已冻结为 production / release 回归基线。Production 为 <https://folio-ca3.pages.dev/>，发布代码基线 `eeb09159d0ea8cd932d049db6ae4d667c4df6d61`；后续泛化不得改变既有 Event ID、时间、正文、Thread／People 语义、Player lifecycle 或 URL/history controller。
+- 当前泛化分支：`codex/komachoe-20260425`。Komatsu36 不再作为新增产品能力的 playground；专项语义、DOM、Browser 与 payload 检查继续作为 regression fixture 保留。
+- Production 已完成真实 route 的 desktop／390px、真实媒体与 Release Gate 签收；Y2 managed external session 仍未授权，P2 兼容 ID 迁移继续延后，两者均不属于 v1 freeze blocker。
+- 上一审阅分支：[codex/komatsu36-project-archive](https://github.com/windmet/folio/tree/codex/komatsu36-project-archive)
 - 专题路由：`/projects/komatsu36/`
 - Visual QA 与编辑审计：`docs/qa/komatsu36-rc08/`
 - 详细合同与剩余 Release Gate：`docs/komatsu36-archive-development.md`
@@ -40,7 +42,8 @@ npm run dev -- --host 127.0.0.1 --port 4321
 npm run validate:projects   # 内容关系、时间范围、隐私边界
 npm run build               # 生成 dist/
 npm run audit:payload -- komatsu36 # 固定 payload / projection 审计
-npm run validate:publication # 发布 HTML、检索项和单页预算
+npm run validate:publication # 所有 Project 的通用发布 HTML / 检索门禁
+npm run verify:komatsu36:publication # Komatsu36 严格语义与 DOM 回归
 npm run validate            # 按上述顺序执行完整门禁
 ```
 
