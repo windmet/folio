@@ -18,6 +18,7 @@
     "verify:komatsu36:publication": "node scripts/verify-komatsu36-publication.mjs",
     "verify:komatsu36:semantic": "node scripts/verify-komatsu36-semantic-closeout.mjs",
     "verify:komachoe:publication": "node scripts/verify-komachoe-publication.mjs",
+    "verify:komachoe:browser": "node scripts/verify-komachoe-browser.mjs",
     "verify:youtube:n1": "node scripts/verify-youtube-n1-browser.mjs",
     "verify:overlay-scroll": "node scripts/verify-overlay-scroll-browser.mjs",
     "verify:rc12:y1": "node scripts/verify-rc12-y1-browser.mjs",
