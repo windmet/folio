@@ -73,12 +73,13 @@ try {
       visiblePanels: [...document.querySelectorAll('[data-view-panel]:not([hidden])')].map((panel) => panel.dataset.viewPanel),
       sections: document.querySelectorAll('[data-section-act]').length,
       acts: document.querySelectorAll('[data-timeline-navigator-segment]').length,
+      events: document.querySelectorAll('[data-event-card]').length,
       overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
       forbidden: document.querySelectorAll('[data-timeline-scope], [data-source-track], [data-player-rail-thread], [data-thread-overlay], [data-person-overlay]').length,
     }));
     assert(state.activeView === 'overview' && state.visiblePanels.join() === 'overview', `${label} does not open on Overview: ${JSON.stringify(state)}`);
     assert(state.nav.join() === 'overview,sections,timeline', `${label} view navigation mismatch`);
-    assert(state.sections === 6 && state.acts === 6, `${label} does not render 6 Sections / Acts`);
+    assert(state.sections === 6 && state.acts === 6 && state.events === 30, `${label} does not render 6 Sections / Acts and 30 Events`);
     assert(state.overflow === 0 && state.forbidden === 0, `${label} overflow or forbidden optional UI: ${JSON.stringify(state)}`);
     assert(logs.length === 0, `${label} console errors: ${logs.join(' | ')}`);
     evidence.viewports[label] = state;

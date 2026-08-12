@@ -1,0 +1,16 @@
+{
+  "project": "komachoe-20260425",
+  "track": "komachoe-20260425/yt-main",
+  "act": "komachoe-20260425/act-01",
+  "startMs": 659000,
+  "endMs": 762000,
+  "timingStatus": "exact",
+  "title": "中心座位、站立移动与拼接盲区冲突",
+  "summary": "嘉宾分坐左右、小松需要坐在中央，而相机连接区又应尽量避开人员移动。现场虽做了 X 标记，但站起后身体如何进入拼接区没有充分测试；他认为下次应把设备结构与移动测试一起确认。",
+  "people": [],
+  "personRelations": [],
+  "tags": ["360°", "拼接盲区", "移动测试"],
+  "publicationStatus": "verified",
+  "narrativeMode": "timeline-only",
+  "laneAnnotations": []
+}

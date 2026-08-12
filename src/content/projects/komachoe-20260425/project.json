@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "sourceSetId": "komachoe-20260425-r1",
-  "editorialRevision": "2026-08-12-vertical-slice",
+  "editorialRevision": "2026-08-12-reviewed-30-event-timeline",
   "slug": "komachoe-20260425",
   "title": "こまちょえ生ラジオ｜2026.04.25",
   "eyebrow": "BROADCAST ARCHIVE · 2026.04.25",
@@ -30,19 +30,19 @@
       },
       {
         "label": "02",
-        "title": "producer 视角的四人 casting",
+        "title": "制作人视角的四人选角",
         "summary": "熊谷、佐藤、堀金与光富分别会落在哪个角色。",
         "event": "komachoe-20260425/yt-004333-producer-casting"
       },
       {
         "label": "03",
-        "title": "「本当は」与 Chat 判定",
-        "summary": "一次证明 accent 不是方言的尝试，最后变成现场认输。",
+        "title": "「本当は」与聊天区判定",
+        "summary": "一次证明重音不是方言的尝试，最后变成现场认输。",
         "event": "komachoe-20260425/yt-013430-hontou-wa-accent"
       },
       {
         "label": "04",
-        "title": "游戏积压与五小时块",
+        "title": "待播游戏与五小时时段",
         "summary": "开播门槛为什么越来越高，以及本人描述的恢复近况。",
         "event": "komachoe-20260425/yt-020257-game-backlog-and-recovery"
       }

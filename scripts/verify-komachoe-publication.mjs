@@ -36,7 +36,7 @@ assert(project.defaultView === 'overview', 'defaultView must remain overview');
 assert(JSON.stringify(project.views) === JSON.stringify(['overview', 'sections', 'timeline']), 'views must be Overview / Sections / Timeline in order');
 assert(trackFiles.length === 1 && tracks[0].durationMs === 7926041 && tracks[0].order === 1, 'expected one ordered 7,926,041ms Track');
 assert(actFiles.length === 6, `expected 6 Acts, found ${actFiles.length}`);
-assert(eventFiles.length === 12, `expected 12 Events, found ${eventFiles.length}`);
+assert(eventFiles.length === 30, `expected 30 Events, found ${eventFiles.length}`);
 assert(!(await exists(path.join(contentRoot, 'threads'))), 'vertical slice must not create a threads directory');
 assert(!(await exists(path.join(contentRoot, 'people'))), 'vertical slice must not create a people directory');
 assert(!(await exists(path.join(contentRoot, 'sources'))), 'vertical slice must not create a sources directory');
@@ -64,9 +64,9 @@ assert(html.includes('<meta name="robots" content="noindex, nofollow">'), 'draft
 assert(JSON.stringify(attributeValues(html, 'data-view-button')) === JSON.stringify(project.views), 'rendered view buttons do not match Project views');
 assert(JSON.stringify(attributeValues(html, 'data-view-panel')) === JSON.stringify(project.views), 'rendered view panels do not match Project views');
 assert((html.match(/class="section-card"/g) || []).length === 6, 'rendered Sections view must contain 6 cards');
-assert((html.match(/data-event-card="/g) || []).length === 12, 'rendered Timeline must contain 12 Event cards');
+assert((html.match(/data-event-card="/g) || []).length === 30, 'rendered Timeline must contain 30 Event cards');
 assert((html.match(/data-timeline-navigator-segment="/g) || []).length === 6, 'Timeline navigator must contain 6 segments');
-assert(searchPayload.items?.length === 12 && searchPayload.items.every((item) => item.kind === 'event'), 'search index must contain exactly 12 Event items');
+assert(searchPayload.items?.length === 30 && searchPayload.items.every((item) => item.kind === 'event'), 'search index must contain exactly 30 Event items');
 
 for (const [label, marker] of [
   ['Media Source Navigator', 'class="media-sources"'],
@@ -91,7 +91,7 @@ if (!controllerMatch) {
 } else {
   const controller = JSON.parse(controllerMatch[1]);
   assert(Object.keys(controller.tracks).length === 1 && controller.tracks['yt-main'], 'controller must contain only yt-main');
-  assert(Object.keys(controller.events).length === 12, 'controller must contain 12 Events');
+  assert(Object.keys(controller.events).length === 30, 'controller must contain 30 Events');
   assert(!controllerMatch[1].includes('komatsu36/'), 'controller leaks Komatsu36 data');
 }
 
@@ -106,4 +106,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log(`Komachoe single-source verification passed (${Buffer.byteLength(html)} bytes, 1 Track, 6 Sections, 12 Events, draft route excluded from home).`);
+console.log(`Komachoe single-source verification passed (${Buffer.byteLength(html)} bytes, 1 Track, 6 Sections, 30 Events, draft route excluded from home).`);
