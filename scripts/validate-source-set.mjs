@@ -9,11 +9,13 @@ const valueAfter = (flag) => {
   return index >= 0 ? args[index + 1] : undefined;
 };
 
-const sourceRoot = valueAfter('--root') || process.env.KOMATSU36_SOURCE_ROOT;
+const sourceRoot = valueAfter('--root')
+  || process.env.PROJECT_SOURCE_ROOT
+  || process.env.KOMATSU36_SOURCE_ROOT;
 const manifestPath = valueAfter('--manifest') || 'data/source-sets/komatsu36-20260808-r1.json';
 
 if (!sourceRoot) {
-  console.error('Missing source root. Pass --root <path> or set KOMATSU36_SOURCE_ROOT.');
+  console.error('Missing source root. Pass --root <path> or set PROJECT_SOURCE_ROOT (KOMATSU36_SOURCE_ROOT remains supported for compatibility).');
   process.exit(2);
 }
 
@@ -21,6 +23,10 @@ const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
 const failures = [];
 
 for (const [role, expected] of Object.entries(manifest.files)) {
+  if (!expected?.path || !expected?.sha256) {
+    failures.push(`${role}: path and sha256 are required`);
+    continue;
+  }
   const absolutePath = path.resolve(sourceRoot, expected.path);
   let bytes;
   try {
@@ -31,16 +37,20 @@ for (const [role, expected] of Object.entries(manifest.files)) {
   }
 
   const sha256 = createHash('sha256').update(bytes).digest('hex');
-  const text = bytes.toString('utf8');
-  const lineCount = text.split(/\r?\n/).length - (text.endsWith('\n') ? 1 : 0);
 
   if (sha256 !== expected.sha256) {
     failures.push(`${role}: sha256 ${sha256} != ${expected.sha256}`);
   }
-  if (lineCount !== expected.lineCount) {
-    failures.push(`${role}: lineCount ${lineCount} != ${expected.lineCount}`);
+  if (expected.byteCount !== undefined && bytes.byteLength !== expected.byteCount) {
+    failures.push(`${role}: byteCount ${bytes.byteLength} != ${expected.byteCount}`);
   }
-  if (expected.arcCount !== undefined) {
+  if (expected.lineCount !== undefined || expected.arcCount !== undefined) {
+    const text = bytes.toString('utf8');
+    const lineCount = text.split(/\r?\n/).length - (text.endsWith('\n') ? 1 : 0);
+    if (expected.lineCount !== undefined && lineCount !== expected.lineCount) {
+      failures.push(`${role}: lineCount ${lineCount} != ${expected.lineCount}`);
+    }
+    if (expected.arcCount === undefined) continue;
     const arcCount = (text.match(/^# ARC-\d+/gm) || []).length;
     if (arcCount !== expected.arcCount) {
       failures.push(`${role}: arcCount ${arcCount} != ${expected.arcCount}`);

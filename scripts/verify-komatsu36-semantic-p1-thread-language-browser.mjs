@@ -11,18 +11,18 @@ const outputDir = process.argv[2] ? path.resolve(process.argv[2]) : null;
 if (outputDir) mkdirSync(outputDir, { recursive: true });
 
 const expected = new Map([
-  ['birthday-payback', '最早立规则的人，最后正好被自己的规则绊住'],
+  ['birthday-payback', '规则是自己立的，先被绊住的也是自己'],
   ['broken-sword', '自然得让不少观众以为本来就是演出'],
-  ['ending-wont-end', '节目反而进入最长的尾声'],
-  ['kano-ojisan', '这条不断累积的おじさん线才终于落到歌单上'],
-  ['muro-account', '连说话的人究竟是谁都不能完全确定'],
-  ['ore-shiri-making-of', '最后拼出了《俺知》动作与朗读形式是怎样一起被做出来的'],
-  ['russian-takoyaki', '这颗章鱼烧终于走完了整条回收线'],
+  ['ending-wont-end', '节目反而进入了最长的一段尾声'],
+  ['kano-ojisan', '这条一路累积的吐槽终于直接落在歌单上'],
+  ['muro-account', '而不是“室元気本人终于来了”'],
+  ['ore-shiri-making-of', '整段复盘也因此不只是“选一个最喜欢的场面”'],
+  ['russian-takoyaki', '现场直接冒出一句「時限爆弾すぎるだろ！」'],
   ['shugo-yakiniku', '把一条信息极少的留言硬凑成完整祝福'],
-  ['space-technical-hell', '最后被 2026 年的手机方向和 Space UI 打败'],
-  ['terashima-big-dream', 'Big Dream 从八千万妄想一路回到零'],
-  ['uchida-line-call', '主直播、Space 和电话三条线在这一刻真的汇到一起'],
-  ['yano-sunglasses', '又顺势问能不能把它拿回来'],
+  ['space-technical-hell', '最后被 2026 年的手机方向和 Space UI 折腾得够呛'],
+  ['terashima-big-dream', '再认真一算——其实什么都没中'],
+  ['uchida-line-call', '在同一通对话里碰到了一起'],
+  ['yano-sunglasses', '最后干脆问能不能把它拿回来'],
 ]);
 const browser = await chromium.launch({ headless: true });
 const assert = (condition, message) => {

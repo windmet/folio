@@ -32,6 +32,15 @@ const timeline = defineCollection({
   }),
 });
 
+const projectView = z.enum([
+  'overview',
+  'sections',
+  'timeline',
+  'storylines',
+  'people',
+  'transcript',
+]);
+
 const projects = defineCollection({
   loader: glob({
     pattern: '*/project.json',
@@ -46,11 +55,27 @@ const projects = defineCollection({
     title: z.string(),
     eyebrow: z.string(),
     mark: z.string().max(4).optional(),
+    markLabel: z.string().optional(),
+    sourceNote: z.string().optional(),
     status: z.enum(['draft', 'published']),
     defaultTrack: reference('projectTracks'),
-    defaultView: z.enum(['overview', 'timeline', 'storylines', 'people', 'transcript']),
+    defaultView: projectView,
+    views: z.array(projectView).min(1),
     summary: z.string(),
     featuredThreads: z.array(reference('projectThreads')),
+    overview: z.object({
+      kicker: z.string(),
+      title: z.string(),
+      paragraphs: z.array(z.string()).min(1),
+      cards: z.array(z.object({
+        label: z.string().optional(),
+        title: z.string(),
+        summary: z.string(),
+        event: reference('projectEvents').optional(),
+        act: reference('projectActs').optional(),
+      })).default([]),
+      featuredEvent: reference('projectEvents').optional(),
+    }).optional(),
   }),
 });
 
@@ -62,6 +87,7 @@ const projectTracks = defineCollection({
   }),
   schema: z.object({
     project: reference('projects'),
+    order: z.number().int().positive(),
     kind: z.enum(['video', 'audio']),
     label: z.string(),
     shortLabel: z.string(),
@@ -93,6 +119,8 @@ const projectActs = defineCollection({
     editorialStatus: z.enum(['draft', 'confirmed']),
     title: z.string(),
     summary: z.string(),
+    sectionKey: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).optional(),
+    presentationLabel: z.string().optional(),
   }),
 });
 

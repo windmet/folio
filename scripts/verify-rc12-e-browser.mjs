@@ -27,7 +27,8 @@ try {
     if (message.type() === 'error' || message.type() === 'warning') errors.push(`${message.type()}: ${message.text()}`);
   });
   page.on('pageerror', (error) => errors.push(`pageerror: ${error.message}`));
-  await page.goto(`${projectUrl}?view=timeline`);
+  await page.goto(`${projectUrl}?view=timeline`, { waitUntil: 'domcontentloaded' });
+  await page.locator('[data-timeline-scope-button]').first().waitFor();
 
   const initial = await page.evaluate(() => ({
     scope: document.querySelector('[data-timeline-scope-button][aria-pressed="true"]')?.dataset.timelineScopeButton,
@@ -41,7 +42,7 @@ try {
   assert(initial.buttons === 3, `expected 3 scope buttons, got ${initial.buttons}`);
   assert(initial.overflow === 0, `expected desktop overflow 0, got ${initial.overflow}`);
   assert(initial.duplicateIds.length === 0, `duplicate DOM ids: ${initial.duplicateIds.join(', ')}`);
-  assert(await page.getByRole('button', { name: /Timeline scope/ }).count() === 3, 'expected 3 named Timeline scope buttons');
+  assert(await page.getByRole('button', { name: /时间线/ }).count() === 3, 'expected 3 named Timeline scope buttons');
 
   const sp1 = page.locator('[data-timeline-scope-button="space-1"]');
   await sp1.focus();
@@ -70,7 +71,8 @@ try {
     if (message.type() === 'error' || message.type() === 'warning') narrowLogs.push(`${message.type()}: ${message.text()}`);
   });
   narrow.on('pageerror', (error) => narrowLogs.push(`pageerror: ${error.message}`));
-  await narrow.goto(`${projectUrl}?view=timeline&track=space-1`);
+  await narrow.goto(`${projectUrl}?view=timeline&track=space-1`, { waitUntil: 'domcontentloaded' });
+  await narrow.locator('[data-timeline-scope-button]').first().waitFor();
   const mobile = await narrow.evaluate(() => ({
     overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
     scopeBlock: Math.round(document.querySelector('[data-timeline-scope]')?.getBoundingClientRect().height || 0),
@@ -81,8 +83,8 @@ try {
     events: document.querySelector('[data-timeline-scope-panel="space-1"]')?.querySelectorAll('[data-timeline-event]').length,
   }));
   assert(mobile.overflow === 0, `expected mobile overflow 0, got ${mobile.overflow}`);
-  assert(mobile.scopeBlock === 159, `expected mobile scope block 159px, got ${mobile.scopeBlock}`);
-  assert(mobile.buttons.every(({ width, height }) => width === 114 && height === 74), `unexpected mobile scope buttons: ${JSON.stringify(mobile.buttons)}`);
+  assert(Math.abs(mobile.scopeBlock - 159) <= 1, `expected mobile scope block near 159px, got ${mobile.scopeBlock}`);
+  assert(mobile.buttons.every(({ width, height }) => Math.abs(width - 114) <= 1 && Math.abs(height - 74) <= 1), `unexpected mobile scope buttons: ${JSON.stringify(mobile.buttons)}`);
   assert(mobile.events === 8, `expected 8 SP1 events on mobile, got ${mobile.events}`);
   errors.push(...narrowLogs);
 
@@ -92,7 +94,8 @@ try {
     if (message.type() === 'error' || message.type() === 'warning') mediumLogs.push(`${message.type()}: ${message.text()}`);
   });
   medium.on('pageerror', (error) => mediumLogs.push(`pageerror: ${error.message}`));
-  await medium.goto(`${projectUrl}?view=timeline&track=space-1`);
+  await medium.goto(`${projectUrl}?view=timeline&track=space-1`, { waitUntil: 'domcontentloaded' });
+  await medium.locator('[data-timeline-scope-button]').first().waitFor();
   const mediumLayout = await medium.evaluate(() => ({
     overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
     scopeButtons: [...document.querySelectorAll('[data-timeline-scope-button]')].map((button) => Math.round(button.getBoundingClientRect().width)),

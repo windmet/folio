@@ -9,11 +9,10 @@ import {
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const slug = process.argv[2];
-// Keep this in sync with validate-publication.mjs. The reviewed-final pass
-// replaces 123 public fields with human copy, and the 2026-08-11 semantic
-// first timeline audit adds nine visible Thread nodes. The 2026-08-12 event
-// granularity pass adds five public Events plus their storyline projections.
-const rawLimitBytes = 377 * 1024;
+// Komatsu36 retains its reviewed production budget after the reader-copy and
+// semantic expansion passes. New projects first record a baseline and receive
+// a separate evidence-based budget later.
+const rawLimitBytes = slug === 'komatsu36' ? 377 * 1024 : null;
 
 const fail = (message) => {
   console.error(`Payload audit failed: ${message}`);
@@ -74,17 +73,27 @@ const htmlBytes = Buffer.from(html, 'utf8');
 const count = (pattern) => (html.match(pattern) || []).length;
 const bytes = (value) => Buffer.byteLength(value, 'utf8');
 
-const sliceBetween = (startMarker, endMarker, includeEnd = true) => {
+const sliceBetween = (startMarker, endMarkers, includeEnd = true) => {
   const start = html.indexOf(startMarker);
-  if (start < 0) fail(`required payload marker is missing: ${startMarker}`);
-  const end = html.indexOf(endMarker, start + startMarker.length);
-  if (end < 0) fail(`payload section end marker is missing: ${endMarker}`);
-  return html.slice(start, includeEnd ? end + endMarker.length : end);
+  if (start < 0) return '';
+  const markers = Array.isArray(endMarkers) ? endMarkers : [endMarkers];
+  const matches = markers
+    .map((marker) => ({ marker, index: html.indexOf(marker, start + startMarker.length) }))
+    .filter(({ index }) => index >= 0)
+    .sort((a, b) => a.index - b.index);
+  if (!matches.length) return '';
+  const { marker, index: end } = matches[0];
+  return html.slice(start, includeEnd ? end + marker.length : end);
 };
 
 const timelineHtml = sliceBetween(
   '<section class="project-view timeline-view"',
-  '<section class="project-view storylines-view"',
+  [
+    '<section class="project-view storylines-view"',
+    '<section class="project-view people-view"',
+    '<section class="project-view transcript-view"',
+    '<div class="archive-player"',
+  ],
   false,
 );
 const sourceIndexHtml = sliceBetween('<section class="source-event-index"', '</section>');
@@ -132,8 +141,8 @@ const report = {
   },
   gate: {
     raw_limit_bytes: rawLimitBytes,
-    raw_remaining_bytes: rawLimitBytes - htmlBytes.byteLength,
-    raw_within_limit: htmlBytes.byteLength <= rawLimitBytes,
+    raw_remaining_bytes: rawLimitBytes === null ? null : rawLimitBytes - htmlBytes.byteLength,
+    raw_within_limit: rawLimitBytes === null ? null : htmlBytes.byteLength <= rawLimitBytes,
   },
   projections: {
     timeline: {

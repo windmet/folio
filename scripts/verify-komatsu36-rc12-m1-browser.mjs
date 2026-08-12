@@ -194,6 +194,7 @@ try {
   assert(Math.abs(explicitPlay.seekTarget - 4723) < 0.01 && explicitPlay.playCalls === 1, `explicit Timeline play did not seek/play: ${JSON.stringify(explicitPlay)}`);
 
   await interaction.goto(`${projectUrl}?view=timeline`, { waitUntil: 'networkidle' });
+  await interaction.locator('.media-sources__disclosure > summary').click();
   await interaction.locator('[data-source-browse="space-1"]').click();
   await interaction.locator(`[data-source-event="${externalEventId}"]`).click();
   assert((await readState(interaction)).mode === 'bubble', 'source index selection forced the mobile panel open');

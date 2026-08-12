@@ -33,7 +33,7 @@ const attachLogChecks = (page, logs) => {
 const readEvent = (page, eventId) => page.locator(`[data-event-card="${eventId}"]`).evaluate((card) => ({
   active: card.classList.contains('is-active'),
   title: card.querySelector('h3')?.textContent?.trim(),
-  summary: card.querySelector('.event-body > p')?.textContent?.trim(),
+  summary: card.querySelector('.event-summary')?.textContent?.trim(),
 }));
 
 const browser = await chromium.launch({ headless: true });

@@ -25,7 +25,13 @@ for (const projectDir of projectDirs) {
 
   const readCollection = async (folder, extension = '.json') => {
     const dir = path.join(root, folder);
-    const entries = (await readdir(dir)).filter((name) => name.endsWith(extension));
+    let entries;
+    try {
+      entries = (await readdir(dir)).filter((name) => name.endsWith(extension));
+    } catch (error) {
+      if (error?.code === 'ENOENT') return [];
+      throw error;
+    }
     return Promise.all(entries.map(async (name) => ({
       id: asId(projectId, name),
       file: name,
@@ -55,11 +61,38 @@ for (const projectDir of projectDirs) {
   const sourceById = new Map(sources.map((entry) => [entry.id, entry.data]));
   const referencedEventIds = new Set();
 
-  if (threads.length !== manifest.files.arcs.arcCount) {
-    errors.push(`${projectId}: expected ${manifest.files.arcs.arcCount} threads from canonical arcs, found ${threads.length}`);
+  const canonicalArcCount = manifest.files?.arcs?.arcCount;
+  if (canonicalArcCount !== undefined && threads.length !== canonicalArcCount) {
+    errors.push(`${projectId}: expected ${canonicalArcCount} threads from canonical arcs, found ${threads.length}`);
   }
 
-  if (acts.length !== 8) errors.push(`${projectId}: Phase 2 requires 8 editorial acts, found ${acts.length}`);
+  const views = project.views || [];
+  if (!views.includes(project.defaultView)) {
+    errors.push(`${projectId}: defaultView must be declared in views`);
+  }
+  if (new Set(views).size !== views.length) errors.push(`${projectId}: views must not contain duplicates`);
+  if (views.includes('sections') && acts.length === 0) {
+    errors.push(`${projectId}: sections view requires at least one act`);
+  }
+  if (views.includes('storylines') && threads.length === 0) {
+    errors.push(`${projectId}: storylines view requires at least one thread`);
+  }
+  if (views.includes('people') && people.length === 0) {
+    errors.push(`${projectId}: people view requires at least one person`);
+  }
+  if (project.markLabel && !project.mark) errors.push(`${projectId}: markLabel requires mark`);
+
+  const orderedTracks = [...tracks].sort((a, b) => a.data.order - b.data.order);
+  const trackOrders = orderedTracks.map(({ data }) => data.order);
+  if (new Set(trackOrders).size !== trackOrders.length) {
+    errors.push(`${projectId}: track order must be unique within the project`);
+  }
+  for (let index = 0; index < trackOrders.length; index += 1) {
+    if (trackOrders[index] !== index + 1) {
+      errors.push(`${projectId}: track order must be contiguous from 1`);
+      break;
+    }
+  }
 
   const publicSourceUrls = new Set(sources.map(({ data }) => data.publicUrl).filter(Boolean));
   for (const { id, data } of tracks) {
@@ -71,6 +104,16 @@ for (const projectDir of projectDirs) {
   }
 
   for (const id of project.featuredThreads || []) exists(threadIds, id, `${projectId}/project.json`);
+  if (project.overview?.featuredEvent) {
+    exists(eventIds, project.overview.featuredEvent, `${projectId}/project.json overview.featuredEvent`);
+  }
+  for (const [index, card] of (project.overview?.cards || []).entries()) {
+    if (card.event && card.act) {
+      errors.push(`${projectId}/project.json overview.cards[${index}]: choose event or act, not both`);
+    }
+    if (card.event) exists(eventIds, card.event, `${projectId}/project.json overview.cards[${index}]`);
+    if (card.act) exists(actIds, card.act, `${projectId}/project.json overview.cards[${index}]`);
+  }
 
   for (const { id, data } of acts) {
     exists(trackIds, data.track, id);
@@ -86,6 +129,7 @@ for (const projectDir of projectDirs) {
   if (!defaultTrack) errors.push(`${projectId}: defaultTrack must reference a track in this project`);
   if (!mainActs.length) errors.push(`${projectId}: defaultTrack must have at least one editorial act`);
   if (defaultTrack && mainActs.length) {
+    if (mainActs[0].data.order !== 1) errors.push(`${projectId}: main act order must start at 1`);
     if (mainActs[0].data.startMs !== 0) errors.push(`${projectId}: first main act must start at 0`);
     if (mainActs.at(-1).data.endMs !== defaultTrack.durationMs) {
       errors.push(`${projectId}: last main act must end at default track duration`);
@@ -121,7 +165,7 @@ for (const projectDir of projectDirs) {
       }
     }
     const track = trackById.get(data.track);
-    if (!(data.startMs < data.endMs && data.endMs <= track.durationMs)) {
+    if (track && !(data.startMs < data.endMs && data.endMs <= track.durationMs)) {
       errors.push(`${id}: event range is outside track duration`);
     }
     if (data.act) {

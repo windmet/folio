@@ -9,6 +9,13 @@
   "status": "published",
   "defaultTrack": "komatsu36/yt-main",
   "defaultView": "timeline",
+  "views": [
+    "overview",
+    "timeline",
+    "storylines",
+    "people",
+    "transcript"
+  ],
   "summary": "近五小时的生日会、《俺を知ってくれ！》打ち上げ和两段 X Space 挤在同一晚。这里把主直播、跨平台事件和人物线拆开整理，方便从任意时间点重新进入现场。",
   "featuredThreads": [
     "komatsu36/russian-takoyaki",

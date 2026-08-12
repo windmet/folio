@@ -47,7 +47,7 @@ try {
     await page.goto(`${projectUrl}?view=overview`, { waitUntil: 'networkidle' });
     let body = await domText(page);
     assert(body.includes('36TH BIRTHDAY · LIVE ARCHIVE'), `${label} missing archive eyebrow`);
-    assert(body.includes('这场近五小时直播最有趣的地方'), `${label} missing reader-facing Overview introduction`);
+    assert(body.includes('前半程还在为设备和流程焦头烂额'), `${label} missing reader-facing Overview introduction`);
     assert(body.includes('CURRENT SOURCE') && body.includes('SOURCE'), `${label} missing player structural labels`);
     assert(body.includes('此来源的事件'), `${label} missing source index reader label`);
 

@@ -49,7 +49,7 @@ try {
     text: detail.textContent.replace(/\s+/g, ' ').trim(),
   }));
   assert(!person.hidden && person.name === '室元気', 'account chip did not open the canonical 室元気 Person');
-  assert(person.text.includes('不把自称使用账号的未知发言者归给室元気本人'), 'Person panel lost the account/speaker boundary');
+  assert(person.text.includes('因此不把那段发言归给室元気本人'), 'Person panel lost the account/speaker boundary');
 
   const desktopOverflow = await desktop.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   assert(desktopOverflow === 0, `desktop overflow: ${desktopOverflow}`);

@@ -1,5 +1,6 @@
 {
   "project": "komatsu36",
+  "order": 1,
   "kind": "video",
   "label": "YouTube 主直播",
   "shortLabel": "YT",

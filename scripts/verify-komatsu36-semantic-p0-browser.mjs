@@ -44,7 +44,7 @@ try {
   assert(amazon.active, 'legacy Amazon Event deep link did not restore');
   assert(amazon.title === 'Amazon 5000 円×2：寺島与堀金同时 Bingo', `unexpected Amazon title: ${amazon.title}`);
   assert(JSON.stringify(amazon.people) === JSON.stringify(['寺島惇太', '堀金蒼平']), `unexpected Amazon people: ${JSON.stringify(amazon.people)}`);
-  assert(amazon.summary === '23 番让两人同时完成 Bingo，正好对应两名份的 Amazon 5000 円礼券。', `unexpected Amazon summary: ${amazon.summary}`);
+  assert(amazon.summary === '23 番一出，两个人同时 Bingo，正好撞上两份 Amazon 5000 円礼券。', `unexpected Amazon summary: ${amazon.summary}`);
   assert(amazon.readerNote === null, 'Amazon reader layer must not expose the second-winner inference note');
   assert(!amazon.summary.includes('濱'), 'Amazon winner summary still presents 濱 in the winner Event');
   if (outputDir) {
@@ -69,7 +69,7 @@ try {
     text: detail.textContent.replace(/\s+/g, ' ').trim(),
   }));
   assert(!hamaThread.hidden, '濱 thread did not open from the new Event');
-  assert(hamaThread.text.includes('始终没有中到主奖') && hamaThread.text.includes('ギャラ＋1000円'), '濱 thread still has the superseded winner causality');
+  assert(hamaThread.text.includes('自己没中还伸手去抢寺島的卡') && hamaThread.text.includes('ギャラ＋1000円'), '濱 thread still has the superseded winner causality');
 
   await page.goto(`${projectUrl}?view=people&person=shioya-fumiyasu`, { waitUntil: 'networkidle' });
   const shioya = await page.locator('[data-person-detail="shioya-fumiyasu"]').evaluate((detail) => ({
@@ -112,7 +112,7 @@ try {
   await mobile.goto(`${projectUrl}?view=timeline&event=yt-040405-amazon-hama`, { waitUntil: 'networkidle' });
   const mobileAmazon = await readEvent(mobile, 'yt-040405-amazon-hama');
   const mobileOverflow = await mobile.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
-  assert(mobileAmazon.active && mobileAmazon.summary === '23 番让两人同时完成 Bingo，正好对应两名份的 Amazon 5000 円礼券。' && mobileAmazon.readerNote === null, 'mobile did not render the simplified Amazon Event copy');
+  assert(mobileAmazon.active && mobileAmazon.summary === '23 番一出，两个人同时 Bingo，正好撞上两份 Amazon 5000 円礼券。' && mobileAmazon.readerNote === null, 'mobile did not render the simplified Amazon Event copy');
   assert(mobileOverflow === 0, `mobile overflow: ${mobileOverflow}`);
   assert(mobileLogs.length === 0, `mobile console errors: ${mobileLogs.join(' | ')}`);
   if (outputDir) await mobile.screenshot({ path: path.join(outputDir, '390x844-semantic-p0.png'), fullPage: false });

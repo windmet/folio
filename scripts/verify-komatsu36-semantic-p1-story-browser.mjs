@@ -23,7 +23,7 @@ const attachLogChecks = (page, logs) => {
 const readEvent = async (page, eventId) => page.locator(`[data-event-card="${eventId}"]`).evaluate((card) => ({
   active: card.classList.contains('is-active'),
   title: card.querySelector('h3')?.textContent?.trim(),
-  summary: card.querySelector('.event-body > p')?.textContent?.trim(),
+  summary: card.querySelector('.event-summary')?.textContent?.trim(),
   people: [...card.querySelectorAll('[data-open-person]')].map((button) => button.textContent.trim()),
   threads: [...card.querySelectorAll('[data-open-thread]')].map((button) => button.dataset.openThread),
 }));
