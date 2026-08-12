@@ -95,7 +95,7 @@ try {
       `${label} broadcast-blue theme mismatch: ${JSON.stringify(state.palette)}`,
     );
     assert(state.nav.join() === 'overview,sections,timeline,mentions', `${label} view navigation mismatch`);
-    assert(state.sections === 6 && state.acts === 6 && state.events === 30 && state.mentions === 23, `${label} does not render 6 Sections / 30 Events / 23 Mentions`);
+    assert(state.sections === 6 && state.acts === 6 && state.events === 30 && state.mentions === 19, `${label} does not render 6 Sections / 30 Events / 19 Mentions`);
     assert(state.overflow === 0 && state.forbidden === 0, `${label} overflow or forbidden optional UI: ${JSON.stringify(state)}`);
     assert(logs.length === 0, `${label} console errors: ${logs.join(' | ')}`);
     evidence.viewports[label] = state;
@@ -117,13 +117,19 @@ try {
         open: details.open,
         hiddenButtons: details.querySelectorAll('[data-mention-event]').length,
       })),
+      sources: [...document.querySelectorAll('.mention-source')].map((link) => ({
+        label: link.textContent.trim(),
+        target: link.getAttribute('target'),
+        rel: link.getAttribute('rel'),
+      })),
       fifthSlotEmpty: document.querySelectorAll('[data-view-button]').length === 4,
       overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
     }));
     assert(state.activeView === 'mentions' && state.groups.length === 3, `Mentions view did not render its three groups: ${JSON.stringify(state)}`);
     assert(state.groups.map((group) => group.kind).join() === 'person,work,context', `Mentions group order mismatch: ${JSON.stringify(state.groups)}`);
-    assert(state.groups.every((group) => group.cards > 0) && state.columns === 2 && state.jumpLinks === 3 && state.fifthSlotEmpty, `Mentions card grid or fifth nav slot contract failed: ${JSON.stringify(state)}`);
-    assert(state.foldedTimes.length === 2 && state.foldedTimes.every((item) => !item.open && item.hiddenButtons === 1), `Mentions time folding mismatch: ${JSON.stringify(state.foldedTimes)}`);
+    assert(JSON.stringify(state.groups.map((group) => group.cards)) === JSON.stringify([10, 8, 1]) && state.columns === 2 && state.jumpLinks === 3 && state.fifthSlotEmpty, `Mentions card grid or fifth nav slot contract failed: ${JSON.stringify(state)}`);
+    assert(state.foldedTimes.length === 1 && state.foldedTimes.every((item) => !item.open && item.hiddenButtons === 1), `Mentions time folding mismatch: ${JSON.stringify(state.foldedTimes)}`);
+    assert(state.sources.length === 9 && state.sources.every((source) => source.target === '_blank' && source.rel === 'noopener noreferrer'), `Mentions primary-source links mismatch: ${JSON.stringify(state.sources)}`);
     await page.locator('.mention-times-more summary').first().click();
     assert(await page.locator('.mention-times-more').first().getAttribute('open') !== null, 'Mentions +N control did not expand');
     await page.locator('[data-mention-event="yt-005429-hosoya-bonfire"]').first().click();

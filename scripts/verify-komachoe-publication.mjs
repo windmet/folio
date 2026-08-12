@@ -67,7 +67,20 @@ assert(project.status === 'draft', 'Project must remain draft during vertical sl
 assert(project.defaultView === 'overview', 'defaultView must remain overview');
 assert(project.visualTheme === 'broadcast-blue', 'Project must use the broadcast-blue visual theme');
 assert(JSON.stringify(project.views) === JSON.stringify(['overview', 'sections', 'timeline', 'mentions']), 'views must be Overview / Sections / Timeline / Mentions in order');
-assert(Array.isArray(project.mentions) && project.mentions.length === 23, 'Mentions must contain the locked 23-entry index');
+assert(Array.isArray(project.mentions) && project.mentions.length === 19, 'Mentions must contain the restructured 19-entry index');
+const mentionsById = new Map(project.mentions.map((mention) => [mention.id, mention]));
+assert(project.mentions.filter((mention) => mention.kind === 'person').length === 10, 'Mentions must retain all 10 reviewed People entries');
+assert(project.mentions.filter((mention) => mention.kind === 'work').length === 8, 'Mentions must retain the 8 Works / Projects / Games entries');
+assert(
+  JSON.stringify(project.mentions.filter((mention) => mention.kind === 'context').map((mention) => mention.id)) === JSON.stringify(['chikuho-ben']),
+  '筑豊弁 must be the only remaining Context entry',
+);
+assert(
+  ['360-live', 'spatial-audio', 'honto-wa-accent', 'trpg-format', 'uchia-ge'].every((id) => !mentionsById.has(id)),
+  'removed Event-like concepts must not remain in Mentions',
+);
+assert(project.mentions.filter((mention) => mention.kind !== 'person').every((mention) => mention.url && mention.urlLabel), 'all Work / Context Mentions must expose one labeled primary source');
+assert(project.mentions.filter((mention) => mention.kind === 'person').every((mention) => !mention.url && !mention.urlLabel), 'People Mentions must not expose external profile links');
 assert(trackFiles.length === 1 && tracks[0].durationMs === 7926041 && tracks[0].order === 1, 'expected one ordered 7,926,041ms Track');
 assert(actFiles.length === 6, `expected 6 Acts, found ${actFiles.length}`);
 assert(eventFiles.length === 30, `expected 30 Events, found ${eventFiles.length}`);
@@ -139,6 +152,10 @@ assert(html.includes('搜索事件') && html.includes('placeholder="输入姓名
 assert(html.includes('data-view-button="mentions"') && html.includes('data-view-panel="mentions"'), 'Mentions view is not rendered');
 assert(html.includes('MENTION INDEX') && html.includes('提及索引'), 'Mentions presentation copy is missing');
 assert(html.includes('class="mentions-jump"') && html.includes('class="mention-times-more"'), 'Mentions card-grid navigation or time folding is missing');
+assert((html.match(/class="mention-source"/g) || []).length === 9, 'Mentions must render exactly 9 labeled primary-source links');
+for (const label of ['声優グランプリ', '公式サイト', 'KiR 作品页', 'Official Site', '福岡県｜筑豊地域']) {
+  assert(html.includes(label), `Mentions source label is missing: ${label}`);
+}
 assert(html.includes(project.playerNote) && !html.includes('使用 YouTube 原生 360°能力'), 'Player note is not Project-specific');
 
 const controllerMatch = html.match(/<script type="application\/json" data-archive-controller-data[^>]*>([\s\S]*?)<\/script>/);

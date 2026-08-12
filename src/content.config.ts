@@ -74,6 +74,7 @@ const projects = defineCollection({
       summary: z.string(),
       events: z.array(reference('projectEvents')).min(1),
       url: z.string().url().optional(),
+      urlLabel: z.string().optional(),
     })).default([]),
     overview: z.object({
       kicker: z.string(),

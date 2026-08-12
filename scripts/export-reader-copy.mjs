@@ -100,6 +100,7 @@ addEntry({ scope: 'project', id: projectId, field: 'overview.title', value: proj
 (project.mentions || []).forEach((mention, index) => {
   addEntry({ scope: 'project', id: projectId, field: `mentions[${index}].label`, value: mention.label, source: projectSource });
   addEntry({ scope: 'project', id: projectId, field: `mentions[${index}].summary`, value: mention.summary, source: projectSource });
+  addEntry({ scope: 'project', id: projectId, field: `mentions[${index}].urlLabel`, value: mention.urlLabel, source: projectSource });
 });
 
 for (const item of tracks.values()) {

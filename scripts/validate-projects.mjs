@@ -90,6 +90,7 @@ for (const projectDir of projectDirs) {
   for (const [index, mention] of (project.mentions || []).entries()) {
     if (mentionIds.has(mention.id)) errors.push(`${projectId}/project.json mentions[${index}]: duplicate id ${mention.id}`);
     mentionIds.add(mention.id);
+    if (mention.urlLabel && !mention.url) errors.push(`${projectId}/project.json mentions[${index}]: urlLabel requires url`);
     for (const eventId of mention.events || []) exists(eventIds, eventId, `${projectId}/project.json mentions[${index}]`);
   }
   if (project.markLabel && !project.mark) errors.push(`${projectId}: markLabel requires mark`);

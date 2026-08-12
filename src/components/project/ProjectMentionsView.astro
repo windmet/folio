@@ -93,7 +93,7 @@ const eventsFor = (mention: any) => (mention.events || [])
                     </div>
                     {mention.kind !== 'person' && mention.url && (
                       <a class="mention-source" href={mention.url} target="_blank" rel="noopener noreferrer">
-                        {mention.kind === 'context' ? '背景资料' : '官方资料'} ↗
+                        {mention.urlLabel || (mention.kind === 'context' ? '背景资料' : '官方资料')} ↗
                       </a>
                     )}
                   </div>
