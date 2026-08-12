@@ -154,7 +154,7 @@ try {
 
   {
     const { page, logs, getApiAttempts } = await openPage({ width: 1440, height: 900 }, { failApiOnce: true });
-    await page.locator('[data-event-seek="yt-000250-no-detailed-script"]').first().click();
+    await page.locator('[data-event-seek="yt-000031-production-retrospective"]').first().click();
     await page.waitForFunction(() => document.querySelector('project-archive-shell')?.playerLoadState === 'error');
     await page.locator('[data-player-retry]').click();
     await page.waitForFunction(() => document.querySelector('project-archive-shell')?.playerLoadState === 'ready');

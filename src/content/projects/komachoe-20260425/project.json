@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "sourceSetId": "komachoe-20260425-r1",
-  "editorialRevision": "2026-08-12-reviewed-30-event-timeline",
+  "editorialRevision": "2026-08-12-mother-v1-narrative-30-event-timeline",
   "slug": "komachoe-20260425",
   "title": "こまちょえ生ラジオ｜2026.04.25",
   "eyebrow": "BROADCAST ARCHIVE · 2026.04.25",
@@ -25,9 +25,9 @@
     "cards": [
       {
         "label": "01",
-        "title": "为什么没有细台本",
-        "summary": "想保留打ち上げ感，却让时间和参与机会失去保护。",
-        "event": "komachoe-20260425/yt-000250-no-detailed-script"
+        "title": "为什么先从制作复盘开始",
+        "summary": "打ち上げ的松弛感值得保留，但仍需要保护时间与参与机会的结构。",
+        "event": "komachoe-20260425/yt-000031-production-retrospective"
       },
       {
         "label": "02",

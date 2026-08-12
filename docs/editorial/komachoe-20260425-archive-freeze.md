@@ -11,12 +11,14 @@
 - Source Set：`komachoe-20260425-r1`。
 - 1 条 YouTube Track，时长 `7,926,041ms`。
 - 6 个连续 Act，以 `sectionKey` 投影为节目 Section。
-- 30 个经人工选择与审校的 Timeline Event；29 个 `exact`，1 个 `approximate`。
+- 30 个经人工选择与审校的完整叙事 Timeline Event；30 个均使用母版冻结的 `exact` 主时间窗。
 - 0 Thread、0 People、0 Source directory；不为页面完整性制造关系数据。
 - 公开页面只提供 Overview / Sections / Timeline。
 - 视觉主题为数据驱动的 `broadcast-blue`：暖白纸张基底、低饱和雾蓝结构锚点、深色播放器焦点。专题色不再大面积染蓝阅读 surface。
 
-内容扩展只取自 canonical mother draft 的 E01–E42 候选。本期未重新运行整场 ASR，未自动生成全部 42 个节点；纯结构节点 E17 / E22 未公开。
+内容选择以 `komachoe_20260425_main(9).md` v1.0 为 canonical mother draft。母版中的 42 条现只作为 Locator Inventory，不等于 42 个网页 Event；公开层严格采用 P01–P30，并以“点进去能重听一整段叙事”为成项标准。投稿内容、主持回应、Chat interpretation 与编辑推论保持分层，短回应只有真正改变结论时才独立成 Event。
+
+本轮将相机结构与拼接盲区合并为一段；补入空间收音、わさびたこ焼き、寺島深夜陪吃家系与宮﨑后台玩笑。X 竖屏回应降为 P09 的后段证据，不再独立成项；`不審者` 不作人物映射。工作人员涂鸦、后辈原则、生日蛋糕与 Ending 等短 locator 不占公开 Timeline 节点。
 
 ## 公开输出边界
 
@@ -26,15 +28,15 @@
 
 - `npm run validate`：通过。
 - `npx tsc --noEmit`：通过。
-- Komachoe publication gate：`64,569 bytes`、30 Events、draft route 未进入首页。
+- Komachoe publication gate：`66,132 bytes`、30 Events、draft route 未进入首页。
 - Komachoe browser gate：1440×900、1920×1080、390×844、360×800、414×896 通过；无 page overflow 或 console error。
 - Section → Timeline、Back/Forward、URL restore、搜索、播放器失败重试、Event seek、current-time handoff 与移动端 Bubble：通过。
 - Komatsu36 publication：`383,640 / 386,048 bytes`，余量 `2,408 bytes`。
 - Komatsu36 semantic closeout 7/7、YouTube N1、overlay scroll、RC12 Y1 / MT1 / PA1 / E / T1 / M1：通过。
 
-## 远端与 Production 审计
+## 上一冻结点的远端与 Production 审计
 
-审计时间：2026-08-12（Asia/Shanghai）。
+审计时间：2026-08-12（Asia/Shanghai）。以下记录对应叙事重编排之前的上一实现 HEAD；本轮提交与远端状态以交付消息为准，Production 边界不变。
 
 - 本次实现 HEAD：`993d1d714685c10bf7d22ac9d8b5d8d71f8b3152`；包含 Production 基线 `eeb09159d0ea8cd932d049db6ae4d667c4df6d61`。
 - 审计时远端分支 `origin/codex/komachoe-20260425` 与本地实现 HEAD 一致。
