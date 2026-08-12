@@ -1,0 +1,16 @@
+{
+  "project": "komachoe-20260425",
+  "track": "komachoe-20260425/yt-main",
+  "act": "komachoe-20260425/act-01",
+  "startMs": 500000,
+  "endMs": 659000,
+  "timingStatus": "exact",
+  "title": "实际租用相机与想象不同",
+  "summary": "现场设备由左右两枚约 180°镜头拼接，并非小松原先想象的天球型相机；人员进入连接区时容易出现重影和失焦。他把没有事前确认设备结构归为自己的准备不足。",
+  "people": [],
+  "personRelations": [],
+  "tags": ["360°", "相机选型", "制作复盘"],
+  "publicationStatus": "verified",
+  "narrativeMode": "timeline-only",
+  "laneAnnotations": []
+}

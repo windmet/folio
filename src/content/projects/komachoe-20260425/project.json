@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "sourceSetId": "komachoe-20260425-r1",
+  "editorialRevision": "2026-08-12-vertical-slice",
+  "slug": "komachoe-20260425",
+  "title": "こまちょえ生ラジオ｜2026.04.25",
+  "eyebrow": "BROADCAST ARCHIVE · 2026.04.25",
+  "sourceNote": "本档案使用 YouTube 原视频时间，Section 表示节目结构，Event 只收录值得直接跳听的节点。",
+  "status": "draft",
+  "defaultTrack": "komachoe-20260425/yt-main",
+  "defaultView": "overview",
+  "views": ["overview", "sections", "timeline"],
+  "summary": "在复盘 4 月生日配信与 360°制作之后，节目继续读未处理的邮件、进入今月の弁明与ふつおた，最后以 Super Chat 和游戏近况收尾。",
+  "featuredThreads": [],
+  "overview": {
+    "kicker": "QUICK ORIENTATION",
+    "title": "这期广播从哪里开始听？",
+    "paragraphs": [
+      "前半段是一场制作复盘：小松昌平从时间设计、360°设备与后台暴露谈到主持分工，并明确总结不再由自己同时运营 X 与 YouTube。",
+      "后半段转入《俺知》邮件、近期出演、家人与方言、Super Chat 以及游戏近况。可以先按节目 Section 浏览完整结构，也可以从下面的四个节点直接进入时间线。"
+    ],
+    "cards": [
+      {
+        "label": "01",
+        "title": "为什么没有细台本",
+        "summary": "想保留打ち上げ感，却让时间和参与机会失去保护。",
+        "event": "komachoe-20260425/yt-000250-no-detailed-script"
+      },
+      {
+        "label": "02",
+        "title": "producer 视角的四人 casting",
+        "summary": "熊谷、佐藤、堀金与光富分别会落在哪个角色。",
+        "event": "komachoe-20260425/yt-004333-producer-casting"
+      },
+      {
+        "label": "03",
+        "title": "「本当は」与 Chat 判定",
+        "summary": "一次证明 accent 不是方言的尝试，最后变成现场认输。",
+        "event": "komachoe-20260425/yt-013430-hontou-wa-accent"
+      },
+      {
+        "label": "04",
+        "title": "游戏积压与五小时块",
+        "summary": "开播门槛为什么越来越高，以及本人描述的恢复近况。",
+        "event": "komachoe-20260425/yt-020257-game-backlog-and-recovery"
+      }
+    ]
+  }
+}

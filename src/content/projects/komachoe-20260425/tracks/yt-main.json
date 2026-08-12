@@ -1,0 +1,16 @@
+{
+  "project": "komachoe-20260425",
+  "order": 1,
+  "kind": "video",
+  "label": "YouTube 生ラジオ",
+  "shortLabel": "YT",
+  "durationMs": 7926041,
+  "clock": "native",
+  "transcriptPolicy": "private",
+  "playback": {
+    "provider": "youtube",
+    "videoId": "uyOKDPpXxMI"
+  },
+  "sourcePublishedAt": "2026-04-25T21:54:09+09:00",
+  "fallbackUrl": "https://www.youtube.com/watch?v=uyOKDPpXxMI"
+}

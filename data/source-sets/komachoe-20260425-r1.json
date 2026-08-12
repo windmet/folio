@@ -1,0 +1,47 @@
+{
+  "sourceSetId": "komachoe-20260425-r1",
+  "files": {
+    "main": {
+      "path": "komachoe_20260425_main(8).md",
+      "sha256": "1a713c4e6d27da08cbbbcd7d05f98b24239d278e68cd475430af740948fb857d",
+      "lineCount": 2204,
+      "byteCount": 119784
+    },
+    "externalAsrRaw": {
+      "path": "komachoe_20260425_external_asr_raw(7).md",
+      "sha256": "54f5a59e2cc103545e9de47316575841a78f3ebef5acde7cfbf0633755e12124",
+      "lineCount": 1248,
+      "byteCount": 71426
+    },
+    "srt": {
+      "path": "こまちょえ生ラジオ(2026.04.25).srt",
+      "sha256": "cc677948370ed6b45b7f128e2428c94ad45a41abb2cd8b04f900beda37135516",
+      "lineCount": 8533,
+      "byteCount": 186177
+    },
+    "chatIndex": {
+      "path": "chat_uyOKDPpXxMI_20260810_131407_search.jsonl",
+      "sha256": "8c36ce10013d88248bbc3f154bb23bb85e46a48038a6f5df7cfb5ef8608a2554",
+      "lineCount": 5499,
+      "byteCount": 1277813
+    },
+    "commentIndex": {
+      "path": "comments_uyOKDPpXxMI_20260810_132551_search.jsonl",
+      "sha256": "868fa5f31a6b3bb6cf0566b4566aa53b0d97a0ece02c5345a421b246f7029725",
+      "lineCount": 10,
+      "byteCount": 5515
+    },
+    "sliceManifest": {
+      "path": "复核切片/00_manifest.md",
+      "sha256": "beea2579b3d6261f0327b0af1b437affaf2d7c71f6f2368133ce61b9274f79ef",
+      "lineCount": 37,
+      "byteCount": 2906
+    },
+    "sliceList": {
+      "path": "复核切片/_slices.tsv",
+      "sha256": "7f1a60378ff20b8be93abecd5d6244e41d8a61f320d4ba65aa5bc8f8c7569097",
+      "lineCount": 16,
+      "byteCount": 357
+    }
+  }
+}

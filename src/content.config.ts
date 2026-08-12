@@ -99,7 +99,7 @@ const projectTracks = defineCollection({
       z.object({ provider: z.literal('external'), url: z.string().url() }),
       z.object({ provider: z.literal('unavailable') }),
     ]),
-    sourcePublishedAt: z.string().datetime().optional(),
+    sourcePublishedAt: z.string().datetime({ offset: true }).optional(),
     fallbackUrl: z.string().url().optional(),
   }),
 });
