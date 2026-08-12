@@ -23,7 +23,7 @@ const [tracks, acts, events, threads, people, sources] = await Promise.all([
 ]);
 ---
 
-<ProjectLayout title={project.data.title} description={project.data.summary}>
+<ProjectLayout title={project.data.title} description={project.data.summary} visualTheme={project.data.visualTheme}>
   <ProjectArchiveShell
     project={project}
     tracks={tracks}

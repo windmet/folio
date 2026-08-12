@@ -6,6 +6,8 @@
   --archive-line: #d8d0c1;
   --archive-red: #9c433c;
   --archive-red-soft: #ead8d2;
+  --archive-accent-rgb: 156, 67, 60;
+  --archive-paper-rgb: 247, 244, 237;
   --archive-blue: #526c7a;
   --archive-green: #5f7662;
 }
@@ -17,6 +19,30 @@ body.project-page {
     linear-gradient(90deg, rgba(90, 77, 57, 0.025) 1px, transparent 1px) 0 0 / 26px 26px,
     var(--archive-paper);
   font-family: 'Noto Serif SC', 'Noto Serif JP', serif;
+}
+
+body.project-page[data-archive-theme='broadcast-blue'] {
+  --archive-paper: #deedf3;
+  --archive-paper-deep: #cbdfe8;
+  --archive-paper-rgb: 222, 237, 243;
+  --archive-ink: #20313b;
+  --archive-muted: #607784;
+  --archive-line: #a9c7d4;
+  --archive-red: #2f7697;
+  --archive-red-soft: #bddce8;
+  --archive-accent-rgb: 47, 118, 151;
+  --archive-blue: #426f87;
+  --archive-green: #4f7c78;
+  background:
+    radial-gradient(circle at 82% -12%, rgba(255, 255, 255, 0.42), transparent 34rem),
+    linear-gradient(90deg, rgba(var(--archive-accent-rgb), 0.05) 1px, transparent 1px) 0 0 / 26px 26px,
+    var(--archive-paper);
+}
+
+.project-page[data-archive-theme='broadcast-blue'] .project-hero {
+  background:
+    radial-gradient(circle at 86% 18%, rgba(255, 255, 255, 0.38), transparent 20rem),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.26), rgba(var(--archive-accent-rgb), 0.08));
 }
 
 body.archive-panel-open {
@@ -153,7 +179,7 @@ project-archive-shell {
   height: 136px;
   display: grid;
   place-content: center;
-  border: 1px solid rgba(156, 67, 60, 0.55);
+  border: 1px solid rgba(var(--archive-accent-rgb), 0.55);
   border-radius: 50%;
   color: var(--archive-red);
   text-align: center;
@@ -496,7 +522,7 @@ project-archive-shell {
 .source-event-index__list button:hover,
 .source-event-index__list button.is-active {
   color: var(--archive-red);
-  background: rgba(156, 67, 60, 0.055);
+  background: rgba(var(--archive-accent-rgb), 0.055);
 }
 
 .source-event-index__list time {
@@ -519,7 +545,7 @@ project-archive-shell {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   border-bottom: 1px solid var(--archive-line);
-  background: rgba(247, 244, 237, 0.94);
+  background: rgba(var(--archive-paper-rgb), 0.94);
   backdrop-filter: blur(14px);
 }
 
@@ -555,7 +581,7 @@ project-archive-shell {
 
 .project-nav button[aria-pressed='true'] {
   color: var(--archive-red);
-  background: rgba(156, 67, 60, 0.055);
+  background: rgba(var(--archive-accent-rgb), 0.055);
   box-shadow: inset 0 -2px var(--archive-red);
 }
 
@@ -652,7 +678,7 @@ project-archive-shell {
   max-height: min(62vh, 520px);
   overflow: auto;
   border: 1px solid #cfc5b5;
-  background: #f7f4ed;
+  background: var(--archive-paper);
   box-shadow: 0 22px 48px rgba(55, 47, 37, 0.18);
 }
 
@@ -665,7 +691,7 @@ project-archive-shell {
   justify-content: space-between;
   gap: 16px;
   border-bottom: 1px solid var(--archive-line);
-  background: #f7f4ed;
+  background: var(--archive-paper);
   font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
   font-size: 9px;
 }
@@ -701,7 +727,7 @@ project-archive-shell {
 .project-search__list > button:hover,
 .project-search__list > button:focus-visible {
   outline: 0;
-  background: rgba(156, 67, 60, 0.06);
+  background: rgba(var(--archive-accent-rgb), 0.06);
 }
 
 .project-search__list span {
@@ -780,7 +806,7 @@ project-archive-shell {
   padding: 14px 14px 12px;
   border-top: 1px solid var(--archive-line);
   border-bottom: 1px solid var(--archive-line);
-  background: rgba(247, 244, 237, 0.97);
+  background: rgba(var(--archive-paper-rgb), 0.97);
   box-shadow: 0 8px 18px rgba(55, 47, 37, 0.06);
   backdrop-filter: blur(14px);
 }
@@ -1195,12 +1221,12 @@ project-archive-shell {
 }
 
 .timeline-event.is-active {
-  background: rgba(156, 67, 60, 0.06);
+  background: rgba(var(--archive-accent-rgb), 0.06);
   box-shadow: inset 3px 0 var(--archive-red);
 }
 
 .timeline-event.is-context-arrival {
-  background: rgba(156, 67, 60, 0.14);
+  background: rgba(var(--archive-accent-rgb), 0.14);
   box-shadow: inset 5px 0 var(--archive-red);
 }
 
@@ -1292,7 +1318,7 @@ project-archive-shell {
   margin: 18px 0 4px;
   padding: 13px 14px;
   border-left: 2px solid var(--archive-red);
-  background: rgba(156, 67, 60, 0.045);
+  background: rgba(var(--archive-accent-rgb), 0.045);
 }
 
 .concurrent-lanes > span,
@@ -1444,7 +1470,7 @@ project-archive-shell {
 .archive-player__mode-toggle[aria-pressed='true'] {
   border-color: var(--archive-red);
   color: var(--archive-red);
-  background: rgba(156, 67, 60, 0.06);
+  background: rgba(var(--archive-accent-rgb), 0.06);
 }
 
 .archive-player__mode-toggle:focus-visible {
@@ -1462,7 +1488,7 @@ project-archive-shell {
   border: 1px solid var(--archive-red);
   border-radius: 50%;
   color: var(--archive-red);
-  background: rgba(247, 244, 237, 0.98);
+  background: rgba(var(--archive-paper-rgb), 0.98);
   box-shadow: 0 12px 30px rgba(55, 47, 37, 0.2);
   font: 9px ui-monospace, SFMono-Regular, Consolas, monospace;
   letter-spacing: 0.04em;
@@ -1522,7 +1548,7 @@ project-archive-shell {
 .archive-player__sources button[aria-pressed='true'] {
   border-color: var(--archive-red);
   color: var(--archive-red);
-  background: rgba(156, 67, 60, 0.06);
+  background: rgba(var(--archive-accent-rgb), 0.06);
 }
 
 .archive-clock {
@@ -1819,7 +1845,7 @@ project-archive-shell {
   width: 100%;
   margin: 0;
   border-top: 1px solid var(--archive-line);
-  background: #f7f4ed;
+  background: var(--archive-paper);
 }
 
 .player-context-rail[hidden] {
@@ -1838,7 +1864,7 @@ project-archive-shell {
   border: 0;
   border-right: 1px solid var(--archive-line);
   color: var(--archive-muted);
-  background: #f7f4ed;
+  background: var(--archive-paper);
   font: 10px/1.2 ui-monospace, SFMono-Regular, Consolas, monospace;
   letter-spacing: 0.02em;
   text-align: center;
@@ -1858,12 +1884,12 @@ project-archive-shell {
 .player-context-rail > a:hover,
 .player-context-rail__thread-slot > button:hover {
   color: var(--archive-red);
-  background: rgba(156, 67, 60, 0.065);
+  background: rgba(var(--archive-accent-rgb), 0.065);
 }
 
 .player-context-rail button:disabled {
   color: #bbb3a7;
-  background: #f3efe7;
+  background: var(--archive-paper-deep);
   box-shadow: none;
   cursor: not-allowed;
 }
@@ -1880,7 +1906,7 @@ project-archive-shell {
   width: min(300px, calc(100vw - 32px));
   transform: translateX(-50%);
   border: 1px solid var(--archive-line);
-  background: #f7f4ed;
+  background: var(--archive-paper);
   box-shadow: 0 12px 28px rgba(55, 47, 37, 0.14);
 }
 
@@ -1925,7 +1951,7 @@ project-archive-shell {
 
 .player-context-rail__menu button:hover {
   color: var(--archive-red);
-  background: rgba(156, 67, 60, 0.055);
+  background: rgba(var(--archive-accent-rgb), 0.055);
 }
 
 /* RC12-A2: Docked is a real bottom player, not a shorter right-column card. */
@@ -2796,7 +2822,7 @@ project-archive-shell {
   padding: 14px 15px;
   border: 1px solid var(--archive-line);
   border-left: 2px solid var(--archive-red);
-  background: #faf7f1;
+  background: var(--archive-paper);
 }
 
 .source-post__topline,
@@ -2992,7 +3018,7 @@ project-archive-shell {
     padding: 8px 12px;
     border: 0;
     color: var(--archive-ink);
-    background: rgba(247, 244, 237, 0.98);
+    background: rgba(var(--archive-paper-rgb), 0.98);
     text-align: left;
     cursor: pointer;
   }
@@ -3158,7 +3184,7 @@ project-archive-shell {
     max-height: calc(100dvh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
     overflow-y: auto;
     overscroll-behavior: contain;
-    background: #f7f4ed;
+    background: var(--archive-paper);
     box-shadow: 0 18px 48px rgba(55, 47, 37, 0.24);
   }
 
@@ -3459,7 +3485,7 @@ project-archive-shell {
     border-top: 3px double var(--archive-line);
     border-bottom: 1px solid var(--archive-line);
     border-left: 3px solid var(--archive-red);
-    background: rgba(226, 218, 204, 0.3);
+    background: rgba(var(--archive-accent-rgb), 0.08);
   }
 
   .act-number {
@@ -3678,7 +3704,7 @@ project-archive-shell {
   }
 
   .timeline-event.is-context-arrival {
-    background: rgba(156, 67, 60, 0.06);
+    background: rgba(var(--archive-accent-rgb), 0.06);
     box-shadow: inset 3px 0 var(--archive-red);
   }
 }

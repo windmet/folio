@@ -54,6 +54,7 @@ const projects = defineCollection({
     slug: z.string(),
     title: z.string(),
     eyebrow: z.string(),
+    visualTheme: z.enum(['broadcast-blue']).optional(),
     mark: z.string().max(4).optional(),
     markLabel: z.string().optional(),
     sourceNote: z.string().optional(),

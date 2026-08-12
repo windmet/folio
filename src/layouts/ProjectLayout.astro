@@ -5,9 +5,10 @@ import '../styles/project.css';
 export interface Props {
   title: string;
   description: string;
+  visualTheme?: 'broadcast-blue';
 }
 
-const { title, description } = Astro.props;
+const { title, description, visualTheme } = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -22,7 +23,7 @@ const { title, description } = Astro.props;
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet" />
     <title>{title} — Magazine</title>
   </head>
-  <body class="project-page">
+  <body class="project-page" data-archive-theme={visualTheme}>
     <header class="project-site-header">
       <a href="/" class="project-brand">Magazine</a>
       <span>声优活动专题档案</span>

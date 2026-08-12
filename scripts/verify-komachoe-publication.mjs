@@ -33,6 +33,7 @@ const homeHtml = await readFile(path.resolve('dist/index.html'), 'utf8');
 
 assert(project.status === 'draft', 'Project must remain draft during vertical slice');
 assert(project.defaultView === 'overview', 'defaultView must remain overview');
+assert(project.visualTheme === 'broadcast-blue', 'Project must use the broadcast-blue visual theme');
 assert(JSON.stringify(project.views) === JSON.stringify(['overview', 'sections', 'timeline']), 'views must be Overview / Sections / Timeline in order');
 assert(trackFiles.length === 1 && tracks[0].durationMs === 7926041 && tracks[0].order === 1, 'expected one ordered 7,926,041ms Track');
 assert(actFiles.length === 6, `expected 6 Acts, found ${actFiles.length}`);
@@ -61,6 +62,7 @@ for (const [index, event] of events.entries()) {
 
 assert(!homeHtml.includes(`href="/projects/${projectId}/"`), 'draft Project leaked onto the home page');
 assert(html.includes('<meta name="robots" content="noindex, nofollow">'), 'draft route is missing noindex/nofollow');
+assert(html.includes('data-archive-theme="broadcast-blue"'), 'rendered route is missing the broadcast-blue theme marker');
 assert(JSON.stringify(attributeValues(html, 'data-view-button')) === JSON.stringify(project.views), 'rendered view buttons do not match Project views');
 assert(JSON.stringify(attributeValues(html, 'data-view-panel')) === JSON.stringify(project.views), 'rendered view panels do not match Project views');
 assert((html.match(/class="section-card"/g) || []).length === 6, 'rendered Sections view must contain 6 cards');
