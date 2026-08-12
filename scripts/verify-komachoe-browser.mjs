@@ -73,6 +73,8 @@ try {
       palette: {
         paper: getComputedStyle(document.body).getPropertyValue('--archive-paper').trim(),
         accent: getComputedStyle(document.body).getPropertyValue('--archive-red').trim(),
+        text: getComputedStyle(document.body).getPropertyValue('--archive-ink').trim(),
+        surface: getComputedStyle(document.body).getPropertyValue('--archive-surface').trim(),
       },
       nav: [...document.querySelectorAll('[data-view-button]')].map((button) => button.dataset.viewButton),
       visiblePanels: [...document.querySelectorAll('[data-view-panel]:not([hidden])')].map((panel) => panel.dataset.viewPanel),
@@ -83,7 +85,14 @@ try {
       forbidden: document.querySelectorAll('[data-timeline-scope], [data-source-track], [data-player-rail-thread], [data-thread-overlay], [data-person-overlay]').length,
     }));
     assert(state.activeView === 'overview' && state.visiblePanels.join() === 'overview', `${label} does not open on Overview: ${JSON.stringify(state)}`);
-    assert(state.theme === 'broadcast-blue' && state.palette.paper === '#deedf3' && state.palette.accent === '#2f7697', `${label} broadcast-blue theme mismatch: ${JSON.stringify(state.palette)}`);
+    assert(
+      state.theme === 'broadcast-blue'
+        && state.palette.paper === '#f6f4ef'
+        && state.palette.surface === '#fbfaf7'
+        && state.palette.text === '#2e2a28'
+        && state.palette.accent === '#5e7c96',
+      `${label} broadcast-blue theme mismatch: ${JSON.stringify(state.palette)}`,
+    );
     assert(state.nav.join() === 'overview,sections,timeline', `${label} view navigation mismatch`);
     assert(state.sections === 6 && state.acts === 6 && state.events === 30, `${label} does not render 6 Sections / Acts and 30 Events`);
     assert(state.overflow === 0 && state.forbidden === 0, `${label} overflow or forbidden optional UI: ${JSON.stringify(state)}`);

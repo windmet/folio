@@ -4,6 +4,9 @@
   --archive-ink: #292722;
   --archive-muted: #777166;
   --archive-line: #d8d0c1;
+  --archive-accent-line: var(--archive-line);
+  --archive-surface: #fbfaf7;
+  --archive-surface-rgb: 251, 250, 247;
   --archive-red: #9c433c;
   --archive-red-soft: #ead8d2;
   --archive-accent-rgb: 156, 67, 60;
@@ -22,27 +25,55 @@ body.project-page {
 }
 
 body.project-page[data-archive-theme='broadcast-blue'] {
-  --archive-paper: #deedf3;
-  --archive-paper-deep: #cbdfe8;
-  --archive-paper-rgb: 222, 237, 243;
-  --archive-ink: #20313b;
-  --archive-muted: #607784;
-  --archive-line: #a9c7d4;
-  --archive-red: #2f7697;
-  --archive-red-soft: #bddce8;
-  --archive-accent-rgb: 47, 118, 151;
-  --archive-blue: #426f87;
-  --archive-green: #4f7c78;
+  --archive-paper: #f6f4ef;
+  --archive-paper-deep: #ece9e2;
+  --archive-paper-rgb: 246, 244, 239;
+  --archive-surface: #fbfaf7;
+  --archive-surface-rgb: 251, 250, 247;
+  --archive-ink: #2e2a28;
+  --archive-muted: #746f6a;
+  --archive-line: #d8d4cd;
+  --archive-accent-line: #c8d4de;
+  --archive-red: #5e7c96;
+  --archive-red-soft: #e7eef3;
+  --archive-accent-rgb: 94, 124, 150;
+  --archive-blue: #45657e;
+  --archive-green: #65786e;
   background:
-    radial-gradient(circle at 82% -12%, rgba(255, 255, 255, 0.42), transparent 34rem),
-    linear-gradient(90deg, rgba(var(--archive-accent-rgb), 0.05) 1px, transparent 1px) 0 0 / 26px 26px,
+    linear-gradient(90deg, rgba(72, 66, 59, 0.026) 1px, transparent 1px) 0 0 / 26px 26px,
     var(--archive-paper);
 }
 
 .project-page[data-archive-theme='broadcast-blue'] .project-hero {
-  background:
-    radial-gradient(circle at 86% 18%, rgba(255, 255, 255, 0.38), transparent 20rem),
-    linear-gradient(135deg, rgba(255, 255, 255, 0.26), rgba(var(--archive-accent-rgb), 0.08));
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(var(--archive-surface-rgb), 0.18));
+}
+
+.project-page[data-archive-theme='broadcast-blue'] :is(
+  .project-nav,
+  .project-nav button,
+  .overview-grid > article,
+  .overview-grid > button,
+  .section-card,
+  .event-time,
+  .archive-player,
+  .player-context-rail,
+  .player-context-rail > button,
+  .player-context-rail > a,
+  .player-context-rail__thread-slot > button
+) {
+  border-color: var(--archive-accent-line);
+}
+
+.project-page[data-archive-theme='broadcast-blue'] :is(
+  .overview-grid > article,
+  .overview-grid > button,
+  .section-card
+) {
+  background: rgba(var(--archive-surface-rgb), 0.72);
+}
+
+.project-page[data-archive-theme='broadcast-blue'] .archive-player {
+  background: var(--archive-surface);
 }
 
 body.archive-panel-open {
