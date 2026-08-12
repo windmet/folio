@@ -57,6 +57,8 @@ const projects = defineCollection({
     mark: z.string().max(4).optional(),
     markLabel: z.string().optional(),
     sourceNote: z.string().optional(),
+    playerNote: z.string().optional(),
+    searchPlaceholder: z.string().optional(),
     status: z.enum(['draft', 'published']),
     defaultTrack: reference('projectTracks'),
     defaultView: projectView,

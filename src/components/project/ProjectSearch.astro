@@ -1,20 +1,30 @@
 ---
 export interface Props {
   projectSlug: string;
+  hasStorylines?: boolean;
+  hasPeople?: boolean;
+  placeholder?: string;
 }
 
-const { projectSlug } = Astro.props;
+const { projectSlug, hasStorylines = false, hasPeople = false, placeholder = '输入姓名、作品或主题' } = Astro.props;
 const endpoint = `/projects/${projectSlug}/search.json`;
+const searchableKinds = ['事件', ...(hasStorylines ? ['事件线'] : []), ...(hasPeople ? ['人物'] : [])];
+const searchLabel = hasStorylines && hasPeople
+  ? '搜索事件、事件线或人物'
+  : `搜索${searchableKinds.join('、')}`;
+const scopeLabel = hasStorylines && hasPeople
+  ? '只搜索已经公开的事件、故事线和人物'
+  : `只搜索已经公开的${searchableKinds.join('、')}`;
 ---
 
 <section class="project-search" role="search" aria-label="搜索专题档案" data-search-shell data-search-endpoint={endpoint}>
   <div class="project-search__field">
-    <label for="project-archive-search">搜索事件、事件线或人物</label>
+    <label for="project-archive-search">{searchLabel}</label>
     <input
       id="project-archive-search"
       type="text"
       role="searchbox"
-      placeholder="例如：章鱼烧、内田、Bingo"
+      placeholder={placeholder}
       autocomplete="off"
       aria-controls="project-search-results"
       aria-expanded="false"
@@ -29,7 +39,7 @@ const endpoint = `/projects/${projectSlug}/search.json`;
   <div class="project-search__results" id="project-search-results" data-search-results hidden>
     <header>
       <strong data-search-count>0 条结果</strong>
-      <span>只搜索已经公开的事件、故事线和人物</span>
+      <span>{scopeLabel}</span>
     </header>
     <div class="project-search__list" data-search-list></div>
     <p class="project-search__empty" data-search-empty hidden>没有找到公开索引中的匹配项。</p>

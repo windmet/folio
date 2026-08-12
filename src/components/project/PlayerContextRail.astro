@@ -1,8 +1,16 @@
-<nav class="player-context-rail player-action-bar" data-player-context-rail hidden aria-label="当前节点操作">
+---
+export interface Props {
+  showStorylineAction?: boolean;
+}
+
+const { showStorylineAction = true } = Astro.props;
+---
+
+<nav class:list={['player-context-rail', 'player-action-bar', { 'has-storyline-action': showStorylineAction }]} data-player-context-rail hidden aria-label="当前节点操作">
   <button type="button" data-player-rail-node aria-label="在 Timeline 定位当前节点">
     <span data-player-rail-timeline-label>查看时间线</span>
   </button>
-  <div class="player-context-rail__thread-slot">
+  {showStorylineAction && <div class="player-context-rail__thread-slot">
     <button
       type="button"
       data-player-rail-thread
@@ -26,7 +34,7 @@
       </header>
       <div data-player-rail-thread-list></div>
     </section>
-  </div>
+  </div>}
   <a
     data-player-rail-source
     data-external-youtube-handoff

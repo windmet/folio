@@ -115,7 +115,7 @@ for (const { id: projectId, data: project } of projects) {
     }
   }
   if (threadFiles.length === 0) {
-    for (const marker of ['data-view-button="storylines"', 'data-thread-detail=', 'data-thread-overlay']) {
+    for (const marker of ['data-view-button="storylines"', 'data-thread-detail=', 'data-thread-overlay', 'data-player-rail-thread']) {
       if (html.includes(marker)) errors.push(`${projectId}: zero-thread project renders Storylines UI (${marker})`);
     }
   }

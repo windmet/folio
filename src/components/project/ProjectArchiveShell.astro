@@ -129,6 +129,7 @@ const controllerData = {
   projectId: project.id,
   defaultView: project.data.defaultView,
   defaultTrackId: localId(defaultTrack.id),
+  playerNote: project.data.playerNote,
   tracks: Object.fromEntries(tracks.map((track) => [localId(track.id), {
     id: localId(track.id),
     label: track.data.label,
@@ -159,7 +160,12 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
 
   <ProjectViewNav views={presentation.viewDefinitions} />
 
-  <ProjectSearch projectSlug={project.data.slug} />
+  <ProjectSearch
+    projectSlug={project.data.slug}
+    hasStorylines={presentation.showStorylines}
+    hasPeople={presentation.showPeople}
+    placeholder={project.data.searchPlaceholder}
+  />
 
   <div class="project-workspace">
     <div class="project-content">
@@ -300,6 +306,8 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         fallbackUrl={defaultTrack.data.fallbackUrl}
         tracks={presentation.orderedTracks}
         showSourceTabs={presentation.showPlayerSourceTabs}
+        showStorylineAction={presentation.showStorylines}
+        playerNote={project.data.playerNote}
       />
     </aside>
   </div>
@@ -353,6 +361,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     projectId: string;
     defaultView: string;
     defaultTrackId: string;
+    playerNote?: string;
     tracks: Record<string, ArchiveTrack>;
     events: Record<string, ArchiveEvent>;
   };
@@ -1997,7 +2006,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
           : '此轨道目前没有公开播放源';
       }
       if (note) note.textContent = track.playback.provider === 'youtube'
-        ? '使用 YouTube 原生 360°能力；移动设备的视角支持取决于 YouTube 与设备。'
+        ? this.data.playerNote || '使用 YouTube 原生播放器；可用能力取决于 YouTube 与当前设备。'
         : track.playback.provider === 'external'
           ? 'EXTERNAL SOURCE · 站内不播放，不提供程序化 seek；点击上方链接打开 X 原始回放。'
           : '当前未登记公开播放源。';
@@ -2098,7 +2107,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       const threadLabel = this.querySelector<HTMLElement>('[data-player-rail-thread-label]');
       const source = this.querySelector<HTMLAnchorElement>('[data-player-rail-source]');
       const sourceLabel = this.querySelector<HTMLElement>('[data-player-rail-source-label]');
-      if (!rail || !node || !timelineLabel || !thread || !threadLabel || !source || !sourceLabel) return;
+      if (!rail || !node || !timelineLabel || !source || !sourceLabel) return;
       this.closePlayerRailThreadMenu(false);
       if (!event) {
         rail.hidden = true;
@@ -2114,11 +2123,13 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       node.setAttribute('aria-label', `在 Timeline 定位当前节点：${event.title}`);
 
       const threadCount = context.threadIds.length;
-      thread.disabled = threadCount === 0;
-      threadLabel.textContent = `故事线 · ${threadCount || '—'}`;
-      thread.setAttribute('aria-label', threadCount
-        ? `查看当前节点的 ${threadCount} 条故事线`
-        : '当前节点没有故事线');
+      if (thread && threadLabel) {
+        thread.disabled = threadCount === 0;
+        threadLabel.textContent = `故事线 · ${threadCount || '—'}`;
+        thread.setAttribute('aria-label', threadCount
+          ? `查看当前节点的 ${threadCount} 条故事线`
+          : '当前节点没有故事线');
+      }
 
       source.hidden = !fallback || fallback.hidden;
       if (!source.hidden && fallback) source.href = fallback.href;

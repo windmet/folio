@@ -9,9 +9,20 @@ export interface Props {
   fallbackUrl?: string;
   tracks: any[];
   showSourceTabs?: boolean;
+  showStorylineAction?: boolean;
+  playerNote?: string;
 }
 
-const { trackId, label, videoId, fallbackUrl, tracks, showSourceTabs = tracks.length > 1 } = Astro.props;
+const {
+  trackId,
+  label,
+  videoId,
+  fallbackUrl,
+  tracks,
+  showSourceTabs = tracks.length > 1,
+  showStorylineAction = true,
+  playerNote = '使用原始媒体播放器；可用能力取决于来源与当前设备。',
+} = Astro.props;
 const orderedTracks = [...tracks].sort((left, right) => left.data.order - right.data.order);
 ---
 
@@ -106,7 +117,7 @@ const orderedTracks = [...tracks].sort((left, right) => left.data.order - right.
       hidden
     >展开</button>
   </p>
-  <PlayerContextRail />
+  <PlayerContextRail showStorylineAction={showStorylineAction} />
   <section class="archive-player__context" data-player-context hidden aria-label="当前节点上下文">
     <span class="archive-kicker" data-player-context-label>READING CONTEXT</span>
     <p id="player-context-text" data-player-context-summary></p>
@@ -121,6 +132,6 @@ const orderedTracks = [...tracks].sort((left, right) => left.data.order - right.
       在 YouTube 打开原来源 ↗
     </a>
   )}
-  <p class="archive-player__note" data-player-note>使用 YouTube 原生 360°能力；移动设备的视角支持取决于 YouTube 与设备。</p>
+  <p class="archive-player__note" data-player-note>{playerNote}</p>
 </section>
 </div>

@@ -8,6 +8,8 @@
   "mark": "36",
   "markLabel": "BIRTHDAY\nSPECIAL",
   "sourceNote": "本档案整理自 YouTube 主直播与两段 X Space；三份媒体保留各自原视频时间，不强行换算为统一时钟。",
+  "playerNote": "使用 YouTube 原生 360°能力；移动设备的视角支持取决于 YouTube 与设备。",
+  "searchPlaceholder": "例如：章鱼烧、内田、Bingo",
   "status": "published",
   "defaultTrack": "komatsu36/yt-main",
   "defaultView": "timeline",

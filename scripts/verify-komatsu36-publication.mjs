@@ -944,12 +944,12 @@ if (!timelineShellSource.includes("this.navigateEventToTimeline(this.selectedEve
 if (timelineShellSource.includes('is-current-destination') || timelineCssSource.includes('.is-current-destination')) {
   errors.push('RC12-PA1 Player actions must not publish persistent tab-like destination state');
 }
-if (!/\.player-context-rail\s*\{[\s\S]*?grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\);/.test(timelineCssSource)
-  || !/data-player-mode='docked'[\s\S]*?grid-template-columns:\s*repeat\(3, 64px\);/.test(timelineCssSource)
+if (!/\.player-context-rail\.has-storyline-action\s*\{[\s\S]*?grid-template-columns:\s*repeat\(3, minmax\(0, 1fr\)\);/.test(timelineCssSource)
+  || !/data-player-mode='docked'[\s\S]*?\.player-context-rail\.has-storyline-action[\s\S]*?grid-template-columns:\s*repeat\(3, 64px\);/.test(timelineCssSource)
   || timelineCssSource.includes('@container player-column (max-width: 379px)')) {
   errors.push('RC12-PA1 CSS must keep a 3-column expanded footer and 3x64px docked action area without the old rail branch');
 }
-if (!archivePlayerSource.includes('<PlayerContextRail />\n  <section class="archive-player__context"')) {
+if (!archivePlayerSource.includes('<PlayerContextRail showStorylineAction={showStorylineAction} />\n  <section class="archive-player__context"')) {
   errors.push('RC12-PA1 Player Action Bar must sit immediately after TARGET inside the Player');
 }
 const playerBubbleTags = [...html.matchAll(/<button[^>]*data-player-bubble[^>]*>/g)].map((match) => match[0]);
