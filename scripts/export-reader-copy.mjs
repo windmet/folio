@@ -36,6 +36,7 @@ const sources = new Map();
 
 function readJsonDirectory(name, target, extension = '.json') {
   const directory = path.join(projectRoot, name);
+  if (!fs.existsSync(directory)) return;
   fs.readdirSync(directory).filter((file) => file.endsWith(extension)).sort().forEach((file) => {
     const id = idFromFile(file, extension);
     target.set(id, { id, file, data: readJson(path.join(directory, file)) });
@@ -48,10 +49,12 @@ readJsonDirectory('events', events);
 readJsonDirectory('people', people);
 readJsonDirectory('sources', sources);
 const threadDirectory = path.join(projectRoot, 'threads');
-fs.readdirSync(threadDirectory).filter((file) => file.endsWith('.md')).sort().forEach((file) => {
-  const id = idFromFile(file, '.md');
-  threads.set(id, { id, file, ...readThread(path.join(threadDirectory, file)) });
-});
+if (fs.existsSync(threadDirectory)) {
+  fs.readdirSync(threadDirectory).filter((file) => file.endsWith('.md')).sort().forEach((file) => {
+    const id = idFromFile(file, '.md');
+    threads.set(id, { id, file, ...readThread(path.join(threadDirectory, file)) });
+  });
+}
 
 const entries = [];
 const markdownEntries = [];
@@ -77,6 +80,19 @@ const projectSource = relative(projectFile);
 addEntry({ scope: 'project', id: projectId, field: 'eyebrow', value: project.eyebrow, source: projectSource });
 addEntry({ scope: 'project', id: projectId, field: 'title', value: project.title, source: projectSource });
 addEntry({ scope: 'project', id: projectId, field: 'summary', value: project.summary, source: projectSource });
+addEntry({ scope: 'project', id: projectId, field: 'sourceNote', value: project.sourceNote, source: projectSource });
+addEntry({ scope: 'project', id: projectId, field: 'playerNote', value: project.playerNote, source: projectSource });
+addEntry({ scope: 'project', id: projectId, field: 'searchPlaceholder', value: project.searchPlaceholder, source: projectSource });
+addEntry({ scope: 'project', id: projectId, field: 'overview.kicker', value: project.overview?.kicker, source: projectSource });
+addEntry({ scope: 'project', id: projectId, field: 'overview.title', value: project.overview?.title, source: projectSource });
+(project.overview?.paragraphs || []).forEach((value, index) => addEntry({
+  scope: 'project', id: projectId, field: `overview.paragraphs[${index}]`, value, source: projectSource,
+}));
+(project.overview?.cards || []).forEach((card, index) => {
+  addEntry({ scope: 'project', id: projectId, field: `overview.cards[${index}].label`, value: card.label, source: projectSource });
+  addEntry({ scope: 'project', id: projectId, field: `overview.cards[${index}].title`, value: card.title, source: projectSource });
+  addEntry({ scope: 'project', id: projectId, field: `overview.cards[${index}].summary`, value: card.summary, source: projectSource });
+});
 
 for (const item of tracks.values()) {
   const source = relative(path.join(projectRoot, 'tracks', item.file));
@@ -137,7 +153,7 @@ for (const item of sources.values()) {
   addEntry({ scope: 'source', id: entityId(item.id), field: 'author.handle', value: item.data.author?.handle, source });
 }
 
-const uiCopy = [
+const komatsuUiCopy = [
   ['project-archive.hero', 'eyebrow', '36TH BIRTHDAY · LIVE ARCHIVE', 'src/components/project/ProjectArchiveShell.astro'],
   ['project-archive.hero', 'sourceNote', '本档案整理自 YouTube 主直播与两段 X Space；三份媒体保留各自原视频时间，不强行换算为统一时钟。', 'src/components/project/ProjectArchiveShell.astro'],
   ['project-archive.hero', 'stamp', 'BIRTHDAY|SPECIAL', 'src/components/project/ProjectArchiveShell.astro'],
@@ -247,6 +263,68 @@ const uiCopy = [
   ['reader-labels', 'threadRoles', '起点|发展|回收', 'src/lib/projectReaderLabels.ts'],
   ['reader-labels', 'participationKinds', '《俺知》出演|制作|Ensemble|生日会来宾|Space 来宾|LINE 电话|账号出现|事前投稿', 'src/lib/projectReaderLabels.ts'],
 ];
+
+const komachoeUiCopy = [
+  ['project-archive.hero', 'statsLabel[0]', '节目时长', 'src/lib/projectPresentation.mjs'],
+  ['project-archive.hero', 'statsLabel[1]', '环节', 'src/lib/projectPresentation.mjs'],
+  ['project-archive.hero', 'statsLabel[2]', '精选节点', 'src/lib/projectPresentation.mjs'],
+  ['project-archive.hero', 'statsAria', '档案统计', 'src/components/project/ProjectHero.astro'],
+  ['project-archive.nav', 'overview', '快速了解', 'src/lib/projectPresentation.mjs'],
+  ['project-archive.nav', 'sections', '节目环节', 'src/lib/projectPresentation.mjs'],
+  ['project-archive.nav', 'timeline', '按时间浏览', 'src/lib/projectPresentation.mjs'],
+  ['project-search', 'ariaLabel', '搜索专题档案', 'src/components/project/ProjectSearch.astro'],
+  ['project-search', 'label', '搜索事件', 'src/components/project/ProjectSearch.astro'],
+  ['project-search', 'clear', '清除搜索', 'src/components/project/ProjectSearch.astro'],
+  ['project-search', 'status', '首次输入时加载公开索引。', 'src/components/project/ProjectSearch.astro'],
+  ['project-search', 'error', '搜索索引暂时无法载入，专题其余内容仍可继续浏览。', 'src/components/project/ProjectSearch.astro'],
+  ['project-search', 'count', '0 条结果', 'src/components/project/ProjectSearch.astro'],
+  ['project-search', 'scope', '只搜索已经公开的事件', 'src/components/project/ProjectSearch.astro'],
+  ['project-search', 'empty', '没有找到公开索引中的匹配项。', 'src/components/project/ProjectSearch.astro'],
+  ['project-archive.overview', 'featuredCta', '定位并进入时间线 →', 'src/components/project/ProjectOverview.astro'],
+  ['project-archive.sections', 'kicker', 'PROGRAM STRUCTURE', 'src/components/project/ProjectSectionsView.astro'],
+  ['project-archive.sections', 'heading', 'Sections', 'src/components/project/ProjectSectionsView.astro'],
+  ['project-archive.sections', 'description', '按节目环节浏览完整结构，再进入 Timeline 查看值得直接跳听的具体节点。', 'src/components/project/ProjectSectionsView.astro'],
+  ['project-archive.sections', 'eventCountSuffix', '个精选节点 →', 'src/components/project/ProjectSectionsView.astro'],
+  ['project-archive.sections', 'sectionLabels', 'SPECIAL TALK|MAIL|MONTHLY FEATURE|FUTSUOTA|SUPER CHAT|ENDING', 'src/components/project/ProjectSectionsView.astro'],
+  ['project-archive.timeline', 'kicker', 'CHRONOLOGICAL CANON · NATIVE CLOCK', 'src/components/project/ProjectArchiveShell.astro'],
+  ['project-archive.timeline', 'heading', 'Timeline', 'src/components/project/ProjectArchiveShell.astro'],
+  ['project-archive.timeline', 'description', `按节目原始时钟浏览 ${acts.size} 个 Section 与精选节点。`, 'src/components/project/ProjectArchiveShell.astro'],
+  ['timeline', 'acts', 'Timeline Acts', 'src/components/project/TimelineNavigator.astro'],
+  ['timeline', 'expand', '展开', 'src/components/project/TimelineNavigator.astro'],
+  ['timeline', 'act', 'ACT', 'src/components/project/TimelineNavigator.astro'],
+  ['timeline', 'jump', '跳转到 ACT', 'src/components/project/TimelineNavigator.astro'],
+  ['act', 'draft', '编辑草案', 'src/components/project/ActSection.astro'],
+  ['act', 'events', 'EVENTS', 'src/components/project/ActSection.astro'],
+  ['event', 'people', '相关人物', 'src/components/project/TimelineEvent.astro'],
+  ['archive-player', 'mobileExpand', '展开移动播放器', 'src/components/project/ArchivePlayer.astro'],
+  ['archive-player', 'currentSource', 'CURRENT SOURCE', 'src/components/project/ArchivePlayer.astro'],
+  ['archive-player', 'switchMode', '切换播放器显示方式', 'src/components/project/ArchivePlayer.astro'],
+  ['archive-player', 'dockMode', '收起为底部播放栏', 'src/components/project/ArchivePlayer.astro'],
+  ['archive-player', 'loadYoutubeAria', '载入 YouTube 播放器', 'src/components/project/ArchivePlayer.astro'],
+  ['archive-player', 'load', '载入播放器', 'src/components/project/ArchivePlayer.astro'],
+  ['archive-player', 'posterFallback', 'YouTube 预览图暂时无法连接', 'src/components/project/ArchivePlayer.astro'],
+  ['archive-player', 'posterFallbackNote', '播放器仍可在网络恢复后重新尝试载入。', 'src/components/project/ArchivePlayer.astro'],
+  ['archive-player', 'error', 'YouTube 无法连接', 'src/components/project/ArchivePlayer.astro'],
+  ['archive-player', 'errorDescription', '播放器与预览图未能从 YouTube 加载。若当前网络无法访问 YouTube，请调整网络环境后重试。', 'src/components/project/ArchivePlayer.astro'],
+  ['archive-player', 'retry', '重新尝试', 'src/components/project/ArchivePlayer.astro'],
+  ['archive-player', 'openSource', '打开 YouTube ↗', 'src/components/project/ArchivePlayer.astro'],
+  ['archive-player', 'noTarget', '选择时间节点开始定位', 'src/components/project/ArchivePlayer.astro'],
+  ['archive-player', 'contextLabel', '当前节点上下文', 'src/components/project/ArchivePlayer.astro'],
+  ['archive-player', 'readingContext', 'READING CONTEXT', 'src/components/project/ArchivePlayer.astro'],
+  ['archive-player', 'contextCta', '在 Timeline 查看此节点 →', 'src/components/project/ArchivePlayer.astro'],
+  ['archive-player', 'threadEmpty', '选择一条相关事件线|暂无相关事件线', 'src/components/project/ProjectArchiveShell.astro'],
+  ['archive-player', 'fallback', '在 YouTube 打开原来源 ↗', 'src/components/project/ArchivePlayer.astro'],
+  ['archive-player', 'mode', '展开完整播放器|切换为底部播放栏|展开播放器|收起为底部播放栏|最小化|收起', 'src/components/project/ProjectArchiveShell.astro'],
+  ['player-action-bar', 'ariaLabel', '当前节点操作', 'src/components/project/PlayerContextRail.astro'],
+  ['player-action-bar', 'timeline', '查看时间线|定位此处', 'src/components/project/PlayerContextRail.astro'],
+  ['player-action-bar', 'noStoryline', '当前节点没有故事线', 'src/components/project/PlayerContextRail.astro'],
+  ['player-action-bar', 'storyline', '故事线 · —', 'src/components/project/PlayerContextRail.astro'],
+  ['player-action-bar', 'relatedStorylines', '相关事件线', 'src/components/project/PlayerContextRail.astro'],
+  ['player-action-bar', 'kicker', 'RELATED STORYLINES', 'src/components/project/PlayerContextRail.astro'],
+  ['player-action-bar', 'source', 'YouTube ↗', 'src/components/project/PlayerContextRail.astro'],
+];
+
+const uiCopy = projectId === 'komachoe-20260425' ? komachoeUiCopy : komatsuUiCopy;
 uiCopy.forEach(([group, field, value, source]) => {
   const values = value.split('|');
   values.forEach((copy, index) => addEntry({
@@ -275,6 +353,10 @@ const markdown = [
   `- Generated by: \`npm run editorial:export-copy -- ${projectId}\``,
   '- This is an editable review surface. Keep each `copy-key` stable; the manifest is the machine-readable snapshot for a later dry-run apply step.',
   '- Scope includes public Project / Track / Act / Event / Thread / Person / Source fields and SYSTEM/UI copy. Private Transcript / Evidence / Chat / qualification / internal source notes are intentionally excluded.',
+  ...(projectId === 'komachoe-20260425' ? [
+    '- This project is a single-track broadcast archive. The page exposes Project / Track / Act / Event and SYSTEM/UI copy; Thread / Person / Source directories are intentionally absent and therefore produce no entries.',
+    '- Overview copy is exported from `project.json`; the timeline contains the published 30-event narrative layer. Event evidence, qualifications, transcripts and raw source notes remain excluded.',
+  ] : []),
   '',
 ];
 let currentScope = '';

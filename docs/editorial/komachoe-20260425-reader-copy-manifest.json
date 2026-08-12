@@ -1,0 +1,1494 @@
+{
+  "schemaVersion": 1,
+  "projectId": "komachoe-20260425",
+  "projectTitle": "こまちょえ生ラジオ｜2026.04.25",
+  "editorialRevision": "2026-08-12-mother-v1-narrative-30-event-timeline",
+  "generatedBy": "editorial:export-copy",
+  "entries": [
+    {
+      "copyKey": "project:komachoe-20260425#eyebrow",
+      "scope": "project",
+      "entityId": "komachoe-20260425",
+      "source": "src/content/projects/komachoe-20260425/project.json",
+      "field": "eyebrow",
+      "originalHash": "3f34c42c2472648505a602a86b068e2684a5e56d58d7613962afbff6fd436133",
+      "value": "BROADCAST ARCHIVE · 2026.04.25"
+    },
+    {
+      "copyKey": "project:komachoe-20260425#overview.cards[0].label",
+      "scope": "project",
+      "entityId": "komachoe-20260425",
+      "source": "src/content/projects/komachoe-20260425/project.json",
+      "field": "overview.cards[0].label",
+      "originalHash": "938db8c9f82c8cb58d3f3ef4fd250036a48d26a712753d2fde5abd03a85cabf4",
+      "value": "01"
+    },
+    {
+      "copyKey": "project:komachoe-20260425#overview.cards[0].summary",
+      "scope": "project",
+      "entityId": "komachoe-20260425",
+      "source": "src/content/projects/komachoe-20260425/project.json",
+      "field": "overview.cards[0].summary",
+      "originalHash": "2a05363e50a2c8725d01714191bef0cedf5209509777339e72d9dd384fdbe787",
+      "value": "打ち上げ的松弛感值得保留，但仍需要保护时间与参与机会的结构。"
+    },
+    {
+      "copyKey": "project:komachoe-20260425#overview.cards[0].title",
+      "scope": "project",
+      "entityId": "komachoe-20260425",
+      "source": "src/content/projects/komachoe-20260425/project.json",
+      "field": "overview.cards[0].title",
+      "originalHash": "c9b165b14c31510d9b35f455905ab5180f2460c7529e60019d64601d1d9dfa9f",
+      "value": "为什么先从制作复盘开始"
+    },
+    {
+      "copyKey": "project:komachoe-20260425#overview.cards[1].label",
+      "scope": "project",
+      "entityId": "komachoe-20260425",
+      "source": "src/content/projects/komachoe-20260425/project.json",
+      "field": "overview.cards[1].label",
+      "originalHash": "a953f09a1b6b6725b81956e9ad0b1eb49e3ad40004c04307ef8af6246a054116",
+      "value": "02"
+    },
+    {
+      "copyKey": "project:komachoe-20260425#overview.cards[1].summary",
+      "scope": "project",
+      "entityId": "komachoe-20260425",
+      "source": "src/content/projects/komachoe-20260425/project.json",
+      "field": "overview.cards[1].summary",
+      "originalHash": "1875c01185426070fa28e4d13ad219af35a4fc14c9f51eed6c65a7d3968b1227",
+      "value": "熊谷、佐藤、堀金与光富分别会落在哪个角色。"
+    },
+    {
+      "copyKey": "project:komachoe-20260425#overview.cards[1].title",
+      "scope": "project",
+      "entityId": "komachoe-20260425",
+      "source": "src/content/projects/komachoe-20260425/project.json",
+      "field": "overview.cards[1].title",
+      "originalHash": "56a3dbba10b0b7ba3e8faa8652bb8a838e08f5816e832f858082a9306d0f0b5f",
+      "value": "制作人视角的四人选角"
+    },
+    {
+      "copyKey": "project:komachoe-20260425#overview.cards[2].label",
+      "scope": "project",
+      "entityId": "komachoe-20260425",
+      "source": "src/content/projects/komachoe-20260425/project.json",
+      "field": "overview.cards[2].label",
+      "originalHash": "0b8efa5a3bf104413a725c6ff0459a6be12b1fd33314cbb138745baf39504ae5",
+      "value": "03"
+    },
+    {
+      "copyKey": "project:komachoe-20260425#overview.cards[2].summary",
+      "scope": "project",
+      "entityId": "komachoe-20260425",
+      "source": "src/content/projects/komachoe-20260425/project.json",
+      "field": "overview.cards[2].summary",
+      "originalHash": "9dada0e2eacb8e6a37476d730f36e9ca7a5b41064fcdff46504c56e58adda0f7",
+      "value": "一次证明重音不是方言的尝试，最后变成现场认输。"
+    },
+    {
+      "copyKey": "project:komachoe-20260425#overview.cards[2].title",
+      "scope": "project",
+      "entityId": "komachoe-20260425",
+      "source": "src/content/projects/komachoe-20260425/project.json",
+      "field": "overview.cards[2].title",
+      "originalHash": "3b9095393b7d63fc8f0354c2a02ac07587255ba0c46d7e1945ed484c7044c8b4",
+      "value": "「本当は」与聊天区判定"
+    },
+    {
+      "copyKey": "project:komachoe-20260425#overview.cards[3].label",
+      "scope": "project",
+      "entityId": "komachoe-20260425",
+      "source": "src/content/projects/komachoe-20260425/project.json",
+      "field": "overview.cards[3].label",
+      "originalHash": "6cd5b6e51936a442b973660c21553dd22bd72ddc8751132a943475288113b4c0",
+      "value": "04"
+    },
+    {
+      "copyKey": "project:komachoe-20260425#overview.cards[3].summary",
+      "scope": "project",
+      "entityId": "komachoe-20260425",
+      "source": "src/content/projects/komachoe-20260425/project.json",
+      "field": "overview.cards[3].summary",
+      "originalHash": "b44a7e22307e18ac451b1c9e318ac21ebc343dae83c75de78689e9d68650a2f7",
+      "value": "开播门槛为什么越来越高，以及本人描述的恢复近况。"
+    },
+    {
+      "copyKey": "project:komachoe-20260425#overview.cards[3].title",
+      "scope": "project",
+      "entityId": "komachoe-20260425",
+      "source": "src/content/projects/komachoe-20260425/project.json",
+      "field": "overview.cards[3].title",
+      "originalHash": "31caeebb9576cd626d0ea5a39db37cf61665e871f7543a01d923b60749086e57",
+      "value": "待播游戏与五小时时段"
+    },
+    {
+      "copyKey": "project:komachoe-20260425#overview.kicker",
+      "scope": "project",
+      "entityId": "komachoe-20260425",
+      "source": "src/content/projects/komachoe-20260425/project.json",
+      "field": "overview.kicker",
+      "originalHash": "feaf467fac217dd350e6fd410ac25a53dc5d4a448372e76caacb8ac39761e387",
+      "value": "QUICK ORIENTATION"
+    },
+    {
+      "copyKey": "project:komachoe-20260425#overview.paragraphs[0]",
+      "scope": "project",
+      "entityId": "komachoe-20260425",
+      "source": "src/content/projects/komachoe-20260425/project.json",
+      "field": "overview.paragraphs[0]",
+      "originalHash": "06fd07317f4d0f93183efa1c1b21a204b0a083a0d08fa2c6661b9c8619aff7c4",
+      "value": "前半段是一场制作复盘：小松昌平从时间设计、360°设备与后台暴露谈到主持分工，并明确总结不再由自己同时运营 X 与 YouTube。"
+    },
+    {
+      "copyKey": "project:komachoe-20260425#overview.paragraphs[1]",
+      "scope": "project",
+      "entityId": "komachoe-20260425",
+      "source": "src/content/projects/komachoe-20260425/project.json",
+      "field": "overview.paragraphs[1]",
+      "originalHash": "e35553a3f14fe2e87b58688bbe641407d6aba16028f930868609bc306bfb6e0b",
+      "value": "后半段转入《俺知》邮件、近期出演、家人与方言、Super Chat 以及游戏近况。可以先按节目 Section 浏览完整结构，也可以从下面的四个节点直接进入时间线。"
+    },
+    {
+      "copyKey": "project:komachoe-20260425#overview.title",
+      "scope": "project",
+      "entityId": "komachoe-20260425",
+      "source": "src/content/projects/komachoe-20260425/project.json",
+      "field": "overview.title",
+      "originalHash": "f0348d971ac5d9456a96544db030efec42c7c9f3df2735d19b97e69653b86fa6",
+      "value": "这期广播从哪里开始听？"
+    },
+    {
+      "copyKey": "project:komachoe-20260425#playerNote",
+      "scope": "project",
+      "entityId": "komachoe-20260425",
+      "source": "src/content/projects/komachoe-20260425/project.json",
+      "field": "playerNote",
+      "originalHash": "452853c20a06b47244ca814141986bc1b4c1055076c4a6876f937957d064c4ff",
+      "value": "使用 YouTube 原生播放器；可用的播放与画面能力取决于 YouTube 与当前设备。"
+    },
+    {
+      "copyKey": "project:komachoe-20260425#searchPlaceholder",
+      "scope": "project",
+      "entityId": "komachoe-20260425",
+      "source": "src/content/projects/komachoe-20260425/project.json",
+      "field": "searchPlaceholder",
+      "originalHash": "7db3c620dd88749041ac938896b0c72935f1ce637c0099dc983e20c112d2ffb5",
+      "value": "输入姓名、作品或主题"
+    },
+    {
+      "copyKey": "project:komachoe-20260425#sourceNote",
+      "scope": "project",
+      "entityId": "komachoe-20260425",
+      "source": "src/content/projects/komachoe-20260425/project.json",
+      "field": "sourceNote",
+      "originalHash": "980818016042cbe8531008fcd84cf5065b0d5590ed19a17313ff01f2e08944a1",
+      "value": "本档案使用 YouTube 原视频时间，Section 表示节目结构，Event 只收录值得直接跳听的节点。"
+    },
+    {
+      "copyKey": "project:komachoe-20260425#summary",
+      "scope": "project",
+      "entityId": "komachoe-20260425",
+      "source": "src/content/projects/komachoe-20260425/project.json",
+      "field": "summary",
+      "originalHash": "38a3aad908462b3d6c81a91dfb3ae15cb6448c3b1ea05dbcb782e06044b8e198",
+      "value": "在复盘 4 月生日配信与 360°制作之后，节目继续读未处理的邮件、进入今月の弁明与ふつおた，最后以 Super Chat 和游戏近况收尾。"
+    },
+    {
+      "copyKey": "project:komachoe-20260425#title",
+      "scope": "project",
+      "entityId": "komachoe-20260425",
+      "source": "src/content/projects/komachoe-20260425/project.json",
+      "field": "title",
+      "originalHash": "8336849d7e5b0a297444a890ebd1baa6399abd4868b8487c9d755a60fd1b8336",
+      "value": "こまちょえ生ラジオ｜2026.04.25"
+    },
+    {
+      "copyKey": "track:komachoe-20260425/yt-main#label",
+      "scope": "track",
+      "entityId": "komachoe-20260425/yt-main",
+      "source": "src/content/projects/komachoe-20260425/tracks/yt-main.json",
+      "field": "label",
+      "originalHash": "07ffcb2d0124dc624f7f48935f6544c18e99fa3371fdab8abefcbcf41ab0fd46",
+      "value": "YouTube 生ラジオ"
+    },
+    {
+      "copyKey": "track:komachoe-20260425/yt-main#shortLabel",
+      "scope": "track",
+      "entityId": "komachoe-20260425/yt-main",
+      "source": "src/content/projects/komachoe-20260425/tracks/yt-main.json",
+      "field": "shortLabel",
+      "originalHash": "e499a90820e464b82864bef78c138448eb7c38320620a707ab90bf951e80b1f7",
+      "value": "YT"
+    },
+    {
+      "copyKey": "act:komachoe-20260425/act-01#summary",
+      "scope": "act",
+      "entityId": "komachoe-20260425/act-01",
+      "source": "src/content/projects/komachoe-20260425/acts/act-01.json",
+      "field": "summary",
+      "originalHash": "172300b20725aa4e743ba92e09ace1852491c37e38e6e4321a2cd39c6aaa1593",
+      "value": "从节目结构、相机与收音取舍，到裏MC授权、双平台失败和直播后的深夜拉面，小松完整复盘 4 月生日配信。"
+    },
+    {
+      "copyKey": "act:komachoe-20260425/act-01#title",
+      "scope": "act",
+      "entityId": "komachoe-20260425/act-01",
+      "source": "src/content/projects/komachoe-20260425/acts/act-01.json",
+      "field": "title",
+      "originalHash": "465d7ea611e458bd899c3a6bda29e513f1f96daa155bc77213b9aca4ca23cd34",
+      "value": "36 岁生日配信／360°制作复盘"
+    },
+    {
+      "copyKey": "act:komachoe-20260425/act-02#summary",
+      "scope": "act",
+      "entityId": "komachoe-20260425/act-02",
+      "source": "src/content/projects/komachoe-20260425/acts/act-02.json",
+      "field": "summary",
+      "originalHash": "9f66a652e261e2fbf9ca3571024d1c8f5189956f1a689dd03887894314aca2af",
+      "value": "补读生日配信当天没能处理的邮件，回到《俺知》的舞台制作、表演变化与假想选角。"
+    },
+    {
+      "copyKey": "act:komachoe-20260425/act-02#title",
+      "scope": "act",
+      "entityId": "komachoe-20260425/act-02",
+      "source": "src/content/projects/komachoe-20260425/acts/act-02.json",
+      "field": "title",
+      "originalHash": "5c6fad93e177188ff9b2ed4dbddfb1684ccabbe6060d3ba79fcdf5e54c2f00e7",
+      "value": "生日配信没读到的《俺知》邮件"
+    },
+    {
+      "copyKey": "act:komachoe-20260425/act-03#summary",
+      "scope": "act",
+      "entityId": "komachoe-20260425/act-03",
+      "source": "src/content/projects/komachoe-20260425/acts/act-03.json",
+      "field": "summary",
+      "originalHash": "e0769fc6243abc3fefe16568f246385e77b405efd2a22b4a445106aafddd479a",
+      "value": "从衣装、细谷的「焚き火」与宮﨑后台玩笑，谈到近期活动、TRPG 企划和音乐作品。"
+    },
+    {
+      "copyKey": "act:komachoe-20260425/act-03#title",
+      "scope": "act",
+      "entityId": "komachoe-20260425/act-03",
+      "source": "src/content/projects/komachoe-20260425/acts/act-03.json",
+      "field": "title",
+      "originalHash": "c0bb338eb924119357a30a6a04a187d2884173ac47e7c3368cdcfcbb2235e7b8",
+      "value": "今月の弁明／近期出演与告知"
+    },
+    {
+      "copyKey": "act:komachoe-20260425/act-04#summary",
+      "scope": "act",
+      "entityId": "komachoe-20260425/act-04",
+      "source": "src/content/projects/komachoe-20260425/acts/act-04.json",
+      "field": "summary",
+      "originalHash": "275da73d3a8793c843eb30b409694dbe4dfa25f3942cb69f4d7a2dcfe89ab890",
+      "value": "通过普通来信聊到家庭关系的变化、「本当は」的 accent，以及筑豊弁内部差异。"
+    },
+    {
+      "copyKey": "act:komachoe-20260425/act-04#title",
+      "scope": "act",
+      "entityId": "komachoe-20260425/act-04",
+      "source": "src/content/projects/komachoe-20260425/acts/act-04.json",
+      "field": "title",
+      "originalHash": "bca0027678b9eef71b2b693dd9141d434b628e9fb710a9dcb7ff555b768c9f19",
+      "value": "ふつおた：家族与方言"
+    },
+    {
+      "copyKey": "act:komachoe-20260425/act-05#summary",
+      "scope": "act",
+      "entityId": "komachoe-20260425/act-05",
+      "source": "src/content/projects/komachoe-20260425/acts/act-05.json",
+      "field": "summary",
+      "originalHash": "7a3e248206b360c858cb33c8dd29c02002b877354f5b67ee726a3a0ff572439a",
+      "value": "Super Chat 保留了多条短回应与检索锚点；公开时间线只选择清典、伊藤的出席与联络边界这一段完整说明。"
+    },
+    {
+      "copyKey": "act:komachoe-20260425/act-05#title",
+      "scope": "act",
+      "entityId": "komachoe-20260425/act-05",
+      "source": "src/content/projects/komachoe-20260425/acts/act-05.json",
+      "field": "title",
+      "originalHash": "c1213559652e9727bfb2a4534b7777a067770ec27e47452222cb0ff22c2d4e06",
+      "value": "Super Chat 与补充回答"
+    },
+    {
+      "copyKey": "act:komachoe-20260425/act-06#summary",
+      "scope": "act",
+      "entityId": "komachoe-20260425/act-06",
+      "source": "src/content/projects/komachoe-20260425/acts/act-06.json",
+      "field": "summary",
+      "originalHash": "140139106b9e100a0e613d6cd6290fd637903ca87b95f1fd326f9601db3ef6b9",
+      "value": "整理待播游戏、开播习惯与近期状态，随后完整谈到最近沉迷的《Slay the Spire 2》；Ending 不另拆节点。"
+    },
+    {
+      "copyKey": "act:komachoe-20260425/act-06#title",
+      "scope": "act",
+      "entityId": "komachoe-20260425/act-06",
+      "source": "src/content/projects/komachoe-20260425/acts/act-06.json",
+      "field": "title",
+      "originalHash": "23f5f7c1a25da210db992fe0a3988bf14092280b560a7428adebe88209adf02f",
+      "value": "游戏近况与结尾"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-000031-production-retrospective#summary",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-000031-production-retrospective",
+      "source": "src/content/projects/komachoe-20260425/events/yt-000031-production-retrospective.json",
+      "field": "summary",
+      "originalHash": "9a026bbb0af0b9f48980df5076beec4b3ffa84861baf4c03019f9adfb472e77d",
+      "value": "小松先把这场广播定调为制作复盘，而不是事故说明。生日配信故意不设细台本，确实保留了真实打ち上げ的松弛感；但主持、频道管理与多项新尝试同时落在自己身上，最终让原定内容、邮件和 Super Chat 失去时间保护。他希望下次保留自由度，同时建立更明确的大框架。"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-000031-production-retrospective#title",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-000031-production-retrospective",
+      "source": "src/content/projects/komachoe-20260425/events/yt-000031-production-retrospective.json",
+      "field": "title",
+      "originalHash": "d24cdf49a2ea378f6949a16a27b5ed65f9ca67907b6b2d7363f8436c0ad24bd5",
+      "value": "从“弁明”开始的制作复盘：松弛感需要结构保护"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-000643-360-experience-worked#summary",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-000643-360-experience-worked",
+      "source": "src/content/projects/komachoe-20260425/events/yt-000643-360-experience-worked.json",
+      "field": "summary",
+      "originalHash": "241da5e6a9d89772789c8c9e0d5954f73183f4b4880cf2b3481dfaeb50115100",
+      "value": "小松首先肯定 360°直播带来的新体验：即使没有 VR 头显，只用平板操作画面，也能让观众产生进入打ち上げ房间的感觉。"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-000643-360-experience-worked#title",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-000643-360-experience-worked",
+      "source": "src/content/projects/komachoe-20260425/events/yt-000643-360-experience-worked.json",
+      "field": "title",
+      "originalHash": "673549a35b6b1564fe91aa2c93e16a8a34d343edea104b57441255a6b068f63a",
+      "value": "360°体验本身成功"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-000820-camera-model-gap#summary",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-000820-camera-model-gap",
+      "source": "src/content/projects/komachoe-20260425/events/yt-000820-camera-model-gap.json",
+      "field": "summary",
+      "originalHash": "06634ab7accb6b90cb14042024c79e8721319fae282473eeb205e58442474077",
+      "value": "实际设备由左右两枚约 180°镜头拼接，并非小松原先想象的天球型相机；人员进入连接区时容易重影和失焦。嘉宾分坐两侧、主持人位于中央，站起移动又会穿过盲区。现场虽有 X 标记，但没有把设备结构、座位和移动一起充分测试，他因此把问题归为自己的事前确认不足。"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-000820-camera-model-gap#title",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-000820-camera-model-gap",
+      "source": "src/content/projects/komachoe-20260425/events/yt-000820-camera-model-gap.json",
+      "field": "title",
+      "originalHash": "2b4402350b87d6039593599bb63b6e1f11126086648c1d94290f359b04f939e9",
+      "value": "双 180°镜头、拼接盲区与站位测试不足"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-001242-backstage-became-visible#summary",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-001242-backstage-became-visible",
+      "source": "src/content/projects/komachoe-20260425/events/yt-001242-backstage-became-visible.json",
+      "field": "summary",
+      "originalHash": "803d5c762e1a46c1c622808f444a54005179386d3af062540c2c6263ddf679b6",
+      "value": "360°画面没有真正的镜头外，工作人员提示时间和流程的普通提示板也会被观众看到。小松认为下次可把一般提示直接公开，真正不能公开的事项再移到房间外处理。"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-001242-backstage-became-visible#title",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-001242-backstage-became-visible",
+      "source": "src/content/projects/komachoe-20260425/events/yt-001242-backstage-became-visible.json",
+      "field": "title",
+      "originalHash": "9ed58d1b27d3ff68efb664c0348e369ea72033ec210a2b42aad6439768e45aad",
+      "value": "后台提示板全部进入画面"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-001602-360-industry-rules#summary",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-001602-360-industry-rules",
+      "source": "src/content/projects/komachoe-20260425/events/yt-001602-360-industry-rules.json",
+      "field": "summary",
+      "originalHash": "3358b16e595da809ec2d687e8236b13e3558d8804e56e3dc2b80b3eb1f1a0951",
+      "value": "小松用「法律の穴」「法整備されてない」开玩笑，实际讨论的是声优行业尚未形成成熟的 360°全程拍摄惯例。本次已事前告知各事务所并获得合作，但他认为下次仍应更早考虑出演与存档边界。"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-001602-360-industry-rules#title",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-001602-360-industry-rules",
+      "source": "src/content/projects/komachoe-20260425/events/yt-001602-360-industry-rules.json",
+      "field": "title",
+      "originalHash": "89d0e8a93723f078503ec2908f7d043ccb3487b814b98b9967ade1e88967f194",
+      "value": "「法律の穴」玩笑背后的 360°出演边界"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-001850-spatial-audio-tradeoff#summary",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-001850-spatial-audio-tradeoff",
+      "source": "src/content/projects/komachoe-20260425/events/yt-001850-spatial-audio-tradeoff.json",
+      "field": "summary",
+      "originalHash": "872c2bc553758ba0128987673dd0770b1d2b9436fb8a47f2c61b9a9e15ba3967",
+      "value": "小松原本有意让声音随人与相机的距离变化，以还原真实聚会的空间感；但预想中的频繁换位没有发生，远处声音偏小的代价就更明显。他因此把下一次选择概括为“临场感还是舒适度”：独立麦克风会更清楚，现有方案则让观众感到真的身处房间。"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-001850-spatial-audio-tradeoff#title",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-001850-spatial-audio-tradeoff",
+      "source": "src/content/projects/komachoe-20260425/events/yt-001850-spatial-audio-tradeoff.json",
+      "field": "title",
+      "originalHash": "d22a9b366102ee38dceb108ceea94f84266cfc0970e5d5805f807be5c5435e5b",
+      "value": "空间收音的取舍：临场感与舒适度不能同时最大化"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-002020-guest-participation-gap#summary",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-002020-guest-participation-gap",
+      "source": "src/content/projects/komachoe-20260425/events/yt-002020-guest-participation-gap.json",
+      "field": "summary",
+      "originalHash": "02231216673bff70479ea789e7f9d1fb2d580997aea020ccdd15151cce821f7e",
+      "value": "多人自由聊天会让能主动切入的人持续发言，也让后辈或非主要出演者更难找到入口。唱歌采用自由参加，同样造成有意愿的人因缺少明确提示而没有加入；小松认为下次需要在自由度之外提供更清楚的参与机会。"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-002020-guest-participation-gap#title",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-002020-guest-participation-gap",
+      "source": "src/content/projects/komachoe-20260425/events/yt-002020-guest-participation-gap.json",
+      "field": "title",
+      "originalHash": "21d5001aa97082a858a1bc7c7a88c9863bdcc6c1a36c28dfe272e1885d22341c",
+      "value": "无台本自由聊天放大了嘉宾参与差距"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-002351-terashima-backstage-mc#summary",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-002351-terashima-backstage-mc",
+      "source": "src/content/projects/komachoe-20260425/events/yt-002351-terashima-backstage-mc.json",
+      "field": "summary",
+      "originalHash": "22593f0d7c7046ff523fbfe503d090633acf3ae4dde2f5ebcf7e932d6a91cf83",
+      "value": "寺島惇太的控场并非完全临场发挥。开播前，小松已经请他在自己顾不过来或离席时担任裏回し、裏MC；回看后，小松认为这项明确授权非常重要。"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-002351-terashima-backstage-mc#title",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-002351-terashima-backstage-mc",
+      "source": "src/content/projects/komachoe-20260425/events/yt-002351-terashima-backstage-mc.json",
+      "field": "title",
+      "originalHash": "a7661105aaaf7093850317730b06abdb404ed93fec6ca4d2e158125a00c47867",
+      "value": "寺島事前被授权为裏MC"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-002510-no-more-dual-platform#summary",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-002510-no-more-dual-platform",
+      "source": "src/content/projects/komachoe-20260425/events/yt-002510-no-more-dual-platform.json",
+      "field": "summary",
+      "originalHash": "7edc8023bdb224afa882e8195950a85202b017645e3d2459ba09ee154c8f64a6",
+      "value": "小松明确表示不再由自己同时承担 X 与 YouTube 两个中心：离开任一边后，回看存档会比直播当下更明显地暴露主持空缺。他还把中途的异常乱入戏称为「不審者」，但本人没有指名，不能把聊天区的联想反写成事实。后段“下次不横了”的短回应只说明 X Space 形式没有被永久否定，不构成新的方针承诺。"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-002510-no-more-dual-platform#title",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-002510-no-more-dual-platform",
+      "source": "src/content/projects/komachoe-20260425/events/yt-002510-no-more-dual-platform.json",
+      "field": "title",
+      "originalHash": "e0b9ef90df4b52be96f2442470f43220196f0a68ac68cc4650b702630a0c441b",
+      "value": "不再由自己同时跑 X 与 YouTube"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-002710-wasabi-takoyaki-missed#summary",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-002710-wasabi-takoyaki-missed",
+      "source": "src/content/projects/komachoe-20260425/events/yt-002710-wasabi-takoyaki-missed.json",
+      "field": "summary",
+      "originalHash": "aa2ce2bae2fcc5cc918cc6b459d4fac0c2aff9f0187c3e7147c778949c64eb23",
+      "value": "工作人员原本讨论过利用卡拉 OK 场地，把俄罗斯章鱼烧作为惩罚游戏；相关食物却很早就被普通点出，流程最后也没有空执行。小松把这件事接回双平台复盘：如果注意力没有被 X 与 YouTube 同时分散，自己也许会记得保护这条企划线。"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-002710-wasabi-takoyaki-missed#title",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-002710-wasabi-takoyaki-missed",
+      "source": "src/content/projects/komachoe-20260425/events/yt-002710-wasabi-takoyaki-missed.json",
+      "field": "title",
+      "originalHash": "ca1c513c624b1891c24ed8964b46c64af9c826be61ff9aeb2d04f9e3b2841be1",
+      "value": "双平台分心后，わさびたこ焼き企划也被漏掉"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-002803-terashima-midnight-ramen#summary",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-002803-terashima-midnight-ramen",
+      "source": "src/content/projects/komachoe-20260425/events/yt-002803-terashima-midnight-ramen.json",
+      "field": "summary",
+      "originalHash": "a3720c20de3c1e2fecde6610fcb2e967e08531ffa71bf025ac32eaa1576ae0c8",
+      "value": "五小时级直播结束后，小松才意识到自己几乎没吃饭，便问一起离开的寺島能否去吃拉面。寺島虽然已经吃过不少、还先找有没有小份，最后仍陪他去了深夜营业的家系，两人各吃一碗。这个插曲也解释了生日直播后的致歉与收尾动态为什么拖到约凌晨三点才发。"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-002803-terashima-midnight-ramen#title",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-002803-terashima-midnight-ramen",
+      "source": "src/content/projects/komachoe-20260425/events/yt-002803-terashima-midnight-ramen.json",
+      "field": "title",
+      "originalHash": "02c65122c150b64c2a88a5668d689666264c6d03be1a9fccbf66f1d8cdabedc7",
+      "value": "寺島明明已经吃过，仍陪小松去吃深夜家系"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-002940-karaoke-time-ran-out#summary",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-002940-karaoke-time-ran-out",
+      "source": "src/content/projects/komachoe-20260425/events/yt-002940-karaoke-time-ran-out.json",
+      "field": "summary",
+      "originalHash": "cd24769548b2a36543417bc2c3ee68f49555b690f2cec81dcf9deb66bdea2209",
+      "value": "小松原本也准备在卡拉 OK 房唱几首，但流程耗尽时间，实际远少于计划。他把这视为生日配信制作复盘的最后一项，并希望以后把这些改善点带进新的配信。"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-002940-karaoke-time-ran-out#title",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-002940-karaoke-time-ran-out",
+      "source": "src/content/projects/komachoe-20260425/events/yt-002940-karaoke-time-ran-out.json",
+      "field": "title",
+      "originalHash": "8a9988c0ce994ca611a7b9df9cf0f909322229e4f29d4c43d953ed3adf3ecc80",
+      "value": "原本计划唱多首，最后几乎没有时间"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-003057-script-staging-documented#summary",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-003057-script-staging-documented",
+      "source": "src/content/projects/komachoe-20260425/events/yt-003057-script-staging-documented.json",
+      "field": "summary",
+      "originalHash": "122be815eb51fc15a2ea2fc5997ea9c66045fbcfd7daf994dbc552a775d1c771",
+      "value": "再演台本中的「岡田、台本落とす」并非为了再演新加的动作。小松重新查看初演正式演出影像，把排练与演出过程中已经形成、却未完整留在原始纸面稿里的舞台调度补写进台本。"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-003057-script-staging-documented#title",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-003057-script-staging-documented",
+      "source": "src/content/projects/komachoe-20260425/events/yt-003057-script-staging-documented.json",
+      "field": "title",
+      "originalHash": "4017ee45cf50a99d8e4b8e473f6f59bd343baccc1a78743688ab2e354f5bc6ed",
+      "value": "再演台本补记了初演形成的舞台调度"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-003304-izo-performance-change#summary",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-003304-izo-performance-change",
+      "source": "src/content/projects/komachoe-20260425/events/yt-003304-izo-performance-change.json",
+      "field": "summary",
+      "originalHash": "e8db47faecf153edfdc4e0d771568e929e601faf6bad09d8eef70d540933015c",
+      "value": "再演中的变化来自演员组合、表演积累、对演员工作的专注度与殺陣热量共同作用。小松认为角色的内在情绪没有换掉，变化的是向武市敞开心的方式，以及把情绪向外表达多少。"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-003304-izo-performance-change#title",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-003304-izo-performance-change",
+      "source": "src/content/projects/komachoe-20260425/events/yt-003304-izo-performance-change.json",
+      "field": "title",
+      "originalHash": "921abed8168946055ce63318d080c7e215494da0f663b1675216836ef53b1594",
+      "value": "以蔵的演法变化不是刻意制造差异"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-003730-broken-bamboo-sword#summary",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-003730-broken-bamboo-sword",
+      "source": "src/content/projects/komachoe-20260425/events/yt-003730-broken-bamboo-sword.json",
+      "field": "summary",
+      "originalHash": "c2f017fcb8ebb7a1026b354992315eab3e54b355c19f1892f07764ccd7e77471",
+      "value": "昼场竹光折断没有逐项预案。小松在后台知道出事后把技术处理交给舞台监督，自己专注下一场；演员、群演与工作人员也没有慌乱。碎片由舞台监督回收，折断的竹光后来由清典收下。"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-003730-broken-bamboo-sword#title",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-003730-broken-bamboo-sword",
+      "source": "src/content/projects/komachoe-20260425/events/yt-003730-broken-bamboo-sword.json",
+      "field": "title",
+      "originalHash": "fd131220f9c93d7dfe5b890b96691cb6ef59017755cdf40d238080a17a257b20",
+      "value": "竹光折断：没有逐项预案，依靠现场判断"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-004333-producer-casting#summary",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-004333-producer-casting",
+      "source": "src/content/projects/komachoe-20260425/events/yt-004333-producer-casting.json",
+      "field": "summary",
+      "originalHash": "706743c4e36102249d6c055fc1e4e7e93e4256fb72fa785f8ad107d5ebdb0609",
+      "value": "小松从制作人视角讨论熊谷俊輝、佐藤祐吾、堀金蒼平与光富崇雄的《俺知》角色，最终分别落到平助、以蔵、沖田与武市，同时保留了思考过程中的其他候选。"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-004333-producer-casting#title",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-004333-producer-casting",
+      "source": "src/content/projects/komachoe-20260425/events/yt-004333-producer-casting.json",
+      "field": "title",
+      "originalHash": "2097f094bd9961835f26ae64ea6d460e0ce7bd5ec71c30919fd955be9d26c778",
+      "value": "制作人视角的四人假想选角"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-005144-what-is-a-gilet#summary",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-005144-what-is-a-gilet",
+      "source": "src/content/projects/komachoe-20260425/events/yt-005144-what-is-a-gilet.json",
+      "field": "summary",
+      "originalHash": "0ccd2b33554c0debc84c1c281d27f846978583292957ca80668593c265cdd973",
+      "value": "面对称赞衣装的来信，小松先问「ジレってなんですか」，随后解释自己通常高度信任专业衣装人员，让专业人士判断最适合的方案，而不是亲自控制每个选择。"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-005144-what-is-a-gilet#title",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-005144-what-is-a-gilet",
+      "source": "src/content/projects/komachoe-20260425/events/yt-005144-what-is-a-gilet.json",
+      "field": "title",
+      "originalHash": "1a29464a7c4908523a40d4b4c3fdd257b19ceb2ad306b2ac24258c04b95db023",
+      "value": "「ジレってなんですか」与专业衣装人员"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-005429-hosoya-bonfire#summary",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-005429-hosoya-bonfire",
+      "source": "src/content/projects/komachoe-20260425/events/yt-005429-hosoya-bonfire.json",
+      "field": "summary",
+      "originalHash": "2cf9f9905a1e49e22fd415e13ea7f037e2ad3387ad0fb66ee9ec4975a1b3e3cb",
+      "value": "细谷佳正在正式演出前把全员叫到舞台上交换意见，希望把戏做得更好；小松把这种围成一圈、形成团队空气的方式比作「焚き火」。他欣赏这种领导方式，但没有把它说成唯一正确的座长模式。"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-005429-hosoya-bonfire#title",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-005429-hosoya-bonfire",
+      "source": "src/content/projects/komachoe-20260425/events/yt-005429-hosoya-bonfire.json",
+      "field": "title",
+      "originalHash": "3d7b4ecd7472a19d94ead3f239dad47059227fbfa36b131e876fcde9ee1d9432",
+      "value": "细谷把全员叫成一圈，小松称为「焚き火」"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-010139-miyazaki-backstage-jokes#summary",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-010139-miyazaki-backstage-jokes",
+      "source": "src/content/projects/komachoe-20260425/events/yt-010139-miyazaki-backstage-jokes.json",
+      "field": "summary",
+      "originalHash": "5ef7767a4d1c975d551e9bf74db578f563404e457a23d18d81ca15bfa3f9f8c2",
+      "value": "小松用两次故意难懂的玩笑逗熟悉的后辈宮﨑雅也：演出后把“完全没说错台词”滑成好戏的唯一标准，开演前又假装代传导演通知，说后半临时追加吻戏。宮﨑都很快识破并吐槽；小松解释，这种“讨厌的前辈”式玩笑是建立在熟悉关系上的放松方式。"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-010139-miyazaki-backstage-jokes#title",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-010139-miyazaki-backstage-jokes",
+      "source": "src/content/projects/komachoe-20260425/events/yt-010139-miyazaki-backstage-jokes.json",
+      "field": "title",
+      "originalHash": "304f8d6bf8770d03d880d9981f02858261020d45b659e9557d829f88cfc05223",
+      "value": "从“不咬字就是好戏”到假传追加吻戏"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-010348-performance-varies-naturally#summary",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-010348-performance-varies-naturally",
+      "source": "src/content/projects/komachoe-20260425/events/yt-010348-performance-varies-naturally.json",
+      "field": "summary",
+      "originalHash": "e8091580e85a9126883c3f5460eba38ed90675155b452814e5bd0b4e7d25e316",
+      "value": "小松不主张为了让两场看起来不同而主动制造差异。前田佳織里与小清水亜美带来的 Kiana 关系不同，现场爵士乐也会实时拉动情绪，因此 Leo 的语言、坐姿与表演自然发生变化。"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-010348-performance-varies-naturally#title",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-010348-performance-varies-naturally",
+      "source": "src/content/projects/komachoe-20260425/events/yt-010348-performance-varies-naturally.json",
+      "field": "title",
+      "originalHash": "aedf2e74d8f09b6dd82e62982972eecf36cd92b7e9c67aea6e4eb34feb2afee3",
+      "value": "昼夜差异由共演者与现场爵士乐自然长出"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-011004-fifth-crew-decision#summary",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-011004-fifth-crew-decision",
+      "source": "src/content/projects/komachoe-20260425/events/yt-011004-fifth-crew-decision.json",
+      "field": "summary",
+      "originalHash": "fd3168ae990143dc4e5f508e115e2b099f3599c7fac7e6b430ec86e02fc45ac6",
+      "value": "面对作品内的生存选择，小松首先追问决定性信息是否都能信任 PROTO；在现有条件下，他最后仍倾向用消去法先着陆，再尝试恢复通信与生存基础。这是他的个人剧情判断，不是作品唯一答案。"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-011004-fifth-crew-decision#title",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-011004-fifth-crew-decision",
+      "source": "src/content/projects/komachoe-20260425/events/yt-011004-fifth-crew-decision.json",
+      "field": "title",
+      "originalHash": "939d28129279f207d3c04025a3534aa6038fe0915c88b136f7f2691f365f184a",
+      "value": "如果是第 5 名乘员：先判断 PROTO 是否可信"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-011737-recent-announcements#summary",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-011737-recent-announcements",
+      "source": "src/content/projects/komachoe-20260425/events/yt-011737-recent-announcements.json",
+      "field": "summary",
+      "originalHash": "94fd6a0e461d08de952f3df2516f4d850a7ccbbbe8717df6dbc796717f0cc46e",
+      "value": "小松回顾《生徒会長とヤンキーくん》迷你语音剧、11 月 15 日《俺知》相关小型活动与正在制作的第 4 弹。现场的「高菜味」「バリカタ」等名称都是即兴玩笑，不代表正式标题已经确定。"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-011737-recent-announcements#title",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-011737-recent-announcements",
+      "source": "src/content/projects/komachoe-20260425/events/yt-011737-recent-announcements.json",
+      "field": "title",
+      "originalHash": "a5ecd7632891800dc3de2e7f688eee201d8d0d3c09b98ea97850636d82017a22",
+      "value": "迷你语音剧、11 月活动与第 4 弹命名玩笑"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-012036-trpg-event-format#summary",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-012036-trpg-event-format",
+      "source": "src/content/projects/komachoe-20260425/events/yt-012036-trpg-event-format.json",
+      "field": "summary",
+      "originalHash": "19f62c8b21275ff99fac05b39adde980f965305e565d3cb69bdc48116809eea1",
+      "value": "小松介绍《小松昌平の盤・番・絆》的 TRPG 主题，并说明完整自由度会让活动过长，因此准备采用更接近桌游、时长与规则更可控且全员更易参与的形式。"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-012036-trpg-event-format#title",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-012036-trpg-event-format",
+      "source": "src/content/projects/komachoe-20260425/events/yt-012036-trpg-event-format.json",
+      "field": "title",
+      "originalHash": "bfd41c66bb4ef112d1f93a128c2eef5e8e558a817a6d6c10742850c64cf0fac9",
+      "value": "《盤・番・絆》TRPG 与可控活动形式"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-012529-boy-meets-xxx#summary",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-012529-boy-meets-xxx",
+      "source": "src/content/projects/komachoe-20260425/events/yt-012529-boy-meets-xxx.json",
+      "field": "summary",
+      "originalHash": "93089c39637a0d6a6f509bd2ff670e41d225747fba3a34467de4df872e4bd913",
+      "value": "小松说明自己也不知道标题的正式读法，不能把现场猜测写成官方答案。他最喜欢赛车画面里瑠何回头、比出 V 手势的一瞬：口型、表情与发声抬升贴合，让角色像真的发出了自己的声音。"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-012529-boy-meets-xxx#title",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-012529-boy-meets-xxx",
+      "source": "src/content/projects/komachoe-20260425/events/yt-012529-boy-meets-xxx.json",
+      "field": "title",
+      "originalHash": "34c3af5b713b4d6cc1f4203cfb16e962645e874396a781229455c7f60dfcc338",
+      "value": "《Boy meets xxx》MV 里突然“有了自己的声音”"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-012824-family-distance#summary",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-012824-family-distance",
+      "source": "src/content/projects/komachoe-20260425/events/yt-012824-family-distance.json",
+      "field": "summary",
+      "originalHash": "43251b3ada5eb132b9d41970e097b229bd6285a8a45d87cafc9a6d1bcab55c5b",
+      "value": "小松说现在与家人关系亲近，但儿童期和中学时期曾真正讨厌父母，尤其与父亲冲突强烈。他认为时间、成长、离家与物理距离共同改变了关系；这只是个人经验，不扩写成普遍建议。"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-012824-family-distance#title",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-012824-family-distance",
+      "source": "src/content/projects/komachoe-20260425/events/yt-012824-family-distance.json",
+      "field": "title",
+      "originalHash": "2e2d4151ee55d8a212d909dda0d4f5bff4f83b60c4eac870dfcb3f7301eabdb9",
+      "value": "成年与距离改变了过去紧张的家庭关系"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-013430-hontou-wa-accent#summary",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-013430-hontou-wa-accent",
+      "source": "src/content/projects/komachoe-20260425/events/yt-013430-hontou-wa-accent.json",
+      "field": "summary",
+      "originalHash": "0c79eff7216597f32ff51f09db479d6277eff2903c67cd7d4f8b8c966992832c",
+      "value": "小松试图用连续「にゃ」证明语气变化不等于方言，但在聊天区判定下最终认输，并把这一读法玩笑式地总结为「正しい小松昌平」。"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-013430-hontou-wa-accent#title",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-013430-hontou-wa-accent",
+      "source": "src/content/projects/komachoe-20260425/events/yt-013430-hontou-wa-accent.json",
+      "field": "title",
+      "originalHash": "e461b94c02cc19b2adf2b5591eeec4f9e90a4dbf0b69db5476b2cc81befafe3b",
+      "value": "「本当は」重音、にゃ与聊天区判定"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-013901-chikuho-dialect#summary",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-013901-chikuho-dialect",
+      "source": "src/content/projects/komachoe-20260425/events/yt-013901-chikuho-dialect.json",
+      "field": "summary",
+      "originalHash": "a31049fc2eb0ee9617ab5b80aa3258bbcff17d0929a85094050781c8ad9a7a7b",
+      "value": "小松从「ぶちくらす／うちくらす」谈到北九州、博多、筑豊与筑后等通俗地域标签，并强调自己不想越过经验乱划边界。节目说明筑豊内部也不均质；纯文本同样无法保存他讨论的音高重音。"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-013901-chikuho-dialect#title",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-013901-chikuho-dialect",
+      "source": "src/content/projects/komachoe-20260425/events/yt-013901-chikuho-dialect.json",
+      "field": "title",
+      "originalHash": "4a3dcd0d8eb5769858aa0341b5fb35a84a17796fa919b444cc0d719499639a6c",
+      "value": "从「ぶちくらす」谈到筑豊弁内部差异"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-015153-seiten-and-ito#summary",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-015153-seiten-and-ito",
+      "source": "src/content/projects/komachoe-20260425/events/yt-015153-seiten-and-ito.json",
+      "field": "summary",
+      "originalHash": "da14ae59fc41828783a2edbd826b01508c733ad9f49f73938e8aa5e77b931adc",
+      "value": "小松澄清清典参加过此前 X 上的《俺知》打ち上げ；伊藤两次都未能参加，但双方保持联系，也已经谈过之后私下去吃饭。节目没有说明两次缺席各自的具体原因。"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-015153-seiten-and-ito#title",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-015153-seiten-and-ito",
+      "source": "src/content/projects/komachoe-20260425/events/yt-015153-seiten-and-ito.json",
+      "field": "title",
+      "originalHash": "4762db374b2ae411508d9a101cc4a72626d697c8eef37fe0034f8a6f66efc72a",
+      "value": "清典出席、伊藤未能参加与私下约饭"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-020257-game-backlog-and-recovery#summary",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-020257-game-backlog-and-recovery",
+      "source": "src/content/projects/komachoe-20260425/events/yt-020257-game-backlog-and-recovery.json",
+      "field": "summary",
+      "originalHash": "817501a266946f6f32bdae2093bc5f84576498be5a21aa7747f298b440db2819",
+      "value": "小松列出《原神》《ヴァレット／VARLET》、FF7 与解谜配信等积压内容，并说自己常等到能空出约五小时才开播。生日配信后他曾出现本人描述的流鼻水和轻微头晕等不适，到本场时已经逐渐恢复；这里不对原因作医学判断。"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-020257-game-backlog-and-recovery#title",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-020257-game-backlog-and-recovery",
+      "source": "src/content/projects/komachoe-20260425/events/yt-020257-game-backlog-and-recovery.json",
+      "field": "title",
+      "originalHash": "98a8673fe57fb44bf0220eceac84ae1325f229dc3c6ce669877347a5fa23f374",
+      "value": "待播游戏、五小时时段与身体恢复"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-020612-slay-the-spire-2#summary",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-020612-slay-the-spire-2",
+      "source": "src/content/projects/komachoe-20260425/events/yt-020612-slay-the-spire-2.json",
+      "field": "summary",
+      "originalHash": "214f407a79a54d9ff13ac352e43573674b9b3d2bb57dd84db81f5c85b3e9d3cc",
+      "value": "小松说自己已经沉迷《Slay the Spire 2》，连睡着后也会梦到卡牌计算。他介绍了逐回合计算与肉鸽推进的乐趣，但明确说明这不是正式的直播告知，只是近期游戏体验。"
+    },
+    {
+      "copyKey": "event:komachoe-20260425/yt-020612-slay-the-spire-2#title",
+      "scope": "event",
+      "entityId": "komachoe-20260425/yt-020612-slay-the-spire-2",
+      "source": "src/content/projects/komachoe-20260425/events/yt-020612-slay-the-spire-2.json",
+      "field": "title",
+      "originalHash": "d437f256e2e30068f44934e509bc200167aa1943bc1752a7222df74f01787fcd",
+      "value": "《Slay the Spire 2》让“小松昌平的脑很开心”"
+    },
+    {
+      "copyKey": "ui:act#draft",
+      "scope": "system/ui",
+      "entityId": "act",
+      "source": "src/components/project/ActSection.astro",
+      "field": "draft",
+      "originalHash": "eae22a4671c1dcdace82b3ca76c10b760393d67c16ca1250bd911b08509fa4b3",
+      "value": "编辑草案"
+    },
+    {
+      "copyKey": "ui:act#events",
+      "scope": "system/ui",
+      "entityId": "act",
+      "source": "src/components/project/ActSection.astro",
+      "field": "events",
+      "originalHash": "6746cfa6bdc11f969fe18974ebc7fbde852cc2a2201537b4bea11ad3b9b01f98",
+      "value": "EVENTS"
+    },
+    {
+      "copyKey": "ui:archive-player#contextCta",
+      "scope": "system/ui",
+      "entityId": "archive-player",
+      "source": "src/components/project/ArchivePlayer.astro",
+      "field": "contextCta",
+      "originalHash": "e7d71a0355bcd7f2261528e2146db4984b63eab49ee8d192c22e6051937db271",
+      "value": "在 Timeline 查看此节点 →"
+    },
+    {
+      "copyKey": "ui:archive-player#contextLabel",
+      "scope": "system/ui",
+      "entityId": "archive-player",
+      "source": "src/components/project/ArchivePlayer.astro",
+      "field": "contextLabel",
+      "originalHash": "7f5fd15157c542dbf0fa9f80a1b947ce2317293ede77bafadb21e0666dd2de8f",
+      "value": "当前节点上下文"
+    },
+    {
+      "copyKey": "ui:archive-player#currentSource",
+      "scope": "system/ui",
+      "entityId": "archive-player",
+      "source": "src/components/project/ArchivePlayer.astro",
+      "field": "currentSource",
+      "originalHash": "4f4bcbb487731c38263f515e576a601b1d6f647924cc07177b60734b2bf28c07",
+      "value": "CURRENT SOURCE"
+    },
+    {
+      "copyKey": "ui:archive-player#dockMode",
+      "scope": "system/ui",
+      "entityId": "archive-player",
+      "source": "src/components/project/ArchivePlayer.astro",
+      "field": "dockMode",
+      "originalHash": "5d6ba43f16afd040e7c61f66f58c916d18e071c7bc83ac7311d84bd3a84f40df",
+      "value": "收起为底部播放栏"
+    },
+    {
+      "copyKey": "ui:archive-player#error",
+      "scope": "system/ui",
+      "entityId": "archive-player",
+      "source": "src/components/project/ArchivePlayer.astro",
+      "field": "error",
+      "originalHash": "9bf4b6c352339e65edbf238fb331924fa4a9e9ea98c11d6ccf96414a434d4dcd",
+      "value": "YouTube 无法连接"
+    },
+    {
+      "copyKey": "ui:archive-player#errorDescription",
+      "scope": "system/ui",
+      "entityId": "archive-player",
+      "source": "src/components/project/ArchivePlayer.astro",
+      "field": "errorDescription",
+      "originalHash": "b22f933fd6f76c64306e5125ad0cb0b14360559cf3e0bf28e97bf8d221d1575c",
+      "value": "播放器与预览图未能从 YouTube 加载。若当前网络无法访问 YouTube，请调整网络环境后重试。"
+    },
+    {
+      "copyKey": "ui:archive-player#fallback",
+      "scope": "system/ui",
+      "entityId": "archive-player",
+      "source": "src/components/project/ArchivePlayer.astro",
+      "field": "fallback",
+      "originalHash": "14627a6358786f5a72392658bc3f1945ed09f3adea3d11f457cce51286da8dd9",
+      "value": "在 YouTube 打开原来源 ↗"
+    },
+    {
+      "copyKey": "ui:archive-player#load",
+      "scope": "system/ui",
+      "entityId": "archive-player",
+      "source": "src/components/project/ArchivePlayer.astro",
+      "field": "load",
+      "originalHash": "14f1625a325f2992be29384f0af642b7c69e000db19ac4d793ad90eda59e2e27",
+      "value": "载入播放器"
+    },
+    {
+      "copyKey": "ui:archive-player#loadYoutubeAria",
+      "scope": "system/ui",
+      "entityId": "archive-player",
+      "source": "src/components/project/ArchivePlayer.astro",
+      "field": "loadYoutubeAria",
+      "originalHash": "b19e8a1362b6d19225a312707bada9a6f795a49bdd38c9b465e5fc37cebf3286",
+      "value": "载入 YouTube 播放器"
+    },
+    {
+      "copyKey": "ui:archive-player#mobileExpand",
+      "scope": "system/ui",
+      "entityId": "archive-player",
+      "source": "src/components/project/ArchivePlayer.astro",
+      "field": "mobileExpand",
+      "originalHash": "49df3a25253134dab0b0ccf9e717d28c10ba292d4896d58c7222edc837a04c34",
+      "value": "展开移动播放器"
+    },
+    {
+      "copyKey": "ui:archive-player#mode[0]",
+      "scope": "system/ui",
+      "entityId": "archive-player",
+      "source": "src/components/project/ProjectArchiveShell.astro",
+      "field": "mode[0]",
+      "originalHash": "8bf7d683f1975ae92551e5db408f433bb7414c1f7208bdd651965042b6c5dfb7",
+      "value": "展开完整播放器"
+    },
+    {
+      "copyKey": "ui:archive-player#mode[1]",
+      "scope": "system/ui",
+      "entityId": "archive-player",
+      "source": "src/components/project/ProjectArchiveShell.astro",
+      "field": "mode[1]",
+      "originalHash": "9dfe1b1ae8b0f3caca26d63680182cfa07e71701e6e5b886d7fbb1444b0ef2a9",
+      "value": "切换为底部播放栏"
+    },
+    {
+      "copyKey": "ui:archive-player#mode[2]",
+      "scope": "system/ui",
+      "entityId": "archive-player",
+      "source": "src/components/project/ProjectArchiveShell.astro",
+      "field": "mode[2]",
+      "originalHash": "cb097dff315af038e3482fb06909b61274e26a6a23fa46fd79c6abe3430595fd",
+      "value": "展开播放器"
+    },
+    {
+      "copyKey": "ui:archive-player#mode[3]",
+      "scope": "system/ui",
+      "entityId": "archive-player",
+      "source": "src/components/project/ProjectArchiveShell.astro",
+      "field": "mode[3]",
+      "originalHash": "5d6ba43f16afd040e7c61f66f58c916d18e071c7bc83ac7311d84bd3a84f40df",
+      "value": "收起为底部播放栏"
+    },
+    {
+      "copyKey": "ui:archive-player#mode[4]",
+      "scope": "system/ui",
+      "entityId": "archive-player",
+      "source": "src/components/project/ProjectArchiveShell.astro",
+      "field": "mode[4]",
+      "originalHash": "ac29e57a46f41c301a4770f04eef7eecd856aa65eca549e7e419bb5add77787e",
+      "value": "最小化"
+    },
+    {
+      "copyKey": "ui:archive-player#mode[5]",
+      "scope": "system/ui",
+      "entityId": "archive-player",
+      "source": "src/components/project/ProjectArchiveShell.astro",
+      "field": "mode[5]",
+      "originalHash": "afd4b783536b8297bb2506836727af1ccae7626a7d04e89de7ad402360e0a970",
+      "value": "收起"
+    },
+    {
+      "copyKey": "ui:archive-player#noTarget",
+      "scope": "system/ui",
+      "entityId": "archive-player",
+      "source": "src/components/project/ArchivePlayer.astro",
+      "field": "noTarget",
+      "originalHash": "aebc63e526fa9018257e9ec091445819f71b107f729071142a7386c5a7796c1d",
+      "value": "选择时间节点开始定位"
+    },
+    {
+      "copyKey": "ui:archive-player#openSource",
+      "scope": "system/ui",
+      "entityId": "archive-player",
+      "source": "src/components/project/ArchivePlayer.astro",
+      "field": "openSource",
+      "originalHash": "3ef06e97b169c16395a596fa353892bc87380da9b8670746f88724e954fdcfc7",
+      "value": "打开 YouTube ↗"
+    },
+    {
+      "copyKey": "ui:archive-player#posterFallback",
+      "scope": "system/ui",
+      "entityId": "archive-player",
+      "source": "src/components/project/ArchivePlayer.astro",
+      "field": "posterFallback",
+      "originalHash": "2b5a2a493e6d90f1bad99699cca69f59da3a6a77b36a8b64101db8b194ed4192",
+      "value": "YouTube 预览图暂时无法连接"
+    },
+    {
+      "copyKey": "ui:archive-player#posterFallbackNote",
+      "scope": "system/ui",
+      "entityId": "archive-player",
+      "source": "src/components/project/ArchivePlayer.astro",
+      "field": "posterFallbackNote",
+      "originalHash": "ed4880b0006d8a5dc4238a56f955dc082de73d7465fe58e7b24116fe535a2a98",
+      "value": "播放器仍可在网络恢复后重新尝试载入。"
+    },
+    {
+      "copyKey": "ui:archive-player#readingContext",
+      "scope": "system/ui",
+      "entityId": "archive-player",
+      "source": "src/components/project/ArchivePlayer.astro",
+      "field": "readingContext",
+      "originalHash": "2cb0370e0625ed93fe8d6e1850eb9690d737e0bd604554e0bd31e4ed17af1a6d",
+      "value": "READING CONTEXT"
+    },
+    {
+      "copyKey": "ui:archive-player#retry",
+      "scope": "system/ui",
+      "entityId": "archive-player",
+      "source": "src/components/project/ArchivePlayer.astro",
+      "field": "retry",
+      "originalHash": "7f6a8bd541061afb056434e7c1ff3bac83a9356aec48d4efd2da4a535c29602e",
+      "value": "重新尝试"
+    },
+    {
+      "copyKey": "ui:archive-player#switchMode",
+      "scope": "system/ui",
+      "entityId": "archive-player",
+      "source": "src/components/project/ArchivePlayer.astro",
+      "field": "switchMode",
+      "originalHash": "36c239d7c8d624b5f983ecd5e86ba912161b312d04ce76a297ca3513254f4423",
+      "value": "切换播放器显示方式"
+    },
+    {
+      "copyKey": "ui:archive-player#threadEmpty[0]",
+      "scope": "system/ui",
+      "entityId": "archive-player",
+      "source": "src/components/project/ProjectArchiveShell.astro",
+      "field": "threadEmpty[0]",
+      "originalHash": "d1154a64cb1b4a30e37b81d884f688ba2a9540d9a8161bd6366627c7582b598a",
+      "value": "选择一条相关事件线"
+    },
+    {
+      "copyKey": "ui:archive-player#threadEmpty[1]",
+      "scope": "system/ui",
+      "entityId": "archive-player",
+      "source": "src/components/project/ProjectArchiveShell.astro",
+      "field": "threadEmpty[1]",
+      "originalHash": "4dc19a06cb3e7577900095497151ca6e059fa75a28cfd18a87a4d4266e66a937",
+      "value": "暂无相关事件线"
+    },
+    {
+      "copyKey": "ui:event#people",
+      "scope": "system/ui",
+      "entityId": "event",
+      "source": "src/components/project/TimelineEvent.astro",
+      "field": "people",
+      "originalHash": "0c50a9f662369e4c1ef52369043946f1ae3ab4aec62268dfa3e2fd2392b931e0",
+      "value": "相关人物"
+    },
+    {
+      "copyKey": "ui:player-action-bar#ariaLabel",
+      "scope": "system/ui",
+      "entityId": "player-action-bar",
+      "source": "src/components/project/PlayerContextRail.astro",
+      "field": "ariaLabel",
+      "originalHash": "f96f99dc68bb18ad37a47d78b61f8f45ac5f135f0e5b4747c9892f8c1ebe8a24",
+      "value": "当前节点操作"
+    },
+    {
+      "copyKey": "ui:player-action-bar#kicker",
+      "scope": "system/ui",
+      "entityId": "player-action-bar",
+      "source": "src/components/project/PlayerContextRail.astro",
+      "field": "kicker",
+      "originalHash": "3db584ab3d8114c42d0a6e93663fbb67e6e6ff2f241a6e75bb6d01b572eb63cc",
+      "value": "RELATED STORYLINES"
+    },
+    {
+      "copyKey": "ui:player-action-bar#noStoryline",
+      "scope": "system/ui",
+      "entityId": "player-action-bar",
+      "source": "src/components/project/PlayerContextRail.astro",
+      "field": "noStoryline",
+      "originalHash": "13c0859d8256f0b067082944a90d80e26e20f5f801083ad3667f5b34ce6c3a46",
+      "value": "当前节点没有故事线"
+    },
+    {
+      "copyKey": "ui:player-action-bar#relatedStorylines",
+      "scope": "system/ui",
+      "entityId": "player-action-bar",
+      "source": "src/components/project/PlayerContextRail.astro",
+      "field": "relatedStorylines",
+      "originalHash": "602bca6af7e711ba1191de35d9d0585ec69497faffd59f8b96700fa2b5578530",
+      "value": "相关事件线"
+    },
+    {
+      "copyKey": "ui:player-action-bar#source",
+      "scope": "system/ui",
+      "entityId": "player-action-bar",
+      "source": "src/components/project/PlayerContextRail.astro",
+      "field": "source",
+      "originalHash": "cd4b8e49c86bec934b8b9b99127a532616eeb5752e7e3e9c77c5f889cee25cb6",
+      "value": "YouTube ↗"
+    },
+    {
+      "copyKey": "ui:player-action-bar#storyline",
+      "scope": "system/ui",
+      "entityId": "player-action-bar",
+      "source": "src/components/project/PlayerContextRail.astro",
+      "field": "storyline",
+      "originalHash": "cf4ea1ac1be575d877d2a9be53625d261a417495e6c516d94f023e6d0dd2d8ec",
+      "value": "故事线 · —"
+    },
+    {
+      "copyKey": "ui:player-action-bar#timeline[0]",
+      "scope": "system/ui",
+      "entityId": "player-action-bar",
+      "source": "src/components/project/PlayerContextRail.astro",
+      "field": "timeline[0]",
+      "originalHash": "aa0039ebd2397a4b04307fa6e89eef103e6fc6d19128e72af2cbacb4fb0f871c",
+      "value": "查看时间线"
+    },
+    {
+      "copyKey": "ui:player-action-bar#timeline[1]",
+      "scope": "system/ui",
+      "entityId": "player-action-bar",
+      "source": "src/components/project/PlayerContextRail.astro",
+      "field": "timeline[1]",
+      "originalHash": "6f263651484acefa6a64102897c4d48a4d6e064666a12dc1889052547a003493",
+      "value": "定位此处"
+    },
+    {
+      "copyKey": "ui:project-archive.hero#statsAria",
+      "scope": "system/ui",
+      "entityId": "project-archive.hero",
+      "source": "src/components/project/ProjectHero.astro",
+      "field": "statsAria",
+      "originalHash": "a90ad1ae6fda2834da8391ba8dba22279129a8a6723088af356b11c6763cfd7b",
+      "value": "档案统计"
+    },
+    {
+      "copyKey": "ui:project-archive.hero#statsLabel[0]",
+      "scope": "system/ui",
+      "entityId": "project-archive.hero",
+      "source": "src/lib/projectPresentation.mjs",
+      "field": "statsLabel[0]",
+      "originalHash": "2d3c5093508df74e8425adbd19496ade4350d7b65ff044f9c1ccfce09e5fa610",
+      "value": "节目时长"
+    },
+    {
+      "copyKey": "ui:project-archive.hero#statsLabel[1]",
+      "scope": "system/ui",
+      "entityId": "project-archive.hero",
+      "source": "src/lib/projectPresentation.mjs",
+      "field": "statsLabel[1]",
+      "originalHash": "28475230f05644a815f3991e9ae4b3e5ca0085d4bfb07dc45d4f890c4f08ac40",
+      "value": "环节"
+    },
+    {
+      "copyKey": "ui:project-archive.hero#statsLabel[2]",
+      "scope": "system/ui",
+      "entityId": "project-archive.hero",
+      "source": "src/lib/projectPresentation.mjs",
+      "field": "statsLabel[2]",
+      "originalHash": "41beb209f857adbe97d82ca27ab41e5d1b4f5b9d95732ab4f0ac2acb068c34fe",
+      "value": "精选节点"
+    },
+    {
+      "copyKey": "ui:project-archive.nav#overview",
+      "scope": "system/ui",
+      "entityId": "project-archive.nav",
+      "source": "src/lib/projectPresentation.mjs",
+      "field": "overview",
+      "originalHash": "73d17c29fbce5f6d7a7393d8091416f9d852d05128b71e99fd0360058aa1e2fc",
+      "value": "快速了解"
+    },
+    {
+      "copyKey": "ui:project-archive.nav#sections",
+      "scope": "system/ui",
+      "entityId": "project-archive.nav",
+      "source": "src/lib/projectPresentation.mjs",
+      "field": "sections",
+      "originalHash": "172c3e1490bd9be90b19938764dea1dcdc778d72d577c2b224fb14e8941fa838",
+      "value": "节目环节"
+    },
+    {
+      "copyKey": "ui:project-archive.nav#timeline",
+      "scope": "system/ui",
+      "entityId": "project-archive.nav",
+      "source": "src/lib/projectPresentation.mjs",
+      "field": "timeline",
+      "originalHash": "21914c55ef1dc454436ea6d35433a6611f7631a026e08232e56ba48a3b6e313f",
+      "value": "按时间浏览"
+    },
+    {
+      "copyKey": "ui:project-archive.overview#featuredCta",
+      "scope": "system/ui",
+      "entityId": "project-archive.overview",
+      "source": "src/components/project/ProjectOverview.astro",
+      "field": "featuredCta",
+      "originalHash": "829996c5ea9f31d4d66b29db9996a022f81b8962fe2606dc9dd5b0002ecc58f9",
+      "value": "定位并进入时间线 →"
+    },
+    {
+      "copyKey": "ui:project-archive.sections#description",
+      "scope": "system/ui",
+      "entityId": "project-archive.sections",
+      "source": "src/components/project/ProjectSectionsView.astro",
+      "field": "description",
+      "originalHash": "9761235ddb089151911253243d58f5fd481e72627c996474b3f624896bf03360",
+      "value": "按节目环节浏览完整结构，再进入 Timeline 查看值得直接跳听的具体节点。"
+    },
+    {
+      "copyKey": "ui:project-archive.sections#eventCountSuffix",
+      "scope": "system/ui",
+      "entityId": "project-archive.sections",
+      "source": "src/components/project/ProjectSectionsView.astro",
+      "field": "eventCountSuffix",
+      "originalHash": "624c0a1700f2bd13298759ea4ab07aaf26e79559be76b2b4f72dea72d21a631c",
+      "value": "个精选节点 →"
+    },
+    {
+      "copyKey": "ui:project-archive.sections#heading",
+      "scope": "system/ui",
+      "entityId": "project-archive.sections",
+      "source": "src/components/project/ProjectSectionsView.astro",
+      "field": "heading",
+      "originalHash": "9bae918add9affa51189bde5fefc7390ee2866831e894bb5f72b472a79d4ade8",
+      "value": "Sections"
+    },
+    {
+      "copyKey": "ui:project-archive.sections#kicker",
+      "scope": "system/ui",
+      "entityId": "project-archive.sections",
+      "source": "src/components/project/ProjectSectionsView.astro",
+      "field": "kicker",
+      "originalHash": "2941758767e21a5d6986968a3faa01073c403bec3701421fac47b772b0ddf969",
+      "value": "PROGRAM STRUCTURE"
+    },
+    {
+      "copyKey": "ui:project-archive.sections#sectionLabels[0]",
+      "scope": "system/ui",
+      "entityId": "project-archive.sections",
+      "source": "src/components/project/ProjectSectionsView.astro",
+      "field": "sectionLabels[0]",
+      "originalHash": "e794f4a0f8daa3a9390d6553990999841a39c4009cdad2e745626fa346e90bf3",
+      "value": "SPECIAL TALK"
+    },
+    {
+      "copyKey": "ui:project-archive.sections#sectionLabels[1]",
+      "scope": "system/ui",
+      "entityId": "project-archive.sections",
+      "source": "src/components/project/ProjectSectionsView.astro",
+      "field": "sectionLabels[1]",
+      "originalHash": "619437b4201cde5b199395d2a99f5c00fe7ab5572865f389681b63b04805ad1a",
+      "value": "MAIL"
+    },
+    {
+      "copyKey": "ui:project-archive.sections#sectionLabels[2]",
+      "scope": "system/ui",
+      "entityId": "project-archive.sections",
+      "source": "src/components/project/ProjectSectionsView.astro",
+      "field": "sectionLabels[2]",
+      "originalHash": "f0290ee2c0bd7729ec0874f0c7aedd1b69c92e4b305450a5a25149d8e1369509",
+      "value": "MONTHLY FEATURE"
+    },
+    {
+      "copyKey": "ui:project-archive.sections#sectionLabels[3]",
+      "scope": "system/ui",
+      "entityId": "project-archive.sections",
+      "source": "src/components/project/ProjectSectionsView.astro",
+      "field": "sectionLabels[3]",
+      "originalHash": "ec51eeba4e31d91497ed078b74847cc755ed83b250e40a0ac0f3c05cd44a4774",
+      "value": "FUTSUOTA"
+    },
+    {
+      "copyKey": "ui:project-archive.sections#sectionLabels[4]",
+      "scope": "system/ui",
+      "entityId": "project-archive.sections",
+      "source": "src/components/project/ProjectSectionsView.astro",
+      "field": "sectionLabels[4]",
+      "originalHash": "8ca2ae62ab4b15f1d47057daf601069a384580b60539fe6fd56442b4e47636df",
+      "value": "SUPER CHAT"
+    },
+    {
+      "copyKey": "ui:project-archive.sections#sectionLabels[5]",
+      "scope": "system/ui",
+      "entityId": "project-archive.sections",
+      "source": "src/components/project/ProjectSectionsView.astro",
+      "field": "sectionLabels[5]",
+      "originalHash": "62db371e3b4a31b391f5d37d95025ae453b4c8e004472b4b2bf07316c0efa372",
+      "value": "ENDING"
+    },
+    {
+      "copyKey": "ui:project-archive.timeline#description",
+      "scope": "system/ui",
+      "entityId": "project-archive.timeline",
+      "source": "src/components/project/ProjectArchiveShell.astro",
+      "field": "description",
+      "originalHash": "a7873d7ce16bb12f25e5c51ee1974759680009c6cb3d33194553d346fd2e9bb4",
+      "value": "按节目原始时钟浏览 6 个 Section 与精选节点。"
+    },
+    {
+      "copyKey": "ui:project-archive.timeline#heading",
+      "scope": "system/ui",
+      "entityId": "project-archive.timeline",
+      "source": "src/components/project/ProjectArchiveShell.astro",
+      "field": "heading",
+      "originalHash": "9dcff98e275f0cb911f1523ef5c629c0aabe9e3b642a6b71ac7d2569e9717121",
+      "value": "Timeline"
+    },
+    {
+      "copyKey": "ui:project-archive.timeline#kicker",
+      "scope": "system/ui",
+      "entityId": "project-archive.timeline",
+      "source": "src/components/project/ProjectArchiveShell.astro",
+      "field": "kicker",
+      "originalHash": "93c0291fd441fba1221a65c78650cc43fe60b91b4af0853742e40290c8179ea7",
+      "value": "CHRONOLOGICAL CANON · NATIVE CLOCK"
+    },
+    {
+      "copyKey": "ui:project-search#ariaLabel",
+      "scope": "system/ui",
+      "entityId": "project-search",
+      "source": "src/components/project/ProjectSearch.astro",
+      "field": "ariaLabel",
+      "originalHash": "4f4bfe0096e394e280f92145b5562470f4dc1f69a92aff77df6b5e6ce6ab980e",
+      "value": "搜索专题档案"
+    },
+    {
+      "copyKey": "ui:project-search#clear",
+      "scope": "system/ui",
+      "entityId": "project-search",
+      "source": "src/components/project/ProjectSearch.astro",
+      "field": "clear",
+      "originalHash": "ee32f25f70508f9c7f88ddd90346ac50f7985c317d396ccd1becd483ade4ebfd",
+      "value": "清除搜索"
+    },
+    {
+      "copyKey": "ui:project-search#count",
+      "scope": "system/ui",
+      "entityId": "project-search",
+      "source": "src/components/project/ProjectSearch.astro",
+      "field": "count",
+      "originalHash": "c574677e11b7e100131e103d39b09879c48a6933a29291cd1b6cf698ec2cb0fe",
+      "value": "0 条结果"
+    },
+    {
+      "copyKey": "ui:project-search#empty",
+      "scope": "system/ui",
+      "entityId": "project-search",
+      "source": "src/components/project/ProjectSearch.astro",
+      "field": "empty",
+      "originalHash": "cfa06194540488ddfc3f5439d33be1f009284be0ec5b0789cecd42aed53644b3",
+      "value": "没有找到公开索引中的匹配项。"
+    },
+    {
+      "copyKey": "ui:project-search#error",
+      "scope": "system/ui",
+      "entityId": "project-search",
+      "source": "src/components/project/ProjectSearch.astro",
+      "field": "error",
+      "originalHash": "fb286bf57457011b7dfe800a3af3a8d8ad1c69537d733827b4c9131909a3ccc1",
+      "value": "搜索索引暂时无法载入，专题其余内容仍可继续浏览。"
+    },
+    {
+      "copyKey": "ui:project-search#label",
+      "scope": "system/ui",
+      "entityId": "project-search",
+      "source": "src/components/project/ProjectSearch.astro",
+      "field": "label",
+      "originalHash": "da495dc9671a56ab5e324d34ae116d15a8146e486717d5d9788f42ee0980ab3c",
+      "value": "搜索事件"
+    },
+    {
+      "copyKey": "ui:project-search#scope",
+      "scope": "system/ui",
+      "entityId": "project-search",
+      "source": "src/components/project/ProjectSearch.astro",
+      "field": "scope",
+      "originalHash": "15beb5530749ece86d8bcc4c21d7f167691540b6a6b1e7eb08e29ab151e20627",
+      "value": "只搜索已经公开的事件"
+    },
+    {
+      "copyKey": "ui:project-search#status",
+      "scope": "system/ui",
+      "entityId": "project-search",
+      "source": "src/components/project/ProjectSearch.astro",
+      "field": "status",
+      "originalHash": "27c3f3a795c6299d747cdc9cb550e9b73ab3c016419259d26e8452db0005219f",
+      "value": "首次输入时加载公开索引。"
+    },
+    {
+      "copyKey": "ui:timeline#act",
+      "scope": "system/ui",
+      "entityId": "timeline",
+      "source": "src/components/project/TimelineNavigator.astro",
+      "field": "act",
+      "originalHash": "ee71241ebf18aa7e04fb4ba1d76c17c3cefe11398a9849dc515e53573cebce61",
+      "value": "ACT"
+    },
+    {
+      "copyKey": "ui:timeline#acts",
+      "scope": "system/ui",
+      "entityId": "timeline",
+      "source": "src/components/project/TimelineNavigator.astro",
+      "field": "acts",
+      "originalHash": "6d294c8b8bfae405c162e011312778fbcccbd79a1c4baa3898c036166e992474",
+      "value": "Timeline Acts"
+    },
+    {
+      "copyKey": "ui:timeline#expand",
+      "scope": "system/ui",
+      "entityId": "timeline",
+      "source": "src/components/project/TimelineNavigator.astro",
+      "field": "expand",
+      "originalHash": "00bd3960fea8ea982bcce83a3d2744a28c548ab59e94725cc8eee9c8840c2f56",
+      "value": "展开"
+    },
+    {
+      "copyKey": "ui:timeline#jump",
+      "scope": "system/ui",
+      "entityId": "timeline",
+      "source": "src/components/project/TimelineNavigator.astro",
+      "field": "jump",
+      "originalHash": "54b68462002a74c3e2db12830469ca8d8ec61d8581d7f2ca6bd8f760843de82e",
+      "value": "跳转到 ACT"
+    }
+  ]
+}
