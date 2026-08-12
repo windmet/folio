@@ -423,6 +423,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     activeTrackId = '';
     timelineScopeId = '';
     selectedEventId: string | null = null;
+    manualExpandedEventId: string | null = null;
     selectedThreadId: string | null = null;
     selectedPersonId: string | null = null;
     player: any = null;
@@ -519,11 +520,9 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       });
       this.querySelectorAll<HTMLElement>('[data-event-detail]').forEach((button) => {
         button.addEventListener('click', () => {
-          if (!window.matchMedia('(max-width: 900px)').matches) return;
+          if (!window.matchMedia('(max-width: 600px)').matches) return;
           const eventId = button.dataset.eventDetail || '';
-          const card = button.closest<HTMLElement>('[data-event-card]');
-          if (card?.classList.contains('is-active')) this.setActiveEventState(null);
-          else this.selectEvent(eventId, true, false);
+          this.toggleManualEventDetail(eventId);
         });
       });
       this.querySelectorAll<HTMLElement>('[data-source-track]').forEach((button) => {
@@ -1122,22 +1121,41 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.openThread(threadId, trigger, true);
     }
 
-    setActiveEventState(eventId: string | null) {
+    syncEventDetailStates() {
       this.querySelectorAll<HTMLElement>('[data-event-card]').forEach((card) => {
-        card.classList.toggle('is-active', Boolean(eventId) && card.dataset.eventCard === eventId);
+        const eventId = card.dataset.eventCard || '';
+        card.classList.toggle('is-active', Boolean(this.selectedEventId) && eventId === this.selectedEventId);
+        card.classList.toggle(
+          'is-manual-expanded',
+          Boolean(this.manualExpandedEventId)
+            && eventId === this.manualExpandedEventId
+            && eventId !== this.selectedEventId,
+        );
       });
       this.querySelectorAll<HTMLElement>('[data-event-detail]').forEach((button) => {
-        const active = Boolean(eventId) && button.dataset.eventDetail === eventId;
-        button.setAttribute('aria-expanded', String(active));
+        const eventId = button.dataset.eventDetail || '';
+        const expanded = eventId === this.selectedEventId || eventId === this.manualExpandedEventId;
+        button.setAttribute('aria-expanded', String(expanded));
         const mark = button.querySelector<HTMLElement>('small');
-        if (mark) mark.textContent = active ? '−' : '＋';
+        if (mark) mark.textContent = expanded ? '−' : '＋';
       });
+    }
+
+    setActiveEventState(eventId: string | null) {
+      this.selectedEventId = eventId;
+      if (eventId && this.manualExpandedEventId === eventId) this.manualExpandedEventId = null;
+      this.syncEventDetailStates();
+    }
+
+    toggleManualEventDetail(eventId: string) {
+      if (!this.data.events[eventId] || eventId === this.selectedEventId) return;
+      this.manualExpandedEventId = this.manualExpandedEventId === eventId ? null : eventId;
+      this.syncEventDetailStates();
     }
 
     selectEvent(eventId: string, push: boolean, seek: boolean, preservePresentation = false) {
       const event = this.data.events[eventId];
       if (!event) return;
-      this.selectedEventId = eventId;
       this.timelineScopeId = event.trackId;
       this.classList.add('has-active-event');
       this.updateTrack(event.trackId);
@@ -1164,7 +1182,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     switchTrack(trackId: string, push: boolean) {
       const track = this.data.tracks[trackId];
       if (!track) return;
-      this.selectedEventId = null;
+      this.manualExpandedEventId = null;
       this.pendingSeekMs = null;
       this.mobileResumeMs = null;
       this.classList.remove('has-active-event');
@@ -1591,6 +1609,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       const params = new URLSearchParams(window.location.search);
       const view = params.get('view') || this.data.defaultView;
       this.selectedEventId = null;
+      this.manualExpandedEventId = null;
       this.selectedThreadId = null;
       this.selectedPersonId = null;
       this.activeTrackId = this.data.defaultTrackId;

@@ -58,8 +58,8 @@ try {
     assert(state.desktopSegmentsVisible === 0 && state.mobileDisplay !== 'none', `${label} restored the desktop segment strip`);
     assert(state.toggleHeight >= 44 && state.toggleHeight <= 50, `${label} Act Locator height is outside 44–50px: ${state.toggleHeight}`);
     assert(state.optionCount === 8, `${label} Act directory does not contain 8 entries`);
-    assert(state.cardHeights.length === 5 && Math.max(...state.cardHeights) <= 150, `${label} ordinary Event is too tall: ${state.cardHeights}`);
-    assert(state.cardHeights.slice(0, 4).reduce((sum, height) => sum + height, 0) <= 560, `${label} cannot scan four ordinary Events in 560px`);
+    assert(state.cardHeights.length === 5 && Math.max(...state.cardHeights) <= 84, `${label} collapsed Event is too tall: ${state.cardHeights}`);
+    assert(state.cardHeights.reduce((sum, height) => sum + height, 0) <= 400, `${label} cannot scan five collapsed Events in 400px`);
     assert(state.eventColumns.startsWith('76px '), `${label} Event time rail is not 76px: ${state.eventColumns}`);
     assert(state.overflow === 0, `${label} horizontal overflow: ${state.overflow}`);
     await page.locator('[data-mobile-act-toggle]').click();
@@ -85,14 +85,17 @@ try {
     const card = document.querySelector(`[data-timeline-event="${eventId}"]`);
     return {
       active: card?.classList.contains('is-active'),
+      manual: card?.classList.contains('is-manual-expanded'),
       expanded: card?.querySelector('[data-event-detail]')?.getAttribute('aria-expanded'),
+      selectedEventId: document.querySelector('project-archive-shell')?.selectedEventId,
       mode: document.querySelector('[data-player-frame]')?.getAttribute('data-player-mode'),
-      clamp: getComputedStyle(card?.querySelector('.event-summary')).webkitLineClamp,
       summaryDisplay: getComputedStyle(card?.querySelector('.event-summary')).display,
+      url: location.href,
     };
   }, detailEventId);
-  assert(interactionState.active && interactionState.expanded === 'true', `title did not expand Event reading state: ${JSON.stringify(interactionState)}`);
-  assert(interactionState.mode === 'bubble' && interactionState.summaryDisplay === 'block', `title selection did not preserve non-playing Bubble/full text: ${JSON.stringify(interactionState)}`);
+  assert(!interactionState.active && interactionState.manual && interactionState.expanded === 'true', `title did not open manual reading state: ${JSON.stringify(interactionState)}`);
+  assert(interactionState.selectedEventId === null && !interactionState.url.includes('event='), `title changed player target or URL: ${JSON.stringify(interactionState)}`);
+  assert(interactionState.summaryDisplay === 'block', `manual reading state did not expose full detail: ${JSON.stringify(interactionState)}`);
   await card.locator('[data-event-detail]').click();
   assert(await card.locator('[data-event-detail]').getAttribute('aria-expanded') === 'false', 'second title click did not collapse Event reading state');
 
@@ -108,11 +111,15 @@ try {
     };
   });
   await card.locator('[data-event-seek]').click();
-  interactionState = await interaction.evaluate(() => ({
+  interactionState = await interaction.evaluate((eventId) => ({
     mode: document.querySelector('[data-player-frame]')?.getAttribute('data-player-mode'),
     playCalls: Number(document.documentElement.dataset.mt1PlayCalls),
-  }));
+    active: document.querySelector(`[data-timeline-event="${eventId}"]`)?.classList.contains('is-active'),
+    expanded: document.querySelector(`[data-timeline-event="${eventId}"] [data-event-detail]`)?.getAttribute('aria-expanded'),
+    currentLabel: getComputedStyle(document.querySelector(`[data-timeline-event="${eventId}"] [data-event-detail]`), '::after').content,
+  }), detailEventId);
   assert(interactionState.mode === 'expanded' && interactionState.playCalls === 1, `time rail did not keep explicit seek/play semantics: ${JSON.stringify(interactionState)}`);
+  assert(interactionState.active && interactionState.expanded === 'true' && interactionState.currentLabel.includes('CURRENT'), `seek target did not become expanded current Event: ${JSON.stringify(interactionState)}`);
   assert(interactionLogs.length === 0, `interaction console errors: ${interactionLogs.join(' | ')}`);
   evidence.interaction = interactionState;
   await interaction.close();
@@ -138,10 +145,13 @@ try {
     segments: [...document.querySelectorAll('[data-timeline-navigator-segment]')].filter((item) => item.getBoundingClientRect().height > 0).length,
     mobileDisplay: getComputedStyle(document.querySelector('.timeline-navigator__mobile')).display,
     columns: getComputedStyle(document.querySelector('.timeline-event')).gridTemplateColumns,
+    summaryDisplay: getComputedStyle(document.querySelector('.timeline-event .event-summary')).display,
+    detailToggleDisplay: getComputedStyle(document.querySelector('.timeline-event [data-event-detail]')).display,
     overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
   }));
   assert(desktopState.segments === 8 && desktopState.mobileDisplay === 'none', `desktop T1 Navigator regressed: ${JSON.stringify(desktopState)}`);
   assert(desktopState.columns.startsWith('110px ') && desktopState.overflow === 0, `desktop Event projection regressed: ${JSON.stringify(desktopState)}`);
+  assert(desktopState.summaryDisplay === 'block' && desktopState.detailToggleDisplay === 'none', `desktop expanded-by-default projection regressed: ${JSON.stringify(desktopState)}`);
   assert(desktopLogs.length === 0, `desktop console errors: ${desktopLogs.join(' | ')}`);
   evidence.desktop = desktopState;
   await desktop.close();

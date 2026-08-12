@@ -32,7 +32,7 @@ const fakeYouTubeApi = String.raw`(() => {
 })();`;
 
 const browser = await chromium.launch({ headless: true });
-const evidence = { viewports: {}, sectionNavigation: {}, search: {}, player: {}, history: {} };
+const evidence = { viewports: {}, sectionNavigation: {}, search: {}, player: {}, history: {}, mobileTimeline: {} };
 
 const attachLogs = (page) => {
   const logs = [];
@@ -175,6 +175,58 @@ try {
     const unexpectedLogs = logs.filter((message) => !message.includes('Failed to load resource: net::ERR_FAILED'));
     assert(state.overflow === 0 && unexpectedLogs.length === 0, `Player QA errors: ${unexpectedLogs.join(' | ')}`);
     evidence.player = { ...state, apiAttempts: getApiAttempts(), expectedFailureLogs: logs.length - unexpectedLogs.length };
+    await page.close();
+  }
+
+  {
+    const { page, logs } = await openPage({ width: 390, height: 844 });
+    await page.locator('[data-view-button="timeline"]').click();
+    const collapsed = await page.evaluate(() => {
+      const cards = [...document.querySelectorAll('.timeline-event')].slice(0, 5);
+      return {
+        heights: cards.map((card) => card.getBoundingClientRect().height),
+        summaries: cards.map((card) => getComputedStyle(card.querySelector('.event-summary')).display),
+        people: cards.map((card) => getComputedStyle(card.querySelector('.event-people')).display),
+      };
+    });
+    assert(Math.max(...collapsed.heights) <= 84, `Komachoe collapsed Events are too tall: ${JSON.stringify(collapsed)}`);
+    assert(collapsed.summaries.every((display) => display === 'none') && collapsed.people.every((display) => display === 'none'), `Komachoe collapsed Events expose detail: ${JSON.stringify(collapsed)}`);
+
+    const p11 = page.locator('[data-event-card="yt-002803-terashima-midnight-ramen"]');
+    const p09 = page.locator('[data-event-card="yt-002510-no-more-dual-platform"]');
+    await p11.locator('[data-event-detail]').click();
+    const manual = await page.evaluate(() => ({
+      selected: document.querySelector('project-archive-shell')?.selectedEventId,
+      manual: document.querySelector('project-archive-shell')?.manualExpandedEventId,
+      url: location.href,
+      summary: getComputedStyle(document.querySelector('[data-event-card="yt-002803-terashima-midnight-ramen"] .event-summary')).display,
+    }));
+    assert(manual.selected === null && manual.manual === 'yt-002803-terashima-midnight-ramen' && !manual.url.includes('event=') && manual.summary === 'block', `Komachoe title click changed playback semantics: ${JSON.stringify(manual)}`);
+
+    await p09.locator('[data-event-detail]').click();
+    assert(await p11.locator('[data-event-detail]').getAttribute('aria-expanded') === 'false', 'Komachoe kept more than one manual Event expanded');
+    await p11.locator('[data-event-seek]').click();
+    const beforeSyncY = await page.evaluate(() => window.scrollY);
+    await page.evaluate(() => {
+      const shell = document.querySelector('project-archive-shell');
+      shell.playerReady = true;
+      shell.player = { getCurrentTime: () => 1857, pauseVideo: () => {}, seekTo: () => {}, playVideo: () => {} };
+      shell.syncFromPlayer();
+    });
+    const current = await page.evaluate(() => ({
+      selected: document.querySelector('project-archive-shell')?.selectedEventId,
+      manual: document.querySelector('project-archive-shell')?.manualExpandedEventId,
+      expandedCards: [...document.querySelectorAll('.timeline-event')]
+        .filter((card) => card.classList.contains('is-active') || card.classList.contains('is-manual-expanded'))
+        .map((card) => card.getAttribute('data-event-card')),
+      currentLabel: getComputedStyle(document.querySelector('.timeline-event.is-active [data-event-detail]'), '::after').content,
+      scrollY: window.scrollY,
+      overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    }));
+    assert(current.selected === 'yt-003057-script-staging-documented' && current.manual === 'yt-002510-no-more-dual-platform', `playhead did not preserve current + one manual Event: ${JSON.stringify(current)}`);
+    assert(current.expandedCards.length === 2 && current.currentLabel.includes('CURRENT') && current.scrollY === beforeSyncY, `playhead expansion stole scroll or lost disclosure state: ${JSON.stringify(current)}`);
+    assert(current.overflow === 0 && logs.length === 0, `Komachoe mobile Timeline errors: ${logs.join(' | ')}`);
+    evidence.mobileTimeline = { collapsed, manual, current };
     await page.close();
   }
 

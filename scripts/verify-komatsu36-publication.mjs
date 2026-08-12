@@ -838,8 +838,10 @@ if (!/@media \(max-width:\s*600px\)[\s\S]*?\.timeline-event\s*\{[\s\S]*?grid-tem
   errors.push('RC12-MT1 mobile Event must keep the 76px time rail and content column');
 }
 if (!timelineShellSource.includes("closest<HTMLElement>('[data-mobile-act-option]')")
-  || !timelineShellSource.includes("else this.selectEvent(eventId, true, false)")) {
-  errors.push('RC12-MT1 controller must preserve Act-directory navigation and title-as-reading selection');
+  || !timelineShellSource.includes('this.toggleManualEventDetail(eventId)')
+  || !timelineShellSource.includes('manualExpandedEventId: string | null = null')
+  || !timelineShellSource.includes("this.selectEvent(button.dataset.eventSeek || '', true, true)")) {
+  errors.push('RC12-MT1 controller must preserve Act navigation, title-only reading, and time-only playback semantics');
 }
 
 // RC12 final interaction cleanup: the Player must not publish the obsolete
