@@ -1,0 +1,29 @@
+{
+  "sourceSetId": "komachoe-20260309-r1",
+  "files": {
+    "main": {
+      "path": "komachoe_20260309_main_v1.0_source-engineering-freeze.md",
+      "sha256": "21df5e26371388a8298c8bb9cafdb83dd36f82b7e5b6810d33dd77ae571dcabb",
+      "lineCount": 2790,
+      "byteCount": 131474
+    },
+    "transcriptionTodo": {
+      "path": "komachoe_20260309_transcription_todo_v0.4_closed.md",
+      "sha256": "11bb3eb2ef4cdee14362df2e3920ac04c847fb6295c42046d8639592cf68bccd",
+      "lineCount": 74,
+      "byteCount": 2333
+    },
+    "externalAsrRawIndex": {
+      "path": "komachoe_20260309_external_asr_raw_index_v0.8_closed.md",
+      "sha256": "350c2140d3d4a94f0ee50b9dd0af8658e611cb228028ab62d57e270cc22eaab4",
+      "lineCount": 47,
+      "byteCount": 3671
+    },
+    "externalAsrResidual": {
+      "path": "komachoe_20260309_external_asr_residual_R01_v0.1.md",
+      "sha256": "4f18ce280efff4b87a963a8def493bb4dbd51f372303d2742205f3a72730ffcd",
+      "lineCount": 43,
+      "byteCount": 2331
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "project": "komachoe-20260309",
+  "track": "komachoe-20260309/yt-main",
+  "act": "komachoe-20260309/act-05",
+  "startMs": 5771000,
+  "endMs": 5838000,
+  "timingStatus": "exact",
+  "title": "「事故はあったけど、怪我はなかった」：节目能确认到这里",
+  "summary": "清典确认演出中发生过事故，但没有人受伤；他也用自己受伤或伤到别人后的恐惧，解释为什么必须让所有人结束后仍能说“还想再做”。节目没有说明事故的机械原因，杀阵强度和情绪爆发不能被接成因果。",
+  "people": [],
+  "personRelations": [],
+  "tags": ["舞台事故", "安全边界", "清典"],
+  "publicationStatus": "qualified",
+  "qualification": "节目只确认发生事故且无人受伤；观众侧材料可定位昼场断刀，但不能提供机械原因。",
+  "readerNote": "事故原因没有在节目里说明，本条不作推断。",
+  "narrativeMode": "timeline-only",
+  "laneAnnotations": []
+}
