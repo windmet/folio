@@ -1,15 +1,17 @@
 ---
 import ConcurrentLanes from './ConcurrentLanes.astro';
 import { readerLabel, threadCategoryLabels } from '../../lib/projectReaderLabels';
+import { renderMentionInlineLinks } from '../../lib/mentionInlineLinks';
 
 export interface Props {
   event: any;
   people: any[];
   threadIds: string[];
   threadsById: Map<string, any>;
+  mentions?: any[];
 }
 
-const { event, people, threadIds, threadsById } = Astro.props;
+const { event, people, threadIds, threadsById, mentions = [] } = Astro.props;
 const threadViews = threadIds.map((threadId) => threadsById.get(threadId)).filter(Boolean);
 const localId = event.id.split('/').at(-1);
 const relationByPersonId = new Map((event.data.personRelations || []).map((relation: any) => [relation.person.id, relation.kind]));
@@ -44,7 +46,7 @@ const formatTime = (totalSeconds: number) => {
       </button>
     </div>
     <div class="event-detail" id={`event-detail-${localId}`}>
-      <p class="event-summary">{event.data.summary}</p>
+      <p class="event-summary" set:html={renderMentionInlineLinks(event.data.summary, localId, mentions)}></p>
       {event.data.readerNote && <p class="event-reader-note">{event.data.readerNote}</p>}
       <ConcurrentLanes lanes={event.data.laneAnnotations} />
       <div class="event-meta">

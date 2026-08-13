@@ -102,6 +102,7 @@ const threadViews = await Promise.all(threads.map(async (entry) => {
 }));
 
 const presentation = deriveProjectPresentation({ project: project.data, tracks, acts, events, threads, people });
+const inlineMentions = presentation.showMentions ? (project.data.mentions || []) : [];
 const defaultTrack = presentation.orderedTracks.find((track: any) => track.id === referenceId(project.data.defaultTrack)) || presentation.orderedTracks[0];
 const defaultTimelineTrackId = localId(defaultTrack.id);
 const orderedActs = acts
@@ -216,7 +217,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         >
           <TimelineNavigator acts={orderedActs} />
           {orderedActs.map((act) => (
-            <ActSection act={act} actTotal={orderedActs.length} events={eventsForAct(act.id)} peopleById={peopleById} threadsByEvent={threadsByEvent} threadsById={threadsById} />
+            <ActSection act={act} actTotal={orderedActs.length} events={eventsForAct(act.id)} peopleById={peopleById} threadsByEvent={threadsByEvent} threadsById={threadsById} mentions={inlineMentions} />
           ))}
         </div>
         {presentation.hasMultipleTracks && orderedTimelineTracks.filter((track) => localId(track.id) !== defaultTimelineTrackId).map((track) => (
@@ -226,6 +227,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
             peopleById={peopleById}
             threadsByEvent={threadsByEvent}
             threadsById={threadsById}
+            mentions={inlineMentions}
           />
         ))}
       </section>}
@@ -452,6 +454,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     contextFocusObserver: ResizeObserver | null = null;
     playerTextResizeObserver: ResizeObserver | null = null;
     mentionResizeObserver: ResizeObserver | null = null;
+    mentionHighlightTimer: number | null = null;
     contextArrivalTimer: number | null = null;
     timelineScrollScheduled = false;
     timelineScrollHandler = () => this.scheduleTimelineNavigatorUpdate();
@@ -460,7 +463,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.scheduleTimelineNavigatorUpdate();
       this.refreshMentionSummaries();
     };
-    mentionHashHandler = () => this.expandMentionGroupFromHash();
+    mentionHashHandler = () => this.expandMentionFromHash();
 
     connectedCallback() {
       if (this.dataset.ready === 'true') return;
@@ -495,7 +498,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.scheduleTimelineNavigatorUpdate();
       this.restoreFromUrl();
       this.refreshInlineText();
-      this.expandMentionGroupFromHash();
+      this.expandMentionFromHash();
     }
 
     disconnectedCallback() {
@@ -504,6 +507,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.contextFocusObserver?.disconnect();
       this.playerTextResizeObserver?.disconnect();
       this.mentionResizeObserver?.disconnect();
+      if (this.mentionHighlightTimer !== null) window.clearTimeout(this.mentionHighlightTimer);
       if (this.contextArrivalTimer !== null) window.clearTimeout(this.contextArrivalTimer);
       window.removeEventListener('scroll', this.timelineScrollHandler);
       window.removeEventListener('resize', this.timelineResizeHandler);
@@ -545,6 +549,14 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       });
       this.querySelectorAll<HTMLAnchorElement>('[data-mention-group-link]').forEach((link) => {
         link.addEventListener('click', () => this.setMentionGroupExpanded(link.dataset.mentionGroupLink || '', true));
+      });
+      this.querySelectorAll<HTMLAnchorElement>('[data-mention-link]').forEach((link) => {
+        link.addEventListener('click', (event) => {
+          event.preventDefault();
+          const targetUrl = new URL(link.href, window.location.href);
+          history.pushState({}, '', targetUrl);
+          this.restoreFromUrl();
+        });
       });
       this.querySelectorAll<HTMLElement>('[data-event-detail]').forEach((button) => {
         button.addEventListener('click', () => {
@@ -940,7 +952,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.refreshInlineText();
       if (view === 'timeline') this.scheduleTimelineNavigatorUpdate();
       if (view === 'mentions') {
-        this.expandMentionGroupFromHash();
+        this.expandMentionFromHash();
         window.requestAnimationFrame(() => this.refreshMentionSummaries());
       }
       if (push) this.updateUrl();
@@ -1666,10 +1678,30 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       this.setMentionGroupExpanded(kind, !group.classList.contains('is-expanded'));
     }
 
-    expandMentionGroupFromHash() {
+    expandMentionFromHash() {
       const match = window.location.hash.match(/^#mentions-(person|work|context)$/);
-      if (!match) return;
-      this.setMentionGroupExpanded(match[1], true);
+      if (match) {
+        this.setMentionGroupExpanded(match[1], true);
+        return;
+      }
+
+      const mentionMatch = window.location.hash.match(/^#mention-([a-z0-9-]+)$/);
+      if (!mentionMatch || this.activeView !== 'mentions') return;
+      const card = this.querySelector<HTMLElement>(`[data-mention-card="${CSS.escape(mentionMatch[1])}"]`);
+      if (!card) return;
+      const group = card.closest<HTMLElement>('[data-mention-kind]');
+      if (group?.dataset.mentionKind) this.setMentionGroupExpanded(group.dataset.mentionKind, true);
+      window.requestAnimationFrame(() => {
+        card.scrollIntoView({ behavior: 'auto', block: 'start' });
+        card.classList.remove('is-hash-target');
+        void card.offsetWidth;
+        card.classList.add('is-hash-target');
+        if (this.mentionHighlightTimer !== null) window.clearTimeout(this.mentionHighlightTimer);
+        this.mentionHighlightTimer = window.setTimeout(() => {
+          card.classList.remove('is-hash-target');
+          this.mentionHighlightTimer = null;
+        }, 1800);
+      });
     }
 
     replaceUrl() {
@@ -1734,6 +1766,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
       if (threadId) this.openThread(threadId, null, false);
       else if (personId) this.openPerson(personId, null, false);
       this.replaceUrl();
+      this.expandMentionFromHash();
       if (restoreTimelineScopeFocus && this.activeView === 'timeline') {
         window.requestAnimationFrame(() => {
           this.querySelector<HTMLElement>(`[data-timeline-scope-button="${CSS.escape(this.timelineScopeId)}"]`)

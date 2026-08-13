@@ -866,6 +866,11 @@ project-archive-shell {
   background: color-mix(in srgb, var(--archive-surface) 82%, transparent);
 }
 
+.mention-card.is-hash-target {
+  border-color: var(--archive-blue);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--archive-blue) 16%, transparent);
+}
+
 .mention-card__copy {
   min-width: 0;
 }
@@ -1552,6 +1557,18 @@ project-archive-shell {
   color: #625d54;
   font-size: 13px;
   line-height: 1.9;
+}
+
+.event-summary .inline-mention {
+  color: var(--archive-blue);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.event-summary .inline-mention:hover,
+.event-summary .inline-mention:focus-visible {
+  color: color-mix(in srgb, var(--archive-blue) 78%, var(--archive-ink));
 }
 
 .event-qualification {

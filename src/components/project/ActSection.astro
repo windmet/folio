@@ -8,9 +8,10 @@ export interface Props {
   threadsByEvent: Map<string, string[]>;
   threadsById: Map<string, any>;
   actTotal: number;
+  mentions?: any[];
 }
 
-const { act, events, peopleById, threadsByEvent, threadsById, actTotal } = Astro.props;
+const { act, events, peopleById, threadsByEvent, threadsById, actTotal, mentions = [] } = Astro.props;
 const formatTime = (milliseconds: number) => {
   const total = Math.floor(milliseconds / 1000);
   const hours = Math.floor(total / 3600);
@@ -46,6 +47,7 @@ const formatTime = (milliseconds: number) => {
         people={event.data.people.map((reference: any) => peopleById.get(reference.id)).filter(Boolean)}
         threadIds={threadsByEvent.get(event.id) || []}
         threadsById={threadsById}
+        mentions={mentions}
       />
     ))}
   </div>

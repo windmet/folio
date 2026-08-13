@@ -7,9 +7,10 @@ export interface Props {
   peopleById: Map<string, any>;
   threadsByEvent: Map<string, string[]>;
   threadsById: Map<string, any>;
+  mentions?: any[];
 }
 
-const { track, events, peopleById, threadsByEvent, threadsById } = Astro.props;
+const { track, events, peopleById, threadsByEvent, threadsById, mentions = [] } = Astro.props;
 const localTrackId = track.id.split('/').at(-1) || track.id;
 const formatDuration = (milliseconds: number) => {
   const total = Math.max(0, Math.floor(milliseconds / 1000));
@@ -44,6 +45,7 @@ const formatDuration = (milliseconds: number) => {
         people={event.data.people.map((reference: any) => peopleById.get(reference.id)).filter(Boolean)}
         threadIds={threadsByEvent.get(event.id) || []}
         threadsById={threadsById}
+        mentions={mentions}
       />
     ))}
   </div>

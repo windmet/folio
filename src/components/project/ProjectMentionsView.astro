@@ -59,7 +59,7 @@ const sourceLabelFor = (mention: any) => {
               const visibleEvents = events.slice(0, 3);
               const hiddenEvents = events.slice(3);
               return (
-                <article class="mention-card" data-mention-card={mention.id} id={`mention-${mention.id}`}>
+                <article class="mention-card" data-mention-card={mention.id} id={`mention-${mention.id}`} tabindex="-1">
                   <div class="mention-card__copy">
                     <h4>{mention.label}</h4>
                     <p id={`mention-summary-${mention.id}`} data-mention-summary={mention.id}>{mention.summary}</p>

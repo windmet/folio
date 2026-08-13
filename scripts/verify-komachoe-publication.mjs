@@ -62,6 +62,7 @@ const events = await Promise.all(eventFiles.map((name) => readJson(path.join(con
 const html = await readFile(path.join(outputRoot, 'index.html'), 'utf8');
 const searchPayload = await readJson(path.join(outputRoot, 'search.json'));
 const homeHtml = await readFile(path.resolve('dist/index.html'), 'utf8');
+const komatsuHtml = await readFile(path.resolve('dist/projects/komatsu36/index.html'), 'utf8');
 
 assert(project.status === 'draft', 'Project must remain draft during vertical slice');
 assert(project.defaultView === 'overview', 'defaultView must remain overview');
@@ -134,6 +135,12 @@ assert((html.match(/data-mention-summary="/g) || []).length === project.mentions
 assert((html.match(/data-mention-summary-toggle="/g) || []).length === project.mentions.length, 'rendered Mentions view must expose measured overflow controls for every summary');
 assert((html.match(/data-mention-group-toggle="/g) || []).length === 2, 'mobile Mentions must expose group-level controls for People and Works');
 assert((html.match(/aria-controls="mention-summary-/g) || []).length === project.mentions.length, 'Mention summary disclosures must reference their controlled text');
+assert((html.match(/class="inline-mention"/g) || []).length > 0, 'Timeline Event details must render inline Mention links when a related surface form exists');
+assert(html.includes('event=yt-005429-hosoya-bonfire#mention-hosoya-yoshimasa'), 'inline Mention links must preserve the current Event query and target card hash');
+assert(html.includes('event=yt-004333-producer-casting#mention-ore-shiri'), 'inline Mention aliases must resolve reviewed shorthand such as 《俺知》');
+const mentionSummaryBlocks = [...html.matchAll(/<p[^>]*data-mention-summary="[^"]+"[^>]*>([\s\S]*?)<\/p>/g)].map((match) => match[1]);
+assert(mentionSummaryBlocks.length === project.mentions.length && mentionSummaryBlocks.every((block) => !block.includes('data-mention-link')), 'inline Mention links must stay out of Mentions card summaries');
+assert(!(komatsuHtml.match(/data-mention-link/g) || []).length, 'Komatsu36 must not opt into inline Mention links without the Mentions capability');
 assert((html.match(/aria-controls="mentions-list-/g) || []).length === 2, 'Mention group disclosures must reference their controlled lists');
 assert((html.match(/data-event-card="/g) || []).length === 30, 'rendered Timeline must contain 30 Event cards');
 assert((html.match(/data-timeline-navigator-segment="/g) || []).length === 6, 'Timeline navigator must contain 6 segments');

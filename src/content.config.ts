@@ -71,6 +71,7 @@ const projects = defineCollection({
       id: z.string().regex(/^[a-z0-9][a-z0-9-]*$/),
       kind: z.enum(['work', 'person', 'context']),
       label: z.string(),
+      aliases: z.array(z.string()).default([]),
       summary: z.string(),
       events: z.array(reference('projectEvents')).min(1),
       url: z.string().url().optional(),
