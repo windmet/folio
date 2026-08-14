@@ -85,9 +85,9 @@ timeline collection
   └─ verify-site-metadata.mjs route regression
 ```
 
-全部 consumer 都是 legacy global Timeline 自身，未发现 Posts、Homepage、People 或 Index 读取该 collection。`src/components/project/TimelineEvent.astro`、`TimelineNavigator.astro` 与 `SourceTimeline.astro` 属于单个 Project 的 active reader contract，必须保留。
+全部 consumer 都是 legacy global Timeline 自身，未发现 Posts、Homepage、People 或 Index 读取该 collection。01E 已按 consumer → route → collection → components → verifier expectation 的顺序清除。`src/components/project/TimelineEvent.astro`、`TimelineNavigator.astro` 与 `SourceTimeline.astro` 属于单个 Project 的 active reader contract，继续保留。
 
-因此全局 Timeline 可以在 01E 一次性移除；顺序仍是 consumer → route → collection → components → verifier expectation。
+因此全局 Timeline 已在 01E 一次性退役；Project reader 的 route、组件与验证器仍保持原合同。
 
 ## Git 历史暴露
 
@@ -111,5 +111,5 @@ timeline collection
 - **01B complete**：网站 repo 外的 Private Research 副本已建立并校验；BMC 全文与杂志图已撤出 current public tree。
 - **01C complete**：Tina、`public/admin/`、XHS public consumer 与零 consumer 旧博客 UI 已退役；待 build 复核生成物。
 - **01D complete**：2016 X 内容已迁入 `2016-x-family-record` 与 10 个 Source records；1 条 verified、9 条 unresolved；fake platform UI 与本地社交图片镜像已撤出。
-- **01E 前置**：01D 不再依赖 fake Tweet family；确认全站没有 `/timeline/` 链接或 collection consumer。
+- **01E complete**：global `/timeline/`、collection、legacy components、footer link、public allowlist 与 metadata fixture 已清除；Project Timeline regression 全部通过。
 - 每批都必须运行 `npm run validate`、`npm exec -- tsc --noEmit`、`git diff --check`；涉及 Project shell 时追加 payload audit。

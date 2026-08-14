@@ -6,7 +6,7 @@ export const SITE_DEFAULT_DESCRIPTION = '前情帖：围绕公开广播、活动
 // after the content, production URL, media, and browser gates are signed off.
 export const PUBLIC_LAUNCH_ENABLED = false;
 
-const PUBLIC_ROUTE_PREFIXES = ['/', '/about/', '/indexes/', '/people/', '/projects/', '/posts/', '/timeline/'];
+const PUBLIC_ROUTE_PREFIXES = ['/', '/about/', '/indexes/', '/people/', '/projects/', '/posts/'];
 
 export function resolveRobots(pathname: string, override?: string) {
   if (override) return override;

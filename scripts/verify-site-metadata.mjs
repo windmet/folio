@@ -20,6 +20,7 @@ for (const contract of ['canonical', 'og:site_name', 'og:title', 'twitter:card',
 
 const siteMetadata = read('src/lib/siteMetadata.ts');
 assert(siteMetadata.includes("'/indexes/'"), 'future public-route allowlist must include the first-class Index routes');
+assert(!siteMetadata.includes("'/timeline/'"), 'retired global Timeline must not remain in the public-route allowlist');
 assert(siteMetadata.includes('PUBLIC_LAUNCH_ENABLED = false'), 'public launch must remain explicitly disabled before production QA');
 
 const about = read('src/pages/about/index.astro');
@@ -39,8 +40,9 @@ const routes = [
   ['/indexes/ore-shiri/', 'indexes/ore-shiri/index.html'],
   ['/people/', 'people/index.html'],
   ['/projects/komatsu36/', 'projects/komatsu36/index.html'],
-  ['/timeline/', 'timeline/index.html'],
 ];
+
+assert(!fs.existsSync(path.join(dist, 'timeline/index.html')), 'retired global Timeline route must not be built');
 
 for (const [route, relative] of routes) {
   const html = read(path.join('dist', relative));

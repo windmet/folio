@@ -1,5 +1,5 @@
 import { defineCollection, reference } from 'astro:content';
-import { glob, file } from 'astro/loaders';
+import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
 const projectEntryId = ({ entry, folder }: { entry: string; folder: string }) => {
@@ -16,19 +16,6 @@ const posts = defineCollection({
     date: z.date(),
     section: z.enum(['interview', 'archaeology', 'radio', 'note']),
     description: z.string().optional(),
-  }),
-});
-
-const timeline = defineCollection({
-  loader: file('src/content/timeline/timeline.json'),
-  schema: z.object({
-    date: z.string(),
-    type: z.enum(['event', 'tweet', 'video', 'note']),
-    title: z.string().optional(),
-    content: z.string(),
-    jp: z.string().optional(),
-    url: z.string().optional(),
-    tags: z.array(z.string()).optional(),
   }),
 });
 
@@ -333,7 +320,6 @@ const projectSources = defineCollection({
 
 export const collections = {
   posts,
-  timeline,
   people,
   indexes,
   sources,

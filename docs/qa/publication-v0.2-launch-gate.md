@@ -16,7 +16,7 @@
 - PEOPLE-03 本地浏览器验收：伊藤友紘 fixture 的三个 Project 默认按新→旧排列，可切换旧→新；1–3 个 Event 直显、4–20 个默认折叠、小松昌平在 Komatsu36 的 81 个节点改由完整 Project Timeline 承接。桌面与 390px 无横向溢出，排序控件 focus outline 可见。
 - PEOPLE-03 读者摘要收口：人物页不再显示重复的 `PROJECTS / CONTEXTS / ALIASES` 工程统计；伊藤 fixture 显示“3 项档案 · 电话连线 / 预投稿 / 被提及”，首页 ledger 使用相同语义顺序。1280×720 与 390×844 均保持单行且无横向溢出。
 - INDEX-03 本地浏览器验收：两个 Index detail 已消费与 People 共用的 Chronology Rail；公开记录默认新→旧并可切换旧→新。`ore-shiri` 与 `ban-ban-ban` 在 1280×720 / 390×844 均无横向溢出，移动 rail、节点与 28px 内容缩进对齐，排序控件 focus outline 可见。
-- Global `/timeline/` 已退出五个主要 Layout 的一级导航；旧 route 继续保留为兼容入口，不与 Project Timeline 或实体 chronology 混用。
+- Global `/timeline/` 已在 BOUNDARY-01E 完整退役：route、collection、footer、public allowlist、components 与 metadata regression 均已清除；Project Timeline 与实体 chronology 不受影响。
 - DOC-P0 已收口：根 README 只保留当前三项目、Person Model v2、active review branch、noindex 状态、验证命令与发布边界；原 Komatsu36 RC / Semantic 长历史入口已完整迁入 `docs/archive/komatsu36-history.md`。新增 `verify:documentation` 会验证当前/归档入口及 README 引用路径。
 - 窄屏 `#people` / `#indexes` deep link 会停在 57px sticky header 下方；mobile 继续禁用 scroll snap。
 - Reader brand、chaptered homepage、About / Editorial Policy、canonical / OG / favicon、Global People、Index 与全局搜索已经进入 review branch；`PUBLIC_LAUNCH_ENABLED` 仍为 `false`。
