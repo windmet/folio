@@ -1,0 +1,11 @@
+---
+export interface Props {
+  id: 'cover' | 'archives' | 'people' | 'indexes';
+  tone: 'cover' | 'archive' | 'people' | 'index';
+}
+
+const { id, tone } = Astro.props;
+---
+<div class={`home-scene home-scene--${tone}`} id={id} data-home-scene={id}>
+  <div class="home-scene-inner"><slot /></div>
+</div>

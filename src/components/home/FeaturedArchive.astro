@@ -7,10 +7,10 @@ export interface Props {
 const { projects, projectStats } = Astro.props;
 ---
 
-<section class="home-section home-featured" id="archives" aria-labelledby="home-featured-title">
+<section class="home-section home-featured" aria-labelledby="home-featured-title">
   <div class="home-section-heading">
     <div>
-      <span class="home-kicker">FEATURED ARCHIVE</span>
+      <span class="home-kicker">02 / ARCHIVES</span>
       <h2 id="home-featured-title">从这里开始</h2>
     </div>
     <span class="home-section-code">PUBLICATION / {projects.length}</span>
@@ -24,6 +24,7 @@ const { projects, projectStats } = Astro.props;
           class:list={['featured-card', isSpecial && 'featured-card--special']}
           href={`/projects/${project.data.slug}/`}
           data-publication-kind={project.data.publication.kind}
+          data-tone={project.data.visualTheme || (isSpecial ? 'event-rose' : undefined)}
           data-featured-project={project.data.slug}
         >
           <span class="featured-card-number">{String(index + 1).padStart(2, '0')}</span>

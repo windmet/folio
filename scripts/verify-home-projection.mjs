@@ -17,6 +17,7 @@ const readPost = async (file) => {
 };
 
 const indexSource = await readFile(path.join(root, 'src/pages/index.astro'), 'utf8');
+const homeCss = await readFile(path.join(root, 'src/styles/home.css'), 'utf8');
 const componentSources = await Promise.all((await readdir(path.join(root, 'src/components/home')))
   .filter((name) => name.endsWith('.astro'))
   .map((name) => readFile(path.join(root, 'src/components/home', name), 'utf8')));
@@ -25,6 +26,19 @@ assert(!indexSource.includes("id.includes('interview')"), 'homepage still classi
 assert(!indexSource.includes("id.includes('radio')"), 'homepage still infers Radio from filename');
 assert(!indexSource.includes('tracks === 1'), 'homepage still infers publication kind from track count');
 assert(indexSource.includes('buildHomeProjection'), 'homepage must consume the Home Projection helper');
+for (const scene of ['cover', 'archives', 'people', 'indexes']) {
+  assert(indexSource.includes(`id="${scene}"`), `homepage chapter scene is missing: ${scene}`);
+}
+assert(indexSource.includes('class="home-tail"'), 'homepage must keep Recent and Legacy in a normal-flow tail');
+assert(indexSource.indexOf('id="indexes"') < indexSource.indexOf('class="home-tail"'), 'homepage tail must follow all snap scenes');
+assert(homeCss.includes('position: sticky'), 'homepage header must remain sticky');
+assert(homeCss.includes('scroll-snap-type: y proximity'), 'desktop chapter flow must use proximity scroll snap');
+assert(homeCss.includes('.home-root { scroll-snap-type: none; }'), 'mobile chapter flow must disable scroll snap');
+assert(homeCss.includes('@media (prefers-reduced-motion: reduce)'), 'homepage must honor reduced-motion preferences');
+assert(homeCss.includes("[data-tone='broadcast-blue']"), 'homepage must consume the controlled broadcast-blue tone');
+assert(homeCss.includes("[data-tone='event-rose']"), 'homepage must expose the controlled special rose tone');
+assert(!homepageSource.includes("addEventListener('wheel'"), 'homepage must not intercept wheel events');
+assert(!homepageSource.includes('preventDefault()'), 'homepage must not prevent native scroll behavior');
 for (const requiredClass of ['home-masthead', 'home-featured', 'home-people', 'home-recent', 'home-indexes', 'home-legacy']) {
   assert(homepageSource.includes(requiredClass), `homepage component boundary is missing: ${requiredClass}`);
 }
@@ -66,6 +80,12 @@ assert((homeHtml.match(/class="legacy-card"[^>]*data-category="(interview|archiv
 assert(homeHtml.includes('data-feed-kind="project"') && homeHtml.includes('data-feed-kind="post"'),
   'built homepage recent feed must mix Project and Post entries');
 assert(homeHtml.includes('data-feed-kind="index"'), 'built homepage recent feed must include Index entries');
+assert((homeHtml.match(/data-home-scene="(cover|archives|people|indexes)"/g) || []).length === 4,
+  'built homepage must contain exactly four chapter scenes');
+assert((homeHtml.match(/data-tone="broadcast-blue"/g) || []).length === 2,
+  'built homepage must render two broadcast-blue archive cards');
+assert(homeHtml.includes('近期条目') && !homeHtml.includes('最近更新'),
+  'date-based tail feed must use the qualified 近期条目 label');
 assert(homeHtml.includes('data-person-teaser="ito-tomohiro"'), 'built homepage People teaser must expose a high-relevance fixture');
 assert(!homeHtml.includes('class="index-title"'), 'built homepage still uses the old Magazine masthead');
 

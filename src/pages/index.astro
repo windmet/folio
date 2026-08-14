@@ -7,6 +7,7 @@ import PeopleTeaser from '../components/home/PeopleTeaser.astro';
 import RecentFeed from '../components/home/RecentFeed.astro';
 import LegacyCollections from '../components/home/LegacyCollections.astro';
 import IndexTeaser from '../components/home/IndexTeaser.astro';
+import HomeScene from '../components/home/HomeScene.astro';
 import { buildHomeProjection } from '../lib/homeProjection';
 
 const [posts, projects, indexes, tracks, events, threads, identities, personContexts] = await Promise.all([
@@ -32,14 +33,18 @@ const projection = buildHomeProjection({
 ---
 
 <HomeLayout title="前情帖" description="GOMYAKU 前情帖：Project、人物语境与旧文章入口">
-  <main class="home-shell">
-    <HomeMasthead />
-    <FeaturedArchive projects={projection.projects} projectStats={projection.projectStats} />
-    <div class="home-lower-grid">
-      <RecentFeed feed={projection.recentFeed} />
-      <PeopleTeaser people={projection.people} />
+  <main class="home-document">
+    <HomeScene id="cover" tone="cover"><HomeMasthead /></HomeScene>
+    <HomeScene id="archives" tone="archive">
+      <FeaturedArchive projects={projection.projects} projectStats={projection.projectStats} />
+    </HomeScene>
+    <HomeScene id="people" tone="people"><PeopleTeaser people={projection.people} /></HomeScene>
+    <HomeScene id="indexes" tone="index"><IndexTeaser indexes={projection.indexes} /></HomeScene>
+    <div class="home-tail">
+      <div class="home-tail-inner">
+        <RecentFeed feed={projection.recentFeed} />
+        <LegacyCollections articleCollections={projection.articleCollections} />
+      </div>
     </div>
-    <IndexTeaser indexes={projection.indexes} />
-    <LegacyCollections articleCollections={projection.articleCollections} />
   </main>
 </HomeLayout>
