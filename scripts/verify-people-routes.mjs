@@ -15,6 +15,7 @@ const indexSource = await read(path.join(root, 'src/pages/people/index.astro'));
 const detailSource = await read(path.join(root, 'src/pages/people/[id].astro'));
 assert(helperSource.includes('buildGlobalPeopleProjection'), 'global People projection helper is missing');
 assert(helperSource.includes('indexAppearancesByPerson'), 'global People projection must aggregate Index appearances');
+assert(helperSource.includes('neutralContextSummary'), 'global People projection must keep global summaries independent from latest appearances');
 assert(indexSource.includes('buildGlobalPeopleProjection'), 'People index must consume the global projection');
 assert(detailSource.includes('getStaticPaths'), 'People detail route must have static paths');
 assert(detailSource.includes('person.contextSummary'), 'People detail route must provide a concise fallback context summary');
@@ -36,6 +37,7 @@ assert(indexHtml.includes('data-featured-person="komatsu-shohei"'), 'Komatsu mus
 assert(!indexSource.includes('已收录'), 'People cards must not repeat generic archive instructions');
 
 const itoHtml = await read(path.join(distPeopleRoot, 'ito-tomohiro/index.html'));
+const itoHeader = itoHtml.match(/<header class="person-header">([\s\S]*?)<\/header>/)?.[1] || '';
 const itoProjectLinks = [...itoHtml.matchAll(/href="\/projects\/([^/]+)\/"/g)].map((match) => match[1]);
 assert(JSON.stringify(itoProjectLinks.slice(0, 3)) === JSON.stringify(['komachoe-20260425', 'komatsu36', 'komachoe-20260309']),
   'Ito contexts must be ordered by Project publication date');
@@ -51,6 +53,7 @@ assert(itoHtml.includes('data-person-order="desc"') && itoHtml.includes('data-pe
 assert(itoHtml.includes('class="person-event-disclosure"'), 'Ito fixture must render its four-event context as collapsed disclosure');
 assert(itoHtml.includes('view=timeline&amp;event='), 'People detail must expose event deep links through the project contract');
 assert(itoHtml.includes('person-context-profile'), 'Ito detail must render a concise derived context summary');
+assert(itoHeader.includes('当前前情帖收录 3 项项目语境 · 1 项公开索引。'), 'Ito global header must use a neutral aggregate summary');
 
 const komatsuHtml = await read(path.join(distPeopleRoot, 'komatsu-shohei/index.html'));
 assert(komatsuHtml.includes('class="person-event-overflow"'), 'Komatsu host fixture must use the extreme-event Project Timeline handoff');
@@ -63,7 +66,20 @@ assert(hamanoHtml.includes('data-person-context-kind="index"'), 'Hamano detail m
 assert(hamanoHtml.includes('class="person-event-disclosure"') && !hamanoHtml.includes('class="person-event-list" aria-label="公开索引节点" open'),
   'Hamano Index nodes must remain grouped behind a closed disclosure');
 assert(hamanoHtml.includes('href="/indexes/2016-x-family-record/"'), 'Hamano detail must link to the public record');
+assert(hamanoHtml.includes('濱野作为这组对话的起话者与主要参与者出现')
+  && hamanoHtml.includes('本记录称呼 · 爸爸'),
+  'Hamano Index card must render person-specific Appearance semantics');
+assert(hamanoHtml.includes('当前前情帖收录 1 条公开记录。'), 'Hamano global header must remain a neutral aggregate');
 assert(!hamanoHtml.includes('/people/hama-kento/'), 'Hamano detail must not collapse into Hama Kento');
+
+const terashimaHtml = await read(path.join(distPeopleRoot, 'terashima-junta/index.html'));
+assert(terashimaHtml.includes('从鸡肉话题接入对话')
+  && terashimaHtml.includes('本记录称呼 · 淳太ママ')
+  && terashimaHtml.includes('本记录称呼 · 妈妈'),
+  'Terashima Index card must render its own Appearance and scoped names');
+
+assert(komatsuHtml.includes('根本没参加的家庭会议') && komatsuHtml.includes('本记录称呼 · 公主'),
+  'Komatsu Index card must render its own Appearance and scoped name');
 
 const hamaHtml = await read(path.join(distPeopleRoot, 'hama-kento/index.html'));
 assert(hamaHtml.includes('濱ちゃん') && hamaHtml.includes('ハマ') && !hamaHtml.includes('<span>濱</span>'),

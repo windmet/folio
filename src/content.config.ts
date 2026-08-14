@@ -87,6 +87,27 @@ const indexes = defineCollection({
   }),
 });
 
+const indexPeople = defineCollection({
+  loader: glob({ pattern: '*.json', base: './src/content/indexPeople' }),
+  schema: z.object({
+    index: reference('indexes'),
+    person: reference('people'),
+    summary: z.string().min(1),
+    participation: z.array(z.enum([
+      'author',
+      'conversation-participant',
+      'referenced',
+      'source-subject',
+    ])).min(1),
+    contextNames: z.array(z.object({
+      label: z.string().min(1),
+      kind: z.literal('situational'),
+      evidence: z.array(z.string().regex(/^[a-z0-9][a-z0-9-]*$/)).min(1),
+    })).default([]),
+    entries: z.array(z.string().regex(/^[a-z0-9][a-z0-9-]*$/)).min(1),
+  }),
+});
+
 const sources = defineCollection({
   loader: glob({ pattern: '*.json', base: './src/content/sources' }),
   schema: z.object({
@@ -333,6 +354,7 @@ export const collections = {
   posts,
   people,
   indexes,
+  indexPeople,
   sources,
   projects,
   projectTracks,

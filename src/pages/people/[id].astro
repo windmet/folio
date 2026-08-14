@@ -5,15 +5,16 @@ import { buildGlobalPeopleProjection } from '../../lib/globalPeople';
 import { PERSON_ROLE_LABELS } from '../../lib/globalPeople';
 
 export async function getStaticPaths() {
-  const [identities, projects, contexts, events, indexes, sources] = await Promise.all([
+  const [identities, projects, contexts, events, indexes, indexContexts, sources] = await Promise.all([
     getCollection('people'),
     getCollection('projects'),
     getCollection('projectPeople'),
     getCollection('projectEvents'),
     getCollection('indexes'),
+    getCollection('indexPeople'),
     getCollection('sources'),
   ]);
-  const people = buildGlobalPeopleProjection({ identities, projects, contexts, events, indexes, sources });
+  const people = buildGlobalPeopleProjection({ identities, projects, contexts, events, indexes, indexContexts, sources });
   return people.map((person) => ({
     params: { id: person.id },
     props: { person },
@@ -144,8 +145,13 @@ const formatRecordTime = (timestamp: string) => timestamp.includes('T')
                 <h3><a class="person-project-link" href={`/indexes/${context.index.data.slug}/`}>{context.index.data.title}</a></h3>
               </div>
             </header>
-            <p class="person-context-summary">该人物在这项公开索引中出现于 {context.entries.length} 个记录节点。</p>
+            <p class="person-context-summary">{context.summary}</p>
             <div class="person-chip-row" aria-label="公开记录中的角色"><span class="person-chip">{context.roleLabel}</span></div>
+            {context.contextNames.length > 0 && (
+              <div class="person-role-row" aria-label="本记录中的称呼">
+                {context.contextNames.map((name) => <span class="person-role">本记录称呼 · {name.label}</span>)}
+              </div>
+            )}
             <details class="person-event-disclosure">
               <summary><span>{context.entries.length} 条记录</span><span class="person-event-disclosure-label">展开</span></summary>
               <div class="person-event-list" aria-label="公开索引节点">

@@ -25,6 +25,10 @@ Source 作者可以用 `author.person` 指向 Global Person。只要提供这一
 
 Global Person 的公开称呼使用 `knownAs`，只收录经过人工确认、适合直接展示的昵称或语境称谓。姓氏切分、罗马字、拼写变体与其他只为检索容错存在的值进入 `searchTokens`，不得出现在人物页或人物卡上。Project 内的 `callNames` 只继承 `knownAs`；`searchTokens` 只进入搜索索引。
 
+Global Person 的页首摘要只允许来自审核后的 `contextProfile.deck` 或 `contextSummary`；两者都不存在时使用项目语境、公开记录和普通索引的中性计数。不得把最新 Project、Index 或 chronology 节点的局部摘要隐式提升为 Global 摘要。
+
+Public Record 的人物语义存入独立 `indexPeople` Appearance。局部称呼放在带 Evidence 节点的 `contextNames`，只在对应记录语境中展示和检索，不自动升级为 Global `knownAs`。每个已发布 Public Record 中出现的人物都必须拥有一条闭合的 Appearance；普通节目／舞台 Index 不强制套用对话语义。
+
 人物页以 Publication / Record 层的一次 appearance 为默认阅读单位。Event、Source item 等细节点必须归入对应 appearance，并默认折叠；只有读者主动展开时才显示。Index appearance 可以进入人物 chronology，但不改变既有 Project relevance 评分。
 
 Index 的时间方向由自身 `chronology.defaultOrder` 与 `chronology.reversible` 声明。节目或活动检索可以默认新到旧并允许切换；具有因果顺序的公开对话应默认旧到新，并可固定为不可逆的阅读序列。`source-sequence` 展示只呈现时间、作者、摘录、译文与来源状态，不重复 Entry 标题、摘要和逐条编辑说明。

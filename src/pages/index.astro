@@ -10,7 +10,7 @@ import IndexTeaser from '../components/home/IndexTeaser.astro';
 import HomeScene from '../components/home/HomeScene.astro';
 import { buildHomeProjection } from '../lib/homeProjection';
 
-const [posts, projects, indexes, tracks, events, threads, identities, personContexts] = await Promise.all([
+const [posts, projects, indexes, tracks, events, threads, identities, personContexts, indexPersonContexts] = await Promise.all([
   getCollection('posts'),
   getCollection('projects'),
   getCollection('indexes'),
@@ -19,6 +19,7 @@ const [posts, projects, indexes, tracks, events, threads, identities, personCont
   getCollection('projectThreads'),
   getCollection('people'),
   getCollection('projectPeople'),
+  getCollection('indexPeople'),
 ]);
 const projection = buildHomeProjection({
   posts,
@@ -29,6 +30,7 @@ const projection = buildHomeProjection({
   threads,
   identities,
   personContexts,
+  indexPersonContexts,
 });
 ---
 

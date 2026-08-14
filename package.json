@@ -12,6 +12,7 @@
     "validate:sources": "node scripts/validate-source-set.mjs",
     "validate:projects": "node scripts/validate-projects.mjs",
     "verify:person-model": "node scripts/verify-person-model-v2.mjs",
+    "verify:people-context": "node scripts/verify-people-context.mjs",
     "verify:documentation": "node scripts/verify-documentation-entrypoints.mjs",
     "verify:home-projection": "node scripts/verify-home-projection.mjs",
     "verify:index-model": "node scripts/verify-index-model.mjs",
@@ -39,7 +40,7 @@
     "editorial:apply-copy": "node scripts/apply-reader-copy.mjs",
     "verify:komachoe-20260309:publication": "node scripts/verify-komachoe-20260309-publication.mjs",
     "validate:regressions": "npm run verify:komatsu36:reader-copy && npm run verify:komatsu36:publication && npm run verify:komachoe:publication && npm run verify:komachoe-20260309:publication",
-    "validate": "npm run verify:project:presentation && npm run validate:projects && npm run verify:person-model && npm run verify:documentation && npm run build && npm run verify:home-projection && npm run verify:index-model && npm run verify:source-contract && npm run verify:people-routes && npm run verify:person-closure && npm run verify:site-metadata && npm run verify:global-search && npm run verify:relationship-log && npm run validate:publication && npm run validate:regressions",
+    "validate": "npm run verify:project:presentation && npm run validate:projects && npm run verify:person-model && npm run verify:people-context && npm run verify:documentation && npm run build && npm run verify:home-projection && npm run verify:index-model && npm run verify:source-contract && npm run verify:people-routes && npm run verify:person-closure && npm run verify:site-metadata && npm run verify:global-search && npm run verify:relationship-log && npm run validate:publication && npm run validate:regressions",
     "preview": "astro preview",
     "astro": "astro"
   },

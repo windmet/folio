@@ -3,15 +3,16 @@ import { getCollection } from 'astro:content';
 import PeopleLayout from '../../layouts/PeopleLayout.astro';
 import { buildGlobalPeopleProjection } from '../../lib/globalPeople';
 
-const [identities, projects, contexts, events, indexes, sources] = await Promise.all([
+const [identities, projects, contexts, events, indexes, indexContexts, sources] = await Promise.all([
   getCollection('people'),
   getCollection('projects'),
   getCollection('projectPeople'),
   getCollection('projectEvents'),
   getCollection('indexes'),
+  getCollection('indexPeople'),
   getCollection('sources'),
 ]);
-const people = buildGlobalPeopleProjection({ identities, projects, contexts, events, indexes, sources });
+const people = buildGlobalPeopleProjection({ identities, projects, contexts, events, indexes, indexContexts, sources });
 const contextCount = people.reduce((total, person) => total + person.contexts.length, 0);
 const indexAppearanceCount = people.reduce((total, person) => total + person.indexAppearances.length, 0);
 const boardPeople = [...people]

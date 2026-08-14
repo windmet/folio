@@ -57,6 +57,13 @@ export type GlobalPersonIndexAppearance = {
   index: CollectionEntry;
   date: string;
   roleLabel: string;
+  summary: string;
+  participation: string[];
+  contextNames: Array<{
+    label: string;
+    kind: 'situational';
+    evidence: string[];
+  }>;
   entries: Array<{
     id: string;
     title: string;
@@ -90,12 +97,31 @@ const byPublicationDate = (left: GlobalPersonContext, right: GlobalPersonContext
   right.project.data.publication.date.localeCompare(left.project.data.publication.date, 'en')
   || left.project.data.title.localeCompare(right.project.data.title, 'zh-CN');
 
+const INDEX_PARTICIPATION_LABELS: Record<string, string> = {
+  author: '发帖者',
+  'conversation-participant': '对话参与者',
+  referenced: '被提及',
+  'source-subject': '记录对象',
+};
+
+const neutralContextSummary = (projectCount: number, indexAppearances: GlobalPersonIndexAppearance[]) => {
+  const publicRecordCount = indexAppearances.filter((appearance) => appearance.index.data.kind === 'public-record').length;
+  const otherIndexCount = indexAppearances.length - publicRecordCount;
+  const parts = [
+    projectCount > 0 ? `${projectCount} 项项目语境` : '',
+    publicRecordCount > 0 ? `${publicRecordCount} 条公开记录` : '',
+    otherIndexCount > 0 ? `${otherIndexCount} 项公开索引` : '',
+  ].filter(Boolean);
+  return parts.length > 0 ? `当前前情帖收录 ${parts.join(' · ')}。` : '当前仅建立人物身份记录。';
+};
+
 export const buildGlobalPeopleProjection = ({
   identities,
   projects,
   contexts,
   events,
   indexes = [],
+  indexContexts = [],
   sources = [],
 }: {
   identities: CollectionEntry[];
@@ -103,6 +129,7 @@ export const buildGlobalPeopleProjection = ({
   contexts: CollectionEntry[];
   events: CollectionEntry[];
   indexes?: CollectionEntry[];
+  indexContexts?: CollectionEntry[];
   sources?: CollectionEntry[];
 }): GlobalPersonProjection[] => {
   const publishedProjects = projects.filter((project) => project.data.status === 'published');
@@ -110,6 +137,10 @@ export const buildGlobalPeopleProjection = ({
   const identitiesById = new Map(identities.map((identity) => [identity.id, identity]));
   const eventsById = new Map(events.map((event) => [event.id, event]));
   const sourcesById = new Map(sources.map((source) => [source.id, source]));
+  const indexContextsByPublicationAndPerson = new Map(indexContexts.map((context) => [
+    `${referenceId(context.data.index)}::${referenceId(context.data.person)}`,
+    context,
+  ]));
   const contextsByPerson = new Map<string, GlobalPersonContext[]>();
   const indexAppearancesByPerson = new Map<string, GlobalPersonIndexAppearance[]>();
 
@@ -163,10 +194,13 @@ export const buildGlobalPeopleProjection = ({
       }
     }
     for (const [personId, matchingEntries] of entriesByPerson) {
+      const indexContext = indexContextsByPublicationAndPerson.get(`${index.id}::${personId}`);
+      const scopedEntryIds = new Set(indexContext?.data.entries || matchingEntries.map((item) => item.id));
+      const scopedEntries = matchingEntries.filter((item) => scopedEntryIds.has(item.id));
       const entryTimestamp = (item: any) => item.source
         ? sourcesById.get(referenceId(item.source))?.data.publishedAt || item.date
         : item.date;
-      const sortedEntries = [...matchingEntries].sort((left, right) => {
+      const sortedEntries = [...scopedEntries].sort((left, right) => {
         const comparison = entryTimestamp(left).localeCompare(entryTimestamp(right), 'en');
         return index.data.chronology.defaultOrder === 'asc' ? comparison : -comparison;
       });
@@ -175,10 +209,16 @@ export const buildGlobalPeopleProjection = ({
         id: index.id,
         index,
         date: sortedEntries.at(-1)?.date || '',
-        roleLabel: sortedEntries.some((item) => {
-          const source = item.source ? sourcesById.get(referenceId(item.source)) : null;
-          return source && referenceId(source.data.author?.person) === personId;
-        }) ? '发帖者 / 对话参与者' : '对话参与者',
+        roleLabel: indexContext
+          ? indexContext.data.participation.map((kind: string) => INDEX_PARTICIPATION_LABELS[kind] || kind).join(' / ')
+          : (sortedEntries.some((item) => {
+            const source = item.source ? sourcesById.get(referenceId(item.source)) : null;
+            return source && referenceId(source.data.author?.person) === personId;
+          }) ? '发帖者 / 对话参与者' : '对话参与者'),
+        summary: indexContext?.data.summary
+          || `该人物在这项公开索引中出现于 ${sortedEntries.length} 个记录节点。`,
+        participation: indexContext?.data.participation || [],
+        contextNames: indexContext?.data.contextNames || [],
         entries: sortedEntries.map((item) => ({
           id: item.id,
           title: item.title,
@@ -218,9 +258,9 @@ export const buildGlobalPeopleProjection = ({
       reading: identity.data.reading,
       knownAs: identity.data.knownAs || [],
       searchTokens: identity.data.searchTokens || [],
-      contextSummary: identity.data.contextSummary
-        || personContexts[0]?.context.data.summary
-        || (indexAppearances[0] ? `在《${indexAppearances[0].index.data.title}》中作为${indexAppearances[0].roleLabel}出现。` : '当前仅建立人物身份记录。'),
+      contextSummary: identity.data.contextProfile?.deck
+        || identity.data.contextSummary
+        || neutralContextSummary(projectIds.size, indexAppearances),
       links: identity.data.links || [],
       contextProfile: identity.data.contextProfile,
       projectCount: projectIds.size,

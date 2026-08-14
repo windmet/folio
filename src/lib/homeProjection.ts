@@ -45,6 +45,7 @@ export const buildHomeProjection = ({
   threads,
   identities,
   personContexts,
+  indexPersonContexts = [],
 }: {
   posts: CollectionEntry[];
   projects: CollectionEntry[];
@@ -54,6 +55,7 @@ export const buildHomeProjection = ({
   threads: CollectionEntry[];
   identities: CollectionEntry[];
   personContexts: CollectionEntry[];
+  indexPersonContexts?: CollectionEntry[];
 }): HomeProjection => {
   const sortedPosts = [...posts].sort((left, right) => right.data.date.getTime() - left.data.date.getTime());
   const publishedProjects = projects
@@ -80,6 +82,7 @@ export const buildHomeProjection = ({
     contexts: personContexts,
     events,
     indexes: publishedIndexes,
+    indexContexts: indexPersonContexts,
   });
   const recentFeed = [
     ...publishedProjects.map((project) => ({

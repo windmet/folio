@@ -1,0 +1,22 @@
+{
+  "index": "2016-x-family-record",
+  "person": "hamano-daiki",
+  "summary": "濱野作为这组对话的起话者与主要参与者出现；“淳太妈妈”由他率先喊出，随后在家庭角色玩笑中成为“爸爸”。",
+  "participation": ["author", "conversation-participant"],
+  "contextNames": [
+    {
+      "label": "爸爸",
+      "kind": "situational",
+      "evidence": ["hamano-father", "hamano-family-meeting"]
+    }
+  ],
+  "entries": [
+    "hamano-chicken",
+    "terashima-hair",
+    "hamano-mama",
+    "hamano-confirm-mama",
+    "komatsu-princess",
+    "hamano-father",
+    "hamano-family-meeting"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "index": "2016-x-family-record",
+  "person": "terashima-junta",
+  "summary": "从鸡肉话题接入对话，并回应“淳太妈妈”的称呼；随后成为这组家庭角色玩笑中的“妈妈”。",
+  "participation": ["conversation-participant"],
+  "contextNames": [
+    {
+      "label": "淳太ママ",
+      "kind": "situational",
+      "evidence": ["hamano-mama", "terashima-mama", "hamano-confirm-mama"]
+    },
+    {
+      "label": "妈妈",
+      "kind": "situational",
+      "evidence": ["hamano-father"]
+    }
+  ],
+  "entries": [
+    "terashima-hair",
+    "hamano-mama",
+    "terashima-mama",
+    "hamano-confirm-mama",
+    "hamano-father"
+  ]
+}

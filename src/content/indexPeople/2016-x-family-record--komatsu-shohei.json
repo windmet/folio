@@ -1,0 +1,26 @@
+{
+  "index": "2016-x-family-record",
+  "person": "komatsu-shohei",
+  "summary": "后半加入，却发现自己已经在一场根本没参加的家庭会议中被决定成了“公主”，并以对此吐槽收尾。",
+  "participation": ["conversation-participant"],
+  "contextNames": [
+    {
+      "label": "公主",
+      "kind": "situational",
+      "evidence": [
+        "komatsu-princess",
+        "hamano-father",
+        "komatsu-why-princess",
+        "hamano-family-meeting",
+        "komatsu-no-meeting"
+      ]
+    }
+  ],
+  "entries": [
+    "komatsu-princess",
+    "hamano-father",
+    "komatsu-why-princess",
+    "hamano-family-meeting",
+    "komatsu-no-meeting"
+  ]
+}

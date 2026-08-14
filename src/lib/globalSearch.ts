@@ -32,6 +32,7 @@ export const buildGlobalSearchIndex = ({
   events,
   people,
   personContexts,
+  indexPersonContexts = [],
   indexes,
   posts,
 }: {
@@ -39,6 +40,7 @@ export const buildGlobalSearchIndex = ({
   events: CollectionEntry[];
   people: CollectionEntry[];
   personContexts: CollectionEntry[];
+  indexPersonContexts?: CollectionEntry[];
   indexes: CollectionEntry[];
   posts: CollectionEntry[];
 }): GlobalSearchItem[] => {
@@ -48,9 +50,22 @@ export const buildGlobalSearchIndex = ({
   const identitiesById = new Map(people.map((person) => [person.id, person]));
   const contextsByPerson = new Map<string, CollectionEntry[]>();
   const publishedIndexes = indexes.filter((entry) => entry.data.status === 'published');
-  const indexPersonIds = new Set(publishedIndexes.flatMap((entry) => entry.data.entries)
-    .flatMap((item: any) => item.people || [])
-    .map(referenceId));
+  const indexAppearancesByPerson = new Map<string, Set<string>>();
+  for (const index of publishedIndexes) {
+    for (const personId of new Set<string>(index.data.entries.flatMap((item: any) => item.people || []).map(referenceId))) {
+      const appearances = indexAppearancesByPerson.get(personId) || new Set<string>();
+      appearances.add(index.id);
+      indexAppearancesByPerson.set(personId, appearances);
+    }
+  }
+  const indexPersonIds = new Set(indexAppearancesByPerson.keys());
+  const indexContextsByPerson = new Map<string, CollectionEntry[]>();
+  for (const context of indexPersonContexts) {
+    const identityId = referenceId(context.data.person);
+    const list = indexContextsByPerson.get(identityId) || [];
+    list.push(context);
+    indexContextsByPerson.set(identityId, list);
+  }
 
   for (const context of personContexts) {
     const identityId = referenceId(context.data.person);
@@ -111,14 +126,27 @@ export const buildGlobalSearchIndex = ({
   for (const person of people) {
     const contexts = contextsByPerson.get(person.id) || [];
     const publishedContexts = contexts.filter((context) => projectsById.has(referenceId(context.data.project)));
+    const publishedIndexContexts = (indexContextsByPerson.get(person.id) || [])
+      .filter((context) => publishedIndexes.some((index) => index.id === referenceId(context.data.index)));
     if (!publishedContexts.length && !indexPersonIds.has(person.id)) continue;
     const contextSummaries = publishedContexts.map((context) => context.data.summary);
+    const indexContextSummaries = publishedIndexContexts.map((context) => context.data.summary);
+    const appearanceIndexIds = indexAppearancesByPerson.get(person.id) || new Set<string>();
+    const publicRecordCount = publishedIndexes.filter((index) => appearanceIndexIds.has(index.id) && index.data.kind === 'public-record').length;
+    const otherIndexCount = appearanceIndexIds.size - publicRecordCount;
+    const archiveCounts = [
+      publishedContexts.length > 0 ? `${publishedContexts.length} 项项目语境` : '',
+      publicRecordCount > 0 ? `${publicRecordCount} 条公开记录` : '',
+      otherIndexCount > 0 ? `${otherIndexCount} 项公开索引` : '',
+    ].filter(Boolean);
     items.push({
       kind: 'person',
       id: person.id,
       label: 'Person · Global identity',
       title: person.data.displayName,
-      summary: person.data.contextSummary || person.data.contextProfile?.deck || contextSummaries[0] || '公开记录人物索引',
+      summary: person.data.contextProfile?.deck
+        || person.data.contextSummary
+        || (archiveCounts.length > 0 ? `当前前情帖收录 ${archiveCounts.join(' · ')}。` : '公开记录人物索引'),
       href: `/people/${person.id}/`,
       searchText: normalizeProjectSearchText(flattenText(
         person.data.displayName,
@@ -127,6 +155,8 @@ export const buildGlobalSearchIndex = ({
         person.data.searchTokens,
         person.data.contextProfile,
         contextSummaries,
+        indexContextSummaries,
+        publishedIndexContexts.flatMap((context) => context.data.contextNames || []).map((name) => name.label),
       )),
     });
   }

@@ -32,6 +32,13 @@ assert(payload.items.every((item) => typeof item.href === 'string' && item.href.
 assert(payload.items.some((item) => item.kind === 'event' && item.href.includes('view=timeline&event=')), 'Event results must deep-link to Project timeline');
 assert(payload.items.some((item) => item.kind === 'person' && item.id === 'hamano-daiki'),
   'Index-only Global Person must remain searchable');
+const hamano = payload.items.find((item) => item.kind === 'person' && item.id === 'hamano-daiki');
+const ito = payload.items.find((item) => item.kind === 'person' && item.id === 'ito-tomohiro');
+assert(hamano?.summary === '当前前情帖收录 1 条公开记录。',
+  'Index-only Person search result must use a neutral global summary');
+assert(hamano?.searchText.includes('爸爸'), 'scoped context names must remain searchable within their Appearance');
+assert(ito?.summary === '当前前情帖收录 3 项项目语境 · 1 项公开索引。',
+  'newest Project summary must not leak into the Global Person search result');
 
 const searchHtml = read('dist/search/index.html');
 for (const contract of ['<title>全局搜索 — 前情帖</title>', 'noindex, nofollow', 'global-search-input']) {
