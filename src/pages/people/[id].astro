@@ -5,14 +5,15 @@ import { buildGlobalPeopleProjection } from '../../lib/globalPeople';
 import { PERSON_ROLE_LABELS } from '../../lib/globalPeople';
 
 export async function getStaticPaths() {
-  const [identities, projects, contexts, events, indexes] = await Promise.all([
+  const [identities, projects, contexts, events, indexes, sources] = await Promise.all([
     getCollection('people'),
     getCollection('projects'),
     getCollection('projectPeople'),
     getCollection('projectEvents'),
     getCollection('indexes'),
+    getCollection('sources'),
   ]);
-  const people = buildGlobalPeopleProjection({ identities, projects, contexts, events, indexes });
+  const people = buildGlobalPeopleProjection({ identities, projects, contexts, events, indexes, sources });
   return people.map((person) => ({
     params: { id: person.id },
     props: { person },
@@ -27,9 +28,11 @@ const formatTime = (milliseconds: number) => {
   const seconds = total % 60;
   return [hours, minutes, seconds].map((part) => String(part).padStart(2, '0')).join(':');
 };
-const DIRECT_EVENT_LIMIT = 3;
 const PROJECT_TIMELINE_LIMIT = 20;
 const formatDate = (date: string) => date.replaceAll('-', '.');
+const formatRecordTime = (timestamp: string) => timestamp.includes('T')
+  ? new Intl.DateTimeFormat('zh-CN', { timeZone: 'Asia/Tokyo', hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date(timestamp))
+  : formatDate(timestamp);
 ---
 
 <PeopleLayout title={person.displayName} description={`${person.displayName} 的跨项目人物档案`}>
@@ -48,23 +51,25 @@ const formatDate = (date: string) => date.replaceAll('-', '.');
           {person.contextProfile.scopeNote && <p>{person.contextProfile.scopeNote}</p>}
         </div>
       ) : (
-        <p class="person-empty-note">当前没有独立人物简介；以下内容仅展示已经落在各个项目里的语境。</p>
+        <div class="person-context-profile"><p>{person.contextSummary}</p></div>
       )}
       {(person.links || []).length > 0 && (
         <div class="person-links" aria-label="公开链接">
           {person.links.map((link: any) => <a class="person-external-link" href={link.url} target="_blank" rel="noreferrer">{link.label} →</a>)}
         </div>
       )}
-      {person.aliases.length > 0 && (
+      {person.knownAs.length > 0 && (
         <div class="person-aliases" aria-label="常用别名">
           <span>常用别名</span>
-          {person.aliases.map((alias) => <span>{alias}</span>)}
+          {person.knownAs.map((name) => <span>{name}</span>)}
         </div>
       )}
       <div class="person-context-overview" aria-label="人物出现摘要">
         <span>项目档案 {person.projectCount}</span>
         <span aria-hidden="true">·</span>
         <span>公开索引 {person.indexCount}</span>
+        <span aria-hidden="true">·</span>
+        <span>相关节点 {person.nodeCount}</span>
         {person.presence.length > 0 && <span aria-hidden="true">·</span>}
         {person.presence.length > 0 && <span>{person.presence.map((item) => item.label).join(' / ')}</span>}
       </div>
@@ -108,17 +113,7 @@ const formatDate = (date: string) => date.replaceAll('-', '.');
                 ))}
               </div>
             )}
-            {context.events.length > 0 && context.events.length <= DIRECT_EVENT_LIMIT && (
-              <div class="person-event-list" aria-label="关联节点">
-                {context.events.map((anchor) => (
-                  <a class="person-event-link" href={anchor.href}>
-                    <time>{formatTime(anchor.event.data.startMs)}</time>
-                    <span>{anchor.event.data.title}</span>
-                  </a>
-                ))}
-              </div>
-            )}
-            {context.events.length > DIRECT_EVENT_LIMIT && context.events.length <= PROJECT_TIMELINE_LIMIT && (
+            {context.events.length > 0 && context.events.length <= PROJECT_TIMELINE_LIMIT && (
               <details class="person-event-disclosure">
                 <summary><span>{context.events.length} 个相关节点</span><span class="person-event-disclosure-label">展开</span></summary>
                 <div class="person-event-list" aria-label="关联节点">
@@ -150,14 +145,18 @@ const formatDate = (date: string) => date.replaceAll('-', '.');
               </div>
             </header>
             <p class="person-context-summary">该人物在这项公开索引中出现于 {context.entries.length} 个记录节点。</p>
-            <div class="person-event-list" aria-label="公开索引节点">
-              {context.entries.map((item) => (
-                <a class="person-event-link" href={item.href}>
-                  <time>{formatDate(item.date)}</time>
-                  <span>{item.title}</span>
-                </a>
-              ))}
-            </div>
+            <div class="person-chip-row" aria-label="公开记录中的角色"><span class="person-chip">{context.roleLabel}</span></div>
+            <details class="person-event-disclosure">
+              <summary><span>{context.entries.length} 条记录</span><span class="person-event-disclosure-label">展开</span></summary>
+              <div class="person-event-list" aria-label="公开索引节点">
+                {context.entries.map((item) => (
+                  <a class="person-event-link" href={item.href}>
+                    <time>{formatRecordTime(item.timestamp)}</time>
+                    <span>{item.title}</span>
+                  </a>
+                ))}
+              </div>
+            </details>
           </article>
         )) : (
           <p class="person-empty-note">该人物目前还没有可公开展示的档案语境。</p>

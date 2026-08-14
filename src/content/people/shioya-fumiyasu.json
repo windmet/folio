@@ -1,9 +1,7 @@
 {
   "displayName": "汐谷文康",
-  "aliases": [
-    "ふーみん",
-    "汐谷"
-  ],
+  "knownAs": ["ふーみん"],
+  "searchTokens": ["汐谷", "shioya-fumiyasu", "shioya fumiyasu"],
   "links": [],
   "reading": "しおや ふみよし"
 }

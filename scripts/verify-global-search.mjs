@@ -30,6 +30,8 @@ assert(!payload.items.some((item) => item.kind === 'post'), 'empty legacy Post c
 assert(payload.items.every((item) => payload.scope.includes(item.kind)), 'search payload contains an unapproved kind');
 assert(payload.items.every((item) => typeof item.href === 'string' && item.href.startsWith('/')), 'search items must have internal hrefs');
 assert(payload.items.some((item) => item.kind === 'event' && item.href.includes('view=timeline&event=')), 'Event results must deep-link to Project timeline');
+assert(payload.items.some((item) => item.kind === 'person' && item.id === 'hamano-daiki'),
+  'Index-only Global Person must remain searchable');
 
 const searchHtml = read('dist/search/index.html');
 for (const contract of ['<title>全局搜索 — 前情帖</title>', 'noindex, nofollow', 'global-search-input']) {

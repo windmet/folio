@@ -34,10 +34,10 @@ const peopleFiles = await listFiles('people', '.json');
 const peopleEntries = await Promise.all(peopleFiles.map(async (name) => {
   const data = await readJson(path.join(projectRoot, 'people', name));
   const identity = await readJson(path.resolve('src/content/people', `${data.person}.json`));
-  const { aliases = [], ...identityData } = identity;
+  const { knownAs = [], searchTokens = [], ...identityData } = identity;
   return {
     id: name.replace(/\.json$/, ''),
-    data: { ...data, ...identityData, callNames: aliases, searchAliases: [] },
+    data: { ...data, ...identityData, callNames: knownAs, searchAliases: searchTokens },
   };
 }));
 const threadCount = threadEntries.length;

@@ -47,6 +47,10 @@ export const buildGlobalSearchIndex = ({
   const contextsById = new Map(personContexts.map((context) => [context.id, context]));
   const identitiesById = new Map(people.map((person) => [person.id, person]));
   const contextsByPerson = new Map<string, CollectionEntry[]>();
+  const publishedIndexes = indexes.filter((entry) => entry.data.status === 'published');
+  const indexPersonIds = new Set(publishedIndexes.flatMap((entry) => entry.data.entries)
+    .flatMap((item: any) => item.people || [])
+    .map(referenceId));
 
   for (const context of personContexts) {
     const identityId = referenceId(context.data.person);
@@ -99,7 +103,7 @@ export const buildGlobalSearchIndex = ({
         event.data.title,
         event.data.summary,
         event.data.tags,
-        relatedPeople.map((person: any) => [person.data.displayName, person.data.reading, person.data.aliases]),
+        relatedPeople.map((person: any) => [person.data.displayName, person.data.reading, person.data.knownAs, person.data.searchTokens]),
       )),
     });
   }
@@ -107,26 +111,27 @@ export const buildGlobalSearchIndex = ({
   for (const person of people) {
     const contexts = contextsByPerson.get(person.id) || [];
     const publishedContexts = contexts.filter((context) => projectsById.has(referenceId(context.data.project)));
-    if (!publishedContexts.length) continue;
+    if (!publishedContexts.length && !indexPersonIds.has(person.id)) continue;
     const contextSummaries = publishedContexts.map((context) => context.data.summary);
     items.push({
       kind: 'person',
       id: person.id,
       label: 'Person · Global identity',
       title: person.data.displayName,
-      summary: person.data.contextProfile?.deck || contextSummaries[0] || '跨档案人物索引',
+      summary: person.data.contextSummary || person.data.contextProfile?.deck || contextSummaries[0] || '公开记录人物索引',
       href: `/people/${person.id}/`,
       searchText: normalizeProjectSearchText(flattenText(
         person.data.displayName,
         person.data.reading,
-        person.data.aliases,
+        person.data.knownAs,
+        person.data.searchTokens,
         person.data.contextProfile,
         contextSummaries,
       )),
     });
   }
 
-  for (const entry of indexes.filter((item) => item.data.status === 'published')) {
+  for (const entry of publishedIndexes) {
     const latestDate = [...entry.data.entries]
       .map((item: any) => item.date)
       .sort((left, right) => right.localeCompare(left, 'en'))[0];
@@ -147,7 +152,7 @@ export const buildGlobalSearchIndex = ({
         entry.data.homeDeck,
         entry.data.aliases,
         entry.data.entries.map((item: any) => [item.title, item.summary]),
-        entryPeople.map((person: any) => [person.data.displayName, person.data.reading, person.data.aliases]),
+        entryPeople.map((person: any) => [person.data.displayName, person.data.reading, person.data.knownAs, person.data.searchTokens]),
       )),
     });
   }

@@ -41,7 +41,9 @@ const people = defineCollection({
   schema: z.object({
     displayName: z.string(),
     reading: z.string().optional(),
-    aliases: z.array(z.string()).default([]),
+    knownAs: z.array(z.string()).default([]),
+    searchTokens: z.array(z.string()).default([]),
+    contextSummary: z.string().optional(),
     links: z.array(personLink).default([]),
     contextProfile: z.object({
       deck: z.string(),

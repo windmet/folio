@@ -1,7 +1,6 @@
 {
   "displayName": "SA.KANA先生",
-  "aliases": [
-    "さかな先生"
-  ],
+  "knownAs": ["さかな先生"],
+  "searchTokens": ["sa-kana", "sa kana"],
   "links": []
 }

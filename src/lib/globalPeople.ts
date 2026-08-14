@@ -56,10 +56,12 @@ export type GlobalPersonIndexAppearance = {
   id: string;
   index: CollectionEntry;
   date: string;
+  roleLabel: string;
   entries: Array<{
     id: string;
     title: string;
     date: string;
+    timestamp: string;
     href: string;
   }>;
 };
@@ -69,11 +71,14 @@ export type GlobalPersonProjection = {
   identity: CollectionEntry;
   displayName: string;
   reading?: string;
-  aliases: string[];
+  knownAs: string[];
+  searchTokens: string[];
+  contextSummary: string;
   links: any[];
   contextProfile?: { deck: string; scopeNote?: string };
   projectCount: number;
   indexCount: number;
+  nodeCount: number;
   contexts: GlobalPersonContext[];
   indexAppearances: GlobalPersonIndexAppearance[];
   chronology: Array<GlobalPersonContext | GlobalPersonIndexAppearance>;
@@ -91,17 +96,20 @@ export const buildGlobalPeopleProjection = ({
   contexts,
   events,
   indexes = [],
+  sources = [],
 }: {
   identities: CollectionEntry[];
   projects: CollectionEntry[];
   contexts: CollectionEntry[];
   events: CollectionEntry[];
   indexes?: CollectionEntry[];
+  sources?: CollectionEntry[];
 }): GlobalPersonProjection[] => {
   const publishedProjects = projects.filter((project) => project.data.status === 'published');
   const projectsById = new Map(publishedProjects.map((project) => [project.id, project]));
   const identitiesById = new Map(identities.map((identity) => [identity.id, identity]));
   const eventsById = new Map(events.map((event) => [event.id, event]));
+  const sourcesById = new Map(sources.map((source) => [source.id, source]));
   const contextsByPerson = new Map<string, GlobalPersonContext[]>();
   const indexAppearancesByPerson = new Map<string, GlobalPersonIndexAppearance[]>();
 
@@ -155,16 +163,27 @@ export const buildGlobalPeopleProjection = ({
       }
     }
     for (const [personId, matchingEntries] of entriesByPerson) {
-      const sortedEntries = [...matchingEntries].sort((left, right) => left.date.localeCompare(right.date, 'en'));
+      const entryTimestamp = (item: any) => item.source
+        ? sourcesById.get(referenceId(item.source))?.data.publishedAt || item.date
+        : item.date;
+      const sortedEntries = [...matchingEntries].sort((left, right) => {
+        const comparison = entryTimestamp(left).localeCompare(entryTimestamp(right), 'en');
+        return index.data.chronology.defaultOrder === 'asc' ? comparison : -comparison;
+      });
       const appearance: GlobalPersonIndexAppearance = {
         kind: 'index',
         id: index.id,
         index,
         date: sortedEntries.at(-1)?.date || '',
+        roleLabel: sortedEntries.some((item) => {
+          const source = item.source ? sourcesById.get(referenceId(item.source)) : null;
+          return source && referenceId(source.data.author?.person) === personId;
+        }) ? '发帖者 / 对话参与者' : '对话参与者',
         entries: sortedEntries.map((item) => ({
           id: item.id,
           title: item.title,
           date: item.date,
+          timestamp: entryTimestamp(item),
           href: `/indexes/${index.data.slug}/#${item.id}`,
         })),
       };
@@ -185,6 +204,8 @@ export const buildGlobalPeopleProjection = ({
       return rightDate.localeCompare(leftDate, 'en');
     });
     const projectIds = new Set(personContexts.map((context) => context.project.id));
+    const nodeCount = personContexts.reduce((total, context) => total + context.events.length, 0)
+      + indexAppearances.reduce((total, appearance) => total + appearance.entries.length, 0);
     const presence: Array<{ kind: string; label: string }> = Array.from(
       new Map<string, { kind: string; label: string }>(
         personContexts.flatMap((context) => context.presence).map((item) => [item.kind, item]),
@@ -195,11 +216,16 @@ export const buildGlobalPeopleProjection = ({
       identity,
       displayName: identity.data.displayName,
       reading: identity.data.reading,
-      aliases: identity.data.aliases || [],
+      knownAs: identity.data.knownAs || [],
+      searchTokens: identity.data.searchTokens || [],
+      contextSummary: identity.data.contextSummary
+        || personContexts[0]?.context.data.summary
+        || (indexAppearances[0] ? `在《${indexAppearances[0].index.data.title}》中作为${indexAppearances[0].roleLabel}出现。` : '当前仅建立人物身份记录。'),
       links: identity.data.links || [],
       contextProfile: identity.data.contextProfile,
       projectCount: projectIds.size,
       indexCount: indexAppearances.length,
+      nodeCount,
       contexts: personContexts,
       indexAppearances,
       chronology,

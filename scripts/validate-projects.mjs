@@ -281,11 +281,12 @@ for (const projectDir of projectDirs) {
 }
 
 for (const { id, data } of globalPeople) {
-  const aliases = data.aliases || [];
-  if (new Set(aliases).size !== aliases.length) errors.push(`${id}: global aliases contain duplicate values`);
-  if (aliases.some((value) => /(?:さん|くん|君)$/.test(value))) {
-    errors.push(`${id}: honorific variants do not belong in global aliases`);
-  }
+  const knownAs = data.knownAs || [];
+  const searchTokens = data.searchTokens || [];
+  if ('aliases' in data) errors.push(`${id}: legacy aliases must be split into knownAs and searchTokens`);
+  if (new Set(knownAs).size !== knownAs.length) errors.push(`${id}: knownAs contains duplicate values`);
+  if (new Set(searchTokens).size !== searchTokens.length) errors.push(`${id}: searchTokens contains duplicate values`);
+  if (knownAs.some((value) => searchTokens.includes(value))) errors.push(`${id}: visible knownAs must not be duplicated in searchTokens`);
   for (const link of data.links || []) {
     if (link.kind === 'social' && !link.platform) errors.push(`${id}: social link requires platform`);
   }

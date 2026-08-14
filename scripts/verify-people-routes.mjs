@@ -17,17 +17,23 @@ assert(helperSource.includes('buildGlobalPeopleProjection'), 'global People proj
 assert(helperSource.includes('indexAppearancesByPerson'), 'global People projection must aggregate Index appearances');
 assert(indexSource.includes('buildGlobalPeopleProjection'), 'People index must consume the global projection');
 assert(detailSource.includes('getStaticPaths'), 'People detail route must have static paths');
-assert(detailSource.includes('person-empty-note'), 'People detail route must handle absent contextProfile');
+assert(detailSource.includes('person.contextSummary'), 'People detail route must provide a concise fallback context summary');
 assert(detailSource.includes('data-person-chronology'), 'People detail route must expose the chronology reading mode');
-assert(detailSource.includes('DIRECT_EVENT_LIMIT'), 'People detail route must define the direct event disclosure threshold');
 assert(detailSource.includes('PROJECT_TIMELINE_LIMIT'), 'People detail route must redirect extreme event sets to Project Timeline');
+assert(!detailSource.includes('person.aliases'), 'People detail must not render legacy search aliases');
+assert(detailSource.includes('person.knownAs'), 'People detail must render only reviewed knownAs values');
 
 const ids = (await readdir(peopleRoot)).filter((name) => name.endsWith('.json')).map((name) => name.replace(/\.json$/, ''));
 const indexHtml = await read(path.join(distPeopleRoot, 'index.html'));
 const indexLinks = [...indexHtml.matchAll(/href="\/people\/([^/]+)\/"/g)].map((match) => match[1]);
-assert(indexLinks.length === ids.length, `People index must expose ${ids.length} detail links, found ${indexLinks.length}`);
 assert(indexLinks.includes('ito-tomohiro'), 'People index fixture link for ito-tomohiro is missing');
-assert((indexHtml.match(/class="person-card"/g) || []).length === ids.length, 'People index card count mismatch');
+assert((indexHtml.match(/data-directory-person=/g) || []).length === ids.length, 'complete People directory count mismatch');
+assert((indexHtml.match(/data-featured-person=/g) || []).length === 10, 'Featured People board must use the bounded ten-person template');
+assert(indexHtml.includes('data-person-tier="hero"') && indexHtml.includes('data-person-tier="major"')
+  && indexHtml.includes('data-person-tier="mid"') && indexHtml.includes('data-person-tier="compact"'),
+  'Featured People board tier contract is incomplete');
+assert(indexHtml.includes('data-featured-person="komatsu-shohei"'), 'Komatsu must remain the current archive-density hero fixture');
+assert(!indexSource.includes('已收录'), 'People cards must not repeat generic archive instructions');
 
 const itoHtml = await read(path.join(distPeopleRoot, 'ito-tomohiro/index.html'));
 const itoProjectLinks = [...itoHtml.matchAll(/href="\/projects\/([^/]+)\/"/g)].map((match) => match[1]);
@@ -44,7 +50,7 @@ assert(itoHtml.includes('data-person-order="desc"') && itoHtml.includes('data-pe
   'People detail must expose both chronology directions');
 assert(itoHtml.includes('class="person-event-disclosure"'), 'Ito fixture must render its four-event context as collapsed disclosure');
 assert(itoHtml.includes('view=timeline&amp;event='), 'People detail must expose event deep links through the project contract');
-assert(itoHtml.includes('person-empty-note'), 'Ito detail must state that no independent profile is present');
+assert(itoHtml.includes('person-context-profile'), 'Ito detail must render a concise derived context summary');
 
 const komatsuHtml = await read(path.join(distPeopleRoot, 'komatsu-shohei/index.html'));
 assert(komatsuHtml.includes('class="person-event-overflow"'), 'Komatsu host fixture must use the extreme-event Project Timeline handoff');
@@ -54,8 +60,14 @@ const hamanoHtml = await read(path.join(distPeopleRoot, 'hamano-daiki/index.html
 assert(hamanoHtml.includes('项目档案 0') && hamanoHtml.includes('公开索引 1'),
   'Hamano fixture must distinguish zero Project contexts from one Index appearance');
 assert(hamanoHtml.includes('data-person-context-kind="index"'), 'Hamano detail must render an Index chronology item');
+assert(hamanoHtml.includes('class="person-event-disclosure"') && !hamanoHtml.includes('class="person-event-list" aria-label="公开索引节点" open'),
+  'Hamano Index nodes must remain grouped behind a closed disclosure');
 assert(hamanoHtml.includes('href="/indexes/2016-x-family-record/"'), 'Hamano detail must link to the public record');
 assert(!hamanoHtml.includes('/people/hama-kento/'), 'Hamano detail must not collapse into Hama Kento');
+
+const hamaHtml = await read(path.join(distPeopleRoot, 'hama-kento/index.html'));
+assert(hamaHtml.includes('濱ちゃん') && hamaHtml.includes('ハマ') && !hamaHtml.includes('<span>濱</span>'),
+  'People detail must show reviewed names but hide surname-only search tokens');
 
 if (errors.length) {
   console.error('Global People route verification failed:');

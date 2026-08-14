@@ -25,7 +25,7 @@ for (const { id, data: source } of sources) {
   const personId = source.author.person;
   const person = people.get(personId);
   assert(personId && person, `${id}: author.person must resolve to a Global Person`);
-  assert(person && [person.displayName, ...(person.aliases || [])].includes(source.author.name),
+  assert(person && [person.displayName, ...(person.knownAs || [])].includes(source.author.name),
     `${id}: author.name must exactly match the referenced Person displayName or alias`);
 }
 

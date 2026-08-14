@@ -63,15 +63,15 @@ export const hydrateProjectPeople = (
     const identityId = referenceId(context.data.person);
     const identity = identitiesById.get(identityId);
     if (!identity) throw new Error(`Missing global Person ${identityId} for ${context.id}`);
-    const aliases = identity.data.aliases || [];
+    const knownAs = identity.data.knownAs || [];
     return {
       ...context,
       data: {
         ...context.data,
         displayName: identity.data.displayName,
         reading: identity.data.reading,
-        callNames: aliases,
-        searchAliases: [],
+        callNames: knownAs,
+        searchAliases: identity.data.searchTokens || [],
         projectContext: context.data.summary,
         participation: participationFromContext(context.data),
         links: identity.data.links || [],

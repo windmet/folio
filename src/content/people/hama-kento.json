@@ -1,10 +1,7 @@
 {
   "displayName": "濱健人",
-  "aliases": [
-    "濱ちゃん",
-    "ハマ",
-    "濱"
-  ],
+  "knownAs": ["濱ちゃん", "ハマ"],
+  "searchTokens": ["濱", "hama-kento", "hama kento"],
   "links": [],
   "reading": "はま けんと"
 }

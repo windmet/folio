@@ -33,6 +33,14 @@ for (const legacyId of ['ito', 'seiten', 'ham-kento']) {
 for (const canonicalId of ['ito-tomohiro', 'kiyoten', 'hama-kento', 'hamano-daiki']) {
   assert(globalIds.has(canonicalId), `canonical global Person is missing: ${canonicalId}`);
 }
+for (const file of globalFiles) {
+  const person = await readJson(path.join(root, 'people', file));
+  assert(!('aliases' in person), `${file}: legacy aliases field must not remain`);
+  assert(Array.isArray(person.knownAs) && Array.isArray(person.searchTokens), `${file}: knownAs/searchTokens split is incomplete`);
+}
+const globalHama = await readJson(path.join(root, 'people', 'hama-kento.json'));
+assert(JSON.stringify(globalHama.knownAs) === JSON.stringify(['濱ちゃん', 'ハマ']) && globalHama.searchTokens.includes('濱'),
+  'Hama fixture must keep reviewed nicknames visible and surname token private');
 
 const expectedContextCounts = new Map([
   ['komatsu36', 18],
