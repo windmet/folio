@@ -2,7 +2,7 @@
 
 > 核对日期：2026-08-14
 > review branch：`codex/publication-metadata-v2`
-> HEAD：`bb2a4294384e4963ff9c66bcf8062ee9766115be`
+> HEAD：`37be32934cb37c230e95826af7115b1bd73e1a8c`
 
 这是一份发布前核对记录，不等同于 production-accepted，也不授权 merge、deploy 或开放 robots。
 
@@ -10,7 +10,7 @@
 
 - 本地 `npm run validate`：通过。
 - 本地 `npm exec -- tsc --noEmit`：通过。
-- GitHub Actions：`Validate archive site` run [31783018094](https://github.com/windmet/folio/actions/runs/31783018094) 成功；包含依赖安装、production dependency audit、repository validation 和 TypeScript check。
+- GitHub Actions：`Validate archive site` run [31783271156](https://github.com/windmet/folio/actions/runs/31783271156) 成功；包含依赖安装、production dependency audit、repository validation 和 TypeScript check。
 - review 分支已推送到 GitHub；未创建 PR、未 merge、未触发 Cloudflare deployment。
 - 当前远端 deployments API：0 条。
 
