@@ -13,7 +13,7 @@ const slug = process.argv[2];
 // semantic expansion passes. New projects first record a baseline and receive
 // a separate evidence-based budget later.
 // CTX-02A adds canonical global Person links to the Project People surface.
-const rawLimitBytes = slug === 'komatsu36' ? 379 * 1024 : null;
+const rawLimitBytes = slug === 'komatsu36' ? 380 * 1024 : null;
 
 const fail = (message) => {
   console.error(`Payload audit failed: ${message}`);

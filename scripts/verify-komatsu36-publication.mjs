@@ -454,7 +454,10 @@ const outputBytes = (await stat(outputFile)).size;
 // CTX-02A adds canonical global Person links to the Project People cards and
 // their detail panel. Keep the resulting ceiling explicit rather than silently
 // accepting arbitrary growth.
-const maxOutputBytes = 379 * 1024;
+// PUB-02D adds the shared publication metadata head (canonical, OG, favicon,
+// and launch-safe robots) to every route; retain the reviewed payload gate with
+// the smallest round-number adjustment that covers that shared head.
+const maxOutputBytes = 380 * 1024;
 if (outputBytes > maxOutputBytes) {
   errors.push(`project HTML is ${outputBytes} bytes; budget is ${maxOutputBytes} bytes`);
 }

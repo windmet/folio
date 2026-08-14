@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { SITE_BRAND, SITE_NAME } from '../../lib/siteMetadata';
+---
+
+<BaseLayout
+  title="关于前情帖"
+  description="前情帖的收录对象、来源边界、编辑方法、治理方式与纠错联系。"
+>
+  <header class="not-prose mb-12 text-center">
+    <p class="text-xs tracking-[0.3em] text-stone-400 uppercase">{SITE_BRAND}</p>
+    <h1 class="text-2xl font-serif font-normal text-stone-800 tracking-wide mt-4 mb-3">关于{SITE_NAME}</h1>
+    <p class="text-sm text-stone-500 leading-loose max-w-xl mx-auto">
+      一份围绕公开广播、活动与人物语境整理的非官方档案。为了看懂这一句话，我们往前翻了很久。
+    </p>
+  </header>
+
+  <section aria-labelledby="about-subject">
+    <h2 id="about-subject">Subject · 收录对象</h2>
+    <p>前情帖目前以小松昌平相关公开内容为主要对象；其他人物只在理解相关材料所需的范围内进入档案。</p>
+  </section>
+
+  <section aria-labelledby="about-source">
+    <h2 id="about-source">Source · 来源</h2>
+    <p>我们优先指向仍可访问的一手公开媒体，记录来源与访问路径，不以重新托管媒体为目标。页面中的外部链接仍属于各自平台与权利方。</p>
+  </section>
+
+  <section aria-labelledby="about-editorial">
+    <h2 id="about-editorial">Editorial · 编辑原则</h2>
+    <p>页面尽量区分事实、来源、编辑连接与推断；不为了填满页面制造 certainty。人物、事件和时间线只在有对应档案或来源支撑时进入读者层。</p>
+  </section>
+
+  <section aria-labelledby="about-governance">
+    <h2 id="about-governance">Governance · 维护方式</h2>
+    <p>这是个人编辑项目，不是开放投稿社区。结构化内容会先经过来源核对与页面验证，再进入发布分支；工程工作流由 {SITE_BRAND} 提供支持。</p>
+  </section>
+
+  <section aria-labelledby="about-corrections">
+    <h2 id="about-corrections">Corrections · 纠错</h2>
+    <p>如果你发现人名、日期、来源链接或语境说明有误，欢迎提供具体页面、时间点与可核对来源。我们会保留修订记录，并在无法确认时明确标注不确定性。</p>
+  </section>
+
+  <section aria-labelledby="about-rights">
+    <h2 id="about-rights">Rights / Contact · 权利与联系</h2>
+    <p>权利问题请优先通过当前材料的官方来源与平台联系渠道提出；前情帖不主张页面所引媒体、图片、录音或人物资料的所有权。一般纠错与线索也可沿项目仓库的公开联系入口提交。</p>
+  </section>
+</BaseLayout>

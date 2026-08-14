@@ -2,7 +2,7 @@
   "name": "megazine-blog",
   "type": "module",
   "version": "0.0.1",
-  "description": "冷门同好熟肉存档站 — 日式文库本极简美学",
+  "description": "前情帖：围绕公开广播、活动与人物语境整理的非官方档案",
   "engines": {
     "node": ">=22.12.0"
   },
@@ -15,6 +15,7 @@
     "verify:home-projection": "node scripts/verify-home-projection.mjs",
     "verify:people-routes": "node scripts/verify-people-routes.mjs",
     "verify:person-closure": "node scripts/verify-person-closure.mjs",
+    "verify:site-metadata": "node scripts/verify-site-metadata.mjs",
     "validate:publication": "node scripts/validate-publication.mjs",
     "audit:payload": "node scripts/audit-payload.mjs",
     "verify:project:presentation": "node scripts/verify-project-presentation.mjs",
@@ -33,7 +34,7 @@
     "editorial:apply-copy": "node scripts/apply-reader-copy.mjs",
     "verify:komachoe-20260309:publication": "node scripts/verify-komachoe-20260309-publication.mjs",
     "validate:regressions": "npm run verify:komatsu36:reader-copy && npm run verify:komatsu36:publication && npm run verify:komachoe:publication && npm run verify:komachoe-20260309:publication",
-    "validate": "npm run verify:project:presentation && npm run validate:projects && npm run verify:person-model && npm run build && npm run verify:home-projection && npm run verify:people-routes && npm run verify:person-closure && npm run validate:publication && npm run validate:regressions",
+    "validate": "npm run verify:project:presentation && npm run validate:projects && npm run verify:person-model && npm run build && npm run verify:home-projection && npm run verify:people-routes && npm run verify:person-closure && npm run verify:site-metadata && npm run validate:publication && npm run validate:regressions",
     "preview": "astro preview",
     "tina:dev": "tinacms dev -c \"npx astro dev --host 0.0.0.0\" --noTelemetry",
     "tina:host": "tinacms build --local --skip-cloud-checks && npx astro dev --host 0.0.0.0",

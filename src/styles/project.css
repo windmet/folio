@@ -109,6 +109,34 @@ a {
   letter-spacing: 0.32em;
 }
 
+.project-site-header nav {
+  display: flex;
+  gap: 16px;
+}
+
+.project-site-header nav a {
+  color: #928b7f;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+}
+
+.project-site-header nav a:hover,
+.project-site-header nav a:focus-visible,
+.project-brand:hover,
+.project-brand:focus-visible,
+.project-footer a:hover,
+.project-footer a:focus-visible {
+  color: var(--archive-red);
+}
+
+.project-site-header nav a:focus-visible,
+.project-footer a:focus-visible {
+  outline: 2px solid var(--archive-red);
+  outline-offset: 4px;
+}
+
 project-archive-shell {
   display: block;
   width: min(1320px, calc(100% - 48px));
