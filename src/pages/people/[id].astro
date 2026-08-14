@@ -60,10 +60,10 @@ const formatDate = (date: string) => date.replaceAll('-', '.');
           {person.aliases.map((alias) => <span>{alias}</span>)}
         </div>
       )}
-      <div class="person-facts" aria-label="人物档案统计">
-        <span>{person.projectCount} PROJECT{person.projectCount === 1 ? '' : 'S'}</span>
-        <span>{person.contexts.length} CONTEXT{person.contexts.length === 1 ? '' : 'S'}</span>
-        {person.aliases.length > 0 && <span>{person.aliases.length} ALIASES</span>}
+      <div class="person-context-overview" aria-label="人物出现摘要">
+        <span>{person.projectCount} 项档案</span>
+        {person.presence.length > 0 && <span aria-hidden="true">·</span>}
+        {person.presence.length > 0 && <span>{person.presence.map((item) => item.label).join(' / ')}</span>}
       </div>
     </header>
 

@@ -36,6 +36,9 @@ for (const projectId of ['komachoe-20260309', 'komatsu36', 'komachoe-20260425'])
   assert(itoHtml.includes(`/projects/${projectId}/`), `Ito detail is missing ${projectId} project context`);
 }
 assert((itoHtml.match(/class="person-context-card chronology-item"/g) || []).length === 3, 'Ito detail must show three project contexts');
+assert(itoHtml.includes('class="person-context-overview"') && itoHtml.includes('3 项档案'),
+  'Ito detail must expose a reader-facing cross-archive summary');
+assert(itoHtml.includes('电话连线 / 预投稿 / 被提及'), 'Ito presence summary must use stable semantic priority');
 assert(itoHtml.includes('data-person-order="desc"') && itoHtml.includes('data-person-order="asc"'),
   'People detail must expose both chronology directions');
 assert(itoHtml.includes('class="person-event-disclosure"'), 'Ito fixture must render its four-event context as collapsed disclosure');

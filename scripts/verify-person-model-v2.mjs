@@ -20,6 +20,10 @@ const weights = {
 };
 const projectScore = (context) => Math.max(...context.presence.map(({ kind }) => weights[kind] || 0));
 
+const globalPeopleSource = await readFile(path.resolve('src/lib/globalPeople.ts'), 'utf8');
+assert(globalPeopleSource.includes('PERSON_PRESENCE_ORDER') && globalPeopleSource.includes('.sort(byPresenceKind)'),
+  'global Person presence must use stable semantic ordering');
+
 const globalFiles = await listJson(path.join(root, 'people'));
 const globalIds = new Set(globalFiles.map((name) => name.replace(/\.json$/, '')));
 assert(globalFiles.length === 24, `expected 24 canonical global People, found ${globalFiles.length}`);

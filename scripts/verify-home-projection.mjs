@@ -93,6 +93,7 @@ assert((homeHtml.match(/data-tone="broadcast-blue"/g) || []).length === 2,
 assert(homeHtml.includes('近期条目') && !homeHtml.includes('最近更新'),
   'date-based tail feed must use the qualified 近期条目 label');
 assert(homeHtml.includes('data-person-teaser="ito-tomohiro"'), 'built homepage People teaser must expose a high-relevance fixture');
+assert(homeHtml.includes('电话连线 · 预投稿 · 被提及'), 'homepage People teaser must use stable semantic presence order');
 assert(!homeHtml.includes('class="index-title"'), 'built homepage still uses the old Magazine masthead');
 
 if (errors.length) {

@@ -96,16 +96,18 @@
 }
 
 .people-index-meta,
-.person-facts {
+.person-context-overview {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 20px;
+  gap: 8px 12px;
   margin-top: 22px;
   color: #a39489;
   font-family: 'SF Mono', Consolas, monospace;
   font-size: 10px;
-  letter-spacing: .12em;
+  letter-spacing: .08em;
 }
+
+.person-context-overview > span:first-child { color: #8f625b; }
 
 .people-grid {
   display: grid;

@@ -26,6 +26,14 @@ export const PERSON_ROLE_LABELS = {
   ensemble: 'ensemble',
 } as const;
 
+const PERSON_PRESENCE_ORDER = Object.keys(PERSON_PRESENCE_LABELS);
+const byPresenceKind = (left: { kind: string }, right: { kind: string }) => {
+  const leftIndex = PERSON_PRESENCE_ORDER.indexOf(left.kind);
+  const rightIndex = PERSON_PRESENCE_ORDER.indexOf(right.kind);
+  return (leftIndex === -1 ? PERSON_PRESENCE_ORDER.length : leftIndex)
+    - (rightIndex === -1 ? PERSON_PRESENCE_ORDER.length : rightIndex);
+};
+
 type EventAnchor = {
   id: string;
   event: CollectionEntry;
@@ -121,7 +129,7 @@ export const buildGlobalPeopleProjection = ({
       new Map<string, { kind: string; label: string }>(
         personContexts.flatMap((context) => context.presence).map((item) => [item.kind, item]),
       ).values(),
-    );
+    ).sort(byPresenceKind);
     return {
       id: identity.id,
       identity,
