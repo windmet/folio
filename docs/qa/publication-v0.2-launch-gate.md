@@ -2,7 +2,7 @@
 
 > 核对日期：2026-08-14
 > review branch：`codex/publication-metadata-v2`
-> validated code HEAD：`dc5e5c7`（VIS-03 / PEOPLE-03）
+> validated code HEAD：`7fdf4aa`（VIS-03 / PEOPLE-03 / INDEX-03）
 
 这是一份发布前核对记录，不等同于 production-accepted，也不授权 merge、deploy 或开放 robots。
 
@@ -14,6 +14,8 @@
 - HOME-05 本地浏览器验收：1440×900、1920×1080 与 390×844 通过；desktop 使用自然滚动加 `proximity` scroll snap，mobile 明确关闭 snap；无横向溢出、内容裁切或 console error。
 - VIS-03 本地浏览器验收：1280×720 与 390×844 通过。Archive / People / Index 均回到 warm paper；广播、专题与 Index 的类型色只保留在左边线、顶线、kicker、日期和 marker；People 首页改为双栏 ledger，非 Cover scene 改为顶部偏置且允许弹性高度。
 - PEOPLE-03 本地浏览器验收：伊藤友紘 fixture 的三个 Project 默认按新→旧排列，可切换旧→新；1–3 个 Event 直显、4–20 个默认折叠、小松昌平在 Komatsu36 的 81 个节点改由完整 Project Timeline 承接。桌面与 390px 无横向溢出，排序控件 focus outline 可见。
+- INDEX-03 本地浏览器验收：两个 Index detail 已消费与 People 共用的 Chronology Rail；公开记录默认新→旧并可切换旧→新。`ore-shiri` 与 `ban-ban-ban` 在 1280×720 / 390×844 均无横向溢出，移动 rail、节点与 28px 内容缩进对齐，排序控件 focus outline 可见。
+- Global `/timeline/` 已退出五个主要 Layout 的一级导航；旧 route 继续保留为兼容入口，不与 Project Timeline 或实体 chronology 混用。
 - 窄屏 `#people` / `#indexes` deep link 会停在 57px sticky header 下方；mobile 继续禁用 scroll snap。
 - Reader brand、chaptered homepage、About / Editorial Policy、canonical / OG / favicon、Global People、Index 与全局搜索已经进入 review branch；`PUBLIC_LAUNCH_ENABLED` 仍为 `false`。
 - 未来 public-route allowlist 已覆盖 `/indexes/`；这只修正显式 launch policy，不会在 Gate 开启前改变当前 `noindex, nofollow`。
