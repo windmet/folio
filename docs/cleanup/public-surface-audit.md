@@ -22,9 +22,9 @@
 | 对象 | 当前事实 | 裁决 | 目标批次 |
 | --- | --- | --- | --- |
 | `src/content/projects/`、People、Indexes | 当前产品的一等模型 | **KEEP / ACTIVE CORE** | 无 |
-| `src/content/posts/bmc-interview.mdx` | 32,942 bytes；完整日文采访；无原始 public URL；由 `17a42d3` 引入 | **PRIVATE** | 01B |
-| `src/content/posts/bmc-interview-cn.mdx` | 28,707 bytes；完整中文译文；引用本地杂志封面/版面图；由 `17a42d3` 引入 | **PRIVATE** | 01B |
-| `public/uploads/14aa0f612f505da94c45e6106501d643.jpg` | 258,850 bytes；《声優グランプリ》2025-06 封面/版面图 | **PRIVATE** | 01B |
+| REMOVED — src/content/posts/bmc-interview.mdx | 32,942 bytes；完整日文采访；无原始 public URL；由 `17a42d3` 引入 | **PRIVATE / EXTRACTED** | 01B complete |
+| REMOVED — src/content/posts/bmc-interview-cn.mdx | 28,707 bytes；完整中文译文；引用本地杂志封面/版面图；由 `17a42d3` 引入 | **PRIVATE / EXTRACTED** | 01B complete |
+| REMOVED — public/uploads/14aa0f612f505da94c45e6106501d643.jpg | 258,850 bytes；《声優グランプリ》2025-06 封面/版面图 | **PRIVATE / EXTRACTED** | 01B complete |
 | `src/content/posts/xhs-exporter.mdx` | 3,667 bytes；个人工具开发日志 | **PRIVATE / REMOVE FROM PRODUCT** | 01B/01C |
 | `scripts/xhs-exporter/` | 本地切图工具；当前跟踪 27 张输出图，共 13,903,852 bytes；Git 历史另有已删除的 page 28–93 | **PRIVATE TOOLING** | 01B/01C |
 | `src/content/posts/ancient-tweets.mdx` | 公开 X 对话内容；没有任何原 Post URL；依赖 fake Tweet UI | **MIGRATE** | 01D |
@@ -38,7 +38,9 @@
 - 中文：`20ef5f50ee2df3e232748041a814272930f459e7c4a488f07160d87aef2c6e18`
 - 图片：`c7fc2c1f6958f799216b46257e96341bb40706f92f4f665e8e9f838da5421520`
 
-截至本次核对，`E:\GOMYAKU\Projects` 只有三个广播 Project，没有找到上述 BMC、XHS、杂志或社交图片的仓库外副本。因此 **01B 在建立并校验 Private Research 副本前不得执行删除**。
+首次核对时，`E:\GOMYAKU\Projects` 只有三个广播 Project，没有找到上述 BMC、XHS、杂志或社交图片的仓库外副本。
+
+01B 随后建立了 `E:\GOMYAKU\Private Research\public-surface-extraction-20260814`：复制后逐文件比对源/目标 SHA-256 均一致；manifest 记录了复制前 231 个 payload files、32,814,630 bytes，以及 tree SHA-256 `13546349cea3dadbddbc04c991d20420ed2fee475688150ce57796424cc3a2c9`。该副本包含 BMC 日中全文、杂志图、XHS 文章/工具快照，以及迁移中的 ancient tweets 与社交图片。
 
 ## Tina / authoring machinery
 

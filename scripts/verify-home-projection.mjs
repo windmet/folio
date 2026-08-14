@@ -63,8 +63,6 @@ const postFiles = (await readdir(postsRoot)).filter((name) => name.endsWith('.md
 const posts = await Promise.all(postFiles.map(async (name) => ({ name, data: await readPost(path.join(postsRoot, name)) })));
 const expectedSections = new Map([
   ['ancient-tweets.mdx', 'archaeology'],
-  ['bmc-interview-cn.mdx', 'interview'],
-  ['bmc-interview.mdx', 'interview'],
   ['xhs-exporter.mdx', 'note'],
 ]);
 assert(posts.length === expectedSections.size, `expected ${expectedSections.size} Posts, found ${posts.length}`);
