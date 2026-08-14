@@ -14,6 +14,7 @@ const helperSource = await read(path.join(root, 'src/lib/globalPeople.ts'));
 const indexSource = await read(path.join(root, 'src/pages/people/index.astro'));
 const detailSource = await read(path.join(root, 'src/pages/people/[id].astro'));
 assert(helperSource.includes('buildGlobalPeopleProjection'), 'global People projection helper is missing');
+assert(helperSource.includes('indexAppearancesByPerson'), 'global People projection must aggregate Index appearances');
 assert(indexSource.includes('buildGlobalPeopleProjection'), 'People index must consume the global projection');
 assert(detailSource.includes('getStaticPaths'), 'People detail route must have static paths');
 assert(detailSource.includes('person-empty-note'), 'People detail route must handle absent contextProfile');
@@ -36,7 +37,7 @@ for (const projectId of ['komachoe-20260309', 'komatsu36', 'komachoe-20260425'])
   assert(itoHtml.includes(`/projects/${projectId}/`), `Ito detail is missing ${projectId} project context`);
 }
 assert((itoHtml.match(/class="person-context-card chronology-item"/g) || []).length === 3, 'Ito detail must show three project contexts');
-assert(itoHtml.includes('class="person-context-overview"') && itoHtml.includes('3 项档案'),
+assert(itoHtml.includes('class="person-context-overview"') && itoHtml.includes('项目档案 3'),
   'Ito detail must expose a reader-facing cross-archive summary');
 assert(itoHtml.includes('电话连线 / 预投稿 / 被提及'), 'Ito presence summary must use stable semantic priority');
 assert(itoHtml.includes('data-person-order="desc"') && itoHtml.includes('data-person-order="asc"'),
@@ -49,10 +50,17 @@ const komatsuHtml = await read(path.join(distPeopleRoot, 'komatsu-shohei/index.h
 assert(komatsuHtml.includes('class="person-event-overflow"'), 'Komatsu host fixture must use the extreme-event Project Timeline handoff');
 assert(komatsuHtml.includes('/projects/komatsu36/?view=timeline'), 'Komatsu host fixture must link to the complete Project Timeline');
 
+const hamanoHtml = await read(path.join(distPeopleRoot, 'hamano-daiki/index.html'));
+assert(hamanoHtml.includes('项目档案 0') && hamanoHtml.includes('公开索引 1'),
+  'Hamano fixture must distinguish zero Project contexts from one Index appearance');
+assert(hamanoHtml.includes('data-person-context-kind="index"'), 'Hamano detail must render an Index chronology item');
+assert(hamanoHtml.includes('href="/indexes/2016-x-family-record/"'), 'Hamano detail must link to the public record');
+assert(!hamanoHtml.includes('/people/hama-kento/'), 'Hamano detail must not collapse into Hama Kento');
+
 if (errors.length) {
   console.error('Global People route verification failed:');
   errors.forEach((error) => console.error(`- ${error}`));
   process.exit(1);
 }
 
-console.log(`Global People route verification passed (${ids.length} global People, Ito fixture spans 3 Project contexts).`);
+console.log(`Global People route verification passed (${ids.length} global People, Project contexts and Index appearances coexist).`);

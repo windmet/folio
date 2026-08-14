@@ -5,13 +5,14 @@ import { buildGlobalPeopleProjection } from '../../lib/globalPeople';
 import { PERSON_ROLE_LABELS } from '../../lib/globalPeople';
 
 export async function getStaticPaths() {
-  const [identities, projects, contexts, events] = await Promise.all([
+  const [identities, projects, contexts, events, indexes] = await Promise.all([
     getCollection('people'),
     getCollection('projects'),
     getCollection('projectPeople'),
     getCollection('projectEvents'),
+    getCollection('indexes'),
   ]);
-  const people = buildGlobalPeopleProjection({ identities, projects, contexts, events });
+  const people = buildGlobalPeopleProjection({ identities, projects, contexts, events, indexes });
   return people.map((person) => ({
     params: { id: person.id },
     props: { person },
@@ -61,7 +62,9 @@ const formatDate = (date: string) => date.replaceAll('-', '.');
         </div>
       )}
       <div class="person-context-overview" aria-label="人物出现摘要">
-        <span>{person.projectCount} 项档案</span>
+        <span>项目档案 {person.projectCount}</span>
+        <span aria-hidden="true">·</span>
+        <span>公开索引 {person.indexCount}</span>
         {person.presence.length > 0 && <span aria-hidden="true">·</span>}
         {person.presence.length > 0 && <span>{person.presence.map((item) => item.label).join(' / ')}</span>}
       </div>
@@ -80,8 +83,8 @@ const formatDate = (date: string) => date.replaceAll('-', '.');
         </div>
       </div>
       <div class="person-chronology chronology" data-person-chronology-list>
-        {person.contexts.length > 0 ? person.contexts.map((context) => (
-          <article class="person-context-card chronology-item" id={`project-${context.project.id}`} data-publication-date={context.project.data.publication.date}>
+        {person.chronology.length > 0 ? person.chronology.map((context) => context.kind === 'project' ? (
+          <article class="person-context-card chronology-item" id={`project-${context.project.id}`} data-publication-date={context.project.data.publication.date} data-person-context-kind="project">
             <time class="person-context-date chronology-date" datetime={context.project.data.publication.date}>{formatDate(context.project.data.publication.date)}</time>
             <span class="person-context-node chronology-node" aria-hidden="true"></span>
             <header>
@@ -136,8 +139,28 @@ const formatDate = (date: string) => date.replaceAll('-', '.');
               </div>
             )}
           </article>
+        ) : (
+          <article class="person-context-card person-index-context chronology-item" id={`index-${context.index.id}`} data-publication-date={context.date} data-person-context-kind="index">
+            <time class="person-context-date chronology-date" datetime={context.date}>{formatDate(context.date)}</time>
+            <span class="person-context-node chronology-node" aria-hidden="true"></span>
+            <header>
+              <div>
+                <span class="person-context-kicker">PUBLIC RECORD</span>
+                <h3><a class="person-project-link" href={`/indexes/${context.index.data.slug}/`}>{context.index.data.title}</a></h3>
+              </div>
+            </header>
+            <p class="person-context-summary">该人物在这项公开索引中出现于 {context.entries.length} 个记录节点。</p>
+            <div class="person-event-list" aria-label="公开索引节点">
+              {context.entries.map((item) => (
+                <a class="person-event-link" href={item.href}>
+                  <time>{formatDate(item.date)}</time>
+                  <span>{item.title}</span>
+                </a>
+              ))}
+            </div>
+          </article>
         )) : (
-          <p class="person-empty-note">该人物目前还没有可公开展示的项目语境。</p>
+          <p class="person-empty-note">该人物目前还没有可公开展示的档案语境。</p>
         )}
       </div>
     </section>

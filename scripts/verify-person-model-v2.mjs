@@ -26,11 +26,11 @@ assert(globalPeopleSource.includes('PERSON_PRESENCE_ORDER') && globalPeopleSourc
 
 const globalFiles = await listJson(path.join(root, 'people'));
 const globalIds = new Set(globalFiles.map((name) => name.replace(/\.json$/, '')));
-assert(globalFiles.length === 24, `expected 24 canonical global People, found ${globalFiles.length}`);
+assert(globalFiles.length === 25, `expected 25 canonical global People, found ${globalFiles.length}`);
 for (const legacyId of ['ito', 'seiten', 'ham-kento']) {
   assert(!globalIds.has(legacyId), `legacy global Person id must not exist: ${legacyId}`);
 }
-for (const canonicalId of ['ito-tomohiro', 'kiyoten', 'hama-kento']) {
+for (const canonicalId of ['ito-tomohiro', 'kiyoten', 'hama-kento', 'hamano-daiki']) {
   assert(globalIds.has(canonicalId), `canonical global Person is missing: ${canonicalId}`);
 }
 

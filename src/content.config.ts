@@ -63,6 +63,11 @@ const indexes = defineCollection({
     homeDeck: z.string().min(1),
     aliases: z.array(z.string()).default([]),
     relatedProjects: z.array(reference('projects')).default([]),
+    chronology: z.object({
+      defaultOrder: z.enum(['asc', 'desc']),
+      reversible: z.boolean(),
+    }),
+    presentation: z.enum(['standard', 'source-sequence']).default('standard'),
     entries: z.array(z.object({
       id: z.string().regex(/^[a-z0-9][a-z0-9-]*$/),
       date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
@@ -86,7 +91,11 @@ const sources = defineCollection({
     schemaVersion: z.literal(1),
     kind: z.literal('external-post'),
     platform: z.enum(['x', 'weibo', 'official-blog', 'youtube-community', 'web']),
-    author: z.object({ name: z.string(), handle: z.string().optional() }),
+    author: z.object({
+      person: reference('people').optional(),
+      name: z.string(),
+      handle: z.string().optional(),
+    }),
     publishedAt: z.string().datetime({ offset: true }),
     accessClass: z.enum(['public', 'public-external', 'private-reference', 'paid-reference']),
     publicationMode: z.enum(['metadata-only', 'short-excerpt', 'summary-link']),

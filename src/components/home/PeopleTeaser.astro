@@ -4,7 +4,7 @@ export interface Props {
 }
 
 const { people } = Astro.props;
-const teaserPeople = people.filter((person) => person.contexts.length > 0).slice(0, 6);
+const teaserPeople = people.filter((person) => person.chronology.length > 0).slice(0, 6);
 ---
 
 <section class="home-section home-people" aria-labelledby="home-people-title">
@@ -20,7 +20,7 @@ const teaserPeople = people.filter((person) => person.contexts.length > 0).slice
     {teaserPeople.map((person) => (
       <a class="home-person-card" href={`/people/${person.id}/`} data-person-teaser={person.id}>
         <span class="home-person-card-name">{person.displayName}</span>
-        <span class="home-person-card-meta">出现于 {person.projectCount} 份档案</span>
+        <span class="home-person-card-meta">出现于 {person.projectCount + person.indexCount} 份档案</span>
         <span class="home-person-card-context">{person.presence.slice(0, 3).map((item: any) => item.label).join(' · ')}</span>
       </a>
     ))}

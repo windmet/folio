@@ -18,8 +18,19 @@ const projects = await Promise.all((entry.data.relatedProjects || []).map((proje
 const entrySortDate = (item: any) => item.source
   ? sourcesById.get(referenceId(item.source))?.data.publishedAt || item.date
   : item.date;
-const orderedEntries = [...entry.data.entries].sort((left: any, right: any) => entrySortDate(right).localeCompare(entrySortDate(left), 'en'));
+const defaultOrder = entry.data.chronology.defaultOrder;
+const isSourceSequence = entry.data.presentation === 'source-sequence';
+const orderedEntries = [...entry.data.entries].sort((left: any, right: any) => {
+  const comparison = entrySortDate(left).localeCompare(entrySortDate(right), 'en');
+  return defaultOrder === 'asc' ? comparison : -comparison;
+});
 const formatDate = (date: string) => date.replaceAll('-', '.');
+const formatSequenceTime = (date: string) => new Intl.DateTimeFormat('zh-CN', {
+  timeZone: 'Asia/Tokyo',
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: false,
+}).format(new Date(date));
 const kindLabels = {
   'program-series': '节目系列',
   'stage-series': '舞台系列',
@@ -35,29 +46,29 @@ const kindLabels = {
       <p>{entry.data.summary}</p>
     </header>
 
-    <section class="index-entry-list" aria-labelledby="index-records-title" data-index-chronology>
+    <section class:list={["index-entry-list", { "index-entry-list--source-sequence": isSourceSequence }]} aria-labelledby="index-records-title" data-index-chronology data-default-order={defaultOrder}>
       <div class="index-section-heading">
         <div>
           <p class="index-kicker">CHRONOLOGY</p>
           <h2 id="index-records-title">公开记录</h2>
         </div>
-        <div class="index-order-controls" role="group" aria-label="公开记录排序">
-          <button type="button" data-index-order="desc" aria-pressed="true">新 → 旧</button>
+        {entry.data.chronology.reversible && <div class="index-order-controls" role="group" aria-label="公开记录排序">
+          <button type="button" data-index-order="desc" aria-pressed={String(defaultOrder === 'desc')}>新 → 旧</button>
           <span aria-hidden="true">/</span>
-          <button type="button" data-index-order="asc" aria-pressed="false">旧 → 新</button>
-        </div>
+          <button type="button" data-index-order="asc" aria-pressed={String(defaultOrder === 'asc')}>旧 → 新</button>
+        </div>}
       </div>
       <div class="index-chronology chronology" data-index-chronology-list>
         {orderedEntries.map((item: any) => (
           <article class="index-entry chronology-item" id={item.id} data-entry-date={entrySortDate(item)}>
-            <time class="index-entry-date chronology-date" datetime={item.date}>{formatDate(item.date)}</time>
+            <time class="index-entry-date chronology-date" datetime={entrySortDate(item)}>{isSourceSequence ? formatSequenceTime(entrySortDate(item)) : formatDate(item.date)}</time>
             <span class="index-entry-node chronology-node" aria-hidden="true"></span>
             <div>
-              <span class="index-entry-year">{item.date.slice(0, 4)}</span>
-              <h3>{item.title}</h3>
-              <p>{item.summary}</p>
-              {item.source && sourcesById.get(referenceId(item.source)) && <SourcePost source={sourcesById.get(referenceId(item.source)).data} />}
-              {item.people.length > 0 && <div class="index-entry-people" aria-label="相关人物">
+              {!isSourceSequence && <span class="index-entry-year">{item.date.slice(0, 4)}</span>}
+              {!isSourceSequence && <h3>{item.title}</h3>}
+              {!isSourceSequence && item.summary && <p>{item.summary}</p>}
+              {item.source && sourcesById.get(referenceId(item.source)) && <SourcePost source={sourcesById.get(referenceId(item.source)).data} showPublishedAt={!isSourceSequence} />}
+              {!isSourceSequence && item.people.length > 0 && <div class="index-entry-people" aria-label="相关人物">
                 {item.people.map((personRef: any) => {
                   const id = referenceId(personRef);
                   const person = peopleById.get(id);

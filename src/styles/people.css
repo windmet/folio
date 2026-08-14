@@ -339,6 +339,8 @@
   line-height: 1.9;
 }
 
+.person-index-context .person-context-kicker { color: #7c7660; }
+
 .person-event-list {
   display: grid;
   gap: 8px;

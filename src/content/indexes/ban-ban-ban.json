@@ -9,6 +9,8 @@
   "homeDeck": "ゲームから生まれる関係性を追うイベントシリーズ。公式記録と、广播档案の中で語られた場面を往復する入口。",
   "aliases": ["盤・番・絆", "BANBANBAN", "ばんばんばん"],
   "relatedProjects": ["komachoe-20260425"],
+  "chronology": {"defaultOrder": "desc", "reversible": true},
+  "presentation": "standard",
   "entries": [
     {
       "id": "about",

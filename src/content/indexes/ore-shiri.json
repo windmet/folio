@@ -9,6 +9,8 @@
   "homeDeck": "初演から幕末編の再演へ。广播中に何度も参照される舞台の前後関係を、開催記録から引き直す索引。",
   "aliases": ["俺知", "俺を知ってくれ", "さらに俺を知ってくれ"],
   "relatedProjects": ["komatsu36", "komachoe-20260309", "komachoe-20260425"],
+  "chronology": {"defaultOrder": "desc", "reversible": true},
+  "presentation": "standard",
   "entries": [
     {
       "id": "first-performance",

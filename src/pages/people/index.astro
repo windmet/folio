@@ -3,14 +3,16 @@ import { getCollection } from 'astro:content';
 import PeopleLayout from '../../layouts/PeopleLayout.astro';
 import { buildGlobalPeopleProjection } from '../../lib/globalPeople';
 
-const [identities, projects, contexts, events] = await Promise.all([
+const [identities, projects, contexts, events, indexes] = await Promise.all([
   getCollection('people'),
   getCollection('projects'),
   getCollection('projectPeople'),
   getCollection('projectEvents'),
+  getCollection('indexes'),
 ]);
-const people = buildGlobalPeopleProjection({ identities, projects, contexts, events });
+const people = buildGlobalPeopleProjection({ identities, projects, contexts, events, indexes });
 const contextCount = people.reduce((total, person) => total + person.contexts.length, 0);
+const indexAppearanceCount = people.reduce((total, person) => total + person.indexAppearances.length, 0);
 ---
 
 <PeopleLayout title="People" description="跨项目人物索引与项目语境入口">
@@ -22,19 +24,22 @@ const contextCount = people.reduce((total, person) => total + person.contexts.le
       <div class="people-index-meta" aria-label="人物索引统计">
         <span>{people.length} PEOPLE</span>
         <span>{contextCount} PROJECT CONTEXTS</span>
+        <span>{indexAppearanceCount} INDEX APPEARANCES</span>
       </div>
     </header>
 
     <section class="people-grid" aria-label="全局人物列表">
       {people.map((person) => (
         <a class="person-card" href={`/people/${person.id}/`}>
-          <span class="person-card-kicker">{person.projectCount} PROJECT{person.projectCount === 1 ? '' : 'S'}</span>
+          <span class="person-card-kicker">{person.projectCount} PROJECT{person.projectCount === 1 ? '' : 'S'} · {person.indexCount} RECORD{person.indexCount === 1 ? '' : 'S'}</span>
           <h2>{person.displayName}</h2>
           {person.reading && <p class="person-card-reading">{person.reading}</p>}
           <p class="person-card-summary">
             {person.contextProfile?.deck || (person.contexts.length > 0
               ? `已收录 ${person.contexts.length} 个项目语境，进入档案查看各项目中的位置与事件锚点。`
-              : '暂未建立项目语境。')}
+              : person.indexAppearances.length > 0
+                ? `已收录 ${person.indexAppearances.length} 项公开索引语境；当前没有 Project 参与记录。`
+                : '暂未建立档案语境。')}
           </p>
           {person.presence.length > 0 && (
             <div class="person-chip-row" aria-label="参与方式">

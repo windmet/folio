@@ -41,6 +41,7 @@ type EventAnchor = {
 };
 
 export type GlobalPersonContext = {
+  kind: 'project';
   id: string;
   project: CollectionEntry;
   context: CollectionEntry;
@@ -48,6 +49,19 @@ export type GlobalPersonContext = {
   presence: Array<{ kind: string; label: string }>;
   roles: any[];
   events: EventAnchor[];
+};
+
+export type GlobalPersonIndexAppearance = {
+  kind: 'index';
+  id: string;
+  index: CollectionEntry;
+  date: string;
+  entries: Array<{
+    id: string;
+    title: string;
+    date: string;
+    href: string;
+  }>;
 };
 
 export type GlobalPersonProjection = {
@@ -59,7 +73,10 @@ export type GlobalPersonProjection = {
   links: any[];
   contextProfile?: { deck: string; scopeNote?: string };
   projectCount: number;
+  indexCount: number;
   contexts: GlobalPersonContext[];
+  indexAppearances: GlobalPersonIndexAppearance[];
+  chronology: Array<GlobalPersonContext | GlobalPersonIndexAppearance>;
   relevance: number;
   presence: Array<{ kind: string; label: string }>;
 };
@@ -73,17 +90,20 @@ export const buildGlobalPeopleProjection = ({
   projects,
   contexts,
   events,
+  indexes = [],
 }: {
   identities: CollectionEntry[];
   projects: CollectionEntry[];
   contexts: CollectionEntry[];
   events: CollectionEntry[];
+  indexes?: CollectionEntry[];
 }): GlobalPersonProjection[] => {
   const publishedProjects = projects.filter((project) => project.data.status === 'published');
   const projectsById = new Map(publishedProjects.map((project) => [project.id, project]));
   const identitiesById = new Map(identities.map((identity) => [identity.id, identity]));
   const eventsById = new Map(events.map((event) => [event.id, event]));
   const contextsByPerson = new Map<string, GlobalPersonContext[]>();
+  const indexAppearancesByPerson = new Map<string, GlobalPersonIndexAppearance[]>();
 
   for (const context of contexts) {
     const projectId = referenceId(context.data.project);
@@ -109,6 +129,7 @@ export const buildGlobalPeopleProjection = ({
       ] as [string, { kind: string; label: string }])).values(),
     );
     const projectedContext: GlobalPersonContext = {
+      kind: 'project',
       id: context.id,
       project,
       context,
@@ -122,8 +143,47 @@ export const buildGlobalPeopleProjection = ({
     contextsByPerson.set(identity.id, list);
   }
 
+  for (const index of indexes.filter((entry) => entry.data.status === 'published')) {
+    const entriesByPerson = new Map<string, any[]>();
+    for (const item of index.data.entries || []) {
+      for (const personReference of item.people || []) {
+        const personId = referenceId(personReference);
+        if (!identitiesById.has(personId)) continue;
+        const entries = entriesByPerson.get(personId) || [];
+        entries.push(item);
+        entriesByPerson.set(personId, entries);
+      }
+    }
+    for (const [personId, matchingEntries] of entriesByPerson) {
+      const sortedEntries = [...matchingEntries].sort((left, right) => left.date.localeCompare(right.date, 'en'));
+      const appearance: GlobalPersonIndexAppearance = {
+        kind: 'index',
+        id: index.id,
+        index,
+        date: sortedEntries.at(-1)?.date || '',
+        entries: sortedEntries.map((item) => ({
+          id: item.id,
+          title: item.title,
+          date: item.date,
+          href: `/indexes/${index.data.slug}/#${item.id}`,
+        })),
+      };
+      const appearances = indexAppearancesByPerson.get(personId) || [];
+      appearances.push(appearance);
+      indexAppearancesByPerson.set(personId, appearances);
+    }
+  }
+
   return identities.map((identity) => {
     const personContexts = (contextsByPerson.get(identity.id) || []).sort(byPublicationDate);
+    const indexAppearances = (indexAppearancesByPerson.get(identity.id) || [])
+      .sort((left, right) => right.date.localeCompare(left.date, 'en')
+        || left.index.data.title.localeCompare(right.index.data.title, 'zh-CN'));
+    const chronology = [...personContexts, ...indexAppearances].sort((left, right) => {
+      const leftDate = left.kind === 'project' ? left.project.data.publication.date : left.date;
+      const rightDate = right.kind === 'project' ? right.project.data.publication.date : right.date;
+      return rightDate.localeCompare(leftDate, 'en');
+    });
     const projectIds = new Set(personContexts.map((context) => context.project.id));
     const presence: Array<{ kind: string; label: string }> = Array.from(
       new Map<string, { kind: string; label: string }>(
@@ -139,7 +199,10 @@ export const buildGlobalPeopleProjection = ({
       links: identity.data.links || [],
       contextProfile: identity.data.contextProfile,
       projectCount: projectIds.size,
+      indexCount: indexAppearances.length,
       contexts: personContexts,
+      indexAppearances,
+      chronology,
       relevance: globalPersonRelevance(personContexts.map((context) => context.context)),
       presence,
     };

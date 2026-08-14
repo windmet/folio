@@ -79,6 +79,7 @@ export const buildHomeProjection = ({
     projects: publishedProjects,
     contexts: personContexts,
     events,
+    indexes: publishedIndexes,
   });
   const recentFeed = [
     ...publishedProjects.map((project) => ({
