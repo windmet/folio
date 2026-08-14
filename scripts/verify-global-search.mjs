@@ -8,19 +8,19 @@ const assert = (condition, message) => {
 };
 
 const source = read('src/lib/globalSearch.ts');
-assert(source.includes("GlobalSearchKind = 'project' | 'event' | 'person' | 'post'"), 'global kinds must remain publication-scoped');
+assert(source.includes("GlobalSearchKind = 'project' | 'event' | 'person' | 'index' | 'post'"), 'global kinds must remain publication-scoped');
 assert(source.includes("GLOBAL_SEARCH_LOCAL_ONLY = ['work', 'context']"), 'Work/Context boundary must remain explicit');
 assert(source.includes('publishedProjects'), 'search must filter to published Projects');
 assert(source.includes("publicationStatus !== 'withheld'"), 'search must exclude withheld Events');
 
 const page = read('src/pages/search/index.astro');
-for (const contract of ['global-search-input', '/search.json', 'Project、Event、Person', 'Work / Context']) {
+for (const contract of ['global-search-input', '/search.json', '档案、Event、人物、索引', 'Work / Context']) {
   assert(page.includes(contract), `/search/ is missing ${contract}`);
 }
 
 const payload = JSON.parse(read('dist/search.json'));
 assert(payload.schemaVersion === 1, 'search payload schema must be version 1');
-assert(JSON.stringify(payload.scope) === JSON.stringify(['project', 'event', 'person', 'post']), 'search payload scope changed');
+assert(JSON.stringify(payload.scope) === JSON.stringify(['project', 'event', 'person', 'index', 'post']), 'search payload scope changed');
 assert(JSON.stringify(payload.localOnly) === JSON.stringify(['work', 'context']), 'local-only boundary changed');
 assert(Array.isArray(payload.items) && payload.items.length > 0, 'search payload must contain items');
 for (const kind of payload.scope) {
@@ -38,4 +38,4 @@ for (const route of ['dist/index.html', 'dist/people/index.html', 'dist/projects
   assert(read(route).includes('href="/search/"'), `${route} must expose the global search entry`);
 }
 
-console.log(`global search verified: ${payload.items.length} publication items, 4 kinds, Work/Context kept Project-local`);
+console.log(`global search verified: ${payload.items.length} publication items, 5 kinds, Work/Context kept Project-local`);

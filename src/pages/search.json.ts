@@ -3,14 +3,15 @@ import type { APIRoute } from 'astro';
 import { buildGlobalSearchIndex, GLOBAL_SEARCH_LOCAL_ONLY, GLOBAL_SEARCH_SCOPE } from '../lib/globalSearch';
 
 export const GET: APIRoute = async () => {
-  const [projects, events, people, personContexts, posts] = await Promise.all([
+  const [projects, events, people, personContexts, indexes, posts] = await Promise.all([
     getCollection('projects'),
     getCollection('projectEvents'),
     getCollection('people'),
     getCollection('projectPeople'),
+    getCollection('indexes'),
     getCollection('posts'),
   ]);
-  const items = buildGlobalSearchIndex({ projects, events, people, personContexts, posts });
+  const items = buildGlobalSearchIndex({ projects, events, people, personContexts, indexes, posts });
   return new Response(JSON.stringify({
     schemaVersion: 1,
     scope: GLOBAL_SEARCH_SCOPE,

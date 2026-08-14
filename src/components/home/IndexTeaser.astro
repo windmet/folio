@@ -1,0 +1,24 @@
+---
+export interface Props { indexes: any[]; }
+const { indexes } = Astro.props;
+const kindLabels = { 'program-series': '节目系列', 'stage-series': '舞台系列', 'public-record': '公开记录' };
+---
+<section class="home-section home-indexes" aria-labelledby="home-indexes-title">
+  <div class="home-section-heading">
+    <div>
+      <span class="home-kicker">SERIES / PUBLIC INDEX</span>
+      <h2 id="home-indexes-title">系列与公开索引</h2>
+    </div>
+    <a class="home-section-link" href="/indexes/">浏览全部索引 →</a>
+  </div>
+  <div class="home-index-grid">
+    {indexes.map((entry) => (
+      <a class="home-index-card" href={`/indexes/${entry.data.slug}/`} data-index-teaser={entry.data.slug}>
+        <span>{kindLabels[entry.data.kind]}</span>
+        <h3>{entry.data.title}</h3>
+        <p>{entry.data.homeDeck}</p>
+        <b>{entry.data.entries.length} 条记录 →</b>
+      </a>
+    ))}
+  </div>
+</section>

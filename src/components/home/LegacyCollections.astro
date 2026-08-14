@@ -5,10 +5,10 @@ export interface Props {
 
 const { articleCollections } = Astro.props;
 const folders = [
-  { id: 'interview', section: 'interview', tab: 'Interview', title: '杂志采访', desc: '长篇对谈与杂志翻译存档', vol: 'ARCHIVE.VOL.01', icon: '01' },
-  { id: 'archive', section: 'archaeology', tab: 'Archive', title: '文章考古', desc: '早年推文考据与历史记录', vol: 'ARCHIVE.VOL.02', icon: '02' },
-  { id: 'radio', section: 'radio', tab: 'Radio', title: '广播旧文', desc: '广播节目音声与放送回忆', vol: 'ARCHIVE.VOL.03', icon: '03' },
-  { id: 'note', section: 'note', tab: 'Note', title: '随笔杂谈', desc: '个人杂谈与随性记录', vol: 'ARCHIVE.VOL.04', icon: '04' },
+  { id: 'interview', section: 'interview', title: '杂志采访' },
+  { id: 'archive', section: 'archaeology', title: '文章考古' },
+  { id: 'radio', section: 'radio', title: '广播旧文' },
+  { id: 'note', section: 'note', title: '随笔杂谈' },
 ];
 ---
 
@@ -16,26 +16,20 @@ const folders = [
   <div class="home-section-heading">
     <div>
       <span class="home-kicker">LEGACY COLLECTIONS</span>
-      <h2 id="home-legacy-title">旧文章入口</h2>
+      <h2 id="home-legacy-title">旧文章与考古</h2>
     </div>
-    <span class="home-section-code">FOUR LANES</span>
+    <span class="home-section-code">LEGACY POSTS</span>
   </div>
   <div class="legacy-grid">
     {folders.map((folder) => {
       const articles = articleCollections.get(folder.section) || [];
       return (
-        <a class="legacy-card" href={`#legacy-${folder.id}`} data-category={folder.id}>
-          <span class="legacy-card-tab">{folder.tab}</span>
-          <span class="legacy-card-icon" aria-hidden="true">{folder.icon}</span>
-          <h3>{folder.title}</h3>
-          <p>{folder.desc}</p>
-          <span class="legacy-card-count">{articles.length} 篇 · {folder.vol}</span>
-        </a>
+        <a class="legacy-card" href={`#legacy-${folder.id}`} data-category={folder.id}>{folder.title}<span>{articles.length}</span></a>
       );
     })}
   </div>
   <div class="legacy-feed" id="legacy-feed" aria-live="polite">
-    <h3 class="legacy-feed-heading" id="legacy-feed-heading">全部旧文章</h3>
+    <h3 class="legacy-feed-heading" id="legacy-feed-heading">最近与推荐</h3>
     {folders.flatMap((folder) => (articleCollections.get(folder.section) || []).map((post) => ({ folder, post }))).map(({ folder, post }) => (
       <a class="legacy-article" href={`/posts/${post.id}/`} data-category={folder.id} id={`legacy-${folder.id}-${post.id}`}>
         <time datetime={post.data.date.toISOString().slice(0, 10)}>{post.data.date.toLocaleDateString('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit' })}</time>
@@ -61,7 +55,7 @@ const folders = [
     legacyCards.forEach((card) => card.classList.toggle('is-active', card.dataset.category === category));
     if (legacyHeading) legacyHeading.textContent = category && legacyNames[category]
       ? `${legacyNames[category]} · ${count} 篇`
-      : '全部旧文章';
+      : '最近与推荐';
   }
 
   function legacyCategoryFromHash() {

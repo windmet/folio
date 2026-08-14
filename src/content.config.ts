@@ -64,6 +64,35 @@ const people = defineCollection({
   }),
 });
 
+const indexes = defineCollection({
+  loader: glob({ pattern: '*.json', base: './src/content/indexes' }),
+  schema: z.object({
+    schemaVersion: z.literal(1),
+    slug: z.string().regex(/^[a-z0-9][a-z0-9-]*$/),
+    title: z.string(),
+    kind: z.enum(['program-series', 'stage-series', 'public-record']),
+    summary: z.string(),
+    status: z.enum(['draft', 'published']),
+    featured: z.boolean().default(false),
+    homeDeck: z.string().min(1),
+    aliases: z.array(z.string()).default([]),
+    relatedProjects: z.array(reference('projects')).default([]),
+    entries: z.array(z.object({
+      id: z.string().regex(/^[a-z0-9][a-z0-9-]*$/),
+      date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+      title: z.string(),
+      summary: z.string(),
+      people: z.array(reference('people')).default([]),
+      relatedProject: reference('projects').optional(),
+      links: z.array(z.object({
+        label: z.string(),
+        url: z.string().url(),
+        kind: z.enum(['official', 'announcement', 'archive']),
+      })).default([]),
+    })).min(1),
+  }),
+});
+
 const projects = defineCollection({
   loader: glob({
     pattern: '*/project.json',
@@ -281,6 +310,7 @@ export const collections = {
   posts,
   timeline,
   people,
+  indexes,
   projects,
   projectTracks,
   projectActs,

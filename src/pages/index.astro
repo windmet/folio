@@ -6,11 +6,13 @@ import FeaturedArchive from '../components/home/FeaturedArchive.astro';
 import PeopleTeaser from '../components/home/PeopleTeaser.astro';
 import RecentFeed from '../components/home/RecentFeed.astro';
 import LegacyCollections from '../components/home/LegacyCollections.astro';
+import IndexTeaser from '../components/home/IndexTeaser.astro';
 import { buildHomeProjection } from '../lib/homeProjection';
 
-const [posts, projects, tracks, events, threads, identities, personContexts] = await Promise.all([
+const [posts, projects, indexes, tracks, events, threads, identities, personContexts] = await Promise.all([
   getCollection('posts'),
   getCollection('projects'),
+  getCollection('indexes'),
   getCollection('projectTracks'),
   getCollection('projectEvents'),
   getCollection('projectThreads'),
@@ -20,6 +22,7 @@ const [posts, projects, tracks, events, threads, identities, personContexts] = a
 const projection = buildHomeProjection({
   posts,
   projects,
+  indexes,
   tracks,
   events,
   threads,
@@ -36,6 +39,7 @@ const projection = buildHomeProjection({
       <RecentFeed feed={projection.recentFeed} />
       <PeopleTeaser people={projection.people} />
     </div>
+    <IndexTeaser indexes={projection.indexes} />
     <LegacyCollections articleCollections={projection.articleCollections} />
   </main>
 </HomeLayout>

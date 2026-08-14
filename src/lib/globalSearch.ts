@@ -2,8 +2,8 @@ import { normalizeProjectSearchText } from './projectSearchNormalization';
 
 type CollectionEntry = { id: string; data: any };
 
-export type GlobalSearchKind = 'project' | 'event' | 'person' | 'post';
-export const GLOBAL_SEARCH_SCOPE: GlobalSearchKind[] = ['project', 'event', 'person', 'post'];
+export type GlobalSearchKind = 'project' | 'event' | 'person' | 'index' | 'post';
+export const GLOBAL_SEARCH_SCOPE: GlobalSearchKind[] = ['project', 'event', 'person', 'index', 'post'];
 export const GLOBAL_SEARCH_LOCAL_ONLY = ['work', 'context'] as const;
 
 export type GlobalSearchItem = {
@@ -32,12 +32,14 @@ export const buildGlobalSearchIndex = ({
   events,
   people,
   personContexts,
+  indexes,
   posts,
 }: {
   projects: CollectionEntry[];
   events: CollectionEntry[];
   people: CollectionEntry[];
   personContexts: CollectionEntry[];
+  indexes: CollectionEntry[];
   posts: CollectionEntry[];
 }): GlobalSearchItem[] => {
   const publishedProjects = projects.filter((project) => project.data.status === 'published');
@@ -120,6 +122,32 @@ export const buildGlobalSearchIndex = ({
         person.data.aliases,
         person.data.contextProfile,
         contextSummaries,
+      )),
+    });
+  }
+
+  for (const entry of indexes.filter((item) => item.data.status === 'published')) {
+    const latestDate = [...entry.data.entries]
+      .map((item: any) => item.date)
+      .sort((left, right) => right.localeCompare(left, 'en'))[0];
+    const entryPeople = entry.data.entries.flatMap((item: any) => item.people || [])
+      .map((person: any) => identitiesById.get(referenceId(person)))
+      .filter(Boolean);
+    items.push({
+      kind: 'index',
+      id: entry.data.slug,
+      label: 'Index · Series / public record',
+      title: entry.data.title,
+      summary: entry.data.summary,
+      href: `/indexes/${entry.data.slug}/`,
+      date: latestDate,
+      searchText: normalizeProjectSearchText(flattenText(
+        entry.data.title,
+        entry.data.summary,
+        entry.data.homeDeck,
+        entry.data.aliases,
+        entry.data.entries.map((item: any) => [item.title, item.summary]),
+        entryPeople.map((person: any) => [person.data.displayName, person.data.reading, person.data.aliases]),
       )),
     });
   }

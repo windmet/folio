@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "slug": "ore-shiri",
+  "title": "さらに！俺を知ってくれ！",
+  "kind": "stage-series",
+  "summary": "小松昌平が座長を務め、出演者自身を投影した役で物語を立ち上げる朗読劇シリーズ。公開告知と関連档案を、開催単位でたどれるようにまとめます。",
+  "status": "published",
+  "featured": true,
+  "homeDeck": "初演から幕末編の再演へ。广播中に何度も参照される舞台の前後関係を、開催記録から引き直す索引。",
+  "aliases": ["俺知", "俺を知ってくれ", "さらに俺を知ってくれ"],
+  "relatedProjects": ["komatsu36", "komachoe-20260309", "komachoe-20260425"],
+  "entries": [
+    {
+      "id": "first-performance",
+      "date": "2024-12-08",
+      "title": "『さらに！俺を知ってくれ！～幕末編～』初演",
+      "summary": "シリーズ第1回として『幕末編』を開催。のちの再演告知で、初演日と再演へのつながりが明記されています。",
+      "people": ["komatsu-shohei"],
+      "links": [
+        {
+          "label": "再演告知（声優グランプリ）",
+          "url": "https://seigura.com/news/165385/",
+          "kind": "announcement"
+        }
+      ]
+    },
+    {
+      "id": "bakumatsu-rerun",
+      "date": "2026-03-08",
+      "title": "『さらに！俺を知ってくれ！～幕末編～』再演",
+      "summary": "昼夜2公演で再演。昼夜の一部配役を替えながら、岡田以蔵、沖田総司、武市半平太、坂本龍馬、土方歳三、藤堂平助を描きました。",
+      "people": ["komatsu-shohei", "ito-tomohiro", "terashima-junta", "kano-sho", "hama-kento", "yano-shogo", "inoue-yuki", "shioya-fumiyasu"],
+      "relatedProject": "komachoe-20260309",
+      "links": [
+        {
+          "label": "開催概要（声優グランプリ）",
+          "url": "https://seigura.com/news/165385/",
+          "kind": "announcement"
+        }
+      ]
+    }
+  ]
+}

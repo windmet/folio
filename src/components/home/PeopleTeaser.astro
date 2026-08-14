@@ -11,15 +11,15 @@ const teaserPeople = people.filter((person) => person.contexts.length > 0).slice
   <div class="home-section-heading home-section-heading--compact">
     <div>
       <span class="home-kicker">PEOPLE / CONTEXT</span>
-      <h2 id="home-people-title">人物入口</h2>
+      <h2 id="home-people-title">人物前情</h2>
     </div>
-    <a class="home-section-link" href="/people/">全部人物 →</a>
+    <a class="home-section-link" href="/people/">查看全部人物 →</a>
   </div>
   <div class="home-people-list">
     {teaserPeople.map((person) => (
       <a class="home-person-card" href={`/people/${person.id}/`} data-person-teaser={person.id}>
         <span class="home-person-card-name">{person.displayName}</span>
-        <span class="home-person-card-meta">{person.projectCount} PROJECT{person.projectCount === 1 ? '' : 'S'}</span>
+        <span class="home-person-card-meta">出现于 {person.projectCount} 份档案</span>
         <span class="home-person-card-context">{person.presence.slice(0, 3).map((item: any) => item.label).join(' · ')}</span>
       </a>
     ))}

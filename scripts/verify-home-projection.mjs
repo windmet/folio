@@ -25,7 +25,7 @@ assert(!indexSource.includes("id.includes('interview')"), 'homepage still classi
 assert(!indexSource.includes("id.includes('radio')"), 'homepage still infers Radio from filename');
 assert(!indexSource.includes('tracks === 1'), 'homepage still infers publication kind from track count');
 assert(indexSource.includes('buildHomeProjection'), 'homepage must consume the Home Projection helper');
-for (const requiredClass of ['home-masthead', 'home-featured', 'home-people', 'home-recent', 'home-legacy']) {
+for (const requiredClass of ['home-masthead', 'home-featured', 'home-people', 'home-recent', 'home-indexes', 'home-legacy']) {
   assert(homepageSource.includes(requiredClass), `homepage component boundary is missing: ${requiredClass}`);
 }
 
@@ -65,6 +65,7 @@ assert((homeHtml.match(/class="legacy-card"[^>]*data-category="(interview|archiv
   'built homepage legacy collection count must remain four');
 assert(homeHtml.includes('data-feed-kind="project"') && homeHtml.includes('data-feed-kind="post"'),
   'built homepage recent feed must mix Project and Post entries');
+assert(homeHtml.includes('data-feed-kind="index"'), 'built homepage recent feed must include Index entries');
 assert(homeHtml.includes('data-person-teaser="ito-tomohiro"'), 'built homepage People teaser must expose a high-relevance fixture');
 assert(!homeHtml.includes('class="index-title"'), 'built homepage still uses the old Magazine masthead');
 

@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "slug": "ban-ban-ban",
+  "title": "小松昌平の盤・番・絆!（BAN・BAN・BAN）",
+  "kind": "program-series",
+  "summary": "小松昌平をホストに、出演声優がボードゲームやカードゲームを通して互いの意外な一面と関係性を見せるイベント企画。公開記録を開催単位で整理します。",
+  "status": "published",
+  "featured": true,
+  "homeDeck": "ゲームから生まれる関係性を追うイベントシリーズ。公式記録と、广播档案の中で語られた場面を往復する入口。",
+  "aliases": ["盤・番・絆", "BANBANBAN", "ばんばんばん"],
+  "relatedProjects": ["komachoe-20260425"],
+  "entries": [
+    {
+      "id": "about",
+      "date": "2020-01-11",
+      "title": "公式サイト ABOUT 公開",
+      "summary": "小松昌平をホストに、出演者がゲームを通じて協力し、競い、互いを理解して絆を深める企画として紹介されました。",
+      "people": ["komatsu-shohei"],
+      "links": [
+        {
+          "label": "公式 ABOUT",
+          "url": "https://2ndl.co.jp/banbanban/about/",
+          "kind": "official"
+        }
+      ]
+    },
+    {
+      "id": "episodes-35-36",
+      "date": "2026-01-25",
+      "title": "第35回・第36回",
+      "summary": "昼夜2回として開催。公式サイトには、第36回終演後に行われるポイントカード特典の授与式案内が残されています。",
+      "people": ["komatsu-shohei"],
+      "links": [
+        {
+          "label": "公式開催記録",
+          "url": "https://2ndl.co.jp/banbanban/2026/01/",
+          "kind": "archive"
+        }
+      ]
+    }
+  ]
+}

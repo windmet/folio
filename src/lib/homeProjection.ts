@@ -11,6 +11,7 @@ export type HomeArticleSection = typeof HOME_ARTICLE_SECTIONS[number];
 export type HomeProjection = {
   posts: CollectionEntry[];
   projects: CollectionEntry[];
+  indexes: CollectionEntry[];
   projectStats: Map<string, { tracks: number; events: number; threads: number }>;
   articleCollections: Map<HomeArticleSection, CollectionEntry[]>;
   people: GlobalPersonProjection[];
@@ -19,7 +20,7 @@ export type HomeProjection = {
 
 export type HomePublication = {
   id: string;
-  kind: 'project' | 'post';
+  kind: 'project' | 'index' | 'post';
   title: string;
   description: string;
   href: string;
@@ -38,6 +39,7 @@ const publicationKindOrder = (kind: 'special' | 'episode') => kind === 'special'
 export const buildHomeProjection = ({
   posts,
   projects,
+  indexes,
   tracks,
   events,
   threads,
@@ -46,6 +48,7 @@ export const buildHomeProjection = ({
 }: {
   posts: CollectionEntry[];
   projects: CollectionEntry[];
+  indexes: CollectionEntry[];
   tracks: CollectionEntry[];
   events: CollectionEntry[];
   threads: CollectionEntry[];
@@ -58,6 +61,10 @@ export const buildHomeProjection = ({
     .sort((left, right) => Number(right.data.publication.featured) - Number(left.data.publication.featured)
       || publicationKindOrder(left.data.publication.kind) - publicationKindOrder(right.data.publication.kind)
       || byPublicationDate(left, right));
+  const publishedIndexes = indexes
+    .filter((entry) => entry.data.status === 'published')
+    .sort((left, right) => Number(right.data.featured) - Number(left.data.featured)
+      || left.data.title.localeCompare(right.data.title, 'ja'));
   const projectStats = new Map(publishedProjects.map((project) => [project.id, {
     tracks: tracks.filter((track) => track.data.project?.id === project.id || track.data.project === project.id).length,
     events: events.filter((event) => (event.data.project?.id === project.id || event.data.project === project.id)
@@ -84,6 +91,18 @@ export const buildHomeProjection = ({
       sortDate: Date.parse(project.data.publication.date),
       publicationKind: project.data.publication.kind,
     })),
+    ...publishedIndexes.map((entry) => {
+      const date = [...entry.data.entries].sort((left: any, right: any) => right.date.localeCompare(left.date, 'en'))[0]?.date || '';
+      return {
+        id: entry.id,
+        kind: 'index' as const,
+        title: entry.data.title,
+        description: entry.data.homeDeck,
+        href: `/indexes/${entry.data.slug}/`,
+        date,
+        sortDate: Date.parse(date),
+      };
+    }),
     ...sortedPosts.map((post) => ({
       id: post.id,
       kind: 'post' as const,
@@ -99,6 +118,7 @@ export const buildHomeProjection = ({
   return {
     posts: sortedPosts,
     projects: publishedProjects,
+    indexes: publishedIndexes,
     projectStats,
     articleCollections,
     people,

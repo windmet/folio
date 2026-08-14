@@ -1,0 +1,64 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import IndexLayout from '../../layouts/IndexLayout.astro';
+
+export async function getStaticPaths() {
+  const indexes = await getCollection('indexes', ({ data }) => data.status === 'published');
+  return indexes.map((entry) => ({ params: { slug: entry.data.slug }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const people = await Promise.all(entry.data.entries.flatMap((item: any) => item.people || []).map((person: any) => getEntry(person)));
+const peopleById = new Map(people.filter(Boolean).map((person: any) => [person.id, person]));
+const projects = await Promise.all((entry.data.relatedProjects || []).map((project: any) => getEntry(project)));
+const orderedEntries = [...entry.data.entries].sort((left: any, right: any) => right.date.localeCompare(left.date, 'en'));
+const referenceId = (reference: any) => reference?.id || reference;
+const kindLabels = {
+  'program-series': '节目系列',
+  'stage-series': '舞台系列',
+  'public-record': '公开记录',
+};
+---
+<IndexLayout title={entry.data.title} description={entry.data.summary}>
+  <main class="index-shell index-detail">
+    <nav class="index-breadcrumb" aria-label="面包屑"><a href="/">首页</a><span>/</span><a href="/indexes/">索引</a><span>/</span><span>{entry.data.title}</span></nav>
+    <header class="index-detail-header">
+      <p class="index-kicker">{kindLabels[entry.data.kind]}</p>
+      <h1>{entry.data.title}</h1>
+      <p>{entry.data.summary}</p>
+    </header>
+
+    <section class="index-entry-list" aria-labelledby="index-records-title">
+      <div class="index-section-heading">
+        <h2 id="index-records-title">公开记录</h2>
+        <span>{orderedEntries.length} ENTRIES</span>
+      </div>
+      {orderedEntries.map((item: any) => (
+        <article class="index-entry" id={item.id}>
+          <time datetime={item.date}>{item.date}</time>
+          <div>
+            <h3>{item.title}</h3>
+            <p>{item.summary}</p>
+            {item.people.length > 0 && <div class="index-entry-people" aria-label="相关人物">
+              {item.people.map((personRef: any) => {
+                const id = referenceId(personRef);
+                const person = peopleById.get(id);
+                return person && <a href={`/people/${id}/`}>{person.data.displayName}</a>;
+              })}
+            </div>}
+            {item.links.length > 0 && <div class="index-entry-links">
+              {item.links.map((link: any) => <a href={link.url} rel="noreferrer" target="_blank">{link.label} ↗</a>)}
+            </div>}
+          </div>
+        </article>
+      ))}
+    </section>
+
+    {projects.filter(Boolean).length > 0 && <aside class="index-related" aria-labelledby="index-related-title">
+      <h2 id="index-related-title">继续进入相关档案</h2>
+      <div>
+        {projects.filter(Boolean).map((project: any) => <a href={`/projects/${project.data.slug}/`}>{project.data.title} →</a>)}
+      </div>
+    </aside>}
+  </main>
+</IndexLayout>

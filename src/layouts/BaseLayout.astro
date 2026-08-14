@@ -23,17 +23,17 @@ const { title, description, robots } = Astro.props;
         {SITE_NAME}
       </a>
       <nav class="absolute right-4 top-1/2 -translate-y-1/2 hidden sm:block">
+        <a href="/#archives" class="text-xs tracking-wider text-stone-300 no-underline hover:text-stone-500 transition-colors mr-4">
+          档案
+        </a>
         <a href="/people/" class="text-xs tracking-wider text-stone-300 no-underline hover:text-stone-500 transition-colors mr-4">
-          People
+          人物
         </a>
-        <a href="/search/" class="text-xs tracking-wider text-stone-300 no-underline hover:text-stone-500 transition-colors mr-4">
-          Search
+        <a href="/indexes/" class="text-xs tracking-wider text-stone-300 no-underline hover:text-stone-500 transition-colors mr-4">
+          索引
         </a>
-        <a href="/about/" class="text-xs tracking-wider text-stone-300 no-underline hover:text-stone-500 transition-colors mr-4">
-          About
-        </a>
-        <a href="/timeline/" class="text-xs tracking-wider text-stone-300 no-underline hover:text-stone-500 transition-colors">
-          Timeline
+        <a href="/about/" class="text-xs tracking-wider text-stone-300 no-underline hover:text-stone-500 transition-colors">
+          关于
         </a>
       </nav>
     </header>
@@ -51,7 +51,7 @@ const { title, description, robots } = Astro.props;
     </main>
 
     <footer class="py-8 text-center text-xs text-stone-300 tracking-widest">
-      <p>&copy; {new Date().getFullYear()} · <a href="/about/" class="hover:text-stone-500">About</a> · Built with {SITE_BRAND}</p>
+      <p>&copy; {new Date().getFullYear()} · <a href="/search/" class="hover:text-stone-500">搜索</a> · <a href="/timeline/" class="hover:text-stone-500">旧时间线</a> · Built with {SITE_BRAND}</p>
     </footer>
   </body>
 </html>

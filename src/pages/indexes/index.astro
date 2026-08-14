@@ -1,0 +1,33 @@
+---
+import { getCollection } from 'astro:content';
+import IndexLayout from '../../layouts/IndexLayout.astro';
+
+const indexes = (await getCollection('indexes'))
+  .filter((entry) => entry.data.status === 'published')
+  .sort((left, right) => Number(right.data.featured) - Number(left.data.featured)
+    || left.data.title.localeCompare(right.data.title, 'ja'));
+const kindLabels = {
+  'program-series': '节目系列',
+  'stage-series': '舞台系列',
+  'public-record': '公开记录',
+};
+---
+<IndexLayout title="系列与公开索引" description="把散落在档案之外的节目、舞台与公开记录整理成可继续扩展的系列入口。">
+  <main class="index-shell">
+    <header class="index-intro">
+      <p class="index-kicker">SERIES / PUBLIC INDEX</p>
+      <h1>系列与公开索引</h1>
+      <p>这里不复刻完整档案，也不替代原始来源。它只把反复出现的节目、舞台与公开记录按时间排好，方便从一个名称继续追溯。</p>
+    </header>
+    <section class="index-list" aria-label="已发布索引">
+      {indexes.map((entry) => (
+        <a class="index-card" href={`/indexes/${entry.data.slug}/`} data-index-kind={entry.data.kind}>
+          <span class="index-card-kind">{kindLabels[entry.data.kind]}</span>
+          <h2>{entry.data.title}</h2>
+          <p>{entry.data.homeDeck}</p>
+          <span class="index-card-meta">{entry.data.entries.length} 条记录 <b aria-hidden="true">→</b></span>
+        </a>
+      ))}
+    </section>
+  </main>
+</IndexLayout>
