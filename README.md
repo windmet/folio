@@ -61,6 +61,7 @@ npm run preview -- --host 127.0.0.1 --port 4322
 
 - 产品建设指导：`docs/GOMYAKU_前情帖_三项目验证后产品建设指导_v0.2.md`
 - 当前审阅交接：`docs/qa/publication-v0.2-review-handoff.md`
+- Public Surface 边界审计：`docs/cleanup/public-surface-audit.md`
 - Launch Gate：`docs/qa/publication-v0.2-launch-gate.md`
 - Project 架构与回归合同：`docs/komatsu36-archive-development.md`
 - Komatsu36 RC / Semantic 历史索引：`docs/archive/komatsu36-history.md`

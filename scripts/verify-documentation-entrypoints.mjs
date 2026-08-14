@@ -18,6 +18,7 @@ for (const required of [
   '`noindex, nofollow`',
   '`docs/archive/komatsu36-history.md`',
   '`docs/qa/publication-v0.2-review-handoff.md`',
+  '`docs/cleanup/public-surface-audit.md`',
   '`docs/qa/publication-v0.2-launch-gate.md`',
 ]) assert(readme.includes(required), `README is missing current-state marker: ${required}`);
 
@@ -30,6 +31,7 @@ const sources = [
   ['README.md', readme],
   ['docs/archive/komatsu36-history.md', history],
   ['docs/qa/publication-v0.2-review-handoff.md', await read('docs/qa/publication-v0.2-review-handoff.md')],
+  ['docs/cleanup/public-surface-audit.md', await read('docs/cleanup/public-surface-audit.md')],
 ];
 for (const [sourceName, source] of sources) {
   const references = [...source.matchAll(/`((?:docs|scripts|src)\/[^`\n]+)`/g)].map((match) => match[1]);
