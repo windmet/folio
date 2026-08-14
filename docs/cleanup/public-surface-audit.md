@@ -27,9 +27,9 @@
 | REMOVED — public/uploads/14aa0f612f505da94c45e6106501d643.jpg | 258,850 bytes；《声優グランプリ》2025-06 封面/版面图 | **PRIVATE / EXTRACTED** | 01B complete |
 | REMOVED — src/content/posts/xhs-exporter.mdx | 3,667 bytes；个人工具开发日志 | **PRIVATE / EXTRACTED** | 01C complete |
 | REMOVED — scripts/xhs-exporter/ | 本地切图工具；曾跟踪 27 张输出图，共 13,903,852 bytes；Git 历史另有已删除的 page 28–93 | **PRIVATE TOOLING / EXTRACTED** | 01C complete |
-| `src/content/posts/ancient-tweets.mdx` | 公开 X 对话内容；没有任何原 Post URL；依赖 fake Tweet UI | **MIGRATE** | 01D |
-| `public/uploads/炸鸡.jpg` | 419,466 bytes；公开社交图片的本地镜像；由 `09cb5cc` 引入 | **MIGRATE / SOURCE REVIEW** | 01D |
-| `posts` collection 与 `/posts/[...slug]` | 目前承载上述 4 篇旧文 | **DEPRECATED / MAINTENANCE-ONLY** | 01C/01D 后复核 |
+| REMOVED — src/content/posts/ancient-tweets.mdx | 公开 X 对话已迁入 public-record 与 Source records | **MIGRATED** | 01D complete |
+| REMOVED — public/uploads/炸鸡.jpg | 419,466 bytes；公开社交图片的本地镜像；已保留 Private Research 副本 | **NOT MIRRORED** | 01D complete |
+| `posts` collection 与 `/posts/[...slug]` | 当前 0 篇；只保留 maintenance-only 兼容能力，不生成页面 | **DEPRECATED / MAINTENANCE-ONLY** | 01D complete |
 | `test-article.mdx` | 当前已删除，仍在 Git 历史 | **HISTORY ONLY** | 历史清理决策 |
 
 两份 BMC 全文及其图片的 SHA-256：
@@ -62,13 +62,13 @@
 
 | 对象 | 当前 consumer | 裁决 |
 | --- | --- | --- |
-| `Tweet.astro` | `ancient-tweets.mdx` | **DEPRECATED → SourcePost** |
-| `Reply.astro` | `ancient-tweets.mdx` | **DEPRECATED → SourcePost** |
-| `QuoteTweet.astro` | `ancient-tweets.mdx` | **DEPRECATED → SourcePost** |
-| `TweetEmbed.astro` | 只被 Post route 注册，没有内容 consumer | **DELETE AFTER ROUTE MIGRATION** |
-| `public/uploads/炸鸡.jpg` | `ancient-tweets.mdx` | **不得默认镜像发布；先补 public URL / 来源判断** |
+| REMOVED — Tweet.astro | 旧 `ancient-tweets.mdx` | **RETIRED → SourcePost** |
+| REMOVED — Reply.astro | 旧 `ancient-tweets.mdx` | **RETIRED → SourcePost** |
+| REMOVED — QuoteTweet.astro | 旧 `ancient-tweets.mdx` | **RETIRED → SourcePost** |
+| REMOVED — TweetEmbed.astro | 无内容 consumer | **RETIRED** |
+| REMOVED — public/uploads/炸鸡.jpg | 旧 `ancient-tweets.mdx` | **PRIVATE COPY ONLY** |
 
-01D 的平台无关合同至少包含：`platform`、`author`、`publishedAt`、`publicUrl`，以及可选的 `excerpt`、`translation`、`editorialContext`。原链接是公开记录的必要字段；官方 embed 只能由读者主动加载，不能成为默认渲染路径。
+01D 已建立平台无关 Source contract：`platform`、`author`、`publishedAt`、`accessClass`、`publicationMode`、`sourceStatus`，以及按状态提供的 `publicUrl`、`excerpt`、`translation`、`editorialContext`。用户提供的寺島根 Post `739445176276373505` 已通过 X oEmbed 的作者、正文与日期核对；其余 9 条回复保持 `unresolved`，不生成推定链接。官方 embed 不作为默认渲染路径。
 
 ## Global Timeline consumer graph
 
@@ -110,6 +110,6 @@ timeline collection
 
 - **01B complete**：网站 repo 外的 Private Research 副本已建立并校验；BMC 全文与杂志图已撤出 current public tree。
 - **01C complete**：Tina、`public/admin/`、XHS public consumer 与零 consumer 旧博客 UI 已退役；待 build 复核生成物。
-- **01D 前置**：为 2016 X 记录补齐可验证的 public URLs；在无法核实的条目上保留 `sourceStatus`，不伪造链接。
+- **01D complete**：2016 X 内容已迁入 `2016-x-family-record` 与 10 个 Source records；1 条 verified、9 条 unresolved；fake platform UI 与本地社交图片镜像已撤出。
 - **01E 前置**：01D 不再依赖 fake Tweet family；确认全站没有 `/timeline/` 链接或 collection consumer。
 - 每批都必须运行 `npm run validate`、`npm exec -- tsc --noEmit`、`git diff --check`；涉及 Project shell 时追加 payload audit。

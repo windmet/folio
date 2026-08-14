@@ -83,12 +83,38 @@ const indexes = defineCollection({
       summary: z.string(),
       people: z.array(reference('people')).default([]),
       relatedProject: reference('projects').optional(),
+      source: reference('sources').optional(),
       links: z.array(z.object({
         label: z.string(),
         url: z.string().url(),
         kind: z.enum(['official', 'announcement', 'archive']),
       })).default([]),
     })).min(1),
+  }),
+});
+
+const sources = defineCollection({
+  loader: glob({ pattern: '*.json', base: './src/content/sources' }),
+  schema: z.object({
+    schemaVersion: z.literal(1),
+    kind: z.literal('external-post'),
+    platform: z.enum(['x', 'weibo', 'official-blog', 'youtube-community', 'web']),
+    author: z.object({ name: z.string(), handle: z.string().optional() }),
+    publishedAt: z.string().datetime({ offset: true }),
+    accessClass: z.enum(['public', 'public-external', 'private-reference', 'paid-reference']),
+    publicationMode: z.enum(['metadata-only', 'short-excerpt', 'summary-link']),
+    sourceStatus: z.enum(['verified', 'unresolved']),
+    publicUrl: z.string().url().optional(),
+    excerpt: z.string().max(500).optional(),
+    translation: z.string().max(500).optional(),
+    editorialContext: z.string().max(500).optional(),
+  }).superRefine((source, context) => {
+    if (source.sourceStatus === 'verified' && !source.publicUrl) {
+      context.addIssue({ code: 'custom', path: ['publicUrl'], message: 'verified external source requires publicUrl' });
+    }
+    if (['private-reference', 'paid-reference'].includes(source.accessClass) && source.publicationMode !== 'metadata-only') {
+      context.addIssue({ code: 'custom', path: ['publicationMode'], message: 'private or paid source must remain metadata-only' });
+    }
   }),
 });
 
@@ -310,6 +336,7 @@ export const collections = {
   timeline,
   people,
   indexes,
+  sources,
   projects,
   projectTracks,
   projectActs,

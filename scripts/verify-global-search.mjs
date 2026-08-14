@@ -23,9 +23,10 @@ assert(payload.schemaVersion === 1, 'search payload schema must be version 1');
 assert(JSON.stringify(payload.scope) === JSON.stringify(['project', 'event', 'person', 'index', 'post']), 'search payload scope changed');
 assert(JSON.stringify(payload.localOnly) === JSON.stringify(['work', 'context']), 'local-only boundary changed');
 assert(Array.isArray(payload.items) && payload.items.length > 0, 'search payload must contain items');
-for (const kind of payload.scope) {
+for (const kind of ['project', 'event', 'person', 'index']) {
   assert(payload.items.some((item) => item.kind === kind), `search payload has no ${kind} items`);
 }
+assert(!payload.items.some((item) => item.kind === 'post'), 'empty legacy Post collection must not create search items');
 assert(payload.items.every((item) => payload.scope.includes(item.kind)), 'search payload contains an unapproved kind');
 assert(payload.items.every((item) => typeof item.href === 'string' && item.href.startsWith('/')), 'search items must have internal hrefs');
 assert(payload.items.some((item) => item.kind === 'event' && item.href.includes('view=timeline&event=')), 'Event results must deep-link to Project timeline');
@@ -38,4 +39,4 @@ for (const route of ['dist/index.html', 'dist/people/index.html', 'dist/projects
   assert(read(route).includes('href="/search/"'), `${route} must expose the global search entry`);
 }
 
-console.log(`global search verified: ${payload.items.length} publication items, 5 kinds, Work/Context kept Project-local`);
+console.log(`global search verified: ${payload.items.length} publication items, 4 active kinds + optional legacy Post, Work/Context kept Project-local`);

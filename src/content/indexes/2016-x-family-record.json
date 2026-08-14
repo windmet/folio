@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "slug": "2016-x-family-record",
+  "title": "2016 年公开 X 对话记录",
+  "kind": "public-record",
+  "summary": "寺島惇太、濱野大輝与小松昌平在 2016 年 6 月 5 日围绕鸡肉、发型与“家庭会议”展开的公开对话。当前只保存短摘录与编辑语境；根 Post URL 已核实，其余回复链接仍待逐条确认。",
+  "status": "published",
+  "featured": false,
+  "homeDeck": "把旧文章中的平台仿制卡片还原为来源记录；1 条原链接已核实，9 条不会生成推定 URL。",
+  "aliases": ["2016 推特考古", "家族会议", "濱野パパ", "淳太ママ"],
+  "relatedProjects": [],
+  "entries": [
+    {"id":"hama-chicken","date":"2016-06-05","title":"鸡肉 Post 成为对话起点","summary":"濱野发布赶赴演唱会前吃鸡肉的内容。","people":["hama-kento"],"source":"x-20160605-hama-chicken","links":[]},
+    {"id":"terashima-hair","date":"2016-06-05","title":"寺島引用鸡肉话题并提到发型","summary":"寺島把话题从鸡肉转到自己剪短的头发。","people":["terashima-junta","hama-kento"],"source":"x-20160605-terashima-hair","links":[]},
+    {"id":"hama-mama","date":"2016-06-05","title":"“淳太妈妈”称呼出现","summary":"濱野评价发型，并称寺島为“淳太妈妈”。","people":["hama-kento","terashima-junta"],"source":"x-20160605-hama-mama","links":[]},
+    {"id":"terashima-mama","date":"2016-06-05","title":"寺島反问“是妈妈吗”","summary":"寺島对刚出现的称呼作出短促回应。","people":["terashima-junta"],"source":"x-20160605-terashima-mama","links":[]},
+    {"id":"hama-confirm-mama","date":"2016-06-05","title":"濱野继续确认称呼","summary":"“妈妈”称呼在回复中被继续推进。","people":["hama-kento","terashima-junta"],"source":"x-20160605-hama-confirm-mama","links":[]},
+    {"id":"komatsu-princess","date":"2016-06-05","title":"小松加入对话并提出“爸爸”称呼","summary":"小松从锻炼与鸡肉接话，把濱野称为“爸爸”。","people":["komatsu-shohei","hama-kento"],"source":"x-20160605-komatsu-princess","links":[]},
+    {"id":"hama-father","date":"2016-06-05","title":"濱野串联“公主、妈妈与父亲”","summary":"濱野回应自己更想当哥哥，但接受了对话中的家庭称呼。","people":["hama-kento","komatsu-shohei","terashima-junta"],"source":"x-20160605-hama-father","links":[]},
+    {"id":"komatsu-why-princess","date":"2016-06-05","title":"小松追问自己为何是“公主”","summary":"小松接住家庭关系玩笑，同时质疑自己的称呼。","people":["komatsu-shohei"],"source":"x-20160605-komatsu-why-princess","links":[]},
+    {"id":"hama-family-meeting","date":"2016-06-05","title":"“家庭会议”成为称呼依据","summary":"濱野说“公主”称呼已经在此前的家庭会议中决定。","people":["hama-kento","komatsu-shohei"],"source":"x-20160605-hama-family-meeting","links":[]},
+    {"id":"komatsu-no-meeting","date":"2016-06-05","title":"小松以未参加会议的吐槽收尾","summary":"小松指出自己根本没有参加所谓家庭会议。","people":["komatsu-shohei"],"source":"x-20160605-komatsu-no-meeting","links":[]}
+  ]
+}

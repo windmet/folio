@@ -1,0 +1,64 @@
+---
+export interface Props {
+  source: {
+    platform: string;
+    author: { name: string; handle?: string };
+    publishedAt: Date | string;
+    sourceStatus: 'verified' | 'unresolved';
+    publicUrl?: string;
+    excerpt?: string;
+    translation?: string;
+    editorialContext?: string;
+  };
+}
+
+const { source } = Astro.props;
+const publishedAt = source.publishedAt instanceof Date ? source.publishedAt : new Date(source.publishedAt);
+const timeLabel = new Intl.DateTimeFormat('zh-CN', {
+  timeZone: 'Asia/Tokyo',
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: false,
+}).format(publishedAt);
+---
+
+<aside class="source-post" data-source-platform={source.platform} data-source-status={source.sourceStatus}>
+  <header>
+    <div>
+      <span class="source-post-platform">{source.platform.toUpperCase()}</span>
+      <strong>{source.author.name}</strong>
+      {source.author.handle && <span class="source-post-handle">@{source.author.handle}</span>}
+    </div>
+    <time datetime={publishedAt.toISOString()}>{timeLabel}</time>
+  </header>
+  {source.excerpt && <blockquote lang="ja">{source.excerpt}</blockquote>}
+  {source.translation && <p class="source-post-translation">译：{source.translation}</p>}
+  {source.editorialContext && <p class="source-post-context">编辑说明：{source.editorialContext}</p>}
+  <footer>
+    {source.sourceStatus === 'verified' && source.publicUrl
+      ? <a href={source.publicUrl} target="_blank" rel="noreferrer">查看原 Post ↗</a>
+      : <span>原 Post 链接待核实 · 不提供推定链接</span>}
+  </footer>
+</aside>
+
+<style>
+  .source-post {
+    margin-top: 1rem;
+    border-top: 2px solid #9e7964;
+    background: rgba(255, 253, 248, 0.82);
+    padding: 1rem 1.1rem;
+    color: #443d37;
+  }
+  header, header > div { display: flex; align-items: baseline; gap: 0.55rem; flex-wrap: wrap; }
+  header { justify-content: space-between; font-size: 0.78rem; }
+  header time, .source-post-handle { color: #8b8178; }
+  .source-post-platform { color: #8b5f49; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; }
+  blockquote { margin: 0.95rem 0 0; border: 0; padding: 0; color: #292522; font-family: var(--font-serif, serif); line-height: 1.9; }
+  .source-post-translation { margin: 0.75rem 0 0; line-height: 1.8; }
+  .source-post-context { margin: 0.9rem 0 0; border-top: 1px solid #ded5c9; padding-top: 0.75rem; color: #6f655d; font-size: 0.83rem; line-height: 1.7; }
+  footer { margin-top: 0.8rem; color: #96877b; font-size: 0.72rem; }
+  footer a { color: #795845; text-decoration: underline; text-underline-offset: 0.2em; }
+</style>

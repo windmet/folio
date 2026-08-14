@@ -1,9 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import YouTubeEmbed from '../../components/YouTubeEmbed.astro';
-import Tweet from '../../components/Tweet.astro';
-import Reply from '../../components/Reply.astro';
-import QuoteTweet from '../../components/QuoteTweet.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -33,12 +30,5 @@ const { Content } = await render(post);
     </h1>
   </header>
 
-  <Content components={{ YouTubeEmbed, Tweet, Reply, QuoteTweet }} />
+  <Content components={{ YouTubeEmbed }} />
 </BaseLayout>
-
-<script>
-  document.addEventListener('click', (e) => {
-    const img = e.target.closest('.tweet-content img, .qt-content img');
-    if (img) img.classList.toggle('is-expanded');
-  });
-</script>

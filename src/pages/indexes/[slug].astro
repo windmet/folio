@@ -1,6 +1,7 @@
 ---
 import { getCollection, getEntry } from 'astro:content';
 import IndexLayout from '../../layouts/IndexLayout.astro';
+import SourcePost from '../../components/sources/SourcePost.astro';
 
 export async function getStaticPaths() {
   const indexes = await getCollection('indexes', ({ data }) => data.status === 'published');
@@ -8,11 +9,16 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
+const referenceId = (reference: any) => reference?.id || reference;
 const people = await Promise.all(entry.data.entries.flatMap((item: any) => item.people || []).map((person: any) => getEntry(person)));
 const peopleById = new Map(people.filter(Boolean).map((person: any) => [person.id, person]));
+const sources = await Promise.all(entry.data.entries.map((item: any) => item.source ? getEntry(item.source) : null));
+const sourcesById = new Map(sources.filter(Boolean).map((source: any) => [source.id, source]));
 const projects = await Promise.all((entry.data.relatedProjects || []).map((project: any) => getEntry(project)));
-const orderedEntries = [...entry.data.entries].sort((left: any, right: any) => right.date.localeCompare(left.date, 'en'));
-const referenceId = (reference: any) => reference?.id || reference;
+const entrySortDate = (item: any) => item.source
+  ? sourcesById.get(referenceId(item.source))?.data.publishedAt || item.date
+  : item.date;
+const orderedEntries = [...entry.data.entries].sort((left: any, right: any) => entrySortDate(right).localeCompare(entrySortDate(left), 'en'));
 const formatDate = (date: string) => date.replaceAll('-', '.');
 const kindLabels = {
   'program-series': '节目系列',
@@ -43,13 +49,14 @@ const kindLabels = {
       </div>
       <div class="index-chronology chronology" data-index-chronology-list>
         {orderedEntries.map((item: any) => (
-          <article class="index-entry chronology-item" id={item.id} data-entry-date={item.date}>
+          <article class="index-entry chronology-item" id={item.id} data-entry-date={entrySortDate(item)}>
             <time class="index-entry-date chronology-date" datetime={item.date}>{formatDate(item.date)}</time>
             <span class="index-entry-node chronology-node" aria-hidden="true"></span>
             <div>
               <span class="index-entry-year">{item.date.slice(0, 4)}</span>
               <h3>{item.title}</h3>
               <p>{item.summary}</p>
+              {item.source && sourcesById.get(referenceId(item.source)) && <SourcePost source={sourcesById.get(referenceId(item.source)).data} />}
               {item.people.length > 0 && <div class="index-entry-people" aria-label="相关人物">
                 {item.people.map((personRef: any) => {
                   const id = referenceId(personRef);

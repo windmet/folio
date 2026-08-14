@@ -8,6 +8,11 @@ const read = (relative) => readFile(path.join(root, relative), 'utf8');
 const indexesRoot = path.join(root, 'src/content/indexes');
 const files = (await readdir(indexesRoot)).filter((name) => name.endsWith('.json'));
 const indexes = await Promise.all(files.map(async (name) => JSON.parse(await readFile(path.join(indexesRoot, name), 'utf8'))));
+const sourceFiles = (await readdir(path.join(root, 'src/content/sources'))).filter((name) => name.endsWith('.json'));
+const sourcesById = new Map(await Promise.all(sourceFiles.map(async (name) => [
+  name.replace(/\.json$/, ''),
+  JSON.parse(await readFile(path.join(root, 'src/content/sources', name), 'utf8')),
+])));
 const indexDetailSource = await read('src/pages/indexes/[slug].astro');
 const chronologyCss = await read('src/styles/chronology.css');
 
@@ -17,7 +22,7 @@ assert(indexDetailSource.includes('data-index-order="desc"') && indexDetailSourc
 assert(chronologyCss.includes('.chronology-item') && chronologyCss.includes('.chronology-node'),
   'shared Chronology Rail primitive is missing');
 
-assert(indexes.length === 2, `expected 2 first-batch Index fixtures, found ${indexes.length}`);
+assert(indexes.length === 3, `expected 3 Index fixtures after Source migration, found ${indexes.length}`);
 for (const entry of indexes) {
   assert(entry.schemaVersion === 1, `${entry.slug}: schemaVersion must be 1`);
   assert(['program-series', 'stage-series', 'public-record'].includes(entry.kind), `${entry.slug}: invalid kind`);
@@ -31,7 +36,9 @@ for (const entry of indexes) {
   assert(html.includes(entry.title), `${entry.slug}: built route is missing title`);
   assert((html.match(/class="index-entry chronology-item"/g) || []).length === entry.entries.length, `${entry.slug}: built entry count mismatch`);
   const builtDates = [...html.matchAll(/data-entry-date="([^"]+)"/g)].map((match) => match[1]);
-  const expectedDates = entry.entries.map((item) => item.date).sort((left, right) => right.localeCompare(left, 'en'));
+  const expectedDates = entry.entries
+    .map((item) => item.source ? sourcesById.get(item.source)?.publishedAt || item.date : item.date)
+    .sort((left, right) => right.localeCompare(left, 'en'));
   assert(JSON.stringify(builtDates) === JSON.stringify(expectedDates), `${entry.slug}: default chronology order must be newest first`);
   assert(html.includes('data-index-order="desc"') && html.includes('data-index-order="asc"'), `${entry.slug}: chronology controls missing`);
   assert(!html.includes('archive-player'), `${entry.slug}: Index must not embed the Project player`);

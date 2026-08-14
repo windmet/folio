@@ -43,7 +43,7 @@ const projection = buildHomeProjection({
     <div class="home-tail">
       <div class="home-tail-inner">
         <RecentFeed feed={projection.recentFeed} />
-        <LegacyCollections articleCollections={projection.articleCollections} />
+        {projection.posts.length > 0 && <LegacyCollections articleCollections={projection.articleCollections} />}
       </div>
     </div>
   </main>
