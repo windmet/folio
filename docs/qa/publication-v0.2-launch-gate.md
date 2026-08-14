@@ -23,6 +23,9 @@
 - 未来 public-route allowlist 已覆盖 `/indexes/`；这只修正显式 launch policy，不会在 Gate 开启前改变当前 `noindex, nofollow`。
 - review 分支已推送到 GitHub；未创建 PR、未 merge、未触发 Cloudflare deployment。
 - 当前远端 deployments API：0 条。
+- 阶段完成度审计已汇总到 `docs/qa/publication-v0.2-review-handoff.md`：PUB-02A/B/C、PER-02A、CTX-02A、COR-02A、REL-02A 与 DOC-P0 均有直接实现或验证证据；PUB-02D 为工程完成、公开发布待授权。
+- 最新文档收口 CI：`Validate archive site` run [31798827351](https://github.com/windmet/folio/actions/runs/31798827351) 在 `fc866f3` 成功。
+- Komatsu36 payload 当前 raw 388,302 bytes，距离 380 KiB gate 仅余 818 bytes；后续 Project UI 变更必须继续运行 `npm run audit:payload -- komatsu36`。
 
 ## Production 探测
 

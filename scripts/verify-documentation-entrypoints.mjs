@@ -17,6 +17,7 @@ for (const required of [
   '`PUBLIC_LAUNCH_ENABLED` 仍为 `false`',
   '`noindex, nofollow`',
   '`docs/archive/komatsu36-history.md`',
+  '`docs/qa/publication-v0.2-review-handoff.md`',
   '`docs/qa/publication-v0.2-launch-gate.md`',
 ]) assert(readme.includes(required), `README is missing current-state marker: ${required}`);
 
@@ -28,6 +29,7 @@ assert(packageJson.description.startsWith('前情帖：'), 'package description 
 const sources = [
   ['README.md', readme],
   ['docs/archive/komatsu36-history.md', history],
+  ['docs/qa/publication-v0.2-review-handoff.md', await read('docs/qa/publication-v0.2-review-handoff.md')],
 ];
 for (const [sourceName, source] of sources) {
   const references = [...source.matchAll(/`((?:docs|scripts|src)\/[^`\n]+)`/g)].map((match) => match[1]);
