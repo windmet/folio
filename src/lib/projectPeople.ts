@@ -83,6 +83,7 @@ export const hydrateProjectPeople = (
 
 export const projectPersonIndexEntries = (people: CollectionEntry[]) => people.map((person) => ({
   id: person.id.split('/').at(-1) || person.id,
+  globalId: person.data.identityId,
   kind: projectPersonRelevance(person.data.presence) >= 1 ? 'participant' : 'person',
   label: person.data.displayName,
   aliases: [person.data.reading, ...(person.data.callNames || []), ...(person.data.searchAliases || [])].filter(Boolean),

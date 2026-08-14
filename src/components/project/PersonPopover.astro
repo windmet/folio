@@ -32,6 +32,7 @@ const formatTime = (milliseconds: number) => {
         <h2>{person.data.displayName}</h2>
         {person.data.reading && <p class="person-reading">{person.data.reading}</p>}
         {person.data.projectContext && <p class="person-context">{person.data.projectContext}</p>}
+        {person.data.identityId && <a class="person-global-link" href={`/people/${person.data.identityId}/`}>查看跨档案前情 →</a>}
         {(person.data.participation || []).length > 0 && (
           <div class="person-participation" aria-label="本项目参与方式">
             {person.data.participation.map((item: any) => (

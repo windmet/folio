@@ -15,16 +15,19 @@ const castLabel = cast
 const productionLabel = production?.credit || '';
 ---
 
-<button type="button" class="lead-person-index" data-open-person={localId}>
-  <span class="lead-person-index__number" aria-hidden="true">00</span>
-  <span class="lead-person-index__body">
-    <span class="lead-person-index__eyebrow">HOST / BIRTHDAY</span>
-    <span class="lead-person-index__reading">{person.data.reading || '人物资料'}</span>
-    <strong>{person.data.displayName}</strong>
-    <span class="lead-person-index__roles">
-      {[productionLabel && `BIRTHDAY HOST · ${productionLabel}`, castLabel].filter(Boolean).map((label) => <span>{label}</span>)}
+<div class="lead-person-index-wrap">
+  <button type="button" class="lead-person-index" data-open-person={localId}>
+    <span class="lead-person-index__number" aria-hidden="true">00</span>
+    <span class="lead-person-index__body">
+      <span class="lead-person-index__eyebrow">HOST / BIRTHDAY</span>
+      <span class="lead-person-index__reading">{person.data.reading || '人物资料'}</span>
+      <strong>{person.data.displayName}</strong>
+      <span class="lead-person-index__roles">
+        {[productionLabel && `BIRTHDAY HOST · ${productionLabel}`, castLabel].filter(Boolean).map((label) => <span>{label}</span>)}
+      </span>
+      <span class="lead-person-index__context">{person.data.projectContext}</span>
     </span>
-    <span class="lead-person-index__context">{person.data.projectContext}</span>
-  </span>
-  <span class="lead-person-index__count">{eventCount} 个相关节点 →</span>
-</button>
+    <span class="lead-person-index__count">{eventCount} 个相关节点 →</span>
+  </button>
+  <a class="lead-person-index__global" href={`/people/${person.data.identityId}/`}>查看跨档案前情 →</a>
+</div>

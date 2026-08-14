@@ -624,6 +624,7 @@ project-archive-shell {
 .featured-jump:focus-visible,
 .mention-time:focus-visible,
 .mention-source:focus-visible,
+.mention-global-link:focus-visible,
 .player-context-rail button:focus-visible,
 .player-context-rail a:focus-visible,
 .player-context-rail__menu button:focus-visible {
@@ -1019,7 +1020,8 @@ project-archive-shell {
   color: var(--archive-red);
 }
 
-.mention-source {
+.mention-source,
+.mention-global-link {
   display: inline-flex;
   align-items: center;
   padding: 0;
@@ -1035,7 +1037,8 @@ project-archive-shell {
   margin-left: auto;
 }
 
-.mention-source:hover {
+.mention-source:hover,
+.mention-global-link:hover {
   color: var(--archive-red);
   text-decoration-color: var(--archive-red);
 }
@@ -2463,6 +2466,39 @@ project-archive-shell {
   background: var(--archive-paper-deep);
   text-align: left;
   cursor: pointer;
+}
+
+.lead-person-index-wrap,
+.person-index-row-wrap {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+}
+
+.lead-person-index__global,
+.person-index-row__global,
+.person-global-link {
+  width: fit-content;
+  color: var(--archive-red);
+  font: 10px ui-monospace, Consolas, monospace;
+  text-decoration: none;
+}
+
+.lead-person-index__global:hover,
+.lead-person-index__global:focus-visible,
+.person-index-row__global:hover,
+.person-index-row__global:focus-visible,
+.person-global-link:hover,
+.person-global-link:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.lead-person-index__global:focus-visible,
+.person-index-row__global:focus-visible,
+.person-global-link:focus-visible {
+  outline: 2px solid var(--archive-red);
+  outline-offset: 3px;
 }
 
 .lead-person-index:hover {

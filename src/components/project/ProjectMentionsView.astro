@@ -119,6 +119,9 @@ const sourceLabelFor = (mention: any) => {
                         </details>
                       )}
                     </div>
+                    {['participant', 'person'].includes(mention.kind) && mention.globalId && (
+                      <a class="mention-global-link" href={`/people/${mention.globalId}/`}>查看跨档案前情 →</a>
+                    )}
                     {!['participant', 'person'].includes(mention.kind) && mention.url && (
                       <a class="mention-source" href={mention.url} target="_blank" rel="noopener noreferrer">
                         {sourceLabelFor(mention)} ↗

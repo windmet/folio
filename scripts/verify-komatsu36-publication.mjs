@@ -451,8 +451,10 @@ const outputBytes = (await stat(outputFile)).size;
 // replaces 123 public fields with human copy, and the 2026-08-11 semantic
 // first timeline audit adds nine visible Thread nodes. The 2026-08-12 event
 // granularity pass adds five public Events plus their storyline projections.
-// Keep an explicit ceiling rather than silently accepting arbitrary growth.
-const maxOutputBytes = 377 * 1024;
+// CTX-02A adds canonical global Person links to the Project People cards and
+// their detail panel. Keep the resulting ceiling explicit rather than silently
+// accepting arbitrary growth.
+const maxOutputBytes = 379 * 1024;
 if (outputBytes > maxOutputBytes) {
   errors.push(`project HTML is ${outputBytes} bytes; budget is ${maxOutputBytes} bytes`);
 }

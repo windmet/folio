@@ -12,7 +12,8 @@ const slug = process.argv[2];
 // Komatsu36 retains its reviewed production budget after the reader-copy and
 // semantic expansion passes. New projects first record a baseline and receive
 // a separate evidence-based budget later.
-const rawLimitBytes = slug === 'komatsu36' ? 377 * 1024 : null;
+// CTX-02A adds canonical global Person links to the Project People surface.
+const rawLimitBytes = slug === 'komatsu36' ? 379 * 1024 : null;
 
 const fail = (message) => {
   console.error(`Payload audit failed: ${message}`);
