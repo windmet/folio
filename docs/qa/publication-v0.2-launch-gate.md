@@ -1,7 +1,7 @@
 # 前情帖 Publication v0.2 · Launch Gate Preflight
 
-> 核对日期：2026-08-14  
-> review branch：`codex/publication-metadata-v2`  
+> 核对日期：2026-08-14
+> review branch：`codex/publication-metadata-v2`
 > HEAD：`bb2a4294384e4963ff9c66bcf8062ee9766115be`
 
 这是一份发布前核对记录，不等同于 production-accepted，也不授权 merge、deploy 或开放 robots。
