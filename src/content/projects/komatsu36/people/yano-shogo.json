@@ -1,13 +1,29 @@
 {
   "project": "komatsu36",
-  "displayName": "矢野奨吾",
-  "reading": "やの しょうご",
-  "callNames": [],
-  "searchAliases": [],
-  "projectContext": "《俺知》昼夜两场饰演土方歳三。朗读剧结束后赶到生日会，送出的太阳镜后来又在俳句和 Bingo 里被反复拿出来说。",
-  "participation": [
-    { "kind": "ore-shiri-cast", "character": "土方歳三", "sessions": ["day", "night"] },
-    { "kind": "birthday-live" }
+  "person": "yano-shogo",
+  "summary": "《俺知》昼夜两场饰演土方歳三。朗读剧结束后赶到生日会，送出的太阳镜后来又在俳句和 Bingo 里被反复拿出来说。",
+  "presence": [
+    {
+      "kind": "on-site"
+    }
   ],
-  "links": []
+  "roles": [
+    {
+      "kind": "cast",
+      "work": "ore-shiri",
+      "character": "土方歳三",
+      "sessions": [
+        "day",
+        "night"
+      ]
+    }
+  ],
+  "events": [
+    "komatsu36/yt-030202-yano-arrives",
+    "komatsu36/yt-030327-sunglasses",
+    "komatsu36/yt-030823-sunglasses-haiku",
+    "komatsu36/yt-031258-blade-accident-recount",
+    "komatsu36/yt-040954-sunglasses-return",
+    "komatsu36/yt-043725-yano-leaves"
+  ]
 }

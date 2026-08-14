@@ -1,0 +1,21 @@
+{
+  "project": "komachoe-20260309",
+  "person": "terashima-junta",
+  "summary": "再演中的另一位武市半平太。ヘアメイク用更整齐、受控制的“遮眼”造型和小松版以蔵拉开差异；伊藤电话段里，小松又说刚认识寺島时就觉得他像「伊藤＋河村」的组合。",
+  "presence": [
+    {
+      "kind": "referenced"
+    }
+  ],
+  "roles": [
+    {
+      "kind": "cast",
+      "work": "ore-shiri",
+      "character": "武市半平太"
+    }
+  ],
+  "events": [
+    "komachoe-20260309/yt-002711-hidden-eyes",
+    "komachoe-20260309/yt-005132-terashima-familiarity"
+  ]
+}

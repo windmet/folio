@@ -1,0 +1,21 @@
+{
+  "project": "komachoe-20260425",
+  "person": "terashima-junta",
+  "summary": "生日配信开播前就被小松拜托做裏回し／裏MC；五小时结束后，又陪几乎没吃到饭的小松去找深夜家系，明明自己已经吃了不少，最后还是一起各吃一碗。",
+  "presence": [
+    {
+      "kind": "referenced"
+    }
+  ],
+  "roles": [
+    {
+      "kind": "cast",
+      "work": "ore-shiri",
+      "character": "武市半平太"
+    }
+  ],
+  "events": [
+    "komachoe-20260425/yt-002351-terashima-backstage-mc",
+    "komachoe-20260425/yt-002803-terashima-midnight-ramen"
+  ]
+}

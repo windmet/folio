@@ -1,10 +1,18 @@
 {
   "project": "komatsu36",
-  "displayName": "光富崇雄",
-  "reading": "みつとみ たかお",
-  "callNames": ["タカオ"],
-  "searchAliases": [],
-  "projectContext": "作为观剧朋友来到生日会，并从观众视角指出沖田与以蔵之间“誠”的前后呼应。",
-  "participation": [{ "kind": "birthday-live" }],
-  "links": []
+  "person": "mitsutomi-takao",
+  "summary": "作为观剧朋友来到生日会，并从观众视角指出沖田与以蔵之间“誠”的前后呼应。",
+  "presence": [
+    {
+      "kind": "on-site"
+    }
+  ],
+  "roles": [],
+  "events": [
+    "komatsu36/yt-015525-second-guests-arrive",
+    "komatsu36/yt-020048-baystars-towel",
+    "komatsu36/yt-022523-making-of-starts",
+    "komatsu36/yt-022700-makoto-theme",
+    "komatsu36/yt-040000-tumbler-mitsutomi"
+  ]
 }

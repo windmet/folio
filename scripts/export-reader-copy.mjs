@@ -62,7 +62,6 @@ if (fs.existsSync(threadDirectory)) {
 const isSingleTrackBroadcast = project.visualTheme === 'broadcast-blue'
   && tracks.size === 1
   && threads.size === 0
-  && people.size === 0
   && sources.size === 0;
 
 const entries = [];
@@ -149,15 +148,11 @@ for (const item of threads.values()) {
 
 for (const item of people.values()) {
   const source = relative(path.join(projectRoot, 'people', item.file));
-  addEntry({ scope: 'person', id: entityId(item.id), field: 'displayName', value: item.data.displayName, source });
-  addEntry({ scope: 'person', id: entityId(item.id), field: 'reading', value: item.data.reading, source });
-  addEntry({ scope: 'person', id: entityId(item.id), field: 'projectContext', value: item.data.projectContext, source });
-  (item.data.callNames || []).forEach((value, index) => addEntry({ scope: 'person', id: entityId(item.id), field: `callNames[${index}]`, value, source }));
-  (item.data.participation || []).forEach((participation, index) => {
-    addEntry({ scope: 'person', id: entityId(item.id), field: `participation[${index}].character`, value: participation.character, source });
-    addEntry({ scope: 'person', id: entityId(item.id), field: `participation[${index}].credit`, value: participation.credit, source });
+  addEntry({ scope: 'person', id: entityId(item.id), field: 'summary', value: item.data.summary, source });
+  (item.data.roles || []).forEach((role, index) => {
+    addEntry({ scope: 'person', id: entityId(item.id), field: `roles[${index}].character`, value: role.character, source });
+    addEntry({ scope: 'person', id: entityId(item.id), field: `roles[${index}].credit`, value: role.credit, source });
   });
-  (item.data.links || []).forEach((link, index) => addEntry({ scope: 'person', id: entityId(item.id), field: `links[${index}].label`, value: link.label, source }));
 }
 
 for (const item of sources.values()) {

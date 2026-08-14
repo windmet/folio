@@ -24,6 +24,7 @@ const project = await readJson(path.join(contentRoot, 'project.json'));
 const trackFiles = await listJson('tracks');
 const actFiles = await listJson('acts');
 const eventFiles = await listJson('events');
+const peopleFiles = await listJson('people');
 const tracks = await Promise.all(trackFiles.map((name) => readJson(path.join(contentRoot, 'tracks', name))));
 const acts = await Promise.all(actFiles.map((name) => readJson(path.join(contentRoot, 'acts', name))));
 const events = await Promise.all(eventFiles.map((name) => readJson(path.join(contentRoot, 'events', name))));
@@ -35,15 +36,15 @@ assert(project.status === 'draft', 'Project must remain draft until editorial re
 assert(project.defaultView === 'overview', 'defaultView must remain overview');
 assert(project.visualTheme === 'broadcast-blue', 'Project must use the broadcast-blue theme');
 assert(JSON.stringify(project.views) === JSON.stringify(['overview', 'sections', 'timeline', 'mentions']), 'views must remain Overview / Sections / Timeline / Mentions');
-assert(Array.isArray(project.mentions) && project.mentions.length === 15, 'Mentions must contain the reviewed 15-entry index');
-assert(project.mentions.filter((mention) => mention.kind === 'person').length === 12, 'Mentions must contain 12 People entries');
+assert(Array.isArray(project.mentions) && project.mentions.length === 3, 'Project mentions must contain the reviewed 3 Work / Context entries');
+assert(project.mentions.filter((mention) => mention.kind === 'person').length === 0, 'People must live in Project Person Context, not project mentions');
 assert(project.mentions.filter((mention) => mention.kind === 'work').length === 2, 'Mentions must contain 2 Works entries');
 assert(project.mentions.filter((mention) => mention.kind === 'context').length === 1, 'Mentions must contain 1 Context entry');
 assert(trackFiles.length === 1 && tracks[0].durationMs === 9206015 && tracks[0].order === 1, 'expected one ordered 9,206,015ms Track');
 assert(actFiles.length === 6, `expected 6 Acts, found ${actFiles.length}`);
 assert(eventFiles.length === 38, `expected 38 Events, found ${eventFiles.length}`);
 assert(!(await exists(path.join(contentRoot, 'threads'))), 'single-source page must not create a threads directory');
-assert(!(await exists(path.join(contentRoot, 'people'))), 'single-source page must not create a people directory');
+assert((await exists(path.join(contentRoot, 'people'))) && peopleFiles.length === 13, 'Person Model v2 requires 13 Project Person Context entries');
 assert(!(await exists(path.join(contentRoot, 'sources'))), 'single-source page must not create a sources directory');
 
 const orderedActs = [...acts].sort((left, right) => left.order - right.order);
@@ -73,9 +74,12 @@ assert(JSON.stringify(attributeValues(html, 'data-view-panel')) === JSON.stringi
 assert((html.match(/class="section-card"/g) || []).length === 6, 'Sections must contain 6 cards');
 assert((html.match(/data-event-card="/g) || []).length === 38, 'Timeline must contain 38 Event cards');
 assert((html.match(/data-timeline-navigator-segment="/g) || []).length === 6, 'Timeline navigator must contain 6 segments');
-assert((html.match(/data-mention-card="/g) || []).length === 15, 'Mentions must contain 15 cards');
-assert((html.match(/data-mention-summary-toggle="/g) || []).length === 15, 'Mentions must expose 15 adaptive summaries');
-assert(searchPayload.items?.length === 38 && searchPayload.items.every((item) => item.kind === 'event'), 'search index must contain exactly 38 Events');
+assert((html.match(/data-mention-card="/g) || []).length === 16, 'Index must contain 16 Person / Work / Context cards');
+assert((html.match(/data-mention-summary-toggle="/g) || []).length === 16, 'Index must expose 16 adaptive summaries');
+assert(searchPayload.items?.length === 51
+  && searchPayload.items.filter((item) => item.kind === 'event').length === 38
+  && searchPayload.items.filter((item) => item.kind === 'person').length === 13,
+'search index must contain 38 Events and 13 Project People');
 
 const controllerMatch = html.match(/<script type="application\/json" data-archive-controller-data[^>]*>([\s\S]*?)<\/script>/);
 if (!controllerMatch) {
@@ -97,4 +101,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log(`Komachoe 2026-03-09 publication verification passed (${Buffer.byteLength(html)} bytes, 1 Track, 6 Sections, 38 Events, 15 Mentions).`);
+console.log(`Komachoe 2026-03-09 publication verification passed (${Buffer.byteLength(html)} bytes, 1 Track, 6 Sections, 38 Events, 16 Index entries).`);

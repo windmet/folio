@@ -1,13 +1,40 @@
 {
   "project": "komatsu36",
-  "displayName": "寺島惇太",
-  "reading": "てらしま じゅんた",
-  "callNames": ["惇太"],
-  "searchAliases": [],
-  "projectContext": "《俺知》昼场饰演武市半平太。带来“三选二”生日券和 Big Dream 赛马，还一路参与动作复盘与 Bingo。",
-  "participation": [
-    { "kind": "ore-shiri-cast", "character": "武市半平太", "sessions": ["day"] },
-    { "kind": "birthday-live" }
+  "person": "terashima-junta",
+  "summary": "《俺知》昼场饰演武市半平太。带来“三选二”生日券和 Big Dream 赛马，还一路参与动作复盘与 Bingo。",
+  "presence": [
+    {
+      "kind": "on-site"
+    }
   ],
-  "links": []
+  "roles": [
+    {
+      "kind": "cast",
+      "work": "ore-shiri",
+      "character": "武市半平太",
+      "sessions": [
+        "day"
+      ]
+    }
+  ],
+  "events": [
+    "komatsu36/sp2-011723-terashima-requested",
+    "komatsu36/sp2-012010-terashima-arrives",
+    "komatsu36/yt-011036-terashima-arrives",
+    "komatsu36/yt-011820-birthday-toast",
+    "komatsu36/yt-013048-three-coupons",
+    "komatsu36/yt-013535-risk-chosen",
+    "komatsu36/yt-013730-hama-j-coupon",
+    "komatsu36/yt-013800-thirty-four-yen",
+    "komatsu36/yt-013917-kano-spice-sensor",
+    "komatsu36/yt-014840-wide-bet",
+    "komatsu36/yt-015028-nothing-won",
+    "komatsu36/yt-025353-popular-haiku",
+    "komatsu36/yt-025755-kumagai-haiku",
+    "komatsu36/yt-025829-hair-grab",
+    "komatsu36/yt-031905-kaei-accent",
+    "komatsu36/yt-040405-amazon-hama",
+    "komatsu36/yt-040524-hama-grabs-amazon-card",
+    "komatsu36/yt-043520-ojamajo"
+  ]
 }

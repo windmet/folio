@@ -1,0 +1,20 @@
+{
+  "project": "komachoe-20260425",
+  "person": "ito-tomohiro",
+  "summary": "两次打ち上げ都没能参加。小松说自己一直有联系，也提到伊藤现在在一般企业工作；继续硬把他拉进公开活动会变成另一回事，两人已经约好之后私下吃饭。",
+  "presence": [
+    {
+      "kind": "referenced"
+    }
+  ],
+  "roles": [
+    {
+      "kind": "cast",
+      "work": "ore-shiri",
+      "character": "沖田総司"
+    }
+  ],
+  "events": [
+    "komachoe-20260425/yt-015153-seiten-and-ito"
+  ]
+}

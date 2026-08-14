@@ -1,14 +1,54 @@
 {
   "project": "komatsu36",
-  "displayName": "濱健人",
-  "reading": "はま けんと",
-  "callNames": ["濱ちゃん", "ハマ"],
-  "searchAliases": [],
-  "projectContext": "《俺知》昼夜两场饰演坂本龍馬，同时负责土佐弁监修。生日会里，他最早抽到那颗芥末章鱼烧，也一路把“没带礼物”玩成了整晚的梗。",
-  "participation": [
-    { "kind": "ore-shiri-cast", "character": "坂本龍馬", "sessions": ["day", "night"] },
-    { "kind": "production", "credit": "土佐弁監修" },
-    { "kind": "birthday-live" }
+  "person": "hama-kento",
+  "summary": "《俺知》昼夜两场饰演坂本龍馬，同时负责土佐弁监修。生日会里，他最早抽到那颗芥末章鱼烧，也一路把“没带礼物”玩成了整晚的梗。",
+  "presence": [
+    {
+      "kind": "on-site"
+    }
   ],
-  "links": []
+  "roles": [
+    {
+      "kind": "cast",
+      "work": "ore-shiri",
+      "character": "坂本龍馬",
+      "sessions": [
+        "day",
+        "night"
+      ]
+    },
+    {
+      "kind": "production",
+      "work": "ore-shiri",
+      "credit": "土佐弁監修"
+    }
+  ],
+  "events": [
+    "komatsu36/yt-010711-first-guests-arrive",
+    "komatsu36/yt-011820-birthday-toast",
+    "komatsu36/yt-011843-hama-no-gift",
+    "komatsu36/yt-013730-hama-j-coupon",
+    "komatsu36/yt-013800-thirty-four-yen",
+    "komatsu36/yt-013827-hama-moet-budget",
+    "komatsu36/yt-014214-takoyaki-arrives",
+    "komatsu36/yt-014246-hama-spicy-chicken",
+    "komatsu36/yt-014321-kano-ojisan",
+    "komatsu36/yt-014749-hama-draws",
+    "komatsu36/yt-014822-race-interrupts",
+    "komatsu36/yt-020644-eight-trip",
+    "komatsu36/yt-024207-controlled-adlib",
+    "komatsu36/yt-030923-takoyaki-payoff",
+    "komatsu36/yt-031258-blade-accident-recount",
+    "komatsu36/yt-031300-ryoma-line-callback",
+    "komatsu36/yt-031905-kaei-accent",
+    "komatsu36/yt-040524-hama-grabs-amazon-card",
+    "komatsu36/yt-041035-paid-drinking",
+    "komatsu36/yt-042117-keserasera",
+    "komatsu36/yt-042314-hama-self-intro",
+    "komatsu36/yt-043218-song-reminder",
+    "komatsu36/yt-043520-ojamajo",
+    "komatsu36/yt-044513-fantastipo",
+    "komatsu36/yt-044937-seishun-amigo",
+    "komatsu36/yt-045435-shuji-akira"
+  ]
 }

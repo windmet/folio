@@ -1,10 +1,18 @@
 {
   "project": "komatsu36",
-  "displayName": "堀金蒼平",
-  "reading": "ほりかね そうへい",
-  "callNames": ["蒼平"],
-  "searchAliases": [],
-  "projectContext": "后半才到场的观剧朋友。完全不知道前情，却正好吃下那颗被大家忘了约 80 分钟的芥末章鱼烧。",
-  "participation": [{ "kind": "birthday-live" }],
-  "links": []
+  "person": "horikane-sohei",
+  "summary": "后半才到场的观剧朋友。完全不知道前情，却正好吃下那颗被大家忘了约 80 分钟的芥末章鱼烧。",
+  "presence": [
+    {
+      "kind": "on-site"
+    }
+  ],
+  "roles": [],
+  "events": [
+    "komatsu36/yt-015525-second-guests-arrive",
+    "komatsu36/yt-015910-tea-chatgpt",
+    "komatsu36/yt-023035-todo-two-perspectives",
+    "komatsu36/yt-030923-takoyaki-payoff",
+    "komatsu36/yt-040405-amazon-hama"
+  ]
 }

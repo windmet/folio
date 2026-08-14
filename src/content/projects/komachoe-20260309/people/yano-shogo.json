@@ -1,0 +1,21 @@
+{
+  "project": "komachoe-20260309",
+  "person": "yano-shogo",
+  "summary": "再演中的土方歳三。排练时会直接追问「为什么这里要踢，而不是斩」，让清典和小松重新从角色当下真正想做什么来检查既有动作。",
+  "presence": [
+    {
+      "kind": "referenced"
+    }
+  ],
+  "roles": [
+    {
+      "kind": "cast",
+      "work": "ore-shiri",
+      "character": "土方歳三"
+    }
+  ],
+  "events": [
+    "komachoe-20260309/yt-003029-double-cast-visuals",
+    "komachoe-20260309/yt-014839-action-from-character"
+  ]
+}

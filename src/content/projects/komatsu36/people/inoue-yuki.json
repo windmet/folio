@@ -1,13 +1,31 @@
 {
   "project": "komatsu36",
-  "displayName": "井上雄貴",
-  "reading": "いのうえ ゆうき",
-  "callNames": [],
-  "searchAliases": [],
-  "projectContext": "《俺知》昼场饰演藤堂平助。复盘时从北辰一刀流研究聊到角色动作的高低差，二次会又和夜场平助汐谷文康一起唱歌。",
-  "participation": [
-    { "kind": "ore-shiri-cast", "character": "藤堂平助", "sessions": ["day"] },
-    { "kind": "birthday-live" }
+  "person": "inoue-yuki",
+  "summary": "《俺知》昼场饰演藤堂平助。复盘时从北辰一刀流研究聊到角色动作的高低差，二次会又和夜场平助汐谷文康一起唱歌。",
+  "presence": [
+    {
+      "kind": "on-site"
+    }
   ],
-  "links": []
+  "roles": [
+    {
+      "kind": "cast",
+      "work": "ore-shiri",
+      "character": "藤堂平助",
+      "sessions": [
+        "day"
+      ]
+    }
+  ],
+  "events": [
+    "komatsu36/yt-010711-first-guests-arrive",
+    "komatsu36/yt-011820-birthday-toast",
+    "komatsu36/yt-012514-three-gift",
+    "komatsu36/yt-020742-action-group-prelude",
+    "komatsu36/yt-023035-todo-two-perspectives",
+    "komatsu36/yt-034011-blood-flick-research",
+    "komatsu36/yt-040539-fan-inoue",
+    "komatsu36/yt-043520-ojamajo",
+    "komatsu36/yt-044023-wheel-song"
+  ]
 }

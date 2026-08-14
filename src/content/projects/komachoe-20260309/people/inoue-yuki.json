@@ -1,0 +1,22 @@
+{
+  "project": "komachoe-20260309",
+  "person": "inoue-yuki",
+  "summary": "第二通电话嘉宾，也是再演中藤堂平助的 double cast 之一。他把新增源さん场面的来由、平助为什么不该只做やられ役，以及自己怎么把角色研究带回殺陣都讲得很细。",
+  "presence": [
+    {
+      "kind": "live-call"
+    }
+  ],
+  "roles": [
+    {
+      "kind": "cast",
+      "work": "ore-shiri",
+      "character": "藤堂平助"
+    }
+  ],
+  "events": [
+    "komachoe-20260309/yt-011603-arm-for-one-strike",
+    "komachoe-20260309/yt-011854-double-cast-research",
+    "komachoe-20260309/yt-012231-sato-old-connection"
+  ]
+}

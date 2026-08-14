@@ -1,10 +1,19 @@
 {
   "project": "komatsu36",
-  "displayName": "山本誠大",
-  "reading": "やまもと まさひろ",
-  "callNames": [],
-  "searchAliases": [],
-  "projectContext": "《俺知》ensemble。小松复盘自己的名场面时，特意提到他的关西式吐槽、间和临场接话。",
-  "participation": [{ "kind": "ensemble" }],
-  "links": []
+  "person": "yamamoto-masahiro",
+  "summary": "《俺知》ensemble。小松复盘自己的名场面时，特意提到他的关西式吐槽、间和临场接话。",
+  "presence": [
+    {
+      "kind": "referenced"
+    }
+  ],
+  "roles": [
+    {
+      "kind": "ensemble",
+      "work": "ore-shiri"
+    }
+  ],
+  "events": [
+    "komatsu36/yt-034149-ensemble-response"
+  ]
 }

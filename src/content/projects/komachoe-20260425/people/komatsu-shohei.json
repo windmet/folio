@@ -1,0 +1,22 @@
+{
+  "project": "komachoe-20260425",
+  "person": "komatsu-shohei",
+  "summary": "本期主持与叙事中心。",
+  "presence": [
+    {
+      "kind": "host"
+    }
+  ],
+  "roles": [
+    {
+      "kind": "host",
+      "credit": "番組主持"
+    }
+  ],
+  "events": [
+    "komachoe-20260425/yt-000031-production-retrospective",
+    "komachoe-20260425/yt-004333-producer-casting",
+    "komachoe-20260425/yt-013430-hontou-wa-accent",
+    "komachoe-20260425/yt-020257-game-backlog-and-recovery"
+  ]
+}

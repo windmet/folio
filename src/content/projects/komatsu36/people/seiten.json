@@ -1,15 +1,33 @@
 {
   "project": "komatsu36",
-  "displayName": "清典",
-  "reading": "せいてん",
-  "callNames": [],
-  "searchAliases": [],
-  "projectContext": "《俺知》的アクション演出与 ensemble。复盘时从专业动作视角聊演员训练和舞台细节，Space 结尾处又被小松当场公开邀约后续企划。",
-  "participation": [
-    { "kind": "production", "credit": "アクション演出" },
-    { "kind": "ensemble" },
-    { "kind": "space-guest" },
-    { "kind": "submitted-comment" }
+  "person": "kiyoten",
+  "summary": "《俺知》的アクション演出与 ensemble。复盘时从专业动作视角聊演员训练和舞台细节，Space 结尾处又被小松当场公开邀约后续企划。",
+  "presence": [
+    {
+      "kind": "live-space"
+    },
+    {
+      "kind": "submitted"
+    }
   ],
-  "links": []
+  "roles": [
+    {
+      "kind": "production",
+      "work": "ore-shiri",
+      "credit": "アクション演出"
+    },
+    {
+      "kind": "ensemble",
+      "work": "ore-shiri"
+    }
+  ],
+  "events": [
+    "komatsu36/sp2-025254-seiten-reflection",
+    "komatsu36/sp2-025331-seiten-birthday",
+    "komatsu36/sp2-025404-public-offer",
+    "komatsu36/yt-024102-audience-view",
+    "komatsu36/yt-032828-seiten-opening",
+    "komatsu36/yt-033801-killer-walk",
+    "komatsu36/yt-042730-mini-event-announced"
+  ]
 }

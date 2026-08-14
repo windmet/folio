@@ -42,6 +42,27 @@ const projectView = z.enum([
   'transcript',
 ]);
 
+const personLink = z.object({
+  kind: z.enum(['social', 'agency', 'official']),
+  platform: z.enum(['x', 'instagram', 'youtube']).optional(),
+  label: z.string(),
+  url: z.string().url(),
+});
+
+const people = defineCollection({
+  loader: glob({ pattern: '*.json', base: './src/content/people' }),
+  schema: z.object({
+    displayName: z.string(),
+    reading: z.string().optional(),
+    aliases: z.array(z.string()).default([]),
+    links: z.array(personLink).default([]),
+    contextProfile: z.object({
+      deck: z.string(),
+      scopeNote: z.string().optional(),
+    }).optional(),
+  }),
+});
+
 const projects = defineCollection({
   loader: glob({
     pattern: '*/project.json',
@@ -69,7 +90,7 @@ const projects = defineCollection({
     featuredThreads: z.array(reference('projectThreads')),
     mentions: z.array(z.object({
       id: z.string().regex(/^[a-z0-9][a-z0-9-]*$/),
-      kind: z.enum(['work', 'person', 'context']),
+      kind: z.enum(['work', 'context']),
       label: z.string(),
       aliases: z.array(z.string()).default([]),
       summary: z.string(),
@@ -203,32 +224,27 @@ const projectPeople = defineCollection({
   }),
   schema: z.object({
     project: reference('projects'),
-    displayName: z.string(),
-    reading: z.string().optional(),
-    callNames: z.array(z.string()).default([]),
-    searchAliases: z.array(z.string()).default([]),
-    projectContext: z.string().optional(),
-    participation: z.array(z.object({
+    person: reference('people'),
+    summary: z.string(),
+    presence: z.array(z.object({
       kind: z.enum([
-        'ore-shiri-cast',
-        'production',
-        'ensemble',
-        'birthday-live',
-        'space-guest',
-        'remote-call',
-        'space-account',
-        'submitted-comment',
+        'host',
+        'on-site',
+        'live-call',
+        'live-space',
+        'submitted',
+        'referenced',
+        'account-context',
       ]),
+    })).min(1),
+    roles: z.array(z.object({
+      kind: z.enum(['cast', 'production', 'action', 'host', 'ensemble']),
+      work: z.string().optional(),
       character: z.string().optional(),
       sessions: z.array(z.enum(['day', 'night'])).optional(),
       credit: z.string().optional(),
     })).default([]),
-    links: z.array(z.object({
-      kind: z.enum(['social', 'agency', 'official']),
-      platform: z.enum(['x', 'instagram', 'youtube']).optional(),
-      label: z.string(),
-      url: z.string().url(),
-    })).default([]),
+    events: z.array(reference('projectEvents')).default([]),
   }),
 });
 
@@ -256,6 +272,7 @@ const projectSources = defineCollection({
 export const collections = {
   posts,
   timeline,
+  people,
   projects,
   projectTracks,
   projectActs,

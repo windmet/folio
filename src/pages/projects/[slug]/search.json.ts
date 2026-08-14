@@ -1,18 +1,21 @@
 import { getCollection } from 'astro:content';
 import type { APIRoute } from 'astro';
 import { buildProjectSearchIndex } from '../../../lib/projectSearchIndex';
+import { hydrateProjectPeople } from '../../../lib/projectPeople';
 
 const projectReference = (entry: any, projectId: string) => entry.data.project?.id === projectId;
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
   return Promise.all(projects.map(async (project) => {
-    const [tracks, events, threads, people] = await Promise.all([
+    const [tracks, events, threads, personContexts, identities] = await Promise.all([
       getCollection('projectTracks', (entry) => projectReference(entry, project.id)),
       getCollection('projectEvents', (entry) => projectReference(entry, project.id)),
       getCollection('projectThreads', (entry) => projectReference(entry, project.id)),
       getCollection('projectPeople', (entry) => projectReference(entry, project.id)),
+      getCollection('people'),
     ]);
+    const people = hydrateProjectPeople(personContexts, identities);
     return {
       params: { slug: project.data.slug },
       props: {

@@ -1,0 +1,20 @@
+{
+  "project": "komachoe-20260309",
+  "person": "nishida-satoko",
+  "summary": "本场ヘアメイク说明的提供者。她从パンフ拍摄一路解释到正式演出：アイメイク为什么扩到全员、两个武市怎么拉开差异，以及各角色的发型和眼神是怎么定下来的。",
+  "presence": [
+    {
+      "kind": "referenced"
+    }
+  ],
+  "roles": [
+    {
+      "kind": "production",
+      "work": "ore-shiri",
+      "credit": "ヘアメイク"
+    }
+  ],
+  "events": [
+    "komachoe-20260309/yt-002014-hairmake-team"
+  ]
+}

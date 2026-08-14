@@ -1,13 +1,31 @@
 {
   "project": "komatsu36",
-  "displayName": "汐谷文康",
-  "reading": "しおや ふみよし",
-  "callNames": ["ふーみん"],
-  "searchAliases": [],
-  "projectContext": "《俺知》夜场饰演藤堂平助。复盘时从北辰一刀流研究聊到血振り，二次会又和昼场平助井上雄貴组成“W平助”一起唱歌。",
-  "participation": [
-    { "kind": "ore-shiri-cast", "character": "藤堂平助", "sessions": ["night"] },
-    { "kind": "birthday-live" }
+  "person": "shioya-fumiyasu",
+  "summary": "《俺知》夜场饰演藤堂平助。复盘时从北辰一刀流研究聊到血振り，二次会又和昼场平助井上雄貴组成“W平助”一起唱歌。",
+  "presence": [
+    {
+      "kind": "on-site"
+    }
   ],
-  "links": []
+  "roles": [
+    {
+      "kind": "cast",
+      "work": "ore-shiri",
+      "character": "藤堂平助",
+      "sessions": [
+        "night"
+      ]
+    }
+  ],
+  "events": [
+    "komatsu36/yt-010711-first-guests-arrive",
+    "komatsu36/yt-011820-birthday-toast",
+    "komatsu36/yt-012610-godiva-overlap",
+    "komatsu36/yt-021052-monaki-karaoke",
+    "komatsu36/yt-021540-milk-wordplay",
+    "komatsu36/yt-031615-book-improv",
+    "komatsu36/yt-034011-blood-flick-research",
+    "komatsu36/yt-035633-beef-shioya",
+    "komatsu36/yt-044023-wheel-song"
+  ]
 }

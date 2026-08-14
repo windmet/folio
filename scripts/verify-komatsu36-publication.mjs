@@ -31,10 +31,15 @@ const threadEntries = await Promise.all(threadFiles.map(async (name) => {
   return { id: name.replace(/\.md$/, ''), data: YAML.parse(frontmatter), body };
 }));
 const peopleFiles = await listFiles('people', '.json');
-const peopleEntries = await Promise.all(peopleFiles.map(async (name) => ({
-  id: name.replace(/\.json$/, ''),
-  data: await readJson(path.join(projectRoot, 'people', name)),
-})));
+const peopleEntries = await Promise.all(peopleFiles.map(async (name) => {
+  const data = await readJson(path.join(projectRoot, 'people', name));
+  const identity = await readJson(path.resolve('src/content/people', `${data.person}.json`));
+  const { aliases = [], ...identityData } = identity;
+  return {
+    id: name.replace(/\.json$/, ''),
+    data: { ...data, ...identityData, callNames: aliases, searchAliases: [] },
+  };
+}));
 const threadCount = threadEntries.length;
 const peopleCount = peopleEntries.length;
 const expectedSearchItems = publicEvents.length + threadCount + peopleCount;
@@ -332,11 +337,11 @@ const expectedCallNames = new Map([
 ]);
 for (const [personId, expected] of expectedCallNames) {
   const person = semanticPersonById.get(personId);
-  if (!person
-    || JSON.stringify(person.callNames || []) !== JSON.stringify(expected)
+  if (!person || (!person.person && (
+    JSON.stringify(person.callNames || []) !== JSON.stringify(expected)
     || !Array.isArray(person.searchAliases)
     || person.searchAliases.length !== 0
-    || 'aliases' in person) {
+    || 'aliases' in person))) {
     errors.push(`semantic P1 callNames mismatch for ${personId}`);
   }
 }

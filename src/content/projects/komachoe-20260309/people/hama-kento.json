@@ -1,0 +1,22 @@
+{
+  "project": "komachoe-20260309",
+  "person": "hama-kento",
+  "summary": "再演中的坂本龍馬。清典夸他的龍馬像“真正的人”一样耀眼；而在后台，濱又会主动找方言、芝居、殺陣和音响各部门确认细节，还帮小松把土佐弁修到 accent 层级。",
+  "presence": [
+    {
+      "kind": "referenced"
+    }
+  ],
+  "roles": [
+    {
+      "kind": "cast",
+      "work": "ore-shiri",
+      "character": "坂本龍馬"
+    }
+  ],
+  "events": [
+    "komachoe-20260309/yt-002533-ryoma-hairmake",
+    "komachoe-20260309/yt-015821-real-ryoma",
+    "komachoe-20260309/yt-021442-tosa-accent"
+  ]
+}

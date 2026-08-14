@@ -1,0 +1,21 @@
+{
+  "project": "komachoe-20260309",
+  "person": "shioya-fumiyasu",
+  "summary": "藤堂平助的另一位 double cast。制作后段，小松现场写出的追加台词字太难直接发给全员，最后由汐谷重新誊清；角色研究上，他也和井上共享资料，再各自演出自己的平助。",
+  "presence": [
+    {
+      "kind": "referenced"
+    }
+  ],
+  "roles": [
+    {
+      "kind": "cast",
+      "work": "ore-shiri",
+      "character": "藤堂平助"
+    }
+  ],
+  "events": [
+    "komachoe-20260309/yt-011148-handwritten-lines",
+    "komachoe-20260309/yt-011854-double-cast-research"
+  ]
+}

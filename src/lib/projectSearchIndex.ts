@@ -46,6 +46,11 @@ const participationText = (person: CollectionEntry) => (person.data.participatio
   ...(item.sessions || []),
 ]);
 
+const contextText = (person: CollectionEntry) => [
+  ...(person.data.presence || []).map((item: any) => item.kind),
+  ...(person.data.roles || []).map((item: any) => [item.kind, item.work, item.character, item.credit, ...(item.sessions || [])]),
+];
+
 export const buildProjectSearchIndex = ({
   events,
   threads,
@@ -129,6 +134,7 @@ export const buildProjectSearchIndex = ({
         person.data.searchAliases,
         person.data.projectContext,
         participationText(person),
+        contextText(person),
         (person.data.links || []).map((link: any) => [link.label, link.platform]),
       )),
     });

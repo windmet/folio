@@ -1,10 +1,17 @@
 {
   "project": "komatsu36",
-  "displayName": "室元気",
-  "reading": "むろ げんき",
-  "callNames": [],
-  "searchAliases": [],
-  "projectContext": "本档案只记录 Space 中“室元気账号”出现过这件事；账号上的未知发言者自称“乗っ取り”，因此不把那段发言归给室元気本人。",
-  "participation": [{ "kind": "space-account" }],
-  "links": []
+  "person": "muro-genki",
+  "summary": "本档案只记录 Space 中“室元気账号”出现过这件事；账号上的未知发言者自称“乗っ取り”，因此不把那段发言归给室元気本人。",
+  "presence": [
+    {
+      "kind": "account-context"
+    }
+  ],
+  "roles": [],
+  "events": [
+    "komatsu36/sp1-004324-space-restart",
+    "komatsu36/sp2-000131-muro-account",
+    "komatsu36/sp2-000311-account-hijack",
+    "komatsu36/sp2-000509-hokkaido"
+  ]
 }

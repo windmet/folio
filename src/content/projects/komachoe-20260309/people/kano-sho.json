@@ -1,0 +1,21 @@
+{
+  "project": "komachoe-20260309",
+  "person": "kano-sho",
+  "summary": "再演中的武市半平太。演出后，他对小松说了一句「昌平、芝居上手くなったね」；小松后来把这句话列为整次再演最开心的事情之一。",
+  "presence": [
+    {
+      "kind": "referenced"
+    }
+  ],
+  "roles": [
+    {
+      "kind": "cast",
+      "work": "ore-shiri",
+      "character": "武市半平太"
+    }
+  ],
+  "events": [
+    "komachoe-20260309/yt-002014-hairmake-team",
+    "komachoe-20260309/yt-015626-kano-quote"
+  ]
+}

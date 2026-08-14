@@ -1,0 +1,28 @@
+{
+  "project": "komachoe-20260309",
+  "person": "kiyoten",
+  "summary": "第三通电话嘉宾，也是这期制作话题最密集的一段。他从「殺陣也是芝居」一路讲到安全距离、前説、动作为什么要有角色理由，以及自己为什么必须在演员越投入时越负责踩刹车。",
+  "presence": [
+    {
+      "kind": "live-call"
+    }
+  ],
+  "roles": [
+    {
+      "kind": "action",
+      "work": "ore-shiri",
+      "credit": "殺陣・アクション演出"
+    }
+  ],
+  "events": [
+    "komachoe-20260309/yt-010415-gensan-added",
+    "komachoe-20260309/yt-013341-tate-is-drama",
+    "komachoe-20260309/yt-013446-safety-distance",
+    "komachoe-20260309/yt-013611-no-injury-boundary",
+    "komachoe-20260309/yt-013718-audience-onboarding",
+    "komachoe-20260309/yt-014243-center-player",
+    "komachoe-20260309/yt-015127-brake-not-cause",
+    "komachoe-20260309/yt-020037-no-regrets-next",
+    "komachoe-20260309/yt-020408-komacchi"
+  ]
+}

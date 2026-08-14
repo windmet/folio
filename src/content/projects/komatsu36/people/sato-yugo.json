@@ -1,10 +1,18 @@
 {
   "project": "komatsu36",
-  "displayName": "佐藤祐吾",
-  "reading": "さとう ゆうご",
-  "callNames": ["祐吾"],
-  "searchAliases": [],
-  "projectContext": "生日会现场来宾之一，参加《俺知》复盘和 Bingo；到了 Space 里则一直保持 listener，没有再被小松强拉上麦。",
-  "participation": [{ "kind": "birthday-live" }],
-  "links": []
+  "person": "sato-yugo",
+  "summary": "生日会现场来宾之一，参加《俺知》复盘和 Bingo；到了 Space 里则一直保持 listener，没有再被小松强拉上麦。",
+  "presence": [
+    {
+      "kind": "on-site"
+    }
+  ],
+  "roles": [],
+  "events": [
+    "komatsu36/sp2-001308-yugo-not-forced",
+    "komatsu36/yt-015525-second-guests-arrive",
+    "komatsu36/yt-023800-rantate-silhouette",
+    "komatsu36/yt-024029-rubber-to-bamboo",
+    "komatsu36/yt-040351-protein-sato"
+  ]
 }

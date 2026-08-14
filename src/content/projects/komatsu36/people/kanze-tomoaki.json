@@ -1,10 +1,17 @@
 {
   "project": "komatsu36",
-  "displayName": "観世智顕",
-  "reading": "かんぜ ともあき",
-  "callNames": [],
-  "searchAliases": [],
-  "projectContext": "原本只是以 listener 身份出现在 Space，却还是被大家拉上了麦；“生日要还”和后面的 ROM 梗也从这段聊起来。",
-  "participation": [{ "kind": "space-guest" }],
-  "links": []
+  "person": "kanze-tomoaki",
+  "summary": "原本只是以 listener 身份出现在 Space，却还是被大家拉上了麦；“生日要还”和后面的 ROM 梗也从这段聊起来。",
+  "presence": [
+    {
+      "kind": "live-space"
+    }
+  ],
+  "roles": [],
+  "events": [
+    "komatsu36/sp1-002017-kanze-listener",
+    "komatsu36/sp1-002313-birthday-rule",
+    "komatsu36/sp1-002730-kanze-rom",
+    "komatsu36/yt-002541-second-space-departure"
+  ]
 }

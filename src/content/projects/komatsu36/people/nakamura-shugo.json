@@ -1,10 +1,18 @@
 {
   "project": "komatsu36",
-  "displayName": "仲村宗悟",
-  "reading": "なかむら しゅうご",
-  "callNames": ["宗悟"],
-  "searchAliases": [],
-  "projectContext": "短暂闯进 Space，只留下“今晚吃烤肉”就又消失了。重开以后，小松还得自己把这句话补成一句庆生。",
-  "participation": [{ "kind": "space-guest" }],
-  "links": []
+  "person": "nakamura-shugo",
+  "summary": "短暂闯进 Space，只留下“今晚吃烤肉”就又消失了。重开以后，小松还得自己把这句话补成一句庆生。",
+  "presence": [
+    {
+      "kind": "live-space"
+    }
+  ],
+  "roles": [],
+  "events": [
+    "komatsu36/sp1-002841-shugo-yakiniku",
+    "komatsu36/sp1-002854-shugo-disappears",
+    "komatsu36/sp2-000702-shugo-celebration",
+    "komatsu36/yt-002541-second-space-departure",
+    "komatsu36/yt-015806-yakiniku-main-recap"
+  ]
 }

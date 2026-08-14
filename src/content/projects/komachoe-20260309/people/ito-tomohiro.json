@@ -1,0 +1,23 @@
+{
+  "project": "komachoe-20260309",
+  "person": "ito-tomohiro",
+  "summary": "第一通电话嘉宾。多年没站上舞台的他被小松拉回《俺知》，广播里又反复说「本当に楽しかった」；两人也顺着这通临时电话一路聊回旧HIROZ时期的人和关系。",
+  "presence": [
+    {
+      "kind": "live-call"
+    }
+  ],
+  "roles": [
+    {
+      "kind": "cast",
+      "work": "ore-shiri",
+      "character": "沖田総司"
+    }
+  ],
+  "events": [
+    "komachoe-20260309/yt-004316-heroes-seniority",
+    "komachoe-20260309/yt-005748-ito-had-fun",
+    "komachoe-20260309/yt-015127-brake-not-cause",
+    "komachoe-20260309/yt-020939-goods-truth"
+  ]
+}

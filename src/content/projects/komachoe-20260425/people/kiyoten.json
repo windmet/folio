@@ -1,0 +1,21 @@
+{
+  "project": "komachoe-20260425",
+  "person": "kiyoten",
+  "summary": "《俺知》的演出负责人之一。昼场竹光折断后，最后拿走了原本就属于自己的那把断刀；此前 X 上的《俺知》打ち上げ，他其实也有参加。",
+  "presence": [
+    {
+      "kind": "referenced"
+    }
+  ],
+  "roles": [
+    {
+      "kind": "action",
+      "work": "ore-shiri",
+      "credit": "殺陣・アクション演出"
+    }
+  ],
+  "events": [
+    "komachoe-20260425/yt-003730-broken-bamboo-sword",
+    "komachoe-20260425/yt-015153-seiten-and-ito"
+  ]
+}

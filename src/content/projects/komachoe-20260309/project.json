@@ -12,7 +12,12 @@
   "status": "draft",
   "defaultTrack": "komachoe-20260309/yt-main",
   "defaultView": "overview",
-  "views": ["overview", "sections", "timeline", "mentions"],
+  "views": [
+    "overview",
+    "sections",
+    "timeline",
+    "mentions"
+  ],
   "summary": "《俺知》幕末篇再演刚结束不久，小松就趁热开了两个半小时复盘，还临时拉来伊藤友紘、井上雄貴和清典三通电话。从圆阵、ヘアメイク和旧ヒローズ关系，一路聊到平助为什么变强、殺陣怎么兼顾芝居与安全，以及这个系列的未来构想。",
   "featuredThreads": [],
   "mentions": [
@@ -20,7 +25,10 @@
       "id": "ore-shiri",
       "kind": "work",
       "label": "さらに！俺を知ってくれ！～幕末編～",
-      "aliases": ["俺知", "《俺知》"],
+      "aliases": [
+        "俺知",
+        "《俺知》"
+      ],
       "summary": "小松昌平担任总合 producer 并主演的《俺を知ってくれ！》系列舞台。幕末篇围绕节目中口头称作「幕末異聞 岡田以蔵と沖田総司 君がため」的作品展开，把朗读剧与殺陣放在同一场戏里；小松饰演岡田以蔵。",
       "url": "https://seigura.com/news/165385/",
       "urlLabel": "声優グランプリ",
@@ -36,7 +44,9 @@
       "id": "kimi-ga-tame",
       "kind": "work",
       "label": "君がため",
-      "aliases": ["《君がため》"],
+      "aliases": [
+        "《君がため》"
+      ],
       "summary": "《さらに！俺を知ってくれ！～幕末編～》中的剧本／舞台作品。节目开场口头称作「幕末異聞 岡田以蔵と沖田総司 君がため」，以蔵、沖田、武市、龍馬、土方和平助等角色都在其中登场。",
       "events": [
         "komachoe-20260309/yt-010415-gensan-added",
@@ -53,139 +63,6 @@
         "komachoe-20260309/yt-004316-heroes-seniority",
         "komachoe-20260309/yt-020408-komacchi"
       ]
-    },
-    {
-      "id": "ito-tomohiro",
-      "kind": "person",
-      "label": "伊藤友紘",
-      "aliases": ["伊藤"],
-      "summary": "第一通电话嘉宾。多年没站上舞台的他被小松拉回《俺知》，广播里又反复说「本当に楽しかった」；两人也顺着这通临时电话一路聊回旧HIROZ时期的人和关系。",
-      "events": [
-        "komachoe-20260309/yt-004316-heroes-seniority",
-        "komachoe-20260309/yt-005748-ito-had-fun",
-        "komachoe-20260309/yt-015127-brake-not-cause",
-        "komachoe-20260309/yt-020939-goods-truth"
-      ]
-    },
-    {
-      "id": "inoue-yuki",
-      "kind": "person",
-      "label": "井上雄貴",
-      "aliases": ["井上"],
-      "summary": "第二通电话嘉宾，也是再演中藤堂平助的 double cast 之一。他把新增源さん场面的来由、平助为什么不该只做やられ役，以及自己怎么把角色研究带回殺陣都讲得很细。",
-      "events": [
-        "komachoe-20260309/yt-011603-arm-for-one-strike",
-        "komachoe-20260309/yt-011854-double-cast-research",
-        "komachoe-20260309/yt-012231-sato-old-connection"
-      ]
-    },
-    {
-      "id": "kiyoten",
-      "kind": "person",
-      "label": "清典",
-      "summary": "第三通电话嘉宾，也是这期制作话题最密集的一段。他从「殺陣也是芝居」一路讲到安全距离、前説、动作为什么要有角色理由，以及自己为什么必须在演员越投入时越负责踩刹车。",
-      "events": [
-        "komachoe-20260309/yt-010415-gensan-added",
-        "komachoe-20260309/yt-013341-tate-is-drama",
-        "komachoe-20260309/yt-013446-safety-distance",
-        "komachoe-20260309/yt-013611-no-injury-boundary",
-        "komachoe-20260309/yt-013718-audience-onboarding",
-        "komachoe-20260309/yt-014243-center-player",
-        "komachoe-20260309/yt-015127-brake-not-cause",
-        "komachoe-20260309/yt-020037-no-regrets-next",
-        "komachoe-20260309/yt-020408-komacchi"
-      ]
-    },
-    {
-      "id": "shioya-fumiyasu",
-      "kind": "person",
-      "label": "汐谷文康",
-      "aliases": ["汐谷", "ふーみん"],
-      "summary": "藤堂平助的另一位 double cast。制作后段，小松现场写出的追加台词字太难直接发给全员，最后由汐谷重新誊清；角色研究上，他也和井上共享资料，再各自演出自己的平助。",
-      "events": [
-        "komachoe-20260309/yt-011148-handwritten-lines",
-        "komachoe-20260309/yt-011854-double-cast-research"
-      ]
-    },
-    {
-      "id": "ham-kento",
-      "kind": "person",
-      "label": "濱健人",
-      "aliases": ["濱"],
-      "summary": "再演中的坂本龍馬。清典夸他的龍馬像“真正的人”一样耀眼；而在后台，濱又会主动找方言、芝居、殺陣和音响各部门确认细节，还帮小松把土佐弁修到 accent 层级。",
-      "events": [
-        "komachoe-20260309/yt-002533-ryoma-hairmake",
-        "komachoe-20260309/yt-015821-real-ryoma",
-        "komachoe-20260309/yt-021442-tosa-accent"
-      ]
-    },
-    {
-      "id": "kano-sho",
-      "kind": "person",
-      "label": "狩野翔",
-      "aliases": ["狩野"],
-      "summary": "再演中的武市半平太。演出后，他对小松说了一句「昌平、芝居上手くなったね」；小松后来把这句话列为整次再演最开心的事情之一。",
-      "events": [
-        "komachoe-20260309/yt-002014-hairmake-team",
-        "komachoe-20260309/yt-015626-kano-quote"
-      ]
-    },
-    {
-      "id": "terashima-junta",
-      "kind": "person",
-      "label": "寺島惇太",
-      "aliases": ["寺島"],
-      "summary": "再演中的另一位武市半平太。ヘアメイク用更整齐、受控制的“遮眼”造型和小松版以蔵拉开差异；伊藤电话段里，小松又说刚认识寺島时就觉得他像「伊藤＋河村」的组合。",
-      "events": [
-        "komachoe-20260309/yt-002711-hidden-eyes",
-        "komachoe-20260309/yt-005132-terashima-familiarity"
-      ]
-    },
-    {
-      "id": "nishida-satoko",
-      "kind": "person",
-      "label": "西田聡子",
-      "aliases": ["西田"],
-      "summary": "本场ヘアメイク说明的提供者。她从パンフ拍摄一路解释到正式演出：アイメイク为什么扩到全员、两个武市怎么拉开差异，以及各角色的发型和眼神是怎么定下来的。",
-      "events": ["komachoe-20260309/yt-002014-hairmake-team"]
-    },
-    {
-      "id": "yano-shogo",
-      "kind": "person",
-      "label": "矢野奨吾",
-      "aliases": ["矢野"],
-      "summary": "再演中的土方歳三。排练时会直接追问「为什么这里要踢，而不是斩」，让清典和小松重新从角色当下真正想做什么来检查既有动作。",
-      "events": [
-        "komachoe-20260309/yt-003029-double-cast-visuals",
-        "komachoe-20260309/yt-014839-action-from-character"
-      ]
-    },
-    {
-      "id": "sato-yugo",
-      "kind": "person",
-      "label": "佐藤祐吾",
-      "aliases": ["佐藤"],
-      "summary": "井上在旧《オトメイトチャンネル》时期认识的演员。小松一听两人原来早就有关系，马上开始想：以后真做平助 spin-off，能不能把佐藤也放进来。",
-      "events": ["komachoe-20260309/yt-012231-sato-old-connection"]
-    },
-    {
-      "id": "kawamura-yuta",
-      "kind": "person",
-      "label": "河村優太",
-      "aliases": ["河村"],
-      "summary": "旧ヒローズ时期与小松、伊藤关系密切的成员。再演现场那座フラスタ一被提起，两人就一路聊回香川时期河村当副 leader／leader、以及小松和他一起跑グルメリポート的旧日子。",
-      "events": [
-        "komachoe-20260309/yt-004042-kawamura-flowers",
-        "komachoe-20260309/yt-005132-terashima-familiarity"
-      ]
-    },
-    {
-      "id": "sa-kana",
-      "kind": "person",
-      "label": "SA.KANA先生",
-      "aliases": ["さかな先生"],
-      "summary": "本场广播里称作「サカナ先生」的 choreographer／振付师。她发现《青春アミーゴ》有几个 step 从以前起就一直跳错，再演时终于重新修正。",
-      "events": ["komachoe-20260309/yt-023132-seishun-amigo"]
     }
   ],
   "overview": {

@@ -1,10 +1,21 @@
 {
   "project": "komatsu36",
-  "displayName": "熊谷俊輝",
-  "reading": "くまがい としき",
-  "callNames": ["トシピ"],
-  "searchAliases": [],
-  "projectContext": "生日会现场来宾之一，也参与《俺知》名场面复盘。一句“我也想试”把现场直接带进了俳句大会。",
-  "participation": [{ "kind": "birthday-live" }],
-  "links": []
+  "person": "kumagai-toshiki",
+  "summary": "生日会现场来宾之一，也参与《俺知》名场面复盘。一句“我也想试”把现场直接带进了俳句大会。",
+  "presence": [
+    {
+      "kind": "on-site"
+    }
+  ],
+  "roles": [],
+  "events": [
+    "komatsu36/yt-020340-kumagai-graduation",
+    "komatsu36/yt-020445-candle-fire",
+    "komatsu36/yt-021052-monaki-karaoke",
+    "komatsu36/yt-022340-kumagai-night-show",
+    "komatsu36/yt-024207-controlled-adlib",
+    "komatsu36/yt-025057-birthday-haiku-formed",
+    "komatsu36/yt-025755-kumagai-haiku",
+    "komatsu36/yt-040703-controller-kumagai"
+  ]
 }

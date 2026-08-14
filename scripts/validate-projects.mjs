@@ -3,6 +3,7 @@ import path from 'node:path';
 import YAML from 'yaml';
 
 const contentRoot = path.resolve('src/content/projects');
+const peopleRoot = path.resolve('src/content/people');
 const manifestRoot = path.resolve('data/source-sets');
 const errors = [];
 
@@ -13,6 +14,10 @@ const exists = (set, value, context) => {
 const asId = (projectId, fileName) => `${projectId}/${fileName.replace(/\.(json|md)$/, '')}`;
 
 const projectDirs = (await readdir(contentRoot, { withFileTypes: true })).filter((entry) => entry.isDirectory());
+const globalPeople = await Promise.all((await readdir(peopleRoot))
+  .filter((name) => name.endsWith('.json'))
+  .map(async (name) => ({ id: name.replace(/\.json$/, ''), data: await readJson(path.join(peopleRoot, name)) })));
+const globalPersonIds = new Set(globalPeople.map(({ id }) => id));
 
 for (const projectDir of projectDirs) {
   const projectId = projectDir.name;
@@ -173,8 +178,8 @@ for (const projectDir of projectDirs) {
       relatedPeople.add(relation.person);
       const relatedPerson = personById.get(relation.person);
       if (relation.kind === 'account-context'
-        && !(relatedPerson?.participation || []).some((participation) => participation.kind === 'space-account')) {
-        errors.push(`${id}: account-context requires a person with space-account participation`);
+        && !(relatedPerson?.presence || []).some((presence) => presence.kind === 'account-context')) {
+        errors.push(`${id}: account-context requires a person with account-context presence`);
       }
     }
     const track = trackById.get(data.track);
@@ -247,30 +252,24 @@ for (const projectDir of projectDirs) {
   }
 
   for (const { id, data } of people) {
-    const used = events.some(({ data }) => data.people.includes(id));
+    exists(globalPersonIds, data.person, id);
+    const used = events.some(({ data }) => data.people.includes(id)) || (data.events || []).length > 0;
     if (!used) errors.push(`${id}: person is not referenced by any event`);
-    if ('aliases' in data) errors.push(`${id}: legacy aliases field is forbidden; use callNames/searchAliases`);
-    if (!Array.isArray(data.callNames)) errors.push(`${id}: callNames must be an explicit array`);
-    if (!Array.isArray(data.searchAliases)) errors.push(`${id}: searchAliases must be an explicit array`);
-    const callNames = data.callNames || [];
-    const searchAliases = data.searchAliases || [];
-    if ([...callNames, ...searchAliases].some((value) => /(?:さん|くん|君)$/.test(value))) {
-      errors.push(`${id}: honorific variants belong in search normalization, not callNames/searchAliases`);
-    }
-    if (new Set([...callNames, ...searchAliases]).size !== callNames.length + searchAliases.length) {
-      errors.push(`${id}: callNames/searchAliases contain duplicate values`);
-    }
-    for (const participation of data.participation || []) {
-      if (participation.kind === 'ore-shiri-cast' && (!participation.character || !participation.sessions?.length)) {
-        errors.push(`${id}: ore-shiri-cast participation requires character and at least one session`);
+    if (!Array.isArray(data.presence) || data.presence.length === 0) errors.push(`${id}: presence must be non-empty`);
+    for (const eventId of data.events || []) exists(eventIds, eventId, id);
+    for (const role of data.roles || []) {
+      if (role.kind === 'cast' && (!role.work || !role.character)) {
+        errors.push(`${id}: cast role requires work and character`);
       }
-      if (participation.kind === 'space-account' && participation.character) {
-        errors.push(`${id}: space-account participation must not declare a character`);
+      if (['production', 'action'].includes(role.kind) && !role.credit) {
+        errors.push(`${id}: ${role.kind} role requires credit`);
       }
     }
-    for (const link of data.links || []) {
-      if (link.kind === 'social' && !link.platform) errors.push(`${id}: social link requires platform`);
-    }
+  }
+
+  const personReferences = people.map(({ data }) => data.person);
+  if (new Set(personReferences).size !== personReferences.length) {
+    errors.push(`${projectId}: duplicate global Person references in project contexts`);
   }
 
   for (const collection of [tracks, acts, events, threads, people, sources]) {
@@ -278,6 +277,17 @@ for (const projectDir of projectDirs) {
       if (data.project !== projectId) errors.push(`${id}: project reference must match directory`);
       if (/[A-Z]:\\|author_id/i.test(JSON.stringify(data))) errors.push(`${id}: contains private source data`);
     }
+  }
+}
+
+for (const { id, data } of globalPeople) {
+  const aliases = data.aliases || [];
+  if (new Set(aliases).size !== aliases.length) errors.push(`${id}: global aliases contain duplicate values`);
+  if (aliases.some((value) => /(?:さん|くん|君)$/.test(value))) {
+    errors.push(`${id}: honorific variants do not belong in global aliases`);
+  }
+  for (const link of data.links || []) {
+    if (link.kind === 'social' && !link.platform) errors.push(`${id}: social link requires platform`);
   }
 }
 

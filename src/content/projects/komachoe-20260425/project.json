@@ -12,7 +12,12 @@
   "status": "draft",
   "defaultTrack": "komachoe-20260425/yt-main",
   "defaultView": "overview",
-  "views": ["overview", "sections", "timeline", "mentions"],
+  "views": [
+    "overview",
+    "sections",
+    "timeline",
+    "mentions"
+  ],
   "summary": "这期从复盘 4 月生日配信开场：360°设备、主持分工、没读完的邮件和没来得及做的事都重新讲了一遍。之后进入《俺知》来信、今月の弁明与ふつおた，最后一路聊到 Super Chat、待播游戏和《Slay the Spire 2》。",
   "featuredThreads": [],
   "mentions": [
@@ -20,7 +25,10 @@
       "id": "ore-shiri",
       "kind": "work",
       "label": "さらに！俺を知ってくれ！～幕末編～",
-      "aliases": ["俺知", "《俺知》"],
+      "aliases": [
+        "俺知",
+        "《俺知》"
+      ],
       "summary": "小松昌平担任 producer 并主演的《俺を知ってくれ！》系列舞台，以幕末为舞台，将朗读剧与动作表演结合。小松饰演冈田以蔵，2026 年再演由伊藤友紘饰演另一位主人公沖田総司。",
       "url": "https://seigura.com/news/165385/",
       "urlLabel": "声優グランプリ",
@@ -35,7 +43,10 @@
       "id": "proto-deus-no-hakobune",
       "kind": "work",
       "label": "プロトデウスの方舟",
-      "aliases": ["《プロトデウスの方舟》", "PROTO"],
+      "aliases": [
+        "《プロトデウスの方舟》",
+        "PROTO"
+      ],
       "summary": "以“无法返回地球的宇宙船”为舞台的密室 SF mystery，将声优会话剧与钢琴、萨克斯二重奏结合。全企划由 38 名声优与 2 名演奏者轮换出演；小松在 4 月 12 日昼夜两场饰演飞行员 Leo。",
       "url": "https://sfjazzreading.com/",
       "urlLabel": "公式サイト",
@@ -49,21 +60,31 @@
       "id": "strange-eden",
       "kind": "work",
       "label": "STRANGE EDEN",
-      "aliases": ["Boy meets xxx", "《Boy meets xxx》"],
+      "aliases": [
+        "Boy meets xxx",
+        "《Boy meets xxx》"
+      ],
       "summary": "THINKR 原作・企划的「怪綺的異類交遊ミステリ」。以ミイツ市为舞台，围绕人类、拥有不可思议力量的「エコー」与谜之物品「レガシー」展开，通过 Voice Drama、音乐与 MV 推进故事；小松饰演エコー・瑠何。",
       "url": "https://miitsu.city/",
       "urlLabel": "公式サイト",
-      "events": ["komachoe-20260425/yt-012529-boy-meets-xxx"]
+      "events": [
+        "komachoe-20260425/yt-012529-boy-meets-xxx"
+      ]
     },
     {
       "id": "ban-ban-kizuna",
       "kind": "work",
       "label": "小松昌平の盤・番・絆!（BAN・BAN・BAN）",
-      "aliases": ["盤・番・絆", "《盤・番・絆》"],
+      "aliases": [
+        "盤・番・絆",
+        "《盤・番・絆》"
+      ],
       "summary": "以小松昌平为 host，邀请声优嘉宾挑战 Board Game、Card Game 的活动企划。通过合作与对战呈现出演者的个性、关系与「絆」，由 SECOND LINE 制作。",
       "url": "https://2ndl.co.jp/banbanban/",
       "urlLabel": "公式サイト",
-      "events": ["komachoe-20260425/yt-012036-trpg-event-format"]
+      "events": [
+        "komachoe-20260425/yt-012036-trpg-event-format"
+      ]
     },
     {
       "id": "seito-kaicho-yankee-kun",
@@ -72,7 +93,9 @@
       "summary": "飴玉舐め子创作的 BL 漫画，以生徒会长・白山与不良少年・黒谷的关系为中心。2026 年 5 月发行的特装版附迷你语音剧，小松在其中饰演白山光成。",
       "url": "https://kir-comics.com/comics/12411/",
       "urlLabel": "KiR 作品页",
-      "events": ["komachoe-20260425/yt-011737-recent-announcements"]
+      "events": [
+        "komachoe-20260425/yt-011737-recent-announcements"
+      ]
     },
     {
       "id": "genshin-impact",
@@ -81,17 +104,24 @@
       "summary": "HoYoverse 推出的开放世界冒险 RPG。小松昌平在日语版中为璃月角色嘉明配音，并兼任纳塔的咔库库（カクーク）的日语配音。",
       "url": "https://genshin.hoyoverse.com/ja/",
       "urlLabel": "公式サイト",
-      "events": ["komachoe-20260425/yt-020257-game-backlog-and-recovery"]
+      "events": [
+        "komachoe-20260425/yt-020257-game-backlog-and-recovery"
+      ]
     },
     {
       "id": "varlet",
       "kind": "work",
       "label": "ヴァレット／VARLET",
-      "aliases": ["VARLET", "ヴァレット"],
+      "aliases": [
+        "VARLET",
+        "ヴァレット"
+      ],
       "summary": "FuRyu 推出的学园 RPG，以“寻找真正的自己”为主题，在逐渐崩坏的学园中展开故事。玩家所扮演的主人公由小松昌平配音。",
       "url": "https://www.cs.furyu.jp/varlet/",
       "urlLabel": "公式サイト",
-      "events": ["komachoe-20260425/yt-020257-game-backlog-and-recovery"]
+      "events": [
+        "komachoe-20260425/yt-020257-game-backlog-and-recovery"
+      ]
     },
     {
       "id": "slay-the-spire-2",
@@ -100,88 +130,9 @@
       "summary": "Mega Crit 开发的 Roguelike Deckbuilder《Slay the Spire》续作，通过反复攀塔、构筑牌组与收集 Relic 形成每局不同的路线。",
       "url": "https://www.megacrit.com/press-kits/slay-the-spire-2/",
       "urlLabel": "Official Site",
-      "events": ["komachoe-20260425/yt-020612-slay-the-spire-2"]
-    },
-    {
-      "id": "terashima-junta",
-      "kind": "person",
-      "label": "寺島惇太",
-      "aliases": ["寺島", "惇太さん"],
-      "summary": "生日配信开播前就被小松拜托做裏回し／裏MC；五小时结束后，又陪几乎没吃到饭的小松去找深夜家系，明明自己已经吃了不少，最后还是一起各吃一碗。",
       "events": [
-        "komachoe-20260425/yt-002351-terashima-backstage-mc",
-        "komachoe-20260425/yt-002803-terashima-midnight-ramen"
+        "komachoe-20260425/yt-020612-slay-the-spire-2"
       ]
-    },
-    {
-      "id": "hosoya-yoshimasa",
-      "kind": "person",
-      "label": "細谷佳正",
-      "aliases": ["细谷佳正", "細谷さん"],
-      "summary": "《プロトデウスの方舟》正式演出前，他把全员叫到台上围成一圈交换意见，小松把这种做法称为「焚き火」；收场时还把“下次你当座长也要生火”的任务丢给了小松。",
-      "events": ["komachoe-20260425/yt-005429-hosoya-bonfire"]
-    },
-    {
-      "id": "maeda-kaori",
-      "kind": "person",
-      "label": "前田佳織里",
-      "summary": "作为昼场 Kiana 的演员被提到；后来小松聊到 Leo 为什么要向 Kiana 道歉时，还说自己曾把“换我可能不会道歉”讲给前田听，换来一句「え？」。",
-      "events": [
-        "komachoe-20260425/yt-010348-performance-varies-naturally",
-        "komachoe-20260425/yt-011004-fifth-crew-decision"
-      ]
-    },
-    {
-      "id": "miyazaki-masaya",
-      "kind": "person",
-      "label": "宮﨑雅也",
-      "summary": "和小松关系熟的后辈。夜场刚庆幸自己一次都没咬螺丝，就被追问“所以不咬就是最好的芝居？”；开演前还吃到一发“后半临时追加吻戏”的假传话。",
-      "events": ["komachoe-20260425/yt-010139-miyazaki-backstage-jokes"]
-    },
-    {
-      "id": "kumagai-toshiki",
-      "kind": "person",
-      "label": "熊谷俊輝",
-      "summary": "小松给他的第一选择是平助，也短暂想到沖田；最后还是觉得熊谷最适合平助身上那份「未熟さ」。",
-      "events": ["komachoe-20260425/yt-004333-producer-casting"]
-    },
-    {
-      "id": "sato-yugo",
-      "kind": "person",
-      "label": "佐藤祐吾",
-      "summary": "小松先说佐藤其实“什么都能做”，最后最想看他演以蔵；体格、锐利的眼神，以及想看他怎么做殺陣，都是理由。",
-      "events": ["komachoe-20260425/yt-004333-producer-casting"]
-    },
-    {
-      "id": "horikane-sohei",
-      "kind": "person",
-      "label": "堀金蒼平",
-      "summary": "小松承认自己的判断会被既往共演印象带着走；在沖田和平助之间想了一圈以后，最后因为声音和整体感觉把堀金放到了沖田。",
-      "events": ["komachoe-20260425/yt-004333-producer-casting"]
-    },
-    {
-      "id": "mitsutomi-takao",
-      "kind": "person",
-      "label": "光富崇雄",
-      "summary": "小松在土方和武市之间来回摇摆，还顺势玩了“正義のタカオ／悪のタカオ”的梗；最后这轮假想 casting 落到武市。",
-      "events": ["komachoe-20260425/yt-004333-producer-casting"]
-    },
-    {
-      "id": "kiyoten",
-      "kind": "person",
-      "label": "清典",
-      "summary": "《俺知》的演出负责人之一。昼场竹光折断后，最后拿走了原本就属于自己的那把断刀；此前 X 上的《俺知》打ち上げ，他其实也有参加。",
-      "events": [
-        "komachoe-20260425/yt-003730-broken-bamboo-sword",
-        "komachoe-20260425/yt-015153-seiten-and-ito"
-      ]
-    },
-    {
-      "id": "ito",
-      "kind": "person",
-      "label": "伊藤友紘",
-      "summary": "两次打ち上げ都没能参加。小松说自己一直有联系，也提到伊藤现在在一般企业工作；继续硬把他拉进公开活动会变成另一回事，两人已经约好之后私下吃饭。",
-      "events": ["komachoe-20260425/yt-015153-seiten-and-ito"]
     },
     {
       "id": "chikuho-ben",
@@ -190,7 +141,9 @@
       "summary": "福冈县筑丰地区一带使用的方言统称；即使同属筑丰，地区、世代与说话者之间也会存在差异。本期具体谈到「ぶちくらす／うちくらす」等表达。",
       "url": "https://www.pref.fukuoka.lg.jp/life/2/50/226/",
       "urlLabel": "福岡県｜筑豊地域",
-      "events": ["komachoe-20260425/yt-013901-chikuho-dialect"]
+      "events": [
+        "komachoe-20260425/yt-013901-chikuho-dialect"
+      ]
     }
   ],
   "overview": {

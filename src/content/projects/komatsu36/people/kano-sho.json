@@ -1,14 +1,53 @@
 {
   "project": "komatsu36",
-  "displayName": "狩野翔",
-  "reading": "かりの しょう",
-  "callNames": [],
-  "searchAliases": [],
-  "projectContext": "《俺知》夜场饰演武市半平太。俄罗斯章鱼烧最早就是他提出来的，之后从 Space、名场面复盘一路待到后半卡拉 OK。",
-  "participation": [
-    { "kind": "ore-shiri-cast", "character": "武市半平太", "sessions": ["night"] },
-    { "kind": "birthday-live" },
-    { "kind": "space-guest" }
+  "person": "kano-sho",
+  "summary": "《俺知》夜场饰演武市半平太。俄罗斯章鱼烧最早就是他提出来的，之后从 Space、名场面复盘一路待到后半卡拉 OK。",
+  "presence": [
+    {
+      "kind": "on-site"
+    },
+    {
+      "kind": "live-space"
+    }
   ],
-  "links": []
+  "roles": [
+    {
+      "kind": "cast",
+      "work": "ore-shiri",
+      "character": "武市半平太",
+      "sessions": [
+        "night"
+      ]
+    }
+  ],
+  "events": [
+    "komatsu36/yt-002541-second-space-departure",
+    "komatsu36/yt-010711-first-guests-arrive",
+    "komatsu36/yt-011522-takoyaki-proposed",
+    "komatsu36/yt-011820-birthday-toast",
+    "komatsu36/yt-012117-cigar-chocolate",
+    "komatsu36/yt-012610-godiva-overlap",
+    "komatsu36/yt-013917-kano-spice-sensor",
+    "komatsu36/yt-014214-takoyaki-arrives",
+    "komatsu36/yt-014321-kano-ojisan",
+    "komatsu36/yt-014749-hama-draws",
+    "komatsu36/yt-014822-race-interrupts",
+    "komatsu36/yt-021540-milk-wordplay",
+    "komatsu36/yt-025037-kano-toilet",
+    "komatsu36/yt-025449-kano-haiku",
+    "komatsu36/yt-025755-kumagai-haiku",
+    "komatsu36/yt-030923-takoyaki-payoff",
+    "komatsu36/yt-031258-blade-accident-recount",
+    "komatsu36/yt-031300-ryoma-line-callback",
+    "komatsu36/yt-031615-book-improv",
+    "komatsu36/yt-031905-kaei-accent",
+    "komatsu36/yt-032139-kano-back-pain",
+    "komatsu36/yt-033801-killer-walk",
+    "komatsu36/yt-033944-script-language",
+    "komatsu36/yt-040820-kotetsu-kano",
+    "komatsu36/yt-041453-kano-tbolan",
+    "komatsu36/yt-041810-snack-akemi",
+    "komatsu36/yt-043520-ojamajo",
+    "komatsu36/yt-044513-fantastipo"
+  ]
 }

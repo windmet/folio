@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import ProjectLayout from '../../layouts/ProjectLayout.astro';
 import ProjectArchiveShell from '../../components/project/ProjectArchiveShell.astro';
+import { hydrateProjectPeople } from '../../lib/projectPeople';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
@@ -13,14 +14,16 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 const projectReference = (entry: any) => entry.data.project?.id === project.id;
-const [tracks, acts, events, threads, people, sources] = await Promise.all([
+const [tracks, acts, events, threads, personContexts, identities, sources] = await Promise.all([
   getCollection('projectTracks', projectReference),
   getCollection('projectActs', projectReference),
   getCollection('projectEvents', projectReference),
   getCollection('projectThreads', projectReference),
   getCollection('projectPeople', projectReference),
+  getCollection('people'),
   getCollection('projectSources', projectReference),
 ]);
+const people = hydrateProjectPeople(personContexts, identities);
 ---
 
 <ProjectLayout title={project.data.title} description={project.data.summary} visualTheme={project.data.visualTheme}>

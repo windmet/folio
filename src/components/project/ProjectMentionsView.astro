@@ -13,10 +13,20 @@ const formatTime = (milliseconds: number) => {
     .map((part) => String(part).padStart(2, '0')).join(':');
 };
 const groups = [
-  { kind: 'person', en: 'PEOPLE', label: '人物' },
+  { kind: 'participant', en: 'IN THIS EPISODE', label: '本期参与' },
+  { kind: 'person', en: 'PEOPLE', label: '提及人物' },
   { kind: 'work', en: 'WORKS', label: '作品 / 企划' },
   { kind: 'context', en: 'CONTEXT', label: '背景 / 词条' },
 ];
+const presenceLabels: Record<string, string> = {
+  host: '主持',
+  'on-site': '现场参与',
+  'live-call': '电话连线',
+  'live-space': 'Space 连线',
+  submitted: '事前投稿',
+  referenced: '节目提及',
+  'account-context': '账号语境',
+};
 const eventsFor = (mention: any) => (mention.events || [])
   .map((reference: any) => eventsById.get(referenceId(reference)))
   .filter(Boolean)
@@ -31,7 +41,7 @@ const sourceLabelFor = (mention: any) => {
 <section class="project-view mentions-view" data-view-panel="mentions" hidden>
   <div class="view-heading">
     <span class="archive-kicker">MENTION INDEX</span>
-    <h2>Mentions</h2>
+    <h2>Index</h2>
     <p>本期提及的人物、作品与背景信息。点击时间直接回到 Timeline；外部链接只用于补充公开资料。</p>
   </div>
 
@@ -61,7 +71,12 @@ const sourceLabelFor = (mention: any) => {
               return (
                 <article class="mention-card" data-mention-card={mention.id} id={`mention-${mention.id}`} tabindex="-1">
                   <div class="mention-card__copy">
-                    <h4>{mention.label}</h4>
+                    <h4>
+                      {mention.label}
+                      {(mention.presence || []).map((presence: any) => (
+                        <span class="mention-presence">{presenceLabels[presence.kind] || presence.kind}</span>
+                      ))}
+                    </h4>
                     <p id={`mention-summary-${mention.id}`} data-mention-summary={mention.id}>{mention.summary}</p>
                     <button
                       type="button"
@@ -104,7 +119,7 @@ const sourceLabelFor = (mention: any) => {
                         </details>
                       )}
                     </div>
-                    {mention.kind !== 'person' && mention.url && (
+                    {!['participant', 'person'].includes(mention.kind) && mention.url && (
                       <a class="mention-source" href={mention.url} target="_blank" rel="noopener noreferrer">
                         {sourceLabelFor(mention)} ↗
                       </a>

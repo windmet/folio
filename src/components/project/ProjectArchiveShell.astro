@@ -18,6 +18,7 @@ import ProjectMentionsView from './ProjectMentionsView.astro';
 import ProjectViewNav from './ProjectViewNav.astro';
 import { readerLabel, threadCategoryLabels } from '../../lib/projectReaderLabels';
 import { deriveProjectPresentation } from '../../lib/projectPresentation.mjs';
+import { projectPersonIndexEntries } from '../../lib/projectPeople';
 
 export interface Props {
   project: any;
@@ -58,6 +59,20 @@ for (const event of events) {
     list.push(event);
     eventsByPerson.set(referenceId(personReference), list);
   }
+}
+
+for (const person of people) {
+  const list = eventsByPerson.get(person.id) || [];
+  const seen = new Set(list.map((event) => event.id));
+  for (const eventReference of person.data.events || []) {
+    const event = eventsById.get(referenceId(eventReference));
+    if (event && !seen.has(event.id)) {
+      list.push(event);
+      seen.add(event.id);
+    }
+  }
+  list.sort((left, right) => left.data.startMs - right.data.startMs);
+  eventsByPerson.set(person.id, list);
 }
 
 for (const thread of threads) {
@@ -102,7 +117,8 @@ const threadViews = await Promise.all(threads.map(async (entry) => {
 }));
 
 const presentation = deriveProjectPresentation({ project: project.data, tracks, acts, events, threads, people });
-const inlineMentions = presentation.showMentions ? (project.data.mentions || []) : [];
+const personIndexEntries = presentation.showMentions ? projectPersonIndexEntries(people) : [];
+const inlineMentions = presentation.showMentions ? [...(project.data.mentions || []), ...personIndexEntries] : [];
 const defaultTrack = presentation.orderedTracks.find((track: any) => track.id === referenceId(project.data.defaultTrack)) || presentation.orderedTracks[0];
 const defaultTimelineTrackId = localId(defaultTrack.id);
 const orderedActs = acts
@@ -232,7 +248,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
         ))}
       </section>}
 
-      {presentation.showMentions && <ProjectMentionsView mentions={project.data.mentions || []} eventsById={eventsById} />}
+      {presentation.showMentions && <ProjectMentionsView mentions={inlineMentions} eventsById={eventsById} />}
 
       {presentation.showStorylines && <section class="project-view storylines-view" data-view-panel="storylines" hidden>
         <div class="view-heading">
@@ -1679,7 +1695,7 @@ const serializedControllerData = JSON.stringify(controllerData).replaceAll('<', 
     }
 
     expandMentionFromHash() {
-      const match = window.location.hash.match(/^#mentions-(person|work|context)$/);
+      const match = window.location.hash.match(/^#mentions-(participant|person|work|context)$/);
       if (match) {
         this.setMentionGroupExpanded(match[1], true);
         return;

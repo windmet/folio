@@ -1,0 +1,32 @@
+{
+  "project": "komachoe-20260309",
+  "person": "komatsu-shohei",
+  "summary": "本期主持与叙事中心。",
+  "presence": [
+    {
+      "kind": "host"
+    }
+  ],
+  "roles": [
+    {
+      "kind": "host",
+      "credit": "番組主持"
+    },
+    {
+      "kind": "production",
+      "work": "ore-shiri",
+      "credit": "企画・脚本・総合プロデュース"
+    },
+    {
+      "kind": "cast",
+      "work": "ore-shiri",
+      "character": "岡田以蔵"
+    }
+  ],
+  "events": [
+    "komachoe-20260309/yt-000458-enjin-oretachi",
+    "komachoe-20260309/yt-010415-gensan-added",
+    "komachoe-20260309/yt-013341-tate-is-drama",
+    "komachoe-20260309/yt-020721-scattered-script"
+  ]
+}

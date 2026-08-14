@@ -56,6 +56,7 @@ const project = await readJson(path.join(contentRoot, 'project.json'));
 const trackFiles = await listJson('tracks');
 const actFiles = await listJson('acts');
 const eventFiles = await listJson('events');
+const peopleFiles = await listJson('people');
 const tracks = await Promise.all(trackFiles.map((name) => readJson(path.join(contentRoot, 'tracks', name))));
 const acts = await Promise.all(actFiles.map((name) => readJson(path.join(contentRoot, 'acts', name))));
 const events = await Promise.all(eventFiles.map((name) => readJson(path.join(contentRoot, 'events', name))));
@@ -68,9 +69,9 @@ assert(project.status === 'draft', 'Project must remain draft during vertical sl
 assert(project.defaultView === 'overview', 'defaultView must remain overview');
 assert(project.visualTheme === 'broadcast-blue', 'Project must use the broadcast-blue visual theme');
 assert(JSON.stringify(project.views) === JSON.stringify(['overview', 'sections', 'timeline', 'mentions']), 'views must be Overview / Sections / Timeline / Mentions in order');
-assert(Array.isArray(project.mentions) && project.mentions.length === 19, 'Mentions must contain the restructured 19-entry index');
+assert(Array.isArray(project.mentions) && project.mentions.length === 9, 'Project mentions must contain only the 9 reviewed Work / Context entries');
 const mentionsById = new Map(project.mentions.map((mention) => [mention.id, mention]));
-assert(project.mentions.filter((mention) => mention.kind === 'person').length === 10, 'Mentions must retain all 10 reviewed People entries');
+assert(project.mentions.filter((mention) => mention.kind === 'person').length === 0, 'People must live in Project Person Context, not project mentions');
 assert(project.mentions.filter((mention) => mention.kind === 'work').length === 8, 'Mentions must retain the 8 Works / Projects / Games entries');
 assert(
   JSON.stringify(project.mentions.filter((mention) => mention.kind === 'context').map((mention) => mention.id)) === JSON.stringify(['chikuho-ben']),
@@ -96,7 +97,7 @@ for (const [id, startMs, endMs] of expectedNarrativeEvents) {
   assert(event?.timingStatus === 'exact', `${id} must use its exact primary narrative window`);
 }
 assert(!(await exists(path.join(contentRoot, 'threads'))), 'vertical slice must not create a threads directory');
-assert(!(await exists(path.join(contentRoot, 'people'))), 'vertical slice must not create a people directory');
+assert((await exists(path.join(contentRoot, 'people'))) && peopleFiles.length === 11, 'Person Model v2 requires 11 Project Person Context entries');
 assert(!(await exists(path.join(contentRoot, 'sources'))), 'vertical slice must not create a sources directory');
 
 const sectionKeys = ['special-talk', 'mail', 'monthly-benmei', 'futsuota', 'superchat', 'ending'];
@@ -130,21 +131,25 @@ assert(html.includes('data-archive-theme="broadcast-blue"'), 'rendered route is 
 assert(JSON.stringify(attributeValues(html, 'data-view-button')) === JSON.stringify(project.views), 'rendered view buttons do not match Project views');
 assert(JSON.stringify(attributeValues(html, 'data-view-panel')) === JSON.stringify(project.views), 'rendered view panels do not match Project views');
 assert((html.match(/class="section-card"/g) || []).length === 6, 'rendered Sections view must contain 6 cards');
-assert((html.match(/data-mention-card="/g) || []).length === project.mentions.length, 'rendered Mentions view must contain one card per mention');
-assert((html.match(/data-mention-summary="/g) || []).length === project.mentions.length, 'rendered Mentions view must expose one adaptive summary per mention');
-assert((html.match(/data-mention-summary-toggle="/g) || []).length === project.mentions.length, 'rendered Mentions view must expose measured overflow controls for every summary');
+const indexEntryCount = project.mentions.length + peopleFiles.length;
+assert((html.match(/data-mention-card="/g) || []).length === indexEntryCount, 'rendered Index must contain one card per Project Person / Work / Context entry');
+assert((html.match(/data-mention-summary="/g) || []).length === indexEntryCount, 'rendered Index must expose one adaptive summary per entry');
+assert((html.match(/data-mention-summary-toggle="/g) || []).length === indexEntryCount, 'rendered Index must expose measured overflow controls for every summary');
 assert((html.match(/data-mention-group-toggle="/g) || []).length === 2, 'mobile Mentions must expose group-level controls for People and Works');
-assert((html.match(/aria-controls="mention-summary-/g) || []).length === project.mentions.length, 'Mention summary disclosures must reference their controlled text');
+assert((html.match(/aria-controls="mention-summary-/g) || []).length === indexEntryCount, 'Index summary disclosures must reference their controlled text');
 assert((html.match(/class="inline-mention"/g) || []).length > 0, 'Timeline Event details must render inline Mention links when a related surface form exists');
 assert(html.includes('event=yt-005429-hosoya-bonfire#mention-hosoya-yoshimasa'), 'inline Mention links must preserve the current Event query and target card hash');
 assert(html.includes('event=yt-004333-producer-casting#mention-ore-shiri'), 'inline Mention aliases must resolve reviewed shorthand such as 《俺知》');
 const mentionSummaryBlocks = [...html.matchAll(/<p[^>]*data-mention-summary="[^"]+"[^>]*>([\s\S]*?)<\/p>/g)].map((match) => match[1]);
-assert(mentionSummaryBlocks.length === project.mentions.length && mentionSummaryBlocks.every((block) => !block.includes('data-mention-link')), 'inline Mention links must stay out of Mentions card summaries');
+assert(mentionSummaryBlocks.length === indexEntryCount && mentionSummaryBlocks.every((block) => !block.includes('data-mention-link')), 'inline Mention links must stay out of Index card summaries');
 assert(!(komatsuHtml.match(/data-mention-link/g) || []).length, 'Komatsu36 must not opt into inline Mention links without the Mentions capability');
 assert((html.match(/aria-controls="mentions-list-/g) || []).length === 2, 'Mention group disclosures must reference their controlled lists');
 assert((html.match(/data-event-card="/g) || []).length === 30, 'rendered Timeline must contain 30 Event cards');
 assert((html.match(/data-timeline-navigator-segment="/g) || []).length === 6, 'Timeline navigator must contain 6 segments');
-assert(searchPayload.items?.length === 30 && searchPayload.items.every((item) => item.kind === 'event'), 'search index must contain exactly 30 Event items');
+assert(searchPayload.items?.length === 41
+  && searchPayload.items.filter((item) => item.kind === 'event').length === 30
+  && searchPayload.items.filter((item) => item.kind === 'person').length === 11,
+'search index must contain 30 Events and 11 Project People');
 
 for (const [label, marker] of [
   ['Media Source Navigator', 'class="media-sources"'],
@@ -164,7 +169,7 @@ assert(html.includes('搜索事件') && html.includes('placeholder="输入姓名
 assert(html.includes('data-view-button="mentions"') && html.includes('data-view-panel="mentions"'), 'Mentions view is not rendered');
 assert(html.includes('MENTION INDEX') && html.includes('提及索引'), 'Mentions presentation copy is missing');
 assert(html.includes('class="mentions-jump"') && html.includes('class="mention-times-more"'), 'Mentions card-grid navigation or time folding is missing');
-assert(html.includes('查看更多 ↓') && html.includes('查看全部人物（10） ↓') && html.includes('查看全部作品（8） ↓'), 'Mentions complete micro-context disclosure copy is missing');
+assert(html.includes('data-mention-group-toggle="person"') && html.includes('data-mention-group-toggle="work"'), 'Index group disclosure controls are missing');
 assert((html.match(/class="mention-source"/g) || []).length === 9, 'Mentions must render exactly 9 labeled primary-source links');
 assert((html.match(/class="mention-source"[^>]*>\s*查看/g) || []).length === 9, 'Mentions primary sources must render as secondary 查看 links');
 assert(!html.includes('data-inline-expandable="act-title-'), 'Act body titles must not use inline expansion controls');
