@@ -44,6 +44,8 @@ npm run dev -- --host 127.0.0.1 --port 4321
 npm run validate:projects   # 内容关系、时间范围、隐私边界
 npm run build               # 生成 dist/
 npm run verify:site-metadata # title / canonical / OG / robots / favicon / About
+npm run verify:global-search # Project / Event / Person / Post 站级索引
+npm run verify:relationship-log # 关系候选记录边界（不实现 graph）
 npm run audit:payload -- komatsu36 # 固定 payload / projection 审计
 npm run validate:publication # 所有 Project 的通用发布 HTML / 检索门禁
 npm run verify:komatsu36:publication # Komatsu36 严格语义与 DOM 回归
