@@ -1,0 +1,43 @@
+---
+export interface Props {
+  projects: any[];
+  projectStats: Map<string, { tracks: number; events: number; threads: number }>;
+}
+
+const { projects, projectStats } = Astro.props;
+---
+
+<section class="home-section home-featured" aria-labelledby="home-featured-title">
+  <div class="home-section-heading">
+    <div>
+      <span class="home-kicker">FEATURED ARCHIVE</span>
+      <h2 id="home-featured-title">从这三个档案开始</h2>
+    </div>
+    <span class="home-section-code">PUBLICATION / {projects.length}</span>
+  </div>
+  <div class="featured-grid">
+    {projects.map((project, index) => {
+      const stats = projectStats.get(project.id) || { tracks: 0, events: 0, threads: 0 };
+      const isSpecial = project.data.publication.kind === 'special';
+      return (
+        <a
+          class:list={['featured-card', isSpecial && 'featured-card--special']}
+          href={`/projects/${project.data.slug}/`}
+          data-publication-kind={project.data.publication.kind}
+          data-featured-project={project.data.slug}
+        >
+          <span class="featured-card-number">{String(index + 1).padStart(2, '0')}</span>
+          <span class="featured-card-kicker">{isSpecial ? '专题档案 · SPECIAL' : '广播节目帖 · EPISODE'}</span>
+          <h3>{project.data.title}</h3>
+          <p>{project.data.publication.homeDeck}</p>
+          <div class="featured-card-meta">
+            <time datetime={project.data.publication.date}>{project.data.publication.date}</time>
+            <span>{stats.events} EVENTS</span>
+            <span>{stats.tracks} TRACK{stats.tracks === 1 ? '' : 'S'}</span>
+            <span class="featured-card-enter">进入档案 →</span>
+          </div>
+        </a>
+      );
+    })}
+  </div>
+</section>

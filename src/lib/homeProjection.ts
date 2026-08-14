@@ -1,3 +1,5 @@
+import { buildGlobalPeopleProjection, type GlobalPersonProjection } from './globalPeople';
+
 type CollectionEntry = {
   id: string;
   data: any;
@@ -11,6 +13,20 @@ export type HomeProjection = {
   projects: CollectionEntry[];
   projectStats: Map<string, { tracks: number; events: number; threads: number }>;
   articleCollections: Map<HomeArticleSection, CollectionEntry[]>;
+  people: GlobalPersonProjection[];
+  recentFeed: HomePublication[];
+};
+
+export type HomePublication = {
+  id: string;
+  kind: 'project' | 'post';
+  title: string;
+  description: string;
+  href: string;
+  date: string;
+  sortDate: number;
+  publicationKind?: 'special' | 'episode';
+  section?: HomeArticleSection;
 };
 
 const byPublicationDate = (left: CollectionEntry, right: CollectionEntry) =>
@@ -25,12 +41,16 @@ export const buildHomeProjection = ({
   tracks,
   events,
   threads,
+  identities,
+  personContexts,
 }: {
   posts: CollectionEntry[];
   projects: CollectionEntry[];
   tracks: CollectionEntry[];
   events: CollectionEntry[];
   threads: CollectionEntry[];
+  identities: CollectionEntry[];
+  personContexts: CollectionEntry[];
 }): HomeProjection => {
   const sortedPosts = [...posts].sort((left, right) => right.data.date.getTime() - left.data.date.getTime());
   const publishedProjects = projects
@@ -47,11 +67,41 @@ export const buildHomeProjection = ({
   const articleCollections = new Map<HomeArticleSection, CollectionEntry[]>(
     HOME_ARTICLE_SECTIONS.map((section) => [section, sortedPosts.filter((post) => post.data.section === section)]),
   );
+  const people = buildGlobalPeopleProjection({
+    identities,
+    projects: publishedProjects,
+    contexts: personContexts,
+    events,
+  });
+  const recentFeed = [
+    ...publishedProjects.map((project) => ({
+      id: project.id,
+      kind: 'project' as const,
+      title: project.data.title,
+      description: project.data.publication.homeDeck,
+      href: `/projects/${project.data.slug}/`,
+      date: project.data.publication.date,
+      sortDate: Date.parse(project.data.publication.date),
+      publicationKind: project.data.publication.kind,
+    })),
+    ...sortedPosts.map((post) => ({
+      id: post.id,
+      kind: 'post' as const,
+      title: post.data.title,
+      description: post.data.description || '',
+      href: `/posts/${post.id}/`,
+      date: post.data.date.toISOString().slice(0, 10),
+      sortDate: post.data.date.getTime(),
+      section: post.data.section,
+    })),
+  ].sort((left, right) => right.sortDate - left.sortDate || left.title.localeCompare(right.title, 'zh-CN'));
 
   return {
     posts: sortedPosts,
     projects: publishedProjects,
     projectStats,
     articleCollections,
+    people,
+    recentFeed,
   };
 };

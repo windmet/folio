@@ -17,10 +17,17 @@ const readPost = async (file) => {
 };
 
 const indexSource = await readFile(path.join(root, 'src/pages/index.astro'), 'utf8');
+const componentSources = await Promise.all((await readdir(path.join(root, 'src/components/home')))
+  .filter((name) => name.endsWith('.astro'))
+  .map((name) => readFile(path.join(root, 'src/components/home', name), 'utf8')));
+const homepageSource = [indexSource, ...componentSources].join('\n');
 assert(!indexSource.includes("id.includes('interview')"), 'homepage still classifies posts by filename');
 assert(!indexSource.includes("id.includes('radio')"), 'homepage still infers Radio from filename');
 assert(!indexSource.includes('tracks === 1'), 'homepage still infers publication kind from track count');
 assert(indexSource.includes('buildHomeProjection'), 'homepage must consume the Home Projection helper');
+for (const requiredClass of ['home-masthead', 'home-featured', 'home-people', 'home-recent', 'home-legacy']) {
+  assert(homepageSource.includes(requiredClass), `homepage component boundary is missing: ${requiredClass}`);
+}
 
 const projectIds = await readdir(projectsRoot);
 const projects = await Promise.all(projectIds.map(async (id) => readJson(path.join(projectsRoot, id, 'project.json'))));
@@ -50,12 +57,16 @@ for (const project of projects.filter((project) => project.status === 'published
   assert(homeHtml.includes(`href="/projects/${project.slug}/"`), `${project.slug}: published Project missing from built homepage`);
   assert(homeHtml.includes(project.publication.homeDeck), `${project.slug}: homepage must render publication.homeDeck`);
 }
-assert((homeHtml.match(/class="project-folder"/g) || []).length === projects.filter((project) => project.status === 'published').length,
+assert((homeHtml.match(/class="featured-card(?: featured-card--special)?"/g) || []).length === projects.filter((project) => project.status === 'published').length,
   'built homepage Project card count does not match published Projects');
 const projectOrder = [...homeHtml.matchAll(/href="\/projects\/([^/]+)\/"/g)].map((match) => match[1]);
 assert(projectOrder[0] === 'komatsu36', 'featured special Project must lead the homepage projection');
-assert((homeHtml.match(/class="folder-card"[^>]*data-category="(interview|archive|radio|note)"/g) || []).length === 4,
+assert((homeHtml.match(/class="legacy-card"[^>]*data-category="(interview|archive|radio|note)"/g) || []).length === 4,
   'built homepage legacy collection count must remain four');
+assert(homeHtml.includes('data-feed-kind="project"') && homeHtml.includes('data-feed-kind="post"'),
+  'built homepage recent feed must mix Project and Post entries');
+assert(homeHtml.includes('data-person-teaser="ito-tomohiro"'), 'built homepage People teaser must expose a high-relevance fixture');
+assert(!homeHtml.includes('class="index-title"'), 'built homepage still uses the old Magazine masthead');
 
 if (errors.length) {
   console.error('Home Projection verification failed:');
