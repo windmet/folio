@@ -1,0 +1,66 @@
+import { readFile, readdir } from 'node:fs/promises';
+import path from 'node:path';
+import YAML from 'yaml';
+
+const root = path.resolve('.');
+const projectsRoot = path.join(root, 'src/content/projects');
+const postsRoot = path.join(root, 'src/content/posts');
+const errors = [];
+const assert = (condition, message) => {
+  if (!condition) errors.push(message);
+};
+const readJson = async (file) => JSON.parse(await readFile(file, 'utf8'));
+const readPost = async (file) => {
+  const source = await readFile(file, 'utf8');
+  const frontmatter = source.match(/^---\r?\n([\s\S]*?)\r?\n---/)?.[1];
+  return frontmatter ? YAML.parse(frontmatter) : null;
+};
+
+const indexSource = await readFile(path.join(root, 'src/pages/index.astro'), 'utf8');
+assert(!indexSource.includes("id.includes('interview')"), 'homepage still classifies posts by filename');
+assert(!indexSource.includes("id.includes('radio')"), 'homepage still infers Radio from filename');
+assert(!indexSource.includes('tracks === 1'), 'homepage still infers publication kind from track count');
+assert(indexSource.includes('buildHomeProjection'), 'homepage must consume the Home Projection helper');
+
+const projectIds = await readdir(projectsRoot);
+const projects = await Promise.all(projectIds.map(async (id) => readJson(path.join(projectsRoot, id, 'project.json'))));
+for (const project of projects) {
+  const publication = project.publication;
+  assert(publication && ['special', 'episode'].includes(publication.kind), `${project.slug}: missing publication kind`);
+  assert(/^\d{4}-\d{2}-\d{2}$/.test(publication?.date || ''), `${project.slug}: publication date must be YYYY-MM-DD`);
+  assert(/^[a-z0-9][a-z0-9-]*$/.test(publication?.seriesKey || ''), `${project.slug}: invalid publication seriesKey`);
+  assert(typeof publication?.homeDeck === 'string' && publication.homeDeck.length > 0, `${project.slug}: missing homeDeck`);
+}
+
+const postFiles = (await readdir(postsRoot)).filter((name) => name.endsWith('.md') || name.endsWith('.mdx'));
+const posts = await Promise.all(postFiles.map(async (name) => ({ name, data: await readPost(path.join(postsRoot, name)) })));
+const expectedSections = new Map([
+  ['ancient-tweets.mdx', 'archaeology'],
+  ['bmc-interview-cn.mdx', 'interview'],
+  ['bmc-interview.mdx', 'interview'],
+  ['xhs-exporter.mdx', 'note'],
+]);
+assert(posts.length === expectedSections.size, `expected ${expectedSections.size} Posts, found ${posts.length}`);
+for (const post of posts) {
+  assert(expectedSections.get(post.name) === post.data?.section, `${post.name}: explicit section metadata mismatch`);
+}
+
+const homeHtml = await readFile(path.join(root, 'dist/index.html'), 'utf8');
+for (const project of projects.filter((project) => project.status === 'published')) {
+  assert(homeHtml.includes(`href="/projects/${project.slug}/"`), `${project.slug}: published Project missing from built homepage`);
+  assert(homeHtml.includes(project.publication.homeDeck), `${project.slug}: homepage must render publication.homeDeck`);
+}
+assert((homeHtml.match(/class="project-folder"/g) || []).length === projects.filter((project) => project.status === 'published').length,
+  'built homepage Project card count does not match published Projects');
+const projectOrder = [...homeHtml.matchAll(/href="\/projects\/([^/]+)\/"/g)].map((match) => match[1]);
+assert(projectOrder[0] === 'komatsu36', 'featured special Project must lead the homepage projection');
+assert((homeHtml.match(/class="folder-card"[^>]*data-category="(interview|archive|radio|note)"/g) || []).length === 4,
+  'built homepage legacy collection count must remain four');
+
+if (errors.length) {
+  console.error('Home Projection verification failed:');
+  errors.forEach((error) => console.error(`- ${error}`));
+  process.exit(1);
+}
+
+console.log(`Home Projection verified (${projects.length} Projects, ${posts.length} Posts, explicit publication metadata and homepage boundaries stable).`);

@@ -10,6 +10,13 @@
   "playerNote": "使用 YouTube 原生播放器；可用的播放与画面能力取决于 YouTube 与当前设备。",
   "searchPlaceholder": "输入姓名、作品或主题",
   "status": "published",
+  "publication": {
+    "kind": "episode",
+    "date": "2026-04-25",
+    "seriesKey": "komachoe-radio",
+    "featured": true,
+    "homeDeck": "生日直播后的制作复盘：从 360° 设备、邮件与来信，一路回到下个月的节目形式。"
+  },
   "defaultTrack": "komachoe-20260425/yt-main",
   "defaultView": "overview",
   "views": [

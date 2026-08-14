@@ -14,6 +14,7 @@ const posts = defineCollection({
   schema: z.object({
     title: z.string(),
     date: z.date(),
+    section: z.enum(['interview', 'archaeology', 'radio', 'note']),
     description: z.string().optional(),
     heroImage: z.string().optional(),
   }),
@@ -83,6 +84,13 @@ const projects = defineCollection({
     playerNote: z.string().optional(),
     searchPlaceholder: z.string().optional(),
     status: z.enum(['draft', 'published']),
+    publication: z.object({
+      kind: z.enum(['special', 'episode']),
+      date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+      seriesKey: z.string().regex(/^[a-z0-9][a-z0-9-]*$/),
+      featured: z.boolean().default(false),
+      homeDeck: z.string().min(1),
+    }),
     defaultTrack: reference('projectTracks'),
     defaultView: projectView,
     views: z.array(projectView).min(1),

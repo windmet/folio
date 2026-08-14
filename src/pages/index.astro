@@ -1,16 +1,20 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import { buildHomeProjection } from '../lib/homeProjection';
 
 const posts = await getCollection('posts');
-const sortedPosts = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-const projects = (await getCollection('projects'))
-  .filter((project) => project.data.status === 'published')
-  .sort((a, b) => a.data.title.localeCompare(b.data.title, 'zh-CN'));
+const projectsCollection = await getCollection('projects');
 const projectTracks = await getCollection('projectTracks');
 const projectEvents = await getCollection('projectEvents');
 const projectThreads = await getCollection('projectThreads');
-const referenceId = (reference: any) => reference.id;
+const { posts: sortedPosts, projects, projectStats } = buildHomeProjection({
+  posts,
+  projects: projectsCollection,
+  tracks: projectTracks,
+  events: projectEvents,
+  threads: projectThreads,
+});
 
 const folders = [
   {
@@ -24,7 +28,7 @@ const folders = [
     desc: '长篇对谈与杂志翻译存档',
     vol: 'ARCHIVE.VOL.01',
     icon: 'mic',
-    match: (id: string) => id.includes('interview'),
+    section: 'interview',
   },
   {
     id: 'archive',
@@ -37,7 +41,7 @@ const folders = [
     desc: '早年推文考据与历史记录',
     vol: 'ARCHIVE.VOL.02',
     icon: 'search',
-    match: (id: string) => id.includes('ancient') || id.includes('tweet') || id.includes('考古'),
+    section: 'archaeology',
   },
   {
     id: 'radio',
@@ -50,7 +54,7 @@ const folders = [
     desc: '广播节目音声与放送回忆',
     vol: 'ARCHIVE.VOL.03',
     icon: 'radio',
-    match: (id: string) => id.includes('radio') || id.includes('放送'),
+    section: 'radio',
   },
   {
     id: 'note',
@@ -63,9 +67,7 @@ const folders = [
     desc: '个人杂谈与随性记录',
     vol: 'ARCHIVE.VOL.04',
     icon: 'coffee',
-    match: (id: string) =>
-      !id.includes('interview') && !id.includes('ancient') && !id.includes('tweet') &&
-      !id.includes('radio') && !id.includes('放送') && !id.includes('考古'),
+    section: 'note',
   },
 ];
 
@@ -90,25 +92,22 @@ const icons: Record<string, string> = {
         <span>PROJECT ARCHIVE</span>
       </div>
       {projects.map((project) => {
-        const tracks = projectTracks.filter((track) => referenceId(track.data.project) === project.id).length;
-        const events = projectEvents.filter((event) =>
-          referenceId(event.data.project) === project.id && event.data.publicationStatus !== 'withheld').length;
-        const threads = projectThreads.filter((thread) => referenceId(thread.data.project) === project.id).length;
+        const stats = projectStats.get(project.id) || { tracks: 0, events: 0, threads: 0 };
         return (
           <a href={`/projects/${project.data.slug}/`} class="project-folder">
             <span class="project-folder-tab">Project</span>
             <div class="project-folder-body">
               <div class="project-folder-main">
                 <span class="project-folder-kicker">
-                  {tracks === 1 && threads === 0 ? '广播存档 · SINGLE-TRACK BROADCAST' : '持续整理中 · MULTI-TRACK EVENT'}
+                  {project.data.publication.kind === 'episode' ? '广播节目帖 · EPISODE' : '专题档案 · SPECIAL'}
                 </span>
                 <h3>{project.data.title}</h3>
-                <p>{project.data.summary}</p>
+                <p>{project.data.publication.homeDeck}</p>
               </div>
               <div class="project-folder-meta" aria-label="专题内容统计">
-                <strong>{events}</strong><span>EVENTS</span>
-                <strong>{threads}</strong><span>THREADS</span>
-                <strong>{tracks}</strong><span>TRACKS</span>
+                <strong>{stats.events}</strong><span>EVENTS</span>
+                <strong>{stats.threads}</strong><span>THREADS</span>
+                <strong>{stats.tracks}</strong><span>TRACKS</span>
               </div>
               <span class="project-folder-enter">进入专题档案 →</span>
               {project.data.mark && <span class="project-folder-mark" aria-hidden="true">{project.data.mark}</span>}
@@ -121,7 +120,7 @@ const icons: Record<string, string> = {
 
   <div class="folder-grid">
     {folders.map((f) => {
-      const count = posts.filter(p => f.match(p.id)).length;
+      const count = sortedPosts.filter((post) => post.data.section === f.section).length;
       return (
         <a href={`#${f.id}`} class="folder-card" data-category={f.id} style={`--card-bg: ${f.color}; --card-border: ${f.borderColor}; --tab-bg: ${f.tabColor}; --active-border: ${f.activeColor};`}>
           <div class="folder-tab" style={`background: var(--tab-bg); border-color: ${f.borderColor};`}>
@@ -143,7 +142,7 @@ const icons: Record<string, string> = {
     <h3 class="recent-heading" id="recent-heading">最近更新</h3>
     <div class="recent-list" id="recent-list">
       {sortedPosts.map((post) => {
-        const cat = folders.find(f => f.match(post.id))?.id ?? 'note';
+        const cat = folders.find((folder) => folder.section === post.data.section)?.id ?? 'note';
         return (
           <a href={`/posts/${post.id}/`} class="recent-item" data-category={cat}>
             <time class="recent-date">

@@ -10,6 +10,13 @@
   "playerNote": "使用 YouTube 原生播放器；可用的播放与画面能力取决于 YouTube 与当前设备。",
   "searchPlaceholder": "输入姓名、角色、作品或制作主题",
   "status": "published",
+  "publication": {
+    "kind": "episode",
+    "date": "2026-03-09",
+    "seriesKey": "komachoe-radio",
+    "featured": true,
+    "homeDeck": "《俺知》再演后的第一次长复盘：从后台关系、电话嘉宾到平助与杀阵的制作脉络。"
+  },
   "defaultTrack": "komachoe-20260309/yt-main",
   "defaultView": "overview",
   "views": [

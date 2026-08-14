@@ -11,6 +11,13 @@
   "playerNote": "使用 YouTube 原生 360°能力；移动设备的视角支持取决于 YouTube 与设备。",
   "searchPlaceholder": "例如：章鱼烧、内田、Bingo",
   "status": "published",
+  "publication": {
+    "kind": "special",
+    "date": "2026-04-14",
+    "seriesKey": "komatsu-birthday",
+    "featured": true,
+    "homeDeck": "五小时、多平台、多人事件的生日会档案：从主直播、X Space 到现场人物与事件线。"
+  },
   "defaultTrack": "komatsu36/yt-main",
   "defaultView": "timeline",
   "views": [
