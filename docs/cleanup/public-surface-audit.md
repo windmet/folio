@@ -25,8 +25,8 @@
 | REMOVED — src/content/posts/bmc-interview.mdx | 32,942 bytes；完整日文采访；无原始 public URL；由 `17a42d3` 引入 | **PRIVATE / EXTRACTED** | 01B complete |
 | REMOVED — src/content/posts/bmc-interview-cn.mdx | 28,707 bytes；完整中文译文；引用本地杂志封面/版面图；由 `17a42d3` 引入 | **PRIVATE / EXTRACTED** | 01B complete |
 | REMOVED — public/uploads/14aa0f612f505da94c45e6106501d643.jpg | 258,850 bytes；《声優グランプリ》2025-06 封面/版面图 | **PRIVATE / EXTRACTED** | 01B complete |
-| `src/content/posts/xhs-exporter.mdx` | 3,667 bytes；个人工具开发日志 | **PRIVATE / REMOVE FROM PRODUCT** | 01B/01C |
-| `scripts/xhs-exporter/` | 本地切图工具；当前跟踪 27 张输出图，共 13,903,852 bytes；Git 历史另有已删除的 page 28–93 | **PRIVATE TOOLING** | 01B/01C |
+| REMOVED — src/content/posts/xhs-exporter.mdx | 3,667 bytes；个人工具开发日志 | **PRIVATE / EXTRACTED** | 01C complete |
+| REMOVED — scripts/xhs-exporter/ | 本地切图工具；曾跟踪 27 张输出图，共 13,903,852 bytes；Git 历史另有已删除的 page 28–93 | **PRIVATE TOOLING / EXTRACTED** | 01C complete |
 | `src/content/posts/ancient-tweets.mdx` | 公开 X 对话内容；没有任何原 Post URL；依赖 fake Tweet UI | **MIGRATE** | 01D |
 | `public/uploads/炸鸡.jpg` | 419,466 bytes；公开社交图片的本地镜像；由 `09cb5cc` 引入 | **MIGRATE / SOURCE REVIEW** | 01D |
 | `posts` collection 与 `/posts/[...slug]` | 目前承载上述 4 篇旧文 | **DEPRECATED / MAINTENANCE-ONLY** | 01C/01D 后复核 |
@@ -46,15 +46,17 @@
 
 | 对象 | 当前事实 | 裁决 | 目标批次 |
 | --- | --- | --- | --- |
-| `tina/config.ts`、`tina/tina-lock.json` | Tina schema 与生成锁 | **DELETE** | 01C |
-| `@tinacms/cli`、`tinacms` | devDependencies；仍进入 805,149-byte root lockfile | **DELETE** | 01C |
-| `tina:dev`、`tina:host`、`tina:build` | package scripts 仍可调用旧 authoring 模式 | **DELETE** | 01C |
-| `public/admin/` | `.gitignore` 忽略，但本机有 92 files / 10,811,779 bytes；Astro 会复制进 `dist/admin/` | **DELETE GENERATED OUTPUT** | 01C |
-| `tina/__generated__/` | 被忽略；当前存在与否不构成产品合同 | **DELETE IF PRESENT** | 01C |
-| `Question`、`Annotation`、`QuoteLine`、`HeroImage` | 当前仍被 BMC/XHS 或 Post route 消费 | **RE-EVALUATE AFTER CONSUMER REMOVAL** | 01C |
+| REMOVED — tina/config.ts、tina/tina-lock.json | Tina schema 与生成锁 | **RETIRED** | 01C complete |
+| REMOVED — `@tinacms/cli`、`tinacms` | 已从 package manifests / lockfile 清除；root lockfile 从 805,149 降至 262,951 bytes | **RETIRED** | 01C complete |
+| REMOVED — `tina:dev`、`tina:host`、`tina:build` | package scripts 不再提供旧 authoring 模式 | **RETIRED** | 01C complete |
+| REMOVED — public/admin/ | 曾在本机有 92 files / 10,811,779 bytes，并被 Astro 复制进 `dist/admin/`；已移出网站树 | **QUARANTINED** | 01C complete |
+| REMOVED — tina/__generated__/ | 生成物已移出网站树（若存在） | **QUARANTINED** | 01C complete |
+| REMOVED — `Question`、`Annotation`、`QuoteLine`、`HeroImage` | BMC/XHS consumer 清零后删除 | **ZERO-CONSUMER RETIRED** | 01C complete |
 | `@astrojs/mdx`、Typography | Post 与 MDX presentation 仍可能消费，不是 Tina runtime | **KEEP UNTIL ZERO-CONSUMER PROOF** | 后续 |
 
-重要发现：`public/admin/` 虽然未被 Git 跟踪，但位于 Astro `public/` 下，当前 `dist/admin/` 已包含相同的 92 个文件和 10.8 MB 内容。它是实际 public build 泄漏，不只是本地缓存。
+重要发现：`public/admin/` 虽然未被 Git 跟踪，但曾位于 Astro `public/` 下，`dist/admin/` 因而包含相同的 92 个文件和 10.8 MB 内容。01C 已将它移到 Private Research quarantine；后续 build 必须证明 `dist/admin/` 不再生成。
+
+本机 ignored `.env` 仍有三个 Tina key name，但配置、命令与依赖均已退役，构建不再读取它们。本轮不改写用户私有 secrets 文件；这些值不属于仓库或 public build，可以由用户在确认无其他用途后自行撤销。
 
 ## Social source / fake platform UI
 
@@ -106,8 +108,8 @@ timeline collection
 
 ## 执行 Gate
 
-- **01B 前置**：在网站 repo 外建立 Private Research 副本；逐文件校验 SHA-256；记录复制 manifest。
-- **01C 前置**：01B 的内容副本验证通过；然后删除 Tina、`public/admin/`、XHS public consumer 与零 consumer UI。
+- **01B complete**：网站 repo 外的 Private Research 副本已建立并校验；BMC 全文与杂志图已撤出 current public tree。
+- **01C complete**：Tina、`public/admin/`、XHS public consumer 与零 consumer 旧博客 UI 已退役；待 build 复核生成物。
 - **01D 前置**：为 2016 X 记录补齐可验证的 public URLs；在无法核实的条目上保留 `sourceStatus`，不伪造链接。
 - **01E 前置**：01D 不再依赖 fake Tweet family；确认全站没有 `/timeline/` 链接或 collection consumer。
 - 每批都必须运行 `npm run validate`、`npm exec -- tsc --noEmit`、`git diff --check`；涉及 Project shell 时追加 payload audit。

@@ -5,7 +5,7 @@
 > 当前源档根：`E:\AI_Subtitle_Studio\02_Projects\小松昌平生日会`（只通过 CLI 参数或 `KOMATSU36_SOURCE_ROOT` 提供）
 > 当前权威文档集：源档根下的 `复核md/` 带版本后缀文件；根目录同名无后缀文件是旧工作稿，不得自动选用。
 > 当前 derived override：`docs/komatsu36_semantic_patch_20260810.md` 只在显式 `OVERRIDE` 事项上覆盖旧分析结论；不改写 RAW 或 source-set manifest。
-> 当前站点：Astro 7 静态站点，TinaCMS 只管理普通 MDX 文章。
+> 当前站点：Astro 7 静态站点。TinaCMS 已在 BOUNDARY-01C 退役；本文后续 Tina 章节只保留为当时的架构决策记录。
 
 > **CURRENT CHECKPOINT**
 > RC 0.10 已完成本地验收，RC 0.11 已完成 R9 与 review-branch handoff；其 acceptance 文档保持历史合同。RC12-A2/C2/D2/B2/F2、E1–E5、T1.1、Y1、M1 与 MT1 已完成工程／Browser 验证；真实设备为 `NOT EXECUTED`。2026-08-10 Semantic P0/P1 已完成逐项总审计，P2 兼容 ID 迁移延后；旧分析 MD 与 RAW 保持不变。当前等待 MT1 移动视觉人工产品复核，Release Gate 继续 CLOSED。
@@ -24,8 +24,8 @@
 - `validate:publication` 已接入统一 `npm run validate`：当前构建核对 160 条公开检索项、350 KiB 单页预算，并阻止原始 ASR 文件标记、本机源档路径、`author_id`、SRT/VTT 文件名进入发布 HTML；Semantic gate 同时固定 P0 事实、P1 Person／Account ledger、公开 offer 闭环、两项公告和台本事实／解释边界；
 - `.github/workflows/validate.yml` 已接入 push / pull request 验证：固定 Node.js 22.12.0，执行 `npm ci`、`npm audit --omit=dev`、完整 `npm run validate`，再执行 `npm exec -- tsc --noEmit`；TypeScript 检查特意放在 Astro build 之后，以便使用生成的 `astro:content` 类型；它只提供可审阅的 CI 证据，不触发部署；
 - Cloudflare Pages 的首次 provision、构建设置、production 复测和证据追加步骤见 `docs/cloudflare-pages-release-checklist.md`；当前仓库没有部署 token 或 Wrangler 配置，不由本地自动执行；
-- 额外静态检查边界已实测：仓库自带 `tsc --noEmit` 通过；临时安装 `@astrojs/check` 后，`astro check` 会扫描生成的 `public/admin` bundle 并在约 4 GiB 堆上 OOM，因此未纳入 Release Gate，也不保留该临时依赖；
-- 依赖安全边界已收口：Astro `7.2.0`、MDX `7.0.5`、PostCSS `8.5.26` 等保留在构建依赖面；Tina CLI / runtime 只用于编辑器命令，已移入 `devDependencies`，`public/admin/` 继续忽略。2026-08-09 `npm audit --omit=dev` 为 0 vulnerabilities；完整 audit 的剩余项属于 Tina/GraphQL 等 dev-only 工具链，不执行无审查的 `audit fix --force`；
+- 额外静态检查边界曾实测：仓库自带 `tsc --noEmit` 通过；当时 `astro check` 会扫描 Tina 生成的 admin bundle 并在约 4 GiB 堆上 OOM，因此未纳入 Release Gate；BOUNDARY-01C 已移除该 bundle 与 Tina 依赖；
+- 依赖安全边界已收口：Astro `7.2.0`、MDX `7.0.5`、PostCSS `8.5.26` 等保留在构建依赖面；Tina CLI / runtime 与生成 admin 已于 2026-08-14 退役；
 - 首页已增加独立“专题档案”书架，只消费 `status: published` 的 Project，并显示由 collection 实时派生的 Event／Thread／Track 数量；专题不混入四类普通文章筛选；
 - 当前实现已完成 RC Media Pass：Hero 下方有常驻三来源栏，播放器有 Source Switcher，SP1/SP2 是 `video + external`，支持 `?track=`、Event 优先、Source Event Index、canonical Space CTA 与 provenance 链接；固定截图、本地 preview QA 与 RC 0.9 Structural Editorial Audit 已完成。该审计证明结构、关系、顺序与限定没有漏项，不等于读者文案已经终审；
 - RC 0.10 Reader & Entity Editorial Pass 已完成；52/52 decisions、full reader pass 与 publication leakage gate 已通过。RC 0.11 UX11-C、R1、R2 UX11-P0、R3 UX11-P1、R4 UX11-P2、R5 UX11-D、R6 UX11-E 与 R9 UX11-H 已在 review branch 完成；F 默认延后 v1.1，G 已裁决为 `NOT NEEDED FOR V1`。随后真实桌面复核开启 RC 0.12：A2/C2/D2/B2/F2 已完成，E 已从早期 P1 backlog 实现到 E1–E5 工程／Browser verified；最新产品复核再新增 T1 Navigator 收尾。完整边界见 correction runbook 与 T1 runbook。RC 0.10 历史合同见 `docs/editorial/komatsu36-editorial-experience-pass.md`；自动候选写入 `docs/editorial/komatsu36-reader-copy-candidates.generated.md`，人工真值只写入 `docs/editorial/komatsu36-reader-copy-decisions.yml`，生成器不得覆盖后者。八张既有截图保存于 `docs/qa/komatsu36-rc08/`，结构性审计见 `docs/qa/komatsu36-rc08/EDITORIAL-AUDIT.md`；源档中的词级、商品、speaker、画面和账号身份 TODO 仍保持原边界，不得在后续编辑中猜测补齐。项目特例 validator 拆分延后到第二个 Project 接入前；Transcript 与 Evidence 是明确延后项，不阻塞 v1。不得因 16 条 Thread 已出现而误报为完整 Folio 愿景已经完成；

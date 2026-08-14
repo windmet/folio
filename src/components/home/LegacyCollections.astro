@@ -9,7 +9,7 @@ const folders = [
   { id: 'archive', section: 'archaeology', title: '文章考古' },
   { id: 'radio', section: 'radio', title: '广播旧文' },
   { id: 'note', section: 'note', title: '随笔杂谈' },
-];
+].filter((folder) => (articleCollections.get(folder.section) || []).length > 0);
 ---
 
 <section class="home-section home-legacy" id="legacy" aria-labelledby="home-legacy-title">

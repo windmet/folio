@@ -18,7 +18,7 @@
 | Build output directory | `dist` |
 | Node.js | `22.12.0`，与 `.github/workflows/validate.yml` 一致 |
 | Install command | `npm ci` |
-| Repository secrets | 本站静态构建不需要 Tina token；不要把本机源档路径或任何 token 写入仓库 |
+| Repository secrets | Tina 已退役，静态构建不需要 CMS token；不要把本机源档路径或任何 token 写入仓库 |
 
 ## 首次部署后
 

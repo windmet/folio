@@ -63,7 +63,6 @@ const postFiles = (await readdir(postsRoot)).filter((name) => name.endsWith('.md
 const posts = await Promise.all(postFiles.map(async (name) => ({ name, data: await readPost(path.join(postsRoot, name)) })));
 const expectedSections = new Map([
   ['ancient-tweets.mdx', 'archaeology'],
-  ['xhs-exporter.mdx', 'note'],
 ]);
 assert(posts.length === expectedSections.size, `expected ${expectedSections.size} Posts, found ${posts.length}`);
 for (const post of posts) {
@@ -79,8 +78,9 @@ assert((homeHtml.match(/class="featured-card(?: featured-card--special)?"/g) || 
   'built homepage Project card count does not match published Projects');
 const projectOrder = [...homeHtml.matchAll(/href="\/projects\/([^/]+)\/"/g)].map((match) => match[1]);
 assert(projectOrder[0] === 'komatsu36', 'featured special Project must lead the homepage projection');
-assert((homeHtml.match(/class="legacy-card"[^>]*data-category="(interview|archive|radio|note)"/g) || []).length === 4,
-  'built homepage legacy collection count must remain four');
+assert((homeHtml.match(/class="legacy-card"[^>]*data-category="(interview|archive|radio|note)"/g) || []).length === 1,
+  'built homepage must expose only non-empty legacy collections');
+assert(!homeHtml.includes('小红书排版自动化'), 'personal XHS tooling must not remain in the public homepage');
 assert(homeHtml.includes('data-feed-kind="project"') && homeHtml.includes('data-feed-kind="post"'),
   'built homepage recent feed must mix Project and Post entries');
 assert(homeHtml.includes('data-feed-kind="index"'), 'built homepage recent feed must include Index entries');

@@ -16,7 +16,6 @@ const posts = defineCollection({
     date: z.date(),
     section: z.enum(['interview', 'archaeology', 'radio', 'note']),
     description: z.string().optional(),
-    heroImage: z.string().optional(),
   }),
 });
 
