@@ -37,6 +37,12 @@ assert(homeCss.includes('.home-root { scroll-snap-type: none; }'), 'mobile chapt
 assert(homeCss.includes('@media (prefers-reduced-motion: reduce)'), 'homepage must honor reduced-motion preferences');
 assert(homeCss.includes("[data-tone='broadcast-blue']"), 'homepage must consume the controlled broadcast-blue tone');
 assert(homeCss.includes("[data-tone='event-rose']"), 'homepage must expose the controlled special rose tone');
+assert(homeCss.includes('border-left-color: var(--home-blue)'), 'broadcast color must be expressed as ink, not a filled card surface');
+assert(homeCss.includes('border-top: 2px solid var(--home-sage)'), 'Index color must be expressed as a restrained top rule');
+assert(homeCss.includes('.home-scene--people { min-height: calc(84svh'), 'People scene must use a flexible chapter height');
+assert(homeCss.includes('grid-template-columns: repeat(2'), 'homepage People teaser must use a two-column ledger');
+assert(!homeCss.includes('background: #eaf1f4'), 'broadcast cards must not use a blue filled surface');
+assert(!homeCss.includes('background: #eff3eb'), 'Index scene must not use a green filled surface');
 assert(!homepageSource.includes("addEventListener('wheel'"), 'homepage must not intercept wheel events');
 assert(!homepageSource.includes('preventDefault()'), 'homepage must not prevent native scroll behavior');
 for (const requiredClass of ['home-masthead', 'home-featured', 'home-people', 'home-recent', 'home-indexes', 'home-legacy']) {

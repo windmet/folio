@@ -47,7 +47,10 @@
 .person-card:focus-visible,
 .person-project-link:focus-visible,
 .person-event-link:focus-visible,
-.person-external-link:focus-visible {
+.person-external-link:focus-visible,
+.person-order-controls button:focus-visible,
+.person-event-disclosure summary:focus-visible,
+.person-event-overflow a:focus-visible {
   outline: 2px solid #9c615b;
   outline-offset: 4px;
 }
@@ -245,25 +248,92 @@
 }
 
 .person-contexts {
-  max-width: 900px;
+  max-width: 980px;
   margin-top: 46px;
 }
 
-.person-contexts > h2 {
-  margin: 0 0 18px;
-  color: #75675d;
+.person-contexts-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #ded6cf;
+}
+
+.person-contexts-heading h2 {
+  margin: 8px 0 0;
+  color: #514943;
+  font-family: 'Noto Serif SC', 'Noto Serif JP', Georgia, serif;
+  font-size: 25px;
+  font-weight: 400;
+}
+
+.person-order-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #b0a49b;
   font-family: 'SF Mono', Consolas, monospace;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: .16em;
-  text-transform: uppercase;
+  font-size: 10px;
+}
+
+.person-order-controls button {
+  padding: 3px 0;
+  border: 0;
+  background: transparent;
+  color: #a09288;
+  font: inherit;
+  cursor: pointer;
+}
+
+.person-order-controls button[aria-pressed='true'],
+.person-order-controls button:hover { color: #9c615b; }
+
+.person-chronology { position: relative; }
+.person-chronology::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  bottom: 10px;
+  left: 118px;
+  width: 1px;
+  background: #ddd4cc;
 }
 
 .person-context-card {
-  margin-top: 16px;
-  padding: 24px;
-  border: 1px solid #e3d8ce;
-  background: #fffdfa;
+  position: relative;
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  column-gap: 46px;
+  margin: 0;
+  padding: 0 0 44px;
+  background: transparent;
+}
+
+.person-context-card:last-child { padding-bottom: 0; }
+.person-context-card > :not(.person-context-date, .person-context-node) { grid-column: 2; }
+.person-context-date {
+  grid-column: 1;
+  grid-row: 1;
+  padding-top: 2px;
+  color: #9c615b;
+  font-family: 'SF Mono', Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-align: right;
+}
+.person-context-node {
+  position: absolute;
+  top: 5px;
+  left: 113px;
+  width: 9px;
+  height: 9px;
+  border: 2px solid #f7f4ef;
+  border-radius: 50%;
+  background: #9c615b;
+  box-shadow: 0 0 0 1px #b89186;
 }
 
 .person-context-card header {
@@ -274,7 +344,7 @@
 }
 
 .person-context-card h3 {
-  margin: 8px 0 0;
+  margin: 6px 0 0;
   color: #504943;
   font-family: 'Noto Serif SC', 'Noto Serif JP', Georgia, serif;
   font-size: 21px;
@@ -305,6 +375,26 @@
   padding-top: 17px;
   border-top: 1px solid #eee6df;
 }
+
+.person-event-disclosure,
+.person-event-overflow { margin-top: 20px; padding-top: 16px; border-top: 1px solid #e8e0d9; }
+.person-event-disclosure summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  color: #786b62;
+  font-size: 12px;
+  cursor: pointer;
+  list-style: none;
+}
+.person-event-disclosure summary::-webkit-details-marker { display: none; }
+.person-event-disclosure-label { color: #9c615b; font-family: 'SF Mono', Consolas, monospace; font-size: 10px; }
+.person-event-disclosure[open] .person-event-disclosure-label { font-size: 0; }
+.person-event-disclosure[open] .person-event-disclosure-label::after { content: '收起'; font-size: 10px; }
+.person-event-disclosure .person-event-list { margin-top: 14px; }
+.person-event-overflow strong { color: #625951; font-size: 12px; font-weight: 500; }
+.person-event-overflow p { margin: 8px 0 10px; color: #91847b; font-size: 12px; line-height: 1.7; }
+.person-event-overflow a { color: #9c615b; font-family: 'SF Mono', Consolas, monospace; font-size: 10px; text-decoration: none; }
 
 .person-event-link {
   display: flex;
@@ -359,9 +449,12 @@
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .person-context-card {
-    padding: 19px;
-  }
+  .person-contexts-heading { display: block; }
+  .person-order-controls { margin-top: 16px; }
+  .person-chronology::before { left: 5px; }
+  .person-context-card { display: block; padding: 0 0 38px 28px; }
+  .person-context-date { display: block; padding: 0 0 8px; text-align: left; }
+  .person-context-node { top: 3px; left: 0; }
 
   .person-context-card header {
     display: block;

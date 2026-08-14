@@ -17,6 +17,9 @@ assert(helperSource.includes('buildGlobalPeopleProjection'), 'global People proj
 assert(indexSource.includes('buildGlobalPeopleProjection'), 'People index must consume the global projection');
 assert(detailSource.includes('getStaticPaths'), 'People detail route must have static paths');
 assert(detailSource.includes('person-empty-note'), 'People detail route must handle absent contextProfile');
+assert(detailSource.includes('data-person-chronology'), 'People detail route must expose the chronology reading mode');
+assert(detailSource.includes('DIRECT_EVENT_LIMIT'), 'People detail route must define the direct event disclosure threshold');
+assert(detailSource.includes('PROJECT_TIMELINE_LIMIT'), 'People detail route must redirect extreme event sets to Project Timeline');
 
 const ids = (await readdir(peopleRoot)).filter((name) => name.endsWith('.json')).map((name) => name.replace(/\.json$/, ''));
 const indexHtml = await read(path.join(distPeopleRoot, 'index.html'));
@@ -33,8 +36,15 @@ for (const projectId of ['komachoe-20260309', 'komatsu36', 'komachoe-20260425'])
   assert(itoHtml.includes(`/projects/${projectId}/`), `Ito detail is missing ${projectId} project context`);
 }
 assert((itoHtml.match(/class="person-context-card"/g) || []).length === 3, 'Ito detail must show three project contexts');
+assert(itoHtml.includes('data-person-order="desc"') && itoHtml.includes('data-person-order="asc"'),
+  'People detail must expose both chronology directions');
+assert(itoHtml.includes('class="person-event-disclosure"'), 'Ito fixture must render its four-event context as collapsed disclosure');
 assert(itoHtml.includes('view=timeline&amp;event='), 'People detail must expose event deep links through the project contract');
 assert(itoHtml.includes('person-empty-note'), 'Ito detail must state that no independent profile is present');
+
+const komatsuHtml = await read(path.join(distPeopleRoot, 'komatsu-shohei/index.html'));
+assert(komatsuHtml.includes('class="person-event-overflow"'), 'Komatsu host fixture must use the extreme-event Project Timeline handoff');
+assert(komatsuHtml.includes('/projects/komatsu36/?view=timeline'), 'Komatsu host fixture must link to the complete Project Timeline');
 
 if (errors.length) {
   console.error('Global People route verification failed:');

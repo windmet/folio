@@ -26,6 +26,9 @@ const formatTime = (milliseconds: number) => {
   const seconds = total % 60;
   return [hours, minutes, seconds].map((part) => String(part).padStart(2, '0')).join(':');
 };
+const DIRECT_EVENT_LIMIT = 3;
+const PROJECT_TIMELINE_LIMIT = 20;
+const formatDate = (date: string) => date.replaceAll('-', '.');
 ---
 
 <PeopleLayout title={person.displayName} description={`${person.displayName} 的跨项目人物档案`}>
@@ -64,45 +67,96 @@ const formatTime = (milliseconds: number) => {
       </div>
     </header>
 
-    <section class="person-contexts" aria-labelledby="person-contexts-title">
-      <h2 id="person-contexts-title">Project contexts</h2>
-      {person.contexts.length > 0 ? person.contexts.map((context) => (
-        <article class="person-context-card" id={`project-${context.project.id}`}>
-          <header>
-            <div>
-              <span class="person-context-kicker">{context.project.data.publication.date} · {context.project.data.publication.kind}</span>
-              <h3><a class="person-project-link" href={`/projects/${context.project.data.slug}/`}>{context.project.data.title}</a></h3>
+    <section class="person-contexts" aria-labelledby="person-contexts-title" data-person-chronology>
+      <div class="person-contexts-heading">
+        <div>
+          <span class="people-kicker">CHRONOLOGY</span>
+          <h2 id="person-contexts-title">出现记录</h2>
+        </div>
+        <div class="person-order-controls" role="group" aria-label="出现记录排序">
+          <button type="button" data-person-order="desc" aria-pressed="true">新 → 旧</button>
+          <span aria-hidden="true">/</span>
+          <button type="button" data-person-order="asc" aria-pressed="false">旧 → 新</button>
+        </div>
+      </div>
+      <div class="person-chronology" data-person-chronology-list>
+        {person.contexts.length > 0 ? person.contexts.map((context) => (
+          <article class="person-context-card" id={`project-${context.project.id}`} data-publication-date={context.project.data.publication.date}>
+            <time class="person-context-date" datetime={context.project.data.publication.date}>{formatDate(context.project.data.publication.date)}</time>
+            <span class="person-context-node" aria-hidden="true"></span>
+            <header>
+              <div>
+                <span class="person-context-kicker">{context.project.data.publication.kind}</span>
+                <h3><a class="person-project-link" href={`/projects/${context.project.data.slug}/`}>{context.project.data.title}</a></h3>
+              </div>
+            </header>
+            <p class="person-context-summary">{context.context.data.summary}</p>
+            <div class="person-chip-row" aria-label="项目中的参与方式">
+              {context.presence.map((item) => <span class="person-chip">{item.label}</span>)}
             </div>
-          </header>
-          <p class="person-context-summary">{context.context.data.summary}</p>
-          <div class="person-chip-row" aria-label="项目中的参与方式">
-            {context.presence.map((item) => <span class="person-chip">{item.label}</span>)}
-          </div>
-          {(context.roles || []).length > 0 && (
-            <div class="person-role-row" aria-label="项目角色">
-              {context.roles.map((role: any) => (
-                <span class="person-role">
-                  {PERSON_ROLE_LABELS[role.kind as keyof typeof PERSON_ROLE_LABELS] || role.kind}
-                  {role.character ? ` · ${role.character}` : ''}
-                  {role.credit ? ` · ${role.credit}` : ''}
-                </span>
-              ))}
-            </div>
-          )}
-          {context.events.length > 0 && (
-            <div class="person-event-list" aria-label="关联事件">
-              {context.events.map((anchor) => (
-                <a class="person-event-link" href={anchor.href}>
-                  <time>{formatTime(anchor.event.data.startMs)}</time>
-                  <span>{anchor.event.data.title}</span>
-                </a>
-              ))}
-            </div>
-          )}
-        </article>
-      )) : (
-        <p class="person-empty-note">该人物目前还没有可公开展示的项目语境。</p>
-      )}
+            {(context.roles || []).length > 0 && (
+              <div class="person-role-row" aria-label="项目角色">
+                {context.roles.map((role: any) => (
+                  <span class="person-role">
+                    {PERSON_ROLE_LABELS[role.kind as keyof typeof PERSON_ROLE_LABELS] || role.kind}
+                    {role.character ? ` · ${role.character}` : ''}
+                    {role.credit ? ` · ${role.credit}` : ''}
+                  </span>
+                ))}
+              </div>
+            )}
+            {context.events.length > 0 && context.events.length <= DIRECT_EVENT_LIMIT && (
+              <div class="person-event-list" aria-label="关联节点">
+                {context.events.map((anchor) => (
+                  <a class="person-event-link" href={anchor.href}>
+                    <time>{formatTime(anchor.event.data.startMs)}</time>
+                    <span>{anchor.event.data.title}</span>
+                  </a>
+                ))}
+              </div>
+            )}
+            {context.events.length > DIRECT_EVENT_LIMIT && context.events.length <= PROJECT_TIMELINE_LIMIT && (
+              <details class="person-event-disclosure">
+                <summary><span>{context.events.length} 个相关节点</span><span class="person-event-disclosure-label">展开</span></summary>
+                <div class="person-event-list" aria-label="关联节点">
+                  {context.events.map((anchor) => (
+                    <a class="person-event-link" href={anchor.href}>
+                      <time>{formatTime(anchor.event.data.startMs)}</time>
+                      <span>{anchor.event.data.title}</span>
+                    </a>
+                  ))}
+                </div>
+              </details>
+            )}
+            {context.events.length > PROJECT_TIMELINE_LIMIT && (
+              <div class="person-event-overflow">
+                <strong>{context.events.length} 个相关节点</strong>
+                <p>作为本场的核心参与者，相关记录贯穿整个档案。</p>
+                <a href={`/projects/${context.project.data.slug}/?view=timeline`}>查看完整档案时间线 →</a>
+              </div>
+            )}
+          </article>
+        )) : (
+          <p class="person-empty-note">该人物目前还没有可公开展示的项目语境。</p>
+        )}
+      </div>
     </section>
   </main>
 </PeopleLayout>
+
+<script>
+  const chronology = document.querySelector<HTMLElement>('[data-person-chronology]');
+  const list = chronology?.querySelector<HTMLElement>('[data-person-chronology-list]');
+  chronology?.querySelectorAll<HTMLButtonElement>('[data-person-order]').forEach((button) => {
+    button.addEventListener('click', () => {
+      if (!list) return;
+      const direction = button.dataset.personOrder === 'asc' ? 1 : -1;
+      const nodes = [...list.querySelectorAll<HTMLElement>('[data-publication-date]')];
+      nodes.sort((left, right) => direction * (left.dataset.publicationDate || '').localeCompare(right.dataset.publicationDate || '', 'en'));
+      nodes.forEach((node) => list.append(node));
+      chronology.querySelectorAll<HTMLButtonElement>('[data-person-order]').forEach((control) => {
+        control.setAttribute('aria-pressed', String(control === button));
+      });
+    });
+  });
+</script>

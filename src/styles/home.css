@@ -9,7 +9,7 @@
   --home-sage: #71806c;
 }
 
-.home-root { scroll-behavior: smooth; }
+.home-root { scroll-behavior: smooth; scroll-padding-top: var(--home-header-height); }
 .home-page { min-height: 100vh; margin: 0; background: var(--home-paper); color: var(--home-ink); }
 
 .home-site-header {
@@ -74,16 +74,19 @@
 .home-scene-inner {
   display: grid;
   min-height: inherit;
-  align-content: center;
+  align-content: start;
   box-sizing: border-box;
   width: min(100% - 56px, 1124px);
   margin: 0 auto;
-  padding: 52px 0;
+  padding: clamp(64px, 9vh, 104px) 0 64px;
 }
 .home-scene--cover { background: #faf7f1; }
-.home-scene--archive { background: #f7f2ee; }
-.home-scene--people { background: #f6f3ef; }
-.home-scene--index { background: #eff3eb; }
+.home-scene--archive,
+.home-scene--people,
+.home-scene--index { background: var(--home-paper); }
+.home-scene--cover .home-scene-inner { align-content: center; padding-top: 52px; padding-bottom: 52px; }
+.home-scene--people { min-height: calc(84svh - var(--home-header-height)); }
+.home-scene--index { min-height: calc(92svh - var(--home-header-height)); }
 
 .home-masthead {
   position: relative;
@@ -164,15 +167,16 @@
   flex-direction: column;
   padding: 22px;
   border: 1px solid #e0d7cf;
-  border-radius: 3px 18px 3px 18px;
+  border-left-width: 2px;
+  border-radius: 0 10px 0 10px;
   background: #fffdfa;
   color: #403b36;
   text-decoration: none;
   transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
 }
 .featured-card--special { grid-column: 1 / -1; min-height: 205px; }
-.featured-card[data-tone='event-rose'] { border-color: #ddc2bd; background: #f7ebe8; }
-.featured-card[data-tone='broadcast-blue'] { border-color: #cad9df; background: #eaf1f4; }
+.featured-card[data-tone='event-rose'] { border-left-color: var(--home-rose); }
+.featured-card[data-tone='broadcast-blue'] { border-left-color: var(--home-blue); }
 .featured-card[data-tone='broadcast-blue'] .featured-card-kicker,
 .featured-card[data-tone='broadcast-blue'] .featured-card-enter,
 .featured-card[data-tone='broadcast-blue'] .featured-card-meta time { color: var(--home-blue); }
@@ -187,14 +191,16 @@
 .featured-card-meta time { color: #8f625b; }
 .featured-card-enter { margin-left: auto; color: var(--home-rose); }
 
-.home-people-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-.home-person-card { display: grid; min-height: 96px; align-content: center; gap: 7px; padding: 18px; border: 1px solid #dedbd5; background: rgba(255, 253, 250, .58); color: #62605d; text-decoration: none; }
+.home-people-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 46px; }
+.home-person-card { display: grid; min-height: 86px; align-content: center; gap: 7px; padding: 15px 0; border-bottom: 1px solid #dedbd5; background: transparent; color: #62605d; text-decoration: none; }
+.home-person-card::before { content: ''; width: 24px; height: 2px; margin-bottom: 3px; background: #b9aea6; transition: width .2s ease, background .2s ease; }
+.home-person-card:hover::before, .home-person-card:focus-visible::before { width: 40px; background: var(--home-rose); }
 .home-person-card-name { color: #54514e; font-family: 'Noto Serif SC', 'Noto Serif JP', Georgia, serif; font-size: 17px; }
 .home-person-card-meta { color: #85898a; font-size: 9px; }
 .home-person-card-context { overflow: hidden; color: #8c8984; font-size: 11px; line-height: 1.5; text-overflow: ellipsis; white-space: nowrap; }
 
 .home-index-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
-.home-index-card { display: flex; min-height: 230px; flex-direction: column; padding: 26px; border: 1px solid #cad4c5; border-radius: 2px 14px 2px 14px; background: #f7f9f3; color: #586453; text-decoration: none; transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
+.home-index-card { display: flex; min-height: 230px; flex-direction: column; padding: 26px; border: 1px solid #dedbd5; border-top: 2px solid var(--home-sage); border-radius: 0 10px 0 10px; background: #fffdfa; color: #586453; text-decoration: none; transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
 .home-index-card:hover { transform: translateY(-3px); border-color: #99aa94; box-shadow: 0 12px 26px rgba(75, 88, 72, .1); }
 .home-index-card > span,
 .home-index-card > b { color: var(--home-sage); font-family: 'SF Mono', Consolas, monospace; font-size: 9px; font-weight: 400; letter-spacing: .12em; text-transform: uppercase; }
@@ -228,7 +234,7 @@
 .home-site-footer { padding: 0 28px 42px; background: #faf7f2; color: #b5a89f; font-family: 'SF Mono', Consolas, monospace; font-size: 10px; letter-spacing: .1em; text-align: center; }
 
 @media (min-width: 900px) {
-  .home-root { scroll-padding-top: var(--home-header-height); scroll-snap-type: y proximity; }
+  .home-root { scroll-snap-type: y proximity; }
   .home-scene { scroll-snap-align: start; }
 }
 
@@ -271,5 +277,5 @@
 
 @media (prefers-reduced-motion: reduce) {
   .home-root { scroll-behavior: auto; scroll-snap-type: none; }
-  .featured-card, .home-index-card { transition: none; }
+  .featured-card, .home-index-card, .home-person-card::before { transition: none; }
 }
