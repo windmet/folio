@@ -32,7 +32,7 @@ const html = await readFile(path.join(outputRoot, 'index.html'), 'utf8');
 const searchPayload = await readJson(path.join(outputRoot, 'search.json'));
 const homeHtml = await readFile(path.resolve('dist/index.html'), 'utf8');
 
-assert(project.status === 'draft', 'Project must remain draft until editorial review');
+assert(project.status === 'published', 'Project must be published for its home-page entry');
 assert(project.defaultView === 'overview', 'defaultView must remain overview');
 assert(project.visualTheme === 'broadcast-blue', 'Project must use the broadcast-blue theme');
 assert(JSON.stringify(project.views) === JSON.stringify(['overview', 'sections', 'timeline', 'mentions']), 'views must remain Overview / Sections / Timeline / Mentions');
@@ -66,8 +66,8 @@ for (const [index, event] of events.entries()) {
   assert(event.startMs >= 0 && event.endMs <= 9206015 && event.startMs < event.endMs, `${eventFiles[index]} has an invalid time window`);
 }
 
-assert(!homeHtml.includes(`href="/projects/${projectId}/"`), 'draft Project leaked onto the home page');
-assert(html.includes('<meta name="robots" content="noindex, nofollow">'), 'draft route is missing noindex/nofollow');
+assert(homeHtml.includes(`href="/projects/${projectId}/"`), 'published Project is missing from the home page');
+assert(html.includes('<meta name="robots" content="noindex, nofollow">'), 'archive route is missing the site-wide noindex/nofollow policy');
 assert(html.includes('data-archive-theme="broadcast-blue"'), 'rendered route is missing the theme marker');
 assert(JSON.stringify(attributeValues(html, 'data-view-button')) === JSON.stringify(project.views), 'rendered view buttons do not match Project views');
 assert(JSON.stringify(attributeValues(html, 'data-view-panel')) === JSON.stringify(project.views), 'rendered view panels do not match Project views');

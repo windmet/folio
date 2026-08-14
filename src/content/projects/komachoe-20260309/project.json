@@ -9,7 +9,7 @@
   "sourceNote": "本档案使用 YouTube 原视频时间。Section 表示节目结构，Event 只收录适合直接跳听的节点；高精度听写与评论、Chat 仅用于编辑核验，不公开原始文本。",
   "playerNote": "使用 YouTube 原生播放器；可用的播放与画面能力取决于 YouTube 与当前设备。",
   "searchPlaceholder": "输入姓名、角色、作品或制作主题",
-  "status": "draft",
+  "status": "published",
   "defaultTrack": "komachoe-20260309/yt-main",
   "defaultView": "overview",
   "views": [

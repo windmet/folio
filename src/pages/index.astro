@@ -99,7 +99,9 @@ const icons: Record<string, string> = {
             <span class="project-folder-tab">Project</span>
             <div class="project-folder-body">
               <div class="project-folder-main">
-                <span class="project-folder-kicker">持续整理中 · MULTI-TRACK EVENT</span>
+                <span class="project-folder-kicker">
+                  {tracks === 1 && threads === 0 ? '广播存档 · SINGLE-TRACK BROADCAST' : '持续整理中 · MULTI-TRACK EVENT'}
+                </span>
                 <h3>{project.data.title}</h3>
                 <p>{project.data.summary}</p>
               </div>

@@ -65,7 +65,7 @@ const searchPayload = await readJson(path.join(outputRoot, 'search.json'));
 const homeHtml = await readFile(path.resolve('dist/index.html'), 'utf8');
 const komatsuHtml = await readFile(path.resolve('dist/projects/komatsu36/index.html'), 'utf8');
 
-assert(project.status === 'draft', 'Project must remain draft during vertical slice');
+assert(project.status === 'published', 'Project must be published for its home-page entry');
 assert(project.defaultView === 'overview', 'defaultView must remain overview');
 assert(project.visualTheme === 'broadcast-blue', 'Project must use the broadcast-blue visual theme');
 assert(JSON.stringify(project.views) === JSON.stringify(['overview', 'sections', 'timeline', 'mentions']), 'views must be Overview / Sections / Timeline / Mentions in order');
@@ -125,8 +125,8 @@ for (const [index, event] of events.entries()) {
   assert(event.laneAnnotations.length === 0, `${eventFiles[index]} must not manufacture lane annotations`);
 }
 
-assert(!homeHtml.includes(`href="/projects/${projectId}/"`), 'draft Project leaked onto the home page');
-assert(html.includes('<meta name="robots" content="noindex, nofollow">'), 'draft route is missing noindex/nofollow');
+assert(homeHtml.includes(`href="/projects/${projectId}/"`), 'published Project is missing from the home page');
+assert(html.includes('<meta name="robots" content="noindex, nofollow">'), 'archive route is missing the site-wide noindex/nofollow policy');
 assert(html.includes('data-archive-theme="broadcast-blue"'), 'rendered route is missing the broadcast-blue theme marker');
 assert(JSON.stringify(attributeValues(html, 'data-view-button')) === JSON.stringify(project.views), 'rendered view buttons do not match Project views');
 assert(JSON.stringify(attributeValues(html, 'data-view-panel')) === JSON.stringify(project.views), 'rendered view panels do not match Project views');
@@ -199,4 +199,4 @@ if (errors.length) {
   process.exit(1);
 }
 
-console.log(`Komachoe single-source verification passed (${Buffer.byteLength(html)} bytes, 1 Track, 6 Sections, 30 Events, draft route excluded from home).`);
+console.log(`Komachoe single-source verification passed (${Buffer.byteLength(html)} bytes, 1 Track, 6 Sections, 30 Events, published home entry).`);
