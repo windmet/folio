@@ -7,7 +7,7 @@ const assert = (condition, message) => {
   if (!condition) throw new Error(`site metadata verification failed: ${message}`);
 };
 
-for (const layout of ['BaseLayout.astro', 'HomeLayout.astro', 'PeopleLayout.astro', 'ProjectLayout.astro']) {
+for (const layout of ['BaseLayout.astro', 'HomeLayout.astro', 'IndexLayout.astro', 'PeopleLayout.astro', 'ProjectLayout.astro']) {
   const source = read(`src/layouts/${layout}`);
   assert(source.includes("SiteHead from '../components/SiteHead.astro'") || source.includes("SiteHead from '../components/SiteHead.astro';"), `${layout} must use SiteHead`);
   assert(!source.includes('Magazine'), `${layout} still exposes the old reader-facing brand`);
@@ -17,6 +17,10 @@ const siteHead = read('src/components/SiteHead.astro');
 for (const contract of ['canonical', 'og:site_name', 'og:title', 'twitter:card', 'favicon.svg', 'resolveRobots']) {
   assert(siteHead.includes(contract), `SiteHead is missing ${contract}`);
 }
+
+const siteMetadata = read('src/lib/siteMetadata.ts');
+assert(siteMetadata.includes("'/indexes/'"), 'future public-route allowlist must include the first-class Index routes');
+assert(siteMetadata.includes('PUBLIC_LAUNCH_ENABLED = false'), 'public launch must remain explicitly disabled before production QA');
 
 const about = read('src/pages/about/index.astro');
 for (const section of ['Subject', 'Source', 'Editorial', 'Governance', 'Corrections', 'Rights / Contact']) {
@@ -31,6 +35,8 @@ assert(fs.existsSync(dist), 'dist/ does not exist; run npm run build first');
 const routes = [
   ['/', 'index.html'],
   ['/about/', 'about/index.html'],
+  ['/indexes/', 'indexes/index.html'],
+  ['/indexes/ore-shiri/', 'indexes/ore-shiri/index.html'],
   ['/people/', 'people/index.html'],
   ['/projects/komatsu36/', 'projects/komatsu36/index.html'],
   ['/timeline/', 'timeline/index.html'],
