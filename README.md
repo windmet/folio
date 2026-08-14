@@ -1,71 +1,72 @@
 # 前情帖 / GOMYAKU
 
-前情帖是一个围绕公开广播、活动与人物语境整理的非官方 publication。当前收录三个 Project：小松昌平 36 岁生日企划、こまちょえ生ラジオ 2026.03.09 与 2026.04.25；首页、People 和 Project 页面共同组成读者入口。站点结构与验证工作流由 GOMYAKU / 語脈 支持。
+前情帖是一份围绕公开广播、活动与人物语境整理的非官方 publication。站点结构与验证工作流由 GOMYAKU / 語脈支持。
 
-当前主线是 `codex/publication-metadata-v2`。这条分支正在把已经验证过的 Project 组织成可浏览的前情帖，而不是继续扩展单一专题的实验能力。
+当前 review branch 为 `codex/publication-metadata-v2`，收录三个已发布 Project：
 
-## 当前检查点
+- 小松昌平 36歳 Birthday Special
+- こまちょえ生ラジオ｜2026.03.09
+- こまちょえ生ラジオ｜2026.04.25
 
-- Komatsu36：Project Archive v1 已冻结为 production / release 回归基线。Production 为 <https://folio-ca3.pages.dev/>，发布代码基线 `eeb09159d0ea8cd932d049db6ae4d667c4df6d61`；后续泛化不得改变既有 Event ID、时间、正文、Thread／People 语义、Player lifecycle 或 URL/history controller。
-- Komatsu36 不再作为新增产品能力的 playground；专项语义、DOM、Browser 与 payload 检查继续作为 regression fixture 保留。
-- Production 已完成真实 route 的 desktop／390px、真实媒体与 Release Gate 签收；Y2 managed external session 仍未授权，P2 兼容 ID 迁移继续延后，两者均不属于 v1 freeze blocker。
-- 上一审阅分支：[codex/komatsu36-project-archive](https://github.com/windmet/folio/tree/codex/komatsu36-project-archive)
-- 专题路由：`/projects/komatsu36/`
-- Visual QA 与编辑审计：`docs/qa/komatsu36-rc08/`
-- 详细合同与剩余 Release Gate：`docs/komatsu36-archive-development.md`
-- RC 0.10 编辑体验规格：`docs/editorial/komatsu36-editorial-experience-pass.md`
-- RC 0.11 导航与视觉层级规格：`docs/editorial/komatsu36-archive-navigation-pass.md`
-- RC 0.11 静态 payload 实施规格：`docs/editorial/komatsu36-static-payload-pass.md`
-- RC 0.11 分批收尾 Runbook：`docs/editorial/komatsu36-rc11-closeout-runbook.md`
-- RC 0.12 当前修正总入口：`docs/editorial/komatsu36-rc12-product-correction-runbook.md`
-- RC12-T1 实施与产品复核指导：`docs/editorial/komatsu36-rc12-t1-timeline-navigator-polish-runbook.md`
-- Semantic 审计与分批交接：`docs/komatsu36_semantic_patch_20260810.md`、`docs/editorial/komatsu36-semantic-p1-closeout-audit.md`，以及 `docs/editorial/komatsu36-semantic-p0-handoff.md`、`docs/editorial/komatsu36-semantic-p1-person-handoff.md`、`docs/editorial/komatsu36-semantic-p1-account-handoff.md`、`docs/editorial/komatsu36-semantic-p1-story-handoff.md`、`docs/editorial/komatsu36-semantic-p1-thread-language-handoff.md`、`docs/editorial/komatsu36-semantic-p1-ui-language-handoff.md`、`docs/editorial/komatsu36-semantic-p1-event-language-handoff.md`
-- Mobile Bubble 实施规格与证据：`docs/editorial/komatsu36-rc12-m1-mobile-player-bubble-runbook.md`、`docs/qa/komatsu36-rc12/m1/README.md`
-- Mobile Timeline 密度与章节层级：`docs/editorial/komatsu36-rc12-mt1-mobile-timeline-runbook.md`、`docs/qa/komatsu36-rc12/mt1/README.md`
-- RC12 Final Interaction & Hierarchy Cleanup：`docs/editorial/komatsu36-rc12-final-interaction-hierarchy-cleanup.md`、`docs/qa/komatsu36-rc12/final-cleanup/README.md`
-- RC12-Y1 外链 handoff QA：`docs/qa/komatsu36-rc12/y1/README.md`
-- RC12-Y2 managed external session 实验指导（未授权实现）：`docs/editorial/komatsu36-rc12-y2-managed-external-session-experiment.md`
-- RC12-Y2 隔离 WindowProxy 实验页（不进入生产路由）：`scripts/experiments/rc12-y2-windowproxy.html`
-- RC 0.12 人工产品停点：`docs/qa/komatsu36-rc12/PRODUCT-CHECKPOINT.md`
-- Reader Copy 自动候选：`docs/editorial/komatsu36-reader-copy-candidates.generated.md`
-- Reader Copy 人工裁决：`docs/editorial/komatsu36-reader-copy-decisions.yml`
-- Cloudflare Pages provision / 首次部署清单：`docs/cloudflare-pages-release-checklist.md`
+Person Model v2、Global People、Index、全局搜索与章节式首页均已进入 review branch。`PUBLIC_LAUNCH_ENABLED` 仍为 `false`，所有页面继续输出 `noindex, nofollow`；分支已推送不等于 production-accepted，也不代表同意公开抓取。
 
-## 本地开发
+## 当前产品结构
+
+- `/`：按档案、人物、索引与 publication date 进入内容。
+- `/projects/[slug]/`：单场档案内部的 Timeline、章节、人物与来源阅读器。
+- `/people/`、`/people/[id]/`：跨档案人物入口与出现 chronology。
+- `/indexes/`、`/indexes/[slug]/`：系列及公开记录 chronology。
+- `/search/`：Project、Event、Person、Index 与旧文章的站级检索。
+- `/about/`：Subject、Source、Editorial 与 Governance 边界。
+
+Project 数据位于 `src/content/projects/`，全局人物与索引分别位于 `src/content/people/`、`src/content/indexes/`。发布层不得包含原始 ASR 标记、本机源档路径、字幕文件名或其他私有来源信息。
+
+## 本地开发与验证
 
 ```sh
 npm install
 npm run dev -- --host 127.0.0.1 --port 4321
 ```
 
-常用验证命令：
+完整门禁：
 
 ```sh
-npm run validate:projects   # 内容关系、时间范围、隐私边界
-npm run build               # 生成 dist/
-npm run verify:site-metadata # title / canonical / OG / robots / favicon / About
-npm run verify:global-search # Project / Event / Person / Post 站级索引
-npm run verify:relationship-log # 关系候选记录边界（不实现 graph）
-npm run audit:payload -- komatsu36 # 固定 payload / projection 审计
-npm run validate:publication # 所有 Project 的通用发布 HTML / 检索门禁
-npm run verify:komatsu36:publication # Komatsu36 严格语义与 DOM 回归
-npm run validate            # 按上述顺序执行完整门禁
+npm run validate
+npm exec -- tsc --noEmit
 ```
 
-每次 push 或 pull request 都会由 `.github/workflows/validate.yml` 在 Node.js 22.12.0 上重复执行 `npm ci` 与 `npm run validate`。该 workflow 只做验证，不负责部署。
+常用分项：
 
-构建后的本地预览可以使用另一个端口，避免打断长期运行的开发服务器：
+```sh
+npm run validate:projects
+npm run verify:person-model
+npm run verify:home-projection
+npm run verify:index-model
+npm run verify:people-routes
+npm run verify:site-metadata
+npm run verify:global-search
+npm run validate:publication
+npm run validate:regressions
+```
+
+每次 push 或 pull request 都会由 `.github/workflows/validate.yml` 在 Node.js 22.12.0 上运行 `npm ci`、production dependency audit、`npm run validate` 与 TypeScript check。该 workflow 只验证，不部署。
+
+如需构建后预览，使用独立端口，避免打断长期开发服务：
 
 ```sh
 npm run preview -- --host 127.0.0.1 --port 4322
 ```
 
+## 当前文档入口
+
+- 产品建设指导：`docs/GOMYAKU_前情帖_三项目验证后产品建设指导_v0.2.md`
+- Launch Gate：`docs/qa/publication-v0.2-launch-gate.md`
+- Project 架构与回归合同：`docs/komatsu36-archive-development.md`
+- Komatsu36 RC / Semantic 历史索引：`docs/archive/komatsu36-history.md`
+- Cloudflare Pages 发布清单：`docs/cloudflare-pages-release-checklist.md`
+
 ## 发布边界
 
-`project.json` 中的 `status: published` 会让首页显示该专题，因此合并到部署分支可能等同于正式发布。独立 `codex/` 分支只用于审阅，不代表 production-accepted；合并前必须确认内容公开权、production URL 抽查和部署意图。
+`project.json` 中的 `status: published` 会让首页消费该 Project，因此 merge 到部署分支可能本身就是一次 publication action。合并前必须独立确认内容公开权、部署目标和生产环境；部署后再完成真实 URL 的 desktop / 390px、媒体、console、overflow、focus 与 deep-link 验收，最后才决定是否切换 robots。
 
-Komatsu36 的 X Space 在 RC 中采用 first-class external source：页面保留 canonical Space 链接、来源帖 provenance 和事件目标时间，不伪造站内回放、seek 或 X 私有接口。Transcript、Evidence、Chat 浏览器和本地大文件托管不属于本 RC 的发布范围。
-
-## 内容结构
-
-专题数据位于 `src/content/projects/`，按 Project、Act、Event、Thread、Person、Source 和 Track 分层。发布层不得包含原始 ASR 文件标记、本机源档路径、字幕文件名或其他私有来源信息；新增内容后应重新执行 `npm run validate`。
+X Space 等外部来源只保留 canonical 链接、provenance 与事件目标时间，不伪造站内回放或私有接口。Transcript、Evidence、Chat 浏览器、本地大文件托管、Y2 managed external session 与关系图均不属于当前公开版本。
