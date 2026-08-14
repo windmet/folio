@@ -1,0 +1,373 @@
+.people-page {
+  min-height: 100vh;
+  background: #f7f4ef;
+  color: #403b36;
+}
+
+.people-site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 26px 28px;
+  border-bottom: 1px solid #e5ddd4;
+}
+
+.people-brand {
+  color: #76645a;
+  font-family: 'SF Mono', Consolas, monospace;
+  font-size: 11px;
+  letter-spacing: .26em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.people-site-header nav {
+  display: flex;
+  gap: 20px;
+}
+
+.people-site-header nav a {
+  color: #9a8c82;
+  font-family: 'SF Mono', Consolas, monospace;
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-decoration: none;
+}
+
+.people-site-header nav a:hover,
+.people-site-header nav a:focus-visible,
+.people-brand:hover,
+.people-brand:focus-visible {
+  color: #9c615b;
+}
+
+.people-site-header a:focus-visible,
+.person-card:focus-visible,
+.person-project-link:focus-visible,
+.person-event-link:focus-visible,
+.person-external-link:focus-visible {
+  outline: 2px solid #9c615b;
+  outline-offset: 4px;
+}
+
+.people-shell {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 74px 28px 88px;
+}
+
+.people-intro {
+  max-width: 720px;
+  margin-bottom: 42px;
+}
+
+.people-kicker,
+.person-card-kicker,
+.person-context-kicker {
+  color: #9c615b;
+  font-family: 'SF Mono', Consolas, monospace;
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.people-intro h1,
+.person-header h1 {
+  margin: 12px 0 14px;
+  color: #4c4540;
+  font-family: 'Noto Serif SC', 'Noto Serif JP', Georgia, serif;
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.people-intro p,
+.person-header > p,
+.person-empty-note {
+  margin: 0;
+  color: #847970;
+  font-size: 14px;
+  line-height: 1.9;
+}
+
+.people-index-meta,
+.person-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin-top: 22px;
+  color: #a39489;
+  font-family: 'SF Mono', Consolas, monospace;
+  font-size: 10px;
+  letter-spacing: .12em;
+}
+
+.people-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.person-card {
+  display: block;
+  min-height: 190px;
+  padding: 24px 22px 22px;
+  border: 1px solid #e3d8ce;
+  border-radius: 2px 16px 2px 16px;
+  background: #fffdfa;
+  color: inherit;
+  text-decoration: none;
+  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+
+.person-card:hover {
+  transform: translateY(-4px);
+  border-color: #c9a79b;
+  box-shadow: 0 12px 28px rgba(92, 66, 52, .08);
+}
+
+.person-card h2 {
+  margin: 12px 0 5px;
+  color: #504943;
+  font-family: 'Noto Serif SC', 'Noto Serif JP', Georgia, serif;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+.person-card-reading,
+.person-reading {
+  margin: 0;
+  color: #aa9b91;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 12px;
+}
+
+.person-card-summary {
+  margin: 15px 0 0;
+  color: #81766e;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.person-chip-row,
+.person-role-row,
+.person-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 15px;
+}
+
+.person-chip,
+.person-role {
+  display: inline-flex;
+  padding: 4px 7px;
+  border: 1px solid #e7ddd5;
+  border-radius: 999px;
+  color: #9a8278;
+  font-family: 'SF Mono', Consolas, monospace;
+  font-size: 9px;
+  letter-spacing: .04em;
+}
+
+.person-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 42px;
+  color: #aa9b91;
+  font-family: 'SF Mono', Consolas, monospace;
+  font-size: 10px;
+  letter-spacing: .08em;
+}
+
+.person-breadcrumb a {
+  color: #9c615b;
+  text-decoration: none;
+}
+
+.person-header {
+  max-width: 760px;
+  padding-bottom: 34px;
+  border-bottom: 1px solid #e5ddd4;
+}
+
+.person-header .person-reading {
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.person-context-profile {
+  margin-top: 22px;
+  padding: 16px 18px;
+  border-left: 3px solid #d9b7aa;
+  background: rgba(255, 253, 250, .72);
+}
+
+.person-context-profile p {
+  margin: 0;
+  color: #71675f;
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+.person-context-profile p + p {
+  margin-top: 8px;
+  color: #9a8c82;
+  font-size: 12px;
+}
+
+.person-external-link {
+  color: #9c615b;
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.person-aliases {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 18px;
+  color: #8d7d73;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.person-aliases > span:first-child {
+  color: #aa9b91;
+  font-family: 'SF Mono', Consolas, monospace;
+  font-size: 10px;
+  letter-spacing: .08em;
+}
+
+.person-contexts {
+  max-width: 900px;
+  margin-top: 46px;
+}
+
+.person-contexts > h2 {
+  margin: 0 0 18px;
+  color: #75675d;
+  font-family: 'SF Mono', Consolas, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.person-context-card {
+  margin-top: 16px;
+  padding: 24px;
+  border: 1px solid #e3d8ce;
+  background: #fffdfa;
+}
+
+.person-context-card header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.person-context-card h3 {
+  margin: 8px 0 0;
+  color: #504943;
+  font-family: 'Noto Serif SC', 'Noto Serif JP', Georgia, serif;
+  font-size: 21px;
+  font-weight: 400;
+  line-height: 1.45;
+}
+
+.person-project-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.person-project-link:hover {
+  color: #9c615b;
+}
+
+.person-context-summary {
+  margin: 18px 0 0;
+  color: #71675f;
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+.person-event-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 20px;
+  padding-top: 17px;
+  border-top: 1px solid #eee6df;
+}
+
+.person-event-link {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  color: #796c63;
+  font-size: 12px;
+  line-height: 1.6;
+  text-decoration: none;
+}
+
+.person-event-link:hover {
+  color: #9c615b;
+}
+
+.person-event-link time {
+  flex: 0 0 70px;
+  color: #ad9f96;
+  font-family: 'SF Mono', Consolas, monospace;
+  font-size: 10px;
+}
+
+.people-site-footer {
+  padding: 0 28px 42px;
+  color: #b5a89f;
+  font-family: 'SF Mono', Consolas, monospace;
+  font-size: 10px;
+  letter-spacing: .1em;
+  text-align: center;
+}
+
+@media (max-width: 760px) {
+  .people-site-header {
+    padding: 20px 18px;
+  }
+
+  .people-shell {
+    padding: 50px 18px 64px;
+  }
+
+  .people-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 500px) {
+  .people-site-header nav {
+    gap: 12px;
+  }
+
+  .people-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .person-context-card {
+    padding: 19px;
+  }
+
+  .person-context-card header {
+    display: block;
+  }
+
+  .person-context-card h3 {
+    font-size: 19px;
+  }
+}

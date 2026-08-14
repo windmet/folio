@@ -1,0 +1,108 @@
+---
+import { getCollection } from 'astro:content';
+import PeopleLayout from '../../layouts/PeopleLayout.astro';
+import { buildGlobalPeopleProjection } from '../../lib/globalPeople';
+import { PERSON_ROLE_LABELS } from '../../lib/globalPeople';
+
+export async function getStaticPaths() {
+  const [identities, projects, contexts, events] = await Promise.all([
+    getCollection('people'),
+    getCollection('projects'),
+    getCollection('projectPeople'),
+    getCollection('projectEvents'),
+  ]);
+  const people = buildGlobalPeopleProjection({ identities, projects, contexts, events });
+  return people.map((person) => ({
+    params: { id: person.id },
+    props: { person },
+  }));
+}
+
+const { person } = Astro.props;
+const formatTime = (milliseconds: number) => {
+  const total = Math.floor(milliseconds / 1000);
+  const hours = Math.floor(total / 3600);
+  const minutes = Math.floor((total % 3600) / 60);
+  const seconds = total % 60;
+  return [hours, minutes, seconds].map((part) => String(part).padStart(2, '0')).join(':');
+};
+---
+
+<PeopleLayout title={person.displayName} description={`${person.displayName} 的跨项目人物档案`}>
+  <main class="people-shell person-shell">
+    <nav class="person-breadcrumb" aria-label="面包屑">
+      <a href="/">首页</a><span aria-hidden="true">/</span><a href="/people/">People</a><span aria-hidden="true">/</span><span>{person.displayName}</span>
+    </nav>
+
+    <header class="person-header">
+      <span class="people-kicker">GLOBAL PERSON</span>
+      <h1>{person.displayName}</h1>
+      {person.reading && <p class="person-reading">{person.reading}</p>}
+      {person.contextProfile ? (
+        <div class="person-context-profile">
+          <p>{person.contextProfile.deck}</p>
+          {person.contextProfile.scopeNote && <p>{person.contextProfile.scopeNote}</p>}
+        </div>
+      ) : (
+        <p class="person-empty-note">当前没有独立人物简介；以下内容仅展示已经落在各个项目里的语境。</p>
+      )}
+      {(person.links || []).length > 0 && (
+        <div class="person-links" aria-label="公开链接">
+          {person.links.map((link: any) => <a class="person-external-link" href={link.url} target="_blank" rel="noreferrer">{link.label} →</a>)}
+        </div>
+      )}
+      {person.aliases.length > 0 && (
+        <div class="person-aliases" aria-label="常用别名">
+          <span>常用别名</span>
+          {person.aliases.map((alias) => <span>{alias}</span>)}
+        </div>
+      )}
+      <div class="person-facts" aria-label="人物档案统计">
+        <span>{person.projectCount} PROJECT{person.projectCount === 1 ? '' : 'S'}</span>
+        <span>{person.contexts.length} CONTEXT{person.contexts.length === 1 ? '' : 'S'}</span>
+        {person.aliases.length > 0 && <span>{person.aliases.length} ALIASES</span>}
+      </div>
+    </header>
+
+    <section class="person-contexts" aria-labelledby="person-contexts-title">
+      <h2 id="person-contexts-title">Project contexts</h2>
+      {person.contexts.length > 0 ? person.contexts.map((context) => (
+        <article class="person-context-card" id={`project-${context.project.id}`}>
+          <header>
+            <div>
+              <span class="person-context-kicker">{context.project.data.publication.date} · {context.project.data.publication.kind}</span>
+              <h3><a class="person-project-link" href={`/projects/${context.project.data.slug}/`}>{context.project.data.title}</a></h3>
+            </div>
+          </header>
+          <p class="person-context-summary">{context.context.data.summary}</p>
+          <div class="person-chip-row" aria-label="项目中的参与方式">
+            {context.presence.map((item) => <span class="person-chip">{item.label}</span>)}
+          </div>
+          {(context.roles || []).length > 0 && (
+            <div class="person-role-row" aria-label="项目角色">
+              {context.roles.map((role: any) => (
+                <span class="person-role">
+                  {PERSON_ROLE_LABELS[role.kind as keyof typeof PERSON_ROLE_LABELS] || role.kind}
+                  {role.character ? ` · ${role.character}` : ''}
+                  {role.credit ? ` · ${role.credit}` : ''}
+                </span>
+              ))}
+            </div>
+          )}
+          {context.events.length > 0 && (
+            <div class="person-event-list" aria-label="关联事件">
+              {context.events.map((anchor) => (
+                <a class="person-event-link" href={anchor.href}>
+                  <time>{formatTime(anchor.event.data.startMs)}</time>
+                  <span>{anchor.event.data.title}</span>
+                </a>
+              ))}
+            </div>
+          )}
+        </article>
+      )) : (
+        <p class="person-empty-note">该人物目前还没有可公开展示的项目语境。</p>
+      )}
+    </section>
+  </main>
+</PeopleLayout>
