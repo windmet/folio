@@ -35,7 +35,7 @@ assert(JSON.stringify(itoProjectLinks.slice(0, 3)) === JSON.stringify(['komachoe
 for (const projectId of ['komachoe-20260309', 'komatsu36', 'komachoe-20260425']) {
   assert(itoHtml.includes(`/projects/${projectId}/`), `Ito detail is missing ${projectId} project context`);
 }
-assert((itoHtml.match(/class="person-context-card"/g) || []).length === 3, 'Ito detail must show three project contexts');
+assert((itoHtml.match(/class="person-context-card chronology-item"/g) || []).length === 3, 'Ito detail must show three project contexts');
 assert(itoHtml.includes('data-person-order="desc"') && itoHtml.includes('data-person-order="asc"'),
   'People detail must expose both chronology directions');
 assert(itoHtml.includes('class="person-event-disclosure"'), 'Ito fixture must render its four-event context as collapsed disclosure');

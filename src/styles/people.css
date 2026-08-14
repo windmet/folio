@@ -291,50 +291,19 @@
 .person-order-controls button[aria-pressed='true'],
 .person-order-controls button:hover { color: #9c615b; }
 
-.person-chronology { position: relative; }
-.person-chronology::before {
-  content: '';
-  position: absolute;
-  top: 8px;
-  bottom: 10px;
-  left: 118px;
-  width: 1px;
-  background: #ddd4cc;
+.person-chronology {
+  --chronology-accent: #9c615b;
+  --chronology-line: #ddd4cc;
+  --chronology-page: #f7f4ef;
 }
 
 .person-context-card {
-  position: relative;
-  display: grid;
-  grid-template-columns: 96px minmax(0, 1fr);
-  column-gap: 46px;
   margin: 0;
   padding: 0 0 44px;
   background: transparent;
 }
 
 .person-context-card:last-child { padding-bottom: 0; }
-.person-context-card > :not(.person-context-date, .person-context-node) { grid-column: 2; }
-.person-context-date {
-  grid-column: 1;
-  grid-row: 1;
-  padding-top: 2px;
-  color: #9c615b;
-  font-family: 'SF Mono', Consolas, monospace;
-  font-size: 11px;
-  letter-spacing: .08em;
-  text-align: right;
-}
-.person-context-node {
-  position: absolute;
-  top: 5px;
-  left: 113px;
-  width: 9px;
-  height: 9px;
-  border: 2px solid #f7f4ef;
-  border-radius: 50%;
-  background: #9c615b;
-  box-shadow: 0 0 0 1px #b89186;
-}
 
 .person-context-card header {
   display: flex;
@@ -440,6 +409,11 @@
   }
 }
 
+@media (max-width: 620px) {
+  .person-chronology { --chronology-rail-left: 5px; }
+  .person-context-card { padding-left: 28px; }
+}
+
 @media (max-width: 500px) {
   .people-site-header nav {
     gap: 12px;
@@ -451,10 +425,7 @@
 
   .person-contexts-heading { display: block; }
   .person-order-controls { margin-top: 16px; }
-  .person-chronology::before { left: 5px; }
   .person-context-card { display: block; padding: 0 0 38px 28px; }
-  .person-context-date { display: block; padding: 0 0 8px; text-align: left; }
-  .person-context-node { top: 3px; left: 0; }
 
   .person-context-card header {
     display: block;

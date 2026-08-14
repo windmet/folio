@@ -79,11 +79,11 @@ const formatDate = (date: string) => date.replaceAll('-', '.');
           <button type="button" data-person-order="asc" aria-pressed="false">旧 → 新</button>
         </div>
       </div>
-      <div class="person-chronology" data-person-chronology-list>
+      <div class="person-chronology chronology" data-person-chronology-list>
         {person.contexts.length > 0 ? person.contexts.map((context) => (
-          <article class="person-context-card" id={`project-${context.project.id}`} data-publication-date={context.project.data.publication.date}>
-            <time class="person-context-date" datetime={context.project.data.publication.date}>{formatDate(context.project.data.publication.date)}</time>
-            <span class="person-context-node" aria-hidden="true"></span>
+          <article class="person-context-card chronology-item" id={`project-${context.project.id}`} data-publication-date={context.project.data.publication.date}>
+            <time class="person-context-date chronology-date" datetime={context.project.data.publication.date}>{formatDate(context.project.data.publication.date)}</time>
+            <span class="person-context-node chronology-node" aria-hidden="true"></span>
             <header>
               <div>
                 <span class="person-context-kicker">{context.project.data.publication.kind}</span>

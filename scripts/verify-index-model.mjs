@@ -8,6 +8,14 @@ const read = (relative) => readFile(path.join(root, relative), 'utf8');
 const indexesRoot = path.join(root, 'src/content/indexes');
 const files = (await readdir(indexesRoot)).filter((name) => name.endsWith('.json'));
 const indexes = await Promise.all(files.map(async (name) => JSON.parse(await readFile(path.join(indexesRoot, name), 'utf8'))));
+const indexDetailSource = await read('src/pages/indexes/[slug].astro');
+const chronologyCss = await read('src/styles/chronology.css');
+
+assert(indexDetailSource.includes('data-index-chronology'), 'Index detail must expose the chronology reading mode');
+assert(indexDetailSource.includes('data-index-order="desc"') && indexDetailSource.includes('data-index-order="asc"'),
+  'Index detail must expose both chronology directions');
+assert(chronologyCss.includes('.chronology-item') && chronologyCss.includes('.chronology-node'),
+  'shared Chronology Rail primitive is missing');
 
 assert(indexes.length === 2, `expected 2 first-batch Index fixtures, found ${indexes.length}`);
 for (const entry of indexes) {
@@ -21,7 +29,11 @@ for (const entry of indexes) {
   }
   const html = await read(`dist/indexes/${entry.slug}/index.html`);
   assert(html.includes(entry.title), `${entry.slug}: built route is missing title`);
-  assert((html.match(/class="index-entry"/g) || []).length === entry.entries.length, `${entry.slug}: built entry count mismatch`);
+  assert((html.match(/class="index-entry chronology-item"/g) || []).length === entry.entries.length, `${entry.slug}: built entry count mismatch`);
+  const builtDates = [...html.matchAll(/data-entry-date="([^"]+)"/g)].map((match) => match[1]);
+  const expectedDates = entry.entries.map((item) => item.date).sort((left, right) => right.localeCompare(left, 'en'));
+  assert(JSON.stringify(builtDates) === JSON.stringify(expectedDates), `${entry.slug}: default chronology order must be newest first`);
+  assert(html.includes('data-index-order="desc"') && html.includes('data-index-order="asc"'), `${entry.slug}: chronology controls missing`);
   assert(!html.includes('archive-player'), `${entry.slug}: Index must not embed the Project player`);
   assert(!html.includes('data-view-panel="timeline"'), `${entry.slug}: Index must not embed the Project Event reader`);
 }

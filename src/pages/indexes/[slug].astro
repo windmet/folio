@@ -13,6 +13,7 @@ const peopleById = new Map(people.filter(Boolean).map((person: any) => [person.i
 const projects = await Promise.all((entry.data.relatedProjects || []).map((project: any) => getEntry(project)));
 const orderedEntries = [...entry.data.entries].sort((left: any, right: any) => right.date.localeCompare(left.date, 'en'));
 const referenceId = (reference: any) => reference?.id || reference;
+const formatDate = (date: string) => date.replaceAll('-', '.');
 const kindLabels = {
   'program-series': '节目系列',
   'stage-series': '舞台系列',
@@ -28,30 +29,41 @@ const kindLabels = {
       <p>{entry.data.summary}</p>
     </header>
 
-    <section class="index-entry-list" aria-labelledby="index-records-title">
+    <section class="index-entry-list" aria-labelledby="index-records-title" data-index-chronology>
       <div class="index-section-heading">
-        <h2 id="index-records-title">公开记录</h2>
-        <span>{orderedEntries.length} ENTRIES</span>
+        <div>
+          <p class="index-kicker">CHRONOLOGY</p>
+          <h2 id="index-records-title">公开记录</h2>
+        </div>
+        <div class="index-order-controls" role="group" aria-label="公开记录排序">
+          <button type="button" data-index-order="desc" aria-pressed="true">新 → 旧</button>
+          <span aria-hidden="true">/</span>
+          <button type="button" data-index-order="asc" aria-pressed="false">旧 → 新</button>
+        </div>
       </div>
-      {orderedEntries.map((item: any) => (
-        <article class="index-entry" id={item.id}>
-          <time datetime={item.date}>{item.date}</time>
-          <div>
-            <h3>{item.title}</h3>
-            <p>{item.summary}</p>
-            {item.people.length > 0 && <div class="index-entry-people" aria-label="相关人物">
-              {item.people.map((personRef: any) => {
-                const id = referenceId(personRef);
-                const person = peopleById.get(id);
-                return person && <a href={`/people/${id}/`}>{person.data.displayName}</a>;
-              })}
-            </div>}
-            {item.links.length > 0 && <div class="index-entry-links">
-              {item.links.map((link: any) => <a href={link.url} rel="noreferrer" target="_blank">{link.label} ↗</a>)}
-            </div>}
-          </div>
-        </article>
-      ))}
+      <div class="index-chronology chronology" data-index-chronology-list>
+        {orderedEntries.map((item: any) => (
+          <article class="index-entry chronology-item" id={item.id} data-entry-date={item.date}>
+            <time class="index-entry-date chronology-date" datetime={item.date}>{formatDate(item.date)}</time>
+            <span class="index-entry-node chronology-node" aria-hidden="true"></span>
+            <div>
+              <span class="index-entry-year">{item.date.slice(0, 4)}</span>
+              <h3>{item.title}</h3>
+              <p>{item.summary}</p>
+              {item.people.length > 0 && <div class="index-entry-people" aria-label="相关人物">
+                {item.people.map((personRef: any) => {
+                  const id = referenceId(personRef);
+                  const person = peopleById.get(id);
+                  return person && <a href={`/people/${id}/`}>{person.data.displayName}</a>;
+                })}
+              </div>}
+              {item.links.length > 0 && <div class="index-entry-links">
+                {item.links.map((link: any) => <a href={link.url} rel="noreferrer" target="_blank">{link.label} ↗</a>)}
+              </div>}
+            </div>
+          </article>
+        ))}
+      </div>
     </section>
 
     {projects.filter(Boolean).length > 0 && <aside class="index-related" aria-labelledby="index-related-title">
@@ -62,3 +74,20 @@ const kindLabels = {
     </aside>}
   </main>
 </IndexLayout>
+
+<script>
+  const chronology = document.querySelector<HTMLElement>('[data-index-chronology]');
+  const list = chronology?.querySelector<HTMLElement>('[data-index-chronology-list]');
+  chronology?.querySelectorAll<HTMLButtonElement>('[data-index-order]').forEach((button) => {
+    button.addEventListener('click', () => {
+      if (!list) return;
+      const direction = button.dataset.indexOrder === 'asc' ? 1 : -1;
+      const nodes = [...list.querySelectorAll<HTMLElement>('[data-entry-date]')];
+      nodes.sort((left, right) => direction * (left.dataset.entryDate || '').localeCompare(right.dataset.entryDate || '', 'en'));
+      nodes.forEach((node) => list.append(node));
+      chronology.querySelectorAll<HTMLButtonElement>('[data-index-order]').forEach((control) => {
+        control.setAttribute('aria-pressed', String(control === button));
+      });
+    });
+  });
+</script>
