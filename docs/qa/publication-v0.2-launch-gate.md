@@ -2,7 +2,7 @@
 
 > 核对日期：2026-08-14
 > review branch：`codex/publication-metadata-v2`
-> validated code HEAD：`934b8d5`（VIS-03 / PEOPLE-03 / INDEX-03）
+> validated code HEAD：`3c5dbd7`（VIS-03 / PEOPLE-03 / INDEX-03 / DOC-P0）
 
 这是一份发布前核对记录，不等同于 production-accepted，也不授权 merge、deploy 或开放 robots。
 
@@ -10,13 +10,14 @@
 
 - 本地 `npm run validate`：通过；包含三个 Project regression、Home Projection、Index、People、全局搜索、站点 metadata 与发布门禁。
 - 本地 `npm exec -- tsc --noEmit`：通过。
-- GitHub Actions：`Validate archive site` run [31794828218](https://github.com/windmet/folio/actions/runs/31794828218) 在 `cb8f0ec` 成功；包含依赖安装、production dependency audit、repository validation 和 TypeScript check。
+- GitHub Actions：`Validate archive site` run [31798467723](https://github.com/windmet/folio/actions/runs/31798467723) 在 `3c5dbd7` 成功；包含依赖安装、production dependency audit、repository validation（含 documentation entrypoints）和 TypeScript check。
 - HOME-05 本地浏览器验收：1440×900、1920×1080 与 390×844 通过；desktop 使用自然滚动加 `proximity` scroll snap，mobile 明确关闭 snap；无横向溢出、内容裁切或 console error。
 - VIS-03 本地浏览器验收：1280×720 与 390×844 通过。Archive / People / Index 均回到 warm paper；广播、专题与 Index 的类型色只保留在左边线、顶线、kicker、日期和 marker；People 首页改为双栏 ledger，非 Cover scene 改为顶部偏置且允许弹性高度。
 - PEOPLE-03 本地浏览器验收：伊藤友紘 fixture 的三个 Project 默认按新→旧排列，可切换旧→新；1–3 个 Event 直显、4–20 个默认折叠、小松昌平在 Komatsu36 的 81 个节点改由完整 Project Timeline 承接。桌面与 390px 无横向溢出，排序控件 focus outline 可见。
 - PEOPLE-03 读者摘要收口：人物页不再显示重复的 `PROJECTS / CONTEXTS / ALIASES` 工程统计；伊藤 fixture 显示“3 项档案 · 电话连线 / 预投稿 / 被提及”，首页 ledger 使用相同语义顺序。1280×720 与 390×844 均保持单行且无横向溢出。
 - INDEX-03 本地浏览器验收：两个 Index detail 已消费与 People 共用的 Chronology Rail；公开记录默认新→旧并可切换旧→新。`ore-shiri` 与 `ban-ban-ban` 在 1280×720 / 390×844 均无横向溢出，移动 rail、节点与 28px 内容缩进对齐，排序控件 focus outline 可见。
 - Global `/timeline/` 已退出五个主要 Layout 的一级导航；旧 route 继续保留为兼容入口，不与 Project Timeline 或实体 chronology 混用。
+- DOC-P0 已收口：根 README 只保留当前三项目、Person Model v2、active review branch、noindex 状态、验证命令与发布边界；原 Komatsu36 RC / Semantic 长历史入口已完整迁入 `docs/archive/komatsu36-history.md`。新增 `verify:documentation` 会验证当前/归档入口及 README 引用路径。
 - 窄屏 `#people` / `#indexes` deep link 会停在 57px sticky header 下方；mobile 继续禁用 scroll snap。
 - Reader brand、chaptered homepage、About / Editorial Policy、canonical / OG / favicon、Global People、Index 与全局搜索已经进入 review branch；`PUBLIC_LAUNCH_ENABLED` 仍为 `false`。
 - 未来 public-route allowlist 已覆盖 `/indexes/`；这只修正显式 launch policy，不会在 Gate 开启前改变当前 `noindex, nofollow`。
