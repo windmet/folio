@@ -2,7 +2,7 @@
 
 > 核对日期：2026-08-14
 > review branch：`codex/publication-metadata-v2`
-> validated code HEAD：`cb8f0ec74b2a510864a45d933b1f85df6ee8cec4`
+> validated code HEAD：`dc5e5c7`（VIS-03 / PEOPLE-03）
 
 这是一份发布前核对记录，不等同于 production-accepted，也不授权 merge、deploy 或开放 robots。
 
@@ -12,6 +12,9 @@
 - 本地 `npm exec -- tsc --noEmit`：通过。
 - GitHub Actions：`Validate archive site` run [31794828218](https://github.com/windmet/folio/actions/runs/31794828218) 在 `cb8f0ec` 成功；包含依赖安装、production dependency audit、repository validation 和 TypeScript check。
 - HOME-05 本地浏览器验收：1440×900、1920×1080 与 390×844 通过；desktop 使用自然滚动加 `proximity` scroll snap，mobile 明确关闭 snap；无横向溢出、内容裁切或 console error。
+- VIS-03 本地浏览器验收：1280×720 与 390×844 通过。Archive / People / Index 均回到 warm paper；广播、专题与 Index 的类型色只保留在左边线、顶线、kicker、日期和 marker；People 首页改为双栏 ledger，非 Cover scene 改为顶部偏置且允许弹性高度。
+- PEOPLE-03 本地浏览器验收：伊藤友紘 fixture 的三个 Project 默认按新→旧排列，可切换旧→新；1–3 个 Event 直显、4–20 个默认折叠、小松昌平在 Komatsu36 的 81 个节点改由完整 Project Timeline 承接。桌面与 390px 无横向溢出，排序控件 focus outline 可见。
+- 窄屏 `#people` / `#indexes` deep link 会停在 57px sticky header 下方；mobile 继续禁用 scroll snap。
 - Reader brand、chaptered homepage、About / Editorial Policy、canonical / OG / favicon、Global People、Index 与全局搜索已经进入 review branch；`PUBLIC_LAUNCH_ENABLED` 仍为 `false`。
 - 未来 public-route allowlist 已覆盖 `/indexes/`；这只修正显式 launch policy，不会在 Gate 开启前改变当前 `noindex, nofollow`。
 - review 分支已推送到 GitHub；未创建 PR、未 merge、未触发 Cloudflare deployment。
@@ -37,6 +40,7 @@
 - 生产 desktop / 390px spot check：未执行；本地 preview 已完成相同范围检查。
 - 真实媒体基本链路与长时播放：未执行；本地静态构建和 iframe 壳不替代真实媒体验收。
 - production console / overflow / focus / deep-link：未执行。
+- 外部浏览器的纯键盘 Tab 顺序 spot check：未执行；本轮内置浏览器的 Tab 注入未离开 `BODY`，只取得语义控件、点击交互与 focus-visible 的分项证据，不把它写成完整键盘验收。
 - robots：继续保持 `noindex, nofollow`；不从 `PUBLIC_LAUNCH_ENABLED = false` 切换。
 
 ## 下一步授权边界
