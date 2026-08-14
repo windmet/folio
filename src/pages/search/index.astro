@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/search.css';
+---
+
+<BaseLayout title="全局搜索" description="搜索前情帖中的 Project、Event、Person 与 Post。">
+  <div class="not-prose global-search-shell">
+    <header class="global-search-intro">
+      <p class="global-search-kicker">PUBLICATION INDEX</p>
+      <h1>全局搜索</h1>
+      <p>在前情帖里查找已发布 Project、公开 Event、Global Person 与 Post。Work / Context 仍保留在各自 Project 内。</p>
+    </header>
+
+    <section class="global-search-panel" role="search" aria-label="搜索前情帖">
+      <label for="global-search-input">搜索 Project、Event、Person 或 Post</label>
+      <div class="global-search-field">
+        <input id="global-search-input" type="search" placeholder="输入标题、人名或关键词" autocomplete="off" />
+        <button id="global-search-clear" type="button" hidden aria-label="清除搜索">×</button>
+      </div>
+      <p id="global-search-status" role="status" aria-live="polite">正在载入公开索引…</p>
+      <div id="global-search-results" class="global-search-results" hidden>
+        <div class="global-search-results-head"><strong id="global-search-count">0 条结果</strong><span>公开索引</span></div>
+        <div id="global-search-list" class="global-search-list"></div>
+        <p id="global-search-empty" hidden>没有找到匹配项。</p>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<script>
+  type SearchItem = { kind: string; id: string; label: string; title: string; summary: string; href: string; searchText: string };
+  const normalize = (value: unknown) => String(value ?? '').trim().toLocaleLowerCase();
+  const input = document.querySelector<HTMLInputElement>('#global-search-input');
+  const clear = document.querySelector<HTMLButtonElement>('#global-search-clear');
+  const status = document.querySelector<HTMLElement>('#global-search-status');
+  const results = document.querySelector<HTMLElement>('#global-search-results');
+  const list = document.querySelector<HTMLElement>('#global-search-list');
+  const empty = document.querySelector<HTMLElement>('#global-search-empty');
+  const count = document.querySelector<HTMLElement>('#global-search-count');
+  let items: SearchItem[] = [];
+
+  const renderItem = (item: SearchItem) => {
+    const anchor = document.createElement('a');
+    anchor.className = 'global-search-result';
+    anchor.href = item.href;
+    const label = document.createElement('span');
+    label.className = 'global-search-result-label';
+    label.textContent = item.label;
+    const title = document.createElement('strong');
+    title.textContent = item.title;
+    const summary = document.createElement('span');
+    summary.className = 'global-search-result-summary';
+    summary.textContent = item.summary;
+    anchor.append(label, title, summary);
+    return anchor;
+  };
+
+  const render = () => {
+    const query = normalize(input?.value);
+    clear?.toggleAttribute('hidden', !query);
+    if (!query) {
+      results?.toggleAttribute('hidden', true);
+      if (status) status.textContent = '输入关键词以搜索公开索引。';
+      return;
+    }
+    const matches = items.filter((item) => normalize(item.searchText).includes(query)).slice(0, 60);
+    results?.toggleAttribute('hidden', false);
+    list?.replaceChildren(...matches.map(renderItem));
+    empty?.toggleAttribute('hidden', matches.length > 0);
+    if (count) count.textContent = `${matches.length} 条结果`;
+    if (status) status.textContent = matches.length ? '按标题与语境匹配。' : '没有找到匹配项。';
+  };
+
+  input?.addEventListener('input', render);
+  clear?.addEventListener('click', () => { if (input) input.value = ''; input?.focus(); render(); });
+  fetch('/search.json', { headers: { Accept: 'application/json' } })
+    .then((response) => response.ok ? response.json() : Promise.reject(new Error(`search index ${response.status}`)))
+    .then((payload: { schemaVersion?: number; items?: SearchItem[] }) => {
+      if (payload.schemaVersion !== 1 || !Array.isArray(payload.items)) throw new Error('invalid search index');
+      items = payload.items;
+      if (status) status.textContent = `公开索引已载入 · ${items.length} 条`;
+      render();
+    })
+    .catch(() => { if (status) status.textContent = '搜索索引暂时无法载入，其他页面仍可继续浏览。'; });
+</script>

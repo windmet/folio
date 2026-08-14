@@ -22,6 +22,7 @@ const { title, description, robots } = Astro.props;
       <a href="/" class="people-brand">{SITE_NAME}</a>
       <nav aria-label="站点导航">
         <a href="/people/" aria-current={title === 'People' ? 'page' : undefined}>People</a>
+        <a href="/search/">Search</a>
         <a href="/timeline/">Timeline</a>
         <a href="/about/">About</a>
       </nav>

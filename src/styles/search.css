@@ -1,0 +1,154 @@
+.global-search-shell {
+  padding: 14px 0 36px;
+}
+
+.global-search-intro {
+  margin-bottom: 32px;
+}
+
+.global-search-kicker {
+  margin: 0;
+  color: #9c615b;
+  font-family: 'SF Mono', Consolas, monospace;
+  font-size: 10px;
+  letter-spacing: .14em;
+}
+
+.global-search-intro h1 {
+  margin: 12px 0 10px;
+  color: #4c4540;
+  font-family: 'Noto Serif SC', 'Noto Serif JP', Georgia, serif;
+  font-size: 30px;
+  font-weight: 400;
+  letter-spacing: .08em;
+}
+
+.global-search-intro p:last-child {
+  margin: 0;
+  color: #847970;
+  font-size: 13px;
+  line-height: 1.9;
+}
+
+.global-search-panel {
+  padding: 20px;
+  border: 1px solid #e3d8ce;
+  background: #fffdfa;
+}
+
+.global-search-panel label {
+  display: block;
+  margin-bottom: 9px;
+  color: #75675d;
+  font-family: 'SF Mono', Consolas, monospace;
+  font-size: 10px;
+  letter-spacing: .08em;
+}
+
+.global-search-field {
+  position: relative;
+}
+
+.global-search-field input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 11px 38px 11px 12px;
+  border: 1px solid #d8cfc5;
+  border-radius: 2px;
+  background: #fff;
+  color: #4c4540;
+  font-size: 13px;
+}
+
+.global-search-field input:focus-visible,
+.global-search-result:focus-visible,
+.global-search-field button:focus-visible {
+  outline: 2px solid #9c615b;
+  outline-offset: 3px;
+}
+
+.global-search-field button {
+  position: absolute;
+  top: 50%;
+  right: 7px;
+  transform: translateY(-50%);
+  border: 0;
+  background: transparent;
+  color: #9a8c82;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.global-search-panel > p {
+  margin: 10px 0 0;
+  color: #a39489;
+  font-family: 'SF Mono', Consolas, monospace;
+  font-size: 10px;
+  letter-spacing: .04em;
+}
+
+.global-search-results {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #eee6df;
+}
+
+.global-search-results-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: #9a8c82;
+  font-family: 'SF Mono', Consolas, monospace;
+  font-size: 10px;
+}
+
+.global-search-list {
+  display: grid;
+  gap: 9px;
+  margin-top: 12px;
+}
+
+.global-search-result {
+  display: grid;
+  gap: 4px;
+  padding: 13px 14px;
+  border: 1px solid #eee6df;
+  color: #5c514a;
+  text-decoration: none;
+}
+
+.global-search-result:hover {
+  border-color: #c9a79b;
+  color: #9c615b;
+}
+
+.global-search-result-label {
+  color: #a39489;
+  font-family: 'SF Mono', Consolas, monospace;
+  font-size: 9px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.global-search-result strong {
+  font-family: 'Noto Serif SC', 'Noto Serif JP', Georgia, serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.global-search-result-summary {
+  overflow: hidden;
+  color: #8a7d74;
+  font-size: 11px;
+  line-height: 1.6;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#global-search-empty {
+  margin: 14px 0 0;
+  color: #9a8c82;
+  font-size: 12px;
+}
