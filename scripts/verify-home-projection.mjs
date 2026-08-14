@@ -59,7 +59,10 @@ for (const project of projects) {
   assert(typeof publication?.homeDeck === 'string' && publication.homeDeck.length > 0, `${project.slug}: missing homeDeck`);
 }
 
-const postFiles = (await readdir(postsRoot)).filter((name) => name.endsWith('.md') || name.endsWith('.mdx'));
+const postFiles = (await readdir(postsRoot).catch((error) => {
+  if (error?.code === 'ENOENT') return [];
+  throw error;
+})).filter((name) => name.endsWith('.md') || name.endsWith('.mdx'));
 const posts = await Promise.all(postFiles.map(async (name) => ({ name, data: await readPost(path.join(postsRoot, name)) })));
 const expectedSections = new Map();
 assert(posts.length === expectedSections.size, `expected ${expectedSections.size} Posts, found ${posts.length}`);
