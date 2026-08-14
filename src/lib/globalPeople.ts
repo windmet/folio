@@ -94,10 +94,12 @@ export const buildGlobalPeopleProjection = ({
       }))
       .sort((left: EventAnchor, right: EventAnchor) => left.event.data.startMs - right.event.data.startMs);
 
-    const presence = [...new Map((context.data.presence || []).map((item: any) => [
-      item.kind,
-      { kind: item.kind, label: PERSON_PRESENCE_LABELS[item.kind as keyof typeof PERSON_PRESENCE_LABELS] || item.kind },
-    ])).values()];
+    const presence: Array<{ kind: string; label: string }> = Array.from(
+      new Map<string, { kind: string; label: string }>((context.data.presence || []).map((item: any) => [
+        item.kind,
+        { kind: item.kind, label: PERSON_PRESENCE_LABELS[item.kind as keyof typeof PERSON_PRESENCE_LABELS] || item.kind },
+      ] as [string, { kind: string; label: string }])).values(),
+    );
     const projectedContext: GlobalPersonContext = {
       id: context.id,
       project,
@@ -115,7 +117,11 @@ export const buildGlobalPeopleProjection = ({
   return identities.map((identity) => {
     const personContexts = (contextsByPerson.get(identity.id) || []).sort(byPublicationDate);
     const projectIds = new Set(personContexts.map((context) => context.project.id));
-    const presence = [...new Map(personContexts.flatMap((context) => context.presence).map((item) => [item.kind, item])).values()];
+    const presence: Array<{ kind: string; label: string }> = Array.from(
+      new Map<string, { kind: string; label: string }>(
+        personContexts.flatMap((context) => context.presence).map((item) => [item.kind, item]),
+      ).values(),
+    );
     return {
       id: identity.id,
       identity,

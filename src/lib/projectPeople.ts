@@ -27,6 +27,13 @@ export const globalPersonRelevance = (contexts: CollectionEntry[]) => contexts.r
 
 const participationFromContext = (context: any) => {
   const participation: any[] = [];
+  const presenceKinds: Record<string, string> = {
+    'on-site': 'birthday-live',
+    'live-space': 'space-guest',
+    'live-call': 'remote-call',
+    'account-context': 'space-account',
+    submitted: 'submitted-comment',
+  };
   for (const role of context.roles || []) {
     if (role.kind === 'cast') {
       participation.push({
@@ -41,13 +48,7 @@ const participationFromContext = (context: any) => {
     }
   }
   for (const presence of context.presence || []) {
-    const kind = {
-      'on-site': 'birthday-live',
-      'live-space': 'space-guest',
-      'live-call': 'remote-call',
-      'account-context': 'space-account',
-      submitted: 'submitted-comment',
-    }[presence.kind];
+    const kind = presenceKinds[presence.kind];
     if (kind) participation.push({ kind });
   }
   return participation;
